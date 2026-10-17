@@ -15,7 +15,7 @@ const MAX_FILE_MB = 10;
 const SEC_LATER = ['หนังสือค้ำประกันของธนาคารภายในประเทศ', 'หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)', 'หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์'];
 const SEC_TYPES = ['เงินสด', 'เช็คหรือดราฟท์ที่ธนาคารเซ็นสั่งจ่าย', 'หนังสือค้ำประกันของธนาคารภายในประเทศ', 'หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)', 'หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์', 'พันธบัตรรัฐบาลไทย'];
 const COLS = {
-  projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt', 'secAmount', 'stamp', 'duration', 'warrantyYears', 'extraDays'],
+  projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt', 'secAmount', 'stamp', 'duration', 'warrantyYears', 'extraDays', 'beneficiary'],
   bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType'],
   settings: ['key', 'value']
 };
@@ -163,7 +163,7 @@ function doPost(e) {
         write_('projects', {
           _row: old ? old._row : undefined, projectId: p.projectId, token: p.token || (old ? old.token : uid_()), name: p.name, contractor: p.contractor,
           inviteNo: p.inviteNo, office: p.office, dates: JSON.stringify(p.dates || []), slotStart: p.slotStart, slotEnd: p.slotEnd,
-          slotMinutes: p.slotMinutes, docs: JSON.stringify(p.docs || []), note: p.note || '', updatedAt: now_(), secAmount: p.secAmount || '', stamp: p.stamp || '', duration: p.duration || '', warrantyYears: p.warrantyYears || '', extraDays: p.extraDays === undefined ? '' : p.extraDays
+          slotMinutes: p.slotMinutes, docs: JSON.stringify(p.docs || []), note: p.note || '', updatedAt: now_(), secAmount: p.secAmount || '', stamp: p.stamp || '', duration: p.duration || '', warrantyYears: p.warrantyYears || '', extraDays: p.extraDays === undefined ? '' : p.extraDays, beneficiary: p.beneficiary || ''
         });
         const saved = rows_('projects').find(x => x.projectId === p.projectId);
         return json_({ ok: true, token: saved.token });
@@ -197,7 +197,7 @@ function getBookingInfo(projectId, token) {
   const t = today_(), nowHM = Utilities.formatDate(new Date(), TZ, 'HH:mm');
   const days = p.dates.filter(d => d >= t).map(d => ({ date: d, times: times_(p).map(tm => ({ time: tm, free: !taken[d + ' ' + tm] && !(d === t && tm <= nowHM) })) }));
   if (mine) mine.files = mine.files ? JSON.parse(mine.files) : [];
-  return { project: { name: p.name, contractor: p.contractor, inviteNo: p.inviteNo, office: p.office, docs: p.docs, note: p.note, secAmount: p.secAmount, stamp: p.stamp, duration: p.duration, warrantyYears: p.warrantyYears, extraDays: p.extraDays, secTypes: SEC_TYPES, secLater: SEC_LATER }, days: days, booking: mine, maxMB: MAX_FILE_MB };
+  return { project: { name: p.name, contractor: p.contractor, inviteNo: p.inviteNo, office: p.office, docs: p.docs, note: p.note, secAmount: p.secAmount, stamp: p.stamp, duration: p.duration, warrantyYears: p.warrantyYears, extraDays: p.extraDays, beneficiary: p.beneficiary, secTypes: SEC_TYPES, secLater: SEC_LATER }, days: days, booking: mine, maxMB: MAX_FILE_MB };
 }
 
 function uploadFile(projectId, token, docKey, fileName, mime, b64) {

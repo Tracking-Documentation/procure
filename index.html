@@ -289,7 +289,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 36 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 37 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1473,7 +1473,7 @@ async function gasCall(params,post){const st=S.settings;const url=String(st.gasU
   let j;try{j=await r.json()}catch(e){throw new Error('Google Apps Script ตอบกลับไม่ถูกต้อง — ตรวจว่าใช้ URL ที่ลงท้ายด้วย /exec')}
   if(!j.ok)throw new Error(j.error||'เกิดข้อผิดพลาด');return j}
 async function pushBooking(p){const b=bookOf(p),w=bookWindow(p),st=S.settings;
-  await gasCall({action:'upsertProject',project:{projectId:p.id,token:b.token,name:p.name||'',contractor:p.contractor||'',inviteNo:p.inviteNo||'',office:st.office||'',dates:w.dates,slotStart:st.slotStart||'09:00',slotEnd:st.slotEnd||'15:30',slotMinutes:num(st.slotMinutes)||30,docs:bookDocsList(),note:st.bookNote||'',secAmount:signAmounts(p).sec,stamp:signAmounts(p).stamp,duration:num(evOf(p).duration)||'',warrantyYears:warrantyOf(p),extraDays:num(st.secExtraDays??30)}},true);
+  await gasCall({action:'upsertProject',project:{projectId:p.id,token:b.token,name:p.name||'',contractor:p.contractor||'',inviteNo:p.inviteNo||'',office:st.office||'',dates:w.dates,slotStart:st.slotStart||'09:00',slotEnd:st.slotEnd||'15:30',slotMinutes:num(st.slotMinutes)||30,docs:bookDocsList(),note:st.bookNote||'',secAmount:signAmounts(p).sec,stamp:signAmounts(p).stamp,duration:num(evOf(p).duration)||'',warrantyYears:warrantyOf(p),extraDays:num(st.secExtraDays??30),beneficiary:p.agency||st.agency||''}},true);
   b.pushed=nowStr();b.pushedDates=bookSig(p);save()}
 function bookSig(p){return bookWindow(p).dates.join(',')+'|'+warrantyOf(p)+'|'+num(evOf(p).duration)+'|'+signAmounts(p).sec}
 function applyBookings(list,onlyId){const by={};list.forEach(x=>{if(x.status==='ยกเลิก')return;by[x.projectId]=x});
