@@ -271,7 +271,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (15)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (17)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -328,7 +328,7 @@ const ICON={
 
 /* ================= state ================= */
 const LS='boqNego.v1';
-const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,toShort:'ผอ.ขท.กระบี่',toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'นายทรงฤทธิ์ ชยานันท์',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
+const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,toShort:'ผอ.ขท.กระบี่',regionTo:'ผส.ทล.17',regionPrefix:'สทล.17 ขท.กระบี่.1(พ)/',approveLinesBig:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- ขออนุมัติรับราคาและขออนุมัติสั่งจ้างจาก ผส.ทล.17 ต่อไป',regionLaws:'พระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560\nระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560 กฎกระทรวงอื่นๆ ที่เกี่ยวข้อง ในการดำเนินการสั่งการ ทุกวิธี ทุกขั้นตอน เต็มวงเงินที่ได้รับการอนุมัติ\nอำนาจอนุมัติเป็นของ ผส.ทล.17 ตามนัยคำสั่งกรมทางหลวง ที่ บ.1/115/2560 ลงวันที่ 29 สิงหาคม 2560 เรื่อง มอบอำนาจการสั่งซื้อสั่งจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',regionAtts:'ประกาศประกวดราคาจำนวน 1 ชุด\nราคากลางจำนวน 1 ชุด\nเอกสารเสนอราคาจากระบบอิเล็กทรอนิกส์จำนวน 1 ชุด\nรายงานสรุปผลการตรวจสอบเอกสารจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาจำนวน 1 ชุด\nหนังสือปรับลดราคาบริษัทและบัญชีเปรียบเทียบราคาจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาของคณะกรรมการจำนวน 1 ชุด',draftLine:'',toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'นายทรงฤทธิ์ ชยานันท์',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
   signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
   showSign:true,watermark:false,theme:'system'};
 let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
@@ -776,7 +776,7 @@ function repNotice(p){const F=letterFont();const ranked=bidRank(p);const n=ranke
 const EV_DEF={orderNo:'',orderDate:'',pubStart:'',pubEnd:'',submitDate:'',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'',openTime:'08.30 น.',
   summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',
   m1:{no:'',date:'',start:'',end:''},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',hold:'',secretary:-1,
-  rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false};
+  rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false,apprNo:'',apprDate:'',hearStart:'',hearEnd:'',hearDays:'3',hearCount:'',hearDecide:'',hearApprove:'',hearResult:'เห็นว่าไม่ปรับปรุงตามข้อวิจารณ์'};
 function evOf(p){const e=Object.assign(structuredClone(EV_DEF),p.ev||{});e.m1=Object.assign({},EV_DEF.m1,e.m1);e.m2=Object.assign({},structuredClone(EV_DEF.m2),e.m2);e.rel=Object.assign({},EV_DEF.rel,e.rel);p.ev=e;
   if(!Array.isArray(p.committee)){const s=p.signers||[];const strip=x=>String(x||'').replace(/[()]/g,'').trim();
     p.committee=[{name:strip(s[1]?.name),position:'',role:'ประธานกรรมการฯ'},{name:strip(s[0]?.name),position:s[0]?.position||'',role:'กรรมการฯ'}].filter(m=>m.name||m.role)}
@@ -839,6 +839,13 @@ function rEval(){
        <td><textarea class="i" rows="2" data-k="mgrs" style="min-width:200px">${esc(b.mgrs||'')}</textarea></td><td><textarea class="i" rows="2" data-k="holders" style="min-width:200px">${esc(b.holders||'')}</textarea></td>
        <td><select class="i" data-k="netOk"><option value="1" ${b.netOk!==false?'selected':''}>ถูกต้อง (เป็นบวก)</option><option value="0" ${b.netOk===false?'selected':''}>ไม่ถูกต้อง</option></select></td>
        <td><select class="i" data-k="sme"><option value="no" ${(b.sme||'no')==='no'?'selected':''}>ไม่เป็น SMEs</option><option value="under" ${b.sme==='under'?'selected':''}>เป็น SMEs ไม่เกินมูลค่า</option><option value="over" ${b.sme==='over'?'selected':''}>เป็น SMEs เกินมูลค่า</option></select></td></tr>`).join('')||'<tr><td colspan="6" class="empty">ยังไม่มีผู้เสนอราคา · กรอกที่หน้า “ผู้เสนอราคา”</td></tr>'}</tbody></table></div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">5</span>หลักประกันการเสนอราคา</h2>${isBig5(p)?'<span class="pill p-nego">วงเงินเกิน 5 ล้านบาท ต้องตรวจหลักประกัน</span>':'<span class="pill p-draft">วงเงินไม่เกิน 5 ล้านบาท ไม่ต้องทำ</span>'}</div>
+     ${isBig5(p)?`<div class="tbl-wrap"><table class="t boq"><thead><tr><th>ผู้ยื่นข้อเสนอ</th><th>ประเภท / เลขที่หนังสือค้ำประกัน</th><th>วันที่</th><th>ธนาคาร / สาขา</th><th>ตั้งแต่</th><th>จนถึง</th><th class="n">จำนวนเงิน</th><th>ผล</th></tr></thead><tbody id="secBody">${p.bidders.map(b=>`<tr data-sb="${b.id}"><td>${esc(shortFirm(b.name))}</td><td><input class="i" data-k="secNo" value="${esc(b.secNo||'')}" placeholder="เลขที่ ... / เงินสด เลขที่ใบเสร็จ ..." style="min-width:220px"></td><td><input class="i" type="date" data-k="secDate" value="${esc(b.secDate||'')}"></td><td><input class="i" data-k="secBank" value="${esc(b.secBank||'')}" placeholder="ธนาคารกรุงไทย จำกัด (มหาชน)" style="min-width:180px"></td><td><input class="i" type="date" data-k="secFrom" value="${esc(b.secFrom||'')}"></td><td><input class="i" type="date" data-k="secTo" value="${esc(b.secTo||'')}"></td><td><input class="i r" data-k="secAmount" value="${num(b.secAmount)?fmt(b.secAmount):''}" placeholder="${fmt(num(p.budget)*0.05)}" style="width:130px" inputmode="decimal"></td><td><select class="i" data-k="secOk"><option value="1" ${b.secOk!==false?'selected':''}>ถูกต้อง</option><option value="0" ${b.secOk===false?'selected':''}>ไม่ถูกต้อง</option></select></td></tr>`).join('')}</tbody></table></div><div class="card-b muted" style="font-size:13px">ช่องจำนวนเงินที่ว่างจะแสดงตัวเลข 5% ของวงเงินงบประมาณให้ดูเป็นค่าอ้างอิง แต่จะไม่พิมพ์จนกว่าจะกรอก</div>`:''}</div>
+   <div class="card"><div class="card-h"><h2><span class="step">6</span>บันทึกขออนุมัติถึงเขต</h2>${isBig10(p)?'<span class="pill p-nego">วงเงินเกิน 10 ล้านบาท ต้องทำบันทึกถึง '+esc(S.settings.regionTo||'เขต')+'</span>':'<span class="pill p-draft">วงเงินไม่เกิน 10 ล้านบาท ไม่ต้องทำ</span>'}</div>
+     ${isBig10(p)?`<div class="card-b grid g12">${F2('apprNo','บันทึกอนุมัติให้ดำเนินการ ที่','text','s4','สทล.17.1/6129')}${F2('apprDate','ลงวันที่','date')}<div class="s4"></div>
+       ${F2('hearStart','เผยแพร่ร่างประกาศ (วิจารณ์) ตั้งแต่','date')}${F2('hearEnd','ถึงวันที่','date')}${F2('hearDays','รวม (วันทำการ)','text')}
+       ${F2('hearCount','จำนวนผู้เสนอแนะ/วิจารณ์ (ราย) — 0 = ไม่มี','text')}${F2('hearDecide','วันที่พิจารณาข้อวิจารณ์','date')}${F2('hearApprove','วันที่ ผอ. เห็นชอบ','date')}
+       ${F2('hearResult','ผลการพิจารณาข้อวิจารณ์','text','s12')}</div>`:''}</div>
   </div>`;
   const setPath=(path,v)=>{const ks=path.split('.');let o=e;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=v};
   $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p)};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
@@ -854,10 +861,11 @@ function rEval(){
   bk.oninput=ev=>{const tr=ev.target.closest('[data-bk]');if(!tr)return;const b=p.bidders.find(x=>x.id===tr.dataset.bk);const k=ev.target.dataset.k;
     b[k]=k==='netOk'?ev.target.value==='1':ev.target.value;touch(p)};
   bk.onchange=bk.oninput;
+  const sb=$('#secBody');if(sb){sb.oninput=ev=>{const tr=ev.target.closest('[data-sb]');if(!tr)return;const b=p.bidders.find(x=>x.id===tr.dataset.sb);const k=ev.target.dataset.k;b[k]=k==='secAmount'?num(ev.target.value):k==='secOk'?ev.target.value==='1':ev.target.value;touch(p)};sb.onchange=ev=>{sb.oninput(ev);if(ev.target.dataset.k==='secAmount'&&num(ev.target.value))ev.target.value=fmt(num(ev.target.value))}}
 }
 
 /* ---------- printable documents ---------- */
-const EVAL_DOCS=[['ext','บันทึกขอขยายเวลาการพิจารณาผล'],['qual','แจ้งผลการตรวจสอบคุณสมบัติ'],['coi','การมีส่วนได้เสีย'],['docchk','รายงานผลการตรวจเอกสาร'],['m1','รายงานการประชุม ครั้งที่ 1'],['joint','ตรวจสอบผู้มีผลประโยชน์ร่วมกัน'],['sme','มูลค่าสุทธิ / SMEs'],['m2','รายงานการประชุม ครั้งที่ 2'],['sum','บันทึกสรุปผลการพิจารณา']];
+const EVAL_DOCS=[['ext','บันทึกขอขยายเวลาการพิจารณาผล'],['qual','แจ้งผลการตรวจสอบคุณสมบัติ'],['coi','การมีส่วนได้เสีย'],['docchk','รายงานผลการตรวจเอกสาร'],['sec','รายงานตรวจสอบหลักประกันการเสนอราคา'],['m1','รายงานการประชุม ครั้งที่ 1'],['joint','ตรวจสอบผู้มีผลประโยชน์ร่วมกัน'],['sme','มูลค่าสุทธิ / SMEs'],['m2','รายงานการประชุม ครั้งที่ 2'],['sum','บันทึกสรุปผลการพิจารณา'],['region','บันทึกขออนุมัติรับราคาและสั่งจ้าง (ถึงเขต)']];
 function evPaper(inner){const F=letterFont();return `<div class="paper ev${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">${inner}</div>`}
 function memoHead(sec,subject,to){const st=S.settings;return `<div class="mh"><img src="${GARUDA}" alt=""><div class="mt">บันทึกข้อความ</div></div>
   <div class="ml"><b>ส่วนราชการ</b><span class="dl">${sec}</span></div>
@@ -961,14 +969,164 @@ function docSum(p){const e=evOf(p);const st=S.settings;const R=bidRank(p);const 
    <p class="pi">จึงเรียนมาเพื่อโปรดพิจารณาเห็นชอบรายงานผลการพิจารณาฯ ต่อไป</p>
    ${cmSigList(p,{title:false})}
    <div style="margin-top:8mm;break-inside:avoid">${esc(st.approveTo||'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.')}
-     ${String(st.approveLines||'').split('\n').filter(Boolean).map(l=>`<div class="ind1">${esc(l)}</div>`).join('')}
+     ${String(isBig10(p)?(st.approveLinesBig||st.approveLines):(st.approveLines||'')).split('\n').filter(Boolean).map(l=>`<div class="ind1">${esc(l)}</div>`).join('')}
      <div style="margin:16mm 0 0 18mm;text-align:center;width:70mm">(${esc(st.director||'..............................')})<br>${esc(st.directorPos||'')}</div></div>`)}
-function repEval(p){evOf(p);const sel=S.settings.evalDocs||EVAL_DOCS.map(x=>x[0]);const map={ext:docExt,qual:docQual,coi:docCoi,docchk:docDocchk,m1:docM1,joint:docJoint,sme:docSme,m2:docM2,sum:docSum};
+const isBig5=p=>num(p.budget)>5000000, isBig10=p=>num(p.budget)>10000000;
+function evApplies(p,k){if(k==='ext'&&!needExtend(p)&&!S.settings.forceExt)return 'ยังไม่เกิน 5 วันทำการ';if(k==='m2'&&!p.rounds.length)return 'ไม่มีการต่อรองราคา';if(k==='sec'&&!isBig5(p))return 'วงเงินไม่เกิน 5 ล้านบาท';if(k==='region'&&!isBig10(p))return 'วงเงินไม่เกิน 10 ล้านบาท';return ''}
+const EVMAP=()=>({ext:docExt,qual:docQual,coi:docCoi,docchk:docDocchk,sec:docSec,m1:docM1,joint:docJoint,sme:docSme,m2:docM2,sum:docSum,region:docRegion});
+function repEval(p){evOf(p);const off=S.settings.evalOff||[];const map=EVMAP();
   if(!(p.bidders||[]).length)return `<div class="note warn">ยังไม่มีรายชื่อผู้เสนอราคา · กรอกที่หน้า “ผู้เสนอราคา”</div>`;
-  return EVAL_DOCS.filter(([k])=>sel.includes(k)).filter(([k])=>k!=='ext'||needExtend(p)||S.settings.forceExt).filter(([k])=>k!=='m2'||p.rounds.length).map(([k])=>map[k](p)).join('')}
-function evalPicker(p){const sel=S.settings.evalDocs||EVAL_DOCS.map(x=>x[0]);
-  return `<div class="row" style="margin-top:10px;gap:14px">${EVAL_DOCS.map(([k,l])=>{const off=(k==='ext'&&!needExtend(p))||(k==='m2'&&!p.rounds.length);return `<label class="switch"${off?' style="opacity:.55" title="'+(k==='ext'?'ยังไม่เกิน 5 วันทำการ':'ไม่มีการต่อรองราคา')+'"':''}><input type="checkbox" data-evd="${k}" ${sel.includes(k)?'checked':''}> ${l}${k==='ext'&&!needExtend(p)?' (ไม่ต้องทำ)':''}</label>`}).join('')}
+  return EVAL_DOCS.filter(([k])=>!off.includes(k)&&!evApplies(p,k)).map(([k])=>map[k](p)).join('')}
+function evalPicker(p){const off=S.settings.evalOff||[];
+  return `<div class="row" style="margin-top:10px;gap:14px">${EVAL_DOCS.map(([k,l])=>{const why=evApplies(p,k);return `<label class="switch"${why?` style="opacity:.55" title="${why}"`:''}><input type="checkbox" data-evd="${k}" ${!off.includes(k)?'checked':''}> ${l}${why?` (ไม่ต้องทำ: ${why})`:''}</label>`}).join('')}
     ${!needExtend(p)?`<label class="switch"><input type="checkbox" id="forceExt" ${S.settings.forceExt?'checked':''}> พิมพ์บันทึกขอขยายเวลาแม้ยังไม่เกินกำหนด</label>`:''}</div>`}
+function docSec(p){const R=p.bidders||[];const L=s=>esc(s||'');
+  const ch=chairOf(p);const others=p.committee.filter(m=>m!==ch);
+  return evPaper(`<div class="ct b">รายงานผลการตรวจสอบหลักประกันการเสนอราคา</div><div class="ct">ประกาศประกวดราคาจ้างก่อสร้าง เลขที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)}</div><div class="ct">${projTitle(p)}</div>
+   <table class="et" style="margin-top:4mm"><thead><tr><th rowspan="2" style="width:7%">ลำดับที่</th><th rowspan="2">บริษัท / ห้าง<div class="sm">(ผู้ยื่นหลักประกัน)</div></th><th rowspan="2">หนังสือค้ำประกันอิเล็กทรอนิกส์ / เลขที่หนังสือค้ำประกัน</th><th rowspan="2" style="width:11%">วันที่</th><th rowspan="2">ธนาคาร / สาขา</th><th colspan="2">ระยะเวลารับประกัน</th><th rowspan="2" style="width:11%">จำนวนเงิน</th><th rowspan="2" style="width:9%">ผลการตรวจสอบ</th></tr><tr><th style="width:10%">ตั้งแต่</th><th style="width:10%">จนถึง</th></tr></thead>
+   <tbody>${R.map((b,k)=>`<tr><td class="c">${k+1}</td><td>${esc(b.name)}</td><td>${L(b.secNo)}</td><td class="c">${b.secDate?D(b.secDate):''}</td><td>${L(b.secBank)}</td><td class="c">${b.secFrom?D(b.secFrom):''}</td><td class="c">${b.secTo?D(b.secTo):''}</td><td style="text-align:right">${num(b.secAmount)?fmt(b.secAmount):''}</td><td class="c">${b.secOk===false?'ไม่ถูกต้อง':'ถูกต้อง'}</td></tr>`).join('')}</tbody></table>
+   <div class="ct" style="margin-top:12mm;break-inside:avoid">(ลงชื่อ)......................................................ประธานกรรมการฯ<br>(${esc(ch.name)})</div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;margin-top:8mm;text-align:center;break-inside:avoid">${others.map(m=>`<div>(ลงชื่อ)..........................................${esc(m.role)}<br>(${esc(m.name)})</div>`).join('')}</div>`)}
+function docRegion(p){const e=evOf(p);const st=S.settings;const R=bidRank(p);const n=R.length;const w=bidWinner(p);const fp=finalPrice(p);const mid=num(p.midDeclared)||totals(p).sumM/100;const nego=p.rounds.length>0;
+  const list=R.slice().sort((a,b)=>p.bidders.findIndex(x=>x.id===a.id)-p.bidders.findIndex(x=>x.id===b.id));const os=esc(st.officeShort||'');
+  const firmS=w?firmShort(w.name):'บริษัทฯ';
+  const atts=String(st.regionAtts||'').split('\n').filter(Boolean);
+  return evPaper(`${memoHead(`${esc(st.office||'')} &nbsp; โทร. ${esc(st.tel||'')} &nbsp; โทรสาร ${esc(st.fax||'')}`,`ขออนุมัติรับราคาและอนุมัติสั่งจ้างงานตามประกาศประกวดราคาอิเล็กทรอนิกส์ เลขที่ ${esc(p.inviteNo)}`,st.regionTo||'ผส.ทล.17').replace('<span class="dl">-</span>',`<span class="dl">${esc(st.regionPrefix||'')}</span>`)}
+   <div class="sh">1. เรื่องเดิม</div>
+   <p class="pi">1.1 ตามบันทึกที่ ${esc(e.apprNo||'..........')} ลงวันที่ ${D(e.apprDate)} อนุมัติให้${esc(st.office||'')} ดำเนินการ${projTitle(p)} ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) วงเงินงบประมาณ ${moneyDash(p.budget)} บาท ราคากลาง ${fmt(mid)} บาท โดย ${os} ได้ดำเนินการออกประกาศฯ ที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)} เผยแพร่ประกาศฯ ระหว่างวันที่ ${D(e.pubStart)} ถึงวันที่ ${D(e.pubEnd)} กำหนดยื่นข้อเสนอและใบเสนอราคาทางระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์ ในวันที่ ${D(e.submitDate)} ระหว่างเวลา ${esc(e.submitTime)} และกำหนดเปิดข้อเสนอฯ วันที่ ${D(e.openDate)} โดยหลักเกณฑ์การคัดเลือกข้อเสนอใช้เกณฑ์ราคาต่ำสุด</p>
+   <p class="pi">1.2 ${os} ได้ดำเนินการตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 โดยนำร่างประกาศและร่างเอกสารประกวดราคาฯ เผยแพร่ทางเว็บไซต์ของกรมทางหลวงและเว็บไซต์ของกรมบัญชีกลางเพื่อให้สาธารณชนเสนอแนะ วิจารณ์ หรือมีความเห็นเป็นลายลักษณ์อักษร ตั้งแต่วันที่ ${D(e.hearStart)} ถึงวันที่ ${D(e.hearEnd)} รวมเป็นเวลา ${esc(e.hearDays||'3')} วันทำการ ${num(e.hearCount)>0?`ผลปรากฏว่า มีผู้เสนอแนะและวิจารณ์ จำนวน ${esc(e.hearCount)} ราย โดยคณะกรรมการจัดทำแบบรูปรายการงานก่อสร้างฯ และหัวหน้าเจ้าหน้าที่ได้ร่วมกันพิจารณาข้อเสนอแนะและวิจารณ์ เมื่อวันที่ ${D(e.hearDecide)} แล้ว ${esc(e.hearResult||'เห็นว่าไม่ปรับปรุงตามข้อวิจารณ์')} ซึ่ง ${esc(st.directorPos||'')} เห็นชอบตามเสนอ เมื่อวันที่ ${D(e.hearApprove||e.hearDecide)}`:'ผลปรากฏว่า ไม่มีผู้เสนอแนะและวิจารณ์'}</p>
+   <p class="pi">1.3 ${os} ได้อนุมัติแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ฯ ตามคำสั่ง${esc(st.office||'')} เลขที่ ${esc(e.orderNo||'..........')} ลงวันที่ ${D(e.orderDate)}</p>
+   <div class="sh">2. ผลแห่งการดำเนินการ</div><p class="pi">${os} ขอรายงานผลการพิจารณา ดังนี้</p>
+   <p class="pi">2.1 เมื่อสิ้นสุดวัน เวลา ในการยื่นข้อเสนอและเสนอราคาผ่านระบบอิเล็กทรอนิกส์ คณะกรรมการฯ ได้ดำเนินการจัดพิมพ์เอกสารของผู้ยื่นข้อเสนอราคาทุกรายผ่านทางระบบฯ จำนวน 1 ชุด เพื่อดำเนินการในส่วนที่เกี่ยวข้องตามระเบียบฯ ซึ่งมีผู้สนใจยื่นข้อเสนอและเสนอราคา จำนวน ${n} ราย ดังนี้</p>
+   ${list.map((b,k)=>`<div class="ind2">2.1.${k+1} ${esc(b.name)}</div>`).join('')}
+   <p class="pi">2.2 คณะกรรมการฯ ได้ตรวจสอบรายชื่อตามเอกสารของผู้ยื่นเอกสารการเสนอราคา ทั้ง ${n} ราย ทั้งในด้านผู้บริหาร และผู้ถือหุ้นรายใหญ่แล้ว ปรากฏว่า ${e.rel.admin||e.rel.capital||e.rel.cross?'มีผู้ที่มีผลประโยชน์ร่วมกัน':'ไม่เป็นผู้ที่มีผลประโยชน์ร่วมกัน'} และ${e.obstruct?'มี':'ไม่มี'}การขัดขวางการแข่งขันการเสนอราคาอย่างเป็นธรรม</p>
+   <p class="pi">2.3 คณะกรรมการฯ ได้ดำเนินการตรวจสอบคุณสมบัติของผู้ยื่นข้อเสนอฯ ทั้ง ${n} ราย ปรากฏว่า</p>
+   ${R.map((b,k)=>`<div class="hg ind1"><span>2.3.${k+1}</span><div>${bidLine(b,n)}</div></div>`).join('')}
+   <p class="pi">คณะกรรมการฯ ได้ร่วมกันพิจารณาแล้วเห็นว่า ${esc(w?.name||'..........')} เสนอถูกต้องตามประกาศฯ เป็นเงิน ${moneyDash(w?.price)} บาท (${bahtText(w?.price)}) ${nego?`เพื่อประโยชน์ของทางราชการ คณะกรรมการฯ ได้ต่อรองราคากับ${firmShort(w?.name).startsWith('หจก')?'ห้างฯ':'บริษัทฯ'} แล้ว โดย${firmShort(w?.name).startsWith('หจก')?'ห้างฯ':'บริษัทฯ'} ยินดีลดราคาคงเหลือราคา ${moneyDash(fp)} บาท (${bahtText(fp)}) ตามหนังสือ ที่ ${esc(e.replyNo||'..........')} ลงวันที่ ${D(e.replyDate)} `:''}คณะกรรมการฯ จึงเห็นควรรับราคา${esc(w?.name||'')} เป็นเงินทั้งสิ้น ${moneyDash(fp)} บาท (${bahtText(fp)}) ซึ่งเป็นราคาที่รวมภาษีมูลค่าเพิ่มแล้ว${e.duration?` กำหนดระยะเวลาดำเนินการให้แล้วเสร็จภายใน ${esc(e.duration)} วัน`:''}${e.hold?` กำหนดยืนราคา ${esc(e.hold)} วัน`:''}</p>${cmpLines(p)}
+   <div class="sh">3. กฎหมาย ระเบียบ และคำสั่งที่เกี่ยวข้อง</div>
+   ${String(st.regionLaws||'').split('\n').filter(Boolean).map((l,k)=>`<p class="pi">3.${k+1} ${esc(l)}</p>`).join('')}
+   <div class="sh">4. เรื่องที่เสนอให้พิจารณา</div>
+   <p class="pi">${os} พิจารณาแล้ว เห็นว่า คณะกรรมการฯ ได้ดำเนินการครบถ้วนถูกต้องตามระเบียบของทางราชการ จึงเห็นสมควรรับราคาของ${esc(w?.name||'')} ในราคาค่างาน เป็นเงินรวมทั้งสิ้น ${moneyDash(fp)} บาท (${bahtText(fp)}) พร้อมนี้ได้แนบเอกสาร ต่าง ๆ มาเพื่อประกอบการพิจารณา ดังนี้.-</p>
+   ${atts.map((a,k)=>`<div class="ind2">${k+1}. ${esc(a)}</div>`).join('')}
+   <p class="pi">จึงเรียนมาเพื่อโปรดพิจารณาอนุมัติรับราคา หากเห็นชอบโปรดอนุมัติสั่งจ้างต่อไป</p>
+   <div class="sg1" style="break-inside:avoid"><div style="height:18mm"></div>(${esc(st.director||'..............................')})<br>${esc(st.directorPos||'')}</div>
+   ${st.draftLine?`<div style="margin-top:10mm;margin-left:auto;width:45mm;font-size:.8em">${String(st.draftLine).split('\n').map(esc).join('<br>')}</div>`:''}`)}
+/* ================= export to Word (.docx, built in the browser, no libraries) ================= */
+const DX={pt:px=>px*0.75, tw:px=>Math.round(px*15), emu:px=>Math.round(px*9525)};
+const xe=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function runProps(cs,factor){const b=(+cs.fontWeight||400)>=600,i=cs.fontStyle==='italic',u=/underline/.test(cs.textDecorationLine||'');
+  const hp=Math.max(12,Math.round(DX.pt(parseFloat(cs.fontSize))*factor*2));
+  return `<w:rPr>${b?'<w:b/><w:bCs/>':''}${i?'<w:i/><w:iCs/>':''}${u?'<w:u w:val="single"/>':''}<w:sz w:val="${hp}"/><w:szCs w:val="${hp}"/></w:rPr>`}
+function borderXml(cs,tag){let x='';for(const [side,W] of [['Top','top'],['Left','left'],['Bottom','bottom'],['Right','right']]){const st=cs['border'+side+'Style'],w=parseFloat(cs['border'+side+'Width']);
+  if(st&&st!=='none'&&w>0)x+=`<w:${W} w:val="${st==='dotted'?'dotted':st==='double'?'double':st==='dashed'?'dashed':'single'}" w:sz="${Math.max(4,Math.round(DX.pt(w)*8))}" w:space="0" w:color="000000"/>`;else if(tag==='tcBorders')x+=`<w:${W} w:val="nil"/>`}
+  return x?`<w:${tag}>${x}</w:${tag}>`:''}
+function shadeXml(cs){const m=(cs.backgroundColor||'').match(/rgba?\((\d+), (\d+), (\d+)(?:, ([\d.]+))?\)/);if(!m||(m[4]!==undefined&&+m[4]===0))return '';const hex=[m[1],m[2],m[3]].map(v=>(+v).toString(16).padStart(2,'0')).join('');if(hex==='ffffff')return '';return `<w:shd w:val="clear" w:color="auto" w:fill="${hex}"/>`}
+class DocxBuilder{
+  constructor(factorOf){this.factorOf=factorOf;this.img=false}
+  paraXml(p){if(!p)return '';const ppr=`<w:pPr>${p.keep?'<w:keepNext/>':''}<w:spacing w:before="${p.before||0}" w:after="0" w:line="${p.line||240}" w:lineRule="auto"/>${p.ind?`<w:ind w:left="${p.ind}"${p.first?` w:firstLine="${p.first}"`:''}/>`:p.first?`<w:ind w:firstLine="${p.first}"/>`:''}${p.jc?`<w:jc w:val="${p.jc}"/>`:''}</w:pPr>`;
+    return `<w:p>${ppr}${p.runs.join('')}</w:p>`}
+  newPara(cs,leftPx){const ta=cs.textAlign;const jc=ta==='center'?'center':(ta==='right'||ta==='end')?'right':ta==='justify'?'thaiDistribute':'';
+    const ti=parseFloat(cs.textIndent)||0;return {runs:[],jc,ind:Math.max(0,DX.tw(leftPx)),first:ti>0?DX.tw(ti):0,before:0,line:240}}
+  textRun(text,cs,f){if(!text)return '';return `<w:r>${runProps(cs,f)}<w:t xml:space="preserve">${xe(text)}</w:t></w:r>`}
+  imgRun(el){const r=el.getBoundingClientRect();this.img=true;const cx=DX.emu(r.width),cy=DX.emu(r.height);this.nId=(this.nId||0)+1;
+    return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${this.nId}" name="Picture ${this.nId}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${this.nId}" name="garuda.png"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="rIdImg1"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`}
+  // returns xml for the children of `el` laid out inside a container whose content-left is `baseLeft` (px)
+  blocks(el,f,baseLeft){const out=[];let cur=null;const cs=getComputedStyle(el);
+    const leftOf=e=>{const r=e.getBoundingClientRect(),c=getComputedStyle(e);return r.left+parseFloat(c.paddingLeft)+parseFloat(c.borderLeftWidth||0)-baseLeft};
+    const flush=()=>{if(cur&&cur.runs.length)out.push(this.paraXml(cur));cur=null};
+    const ensure=()=>{if(!cur)cur=this.newPara(cs,leftOf(el))};
+    const inline=(node,pcs)=>{ // append runs for inline content
+      if(node.nodeType===3){let t=node.nodeValue.replace(/\s+/g,' ');if(!cur||!cur.runs.length)t=t.replace(/^ /,'');if(t){ensure();cur.runs.push(this.textRun(t,pcs,f))}return}
+      if(node.nodeType!==1)return;const e=node,c=getComputedStyle(e);if(c.display==='none')return;
+      if(e.tagName==='BR'){ensure();cur.runs.push('<w:r><w:br/></w:r>');return}
+      if(e.tagName==='IMG'){if(!c.display.startsWith('inline')){flush();const ctr=parseFloat(c.marginLeft)>0&&Math.abs(parseFloat(c.marginLeft)-parseFloat(c.marginRight))<3;out.push(`<w:p><w:pPr><w:spacing w:before="0" w:after="0"/>${ctr?'<w:jc w:val="center"/>':''}</w:pPr>${this.imgRun(e)}</w:p>`);return}ensure();cur.runs.push(this.imgRun(e));return}
+      if(c.display==='inline-block'&&!e.textContent.trim()){ensure();const n=Math.max(1,Math.round(DX.pt(e.getBoundingClientRect().width)/4));cur.runs.push(this.textRun(' '.repeat(n),c,f));return}
+      if(!c.display.startsWith('inline')){flush();out.push(this.element(e,f,baseLeft));return}
+      [...e.childNodes].forEach(n=>inline(n,c))};
+    [...el.childNodes].forEach(n=>inline(n,cs));flush();
+    return out.join('')}
+  element(e,f,baseLeft){const c=getComputedStyle(e);if(c.display==='none')return '';
+    if(e.tagName==='IMG'){const ctr=parseFloat(c.marginLeft)>0&&Math.abs(parseFloat(c.marginLeft)-parseFloat(c.marginRight))<3;return `<w:p><w:pPr><w:spacing w:before="0" w:after="0"/>${ctr?'<w:jc w:val="center"/>':''}</w:pPr>${this.imgRun(e)}</w:p>`}
+    if(e.tagName==='TABLE')return this.table(e,f);
+    const kids=[...e.childNodes].filter(n=>n.nodeType===1?getComputedStyle(n).display!=='none':n.nodeValue.trim());
+    const rowFlex=c.display.includes('flex')&&!c.flexDirection.startsWith('column');
+    if((c.display.includes('grid')||rowFlex)&&kids.length>1&&kids.every(n=>n.nodeType===1)){
+      const rows=[];kids.forEach(k=>{const r=k.getBoundingClientRect();const top=Math.round(r.top);let row=rows.find(x=>Math.abs(x.top-top)<4);if(!row){row={top,cells:[]};rows.push(row)}row.cells.push({el:k,r})});
+      if(rows.every(r=>r.cells.length===1)){const pre=this.spacer(c);return pre+kids.map(k=>this.element(k,f,baseLeft)).join('')}
+      rows.sort((a,b)=>a.top-b.top);rows.forEach(r=>r.cells.sort((a,b)=>a.r.left-b.r.left));
+      return this.spacer(c)+this.gridTable(e,rows.map(r=>r.cells.map(x=>({el:x.el,r:x.r,contentEl:x.el,borders:getComputedStyle(x.el),shade:getComputedStyle(x.el)}))),f,false)}
+    const h=e.getBoundingClientRect().height;
+    if(!e.textContent.trim()&&!e.querySelector('img')){return h>3?`<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="${Math.max(20,DX.tw(h))}" w:lineRule="exact"/></w:pPr></w:p>`:''}
+    const pre=this.spacer(c);const bx=borderXml(c,'pBdr');
+    let xml=this.blocks(e,f,baseLeft);
+    if(bx)xml=xml.replace(/<w:pPr>/g,'<w:pPr>'+bx);
+    return pre+xml}
+  spacer(c){const mt=(parseFloat(c.marginTop)||0)+(parseFloat(c.paddingTop)||0);return mt>6?`<w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="${DX.tw(mt)}" w:lineRule="exact"/></w:pPr></w:p>`:''}
+  table(t,f){const rows=[...t.rows].map(tr=>[...tr.cells].map(td=>({el:td,r:td.getBoundingClientRect(),contentEl:td,borders:getComputedStyle(td),shade:getComputedStyle(td),rowSpan:td.rowSpan})));return this.gridTable(t,rows,f,true)}
+  gridTable(t,rows,f,real){
+    const edges=[];const add=x=>{if(!edges.some(e=>Math.abs(e-x)<2))edges.push(x)};rows.forEach(r=>r.forEach(c=>{add(c.r.left);add(c.r.right)}));edges.sort((a,b)=>a-b);
+    const idx=x=>{let b=0,bd=1e9;edges.forEach((e,i)=>{const d=Math.abs(e-x);if(d<bd){bd=d;b=i}});return b};
+    let cols=edges.slice(1).map((e,i)=>Math.max(1,DX.tw(e-edges[i])));const tot=cols.reduce((a,b)=>a+b,0);if(this.maxW&&tot>this.maxW){const k=this.maxW/tot;cols=cols.map(w=>Math.max(1,Math.floor(w*k)))}const n=cols.length;
+    if(!real&&n>1){const tot2=cols.reduce((a,b)=>a+b,0);cols=cols.map((w,i)=>i<n-1?Math.round(w*1.18):w);const over=cols.reduce((a,b)=>a+b,0)-tot2;cols[n-1]=Math.max(600,cols[n-1]-over)}
+    const pending=[];// active rowspans: {start,span,left,remain,cell}
+    let xml=`<w:tbl><w:tblPr><w:tblW w:w="${cols.reduce((a,b)=>a+b,0)}" w:type="dxa"/>${real?'':'<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>'}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="${real?60:0}" w:type="dxa"/><w:right w:w="${real?60:40}" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${cols.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
+    rows.forEach(row=>{const cells=row.map(c=>({c,s:idx(c.r.left),e:idx(c.r.right)}));
+      pending.filter(p=>p.remain>0).forEach(p=>cells.push({cont:p,s:p.s,e:p.e}));cells.sort((a,b)=>a.s-b.s);
+      xml+=`<w:tr><w:trPr><w:cantSplit/></w:trPr>`;
+      cells.forEach(x=>{const span=Math.max(1,x.e-x.s);const w=cols.slice(x.s,x.e).reduce((a,b)=>a+b,0);
+        if(x.cont){x.cont.remain--;xml+=`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span>1?`<w:gridSpan w:val="${span}"/>`:''}<w:vMerge/>${borderXml(x.cont.cs,'tcBorders')}</w:tcPr><w:p/></w:tc>`;return}
+        const cc=x.c;const cs=cc.borders;const rs=cc.rowSpan||1;if(rs>1)pending.push({s:x.s,e:x.e,remain:rs-1,cs});
+        const cl=cc.el.getBoundingClientRect().left+parseFloat(cs.paddingLeft);
+        let inner=cc.el.tagName==='IMG'?`<w:p>${this.imgRun(cc.el)}</w:p>`:this.blocks(cc.el,f,cl);if(!inner.trim().endsWith('</w:p>'))inner+='<w:p/>';
+        const va=cs.verticalAlign==='middle'?'center':'top';
+        xml+=`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${span>1?`<w:gridSpan w:val="${span}"/>`:''}${rs>1?'<w:vMerge w:val="restart"/>':''}${borderXml(cs,'tcBorders')}${real?shadeXml(cc.shade):''}<w:vAlign w:val="${va}"/></w:tcPr>${inner}</w:tc>`});
+      xml+='</w:tr>'});
+    for(let i=pending.length-1;i>=0;i--)if(pending[i].remain<=0)pending.splice(i,1);
+    return xml+'</w:tbl><w:p><w:pPr><w:spacing w:before="0" w:after="0" w:line="40" w:lineRule="exact"/></w:pPr></w:p>'}
+}
+/* minimal ZIP (store, no compression) */
+const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC_T[(c^b[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];let off=0;
+  for(const [name,data] of files){const nb=enc.encode(name);const d=typeof data==='string'?enc.encode(data):data;const crc=crc32(d);
+    const lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);lh.setUint32(14,crc,true);lh.setUint32(18,d.length,true);lh.setUint32(22,d.length,true);lh.setUint16(26,nb.length,true);
+    parts.push(new Uint8Array(lh.buffer),nb,d);
+    const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint32(16,crc,true);ch.setUint32(20,d.length,true);ch.setUint32(24,d.length,true);ch.setUint16(28,nb.length,true);ch.setUint32(42,off,true);
+    central.push(new Uint8Array(ch.buffer),nb);off+=30+nb.length+d.length}
+  const cs=central.reduce((a,b)=>a+b.length,0);const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);
+  return new Blob([...parts,...central,new Uint8Array(end.buffer)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
+function papersToDocx(html){
+  const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);
+  const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
+  const F=letterFont();const official=p=>/\b(letter|notice|ev)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
+  const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
+  const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
+    return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
+  host.remove();
+  const mg=pad.map(v=>Math.max(567,DX.tw(v)));
+  const font='TH SarabunIT๙';
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="${mg[0]}" w:right="${mg[1]}" w:bottom="${mg[2]}" w:left="${mg[3]}" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:eastAsia="${font}" w:cs="${font}"/><w:sz w:val="32"/><w:szCs w:val="32"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="th-TH"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="60" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="60" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdSt" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>${B.img?'<Relationship Id="rIdImg1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/garuda.png"/>':''}</Relationships>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`;
+  const root=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`;
+  const files=[['[Content_Types].xml',ct],['_rels/.rels',root],['word/document.xml',doc],['word/styles.xml',styles],['word/_rels/document.xml.rels',rels]];
+  if(B.img){const bin=atob(GARUDA.split(',')[1]);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);files.push(['word/media/garuda.png',u])}
+  return zipStore(files)}
+function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
+  const L=[['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
+  const map=EVMAP();
+  evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
+  return {L,err:r.errors.length?r.errors[0]:''}}
+function downloadWord(p,key){const {L}=wordDocsList(p);const d=L.find(x=>x[0]===key);if(!d)return;
+  const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2]())}finally{S.settings.watermark=wmOld}
+  if(!blob){toast('ไม่มีข้อมูลสำหรับเอกสารนี้');return}
+  const name=`${d[1]}_${String(p.inviteNo||p.projectNo||'').replace(/[\\/:*?"<>|]/g,'-')}.docx`;
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}catch(e){toast('ดาวน์โหลดไม่ได้ในหน้านี้')}}
+function wordPanel(p){const {L,err}=wordDocsList(p);
+  return `<div class="card no-print" style="margin-top:10px"><div class="card-h"><h2>ดาวน์โหลดเป็นไฟล์ Word (แยกไฟล์)</h2><button class="btn pri sm" id="wAll" type="button">ดาวน์โหลดทั้งหมด</button></div>
+   <div class="card-b"><div class="quick">${L.map(([k,l])=>`<button class="btn sm" data-word="${k}" type="button">⤓ ${esc(l)}</button>`).join('')}</div>
+   <div class="muted" style="font-size:12.5px;margin-top:8px">ได้ไฟล์ .docx แก้ไขต่อได้ใน Word / WPS / Google Docs · ใช้ฟอนต์ TH SarabunIT๙ 16pt · ใช้ราคาที่ใช้คำนวณที่เลือกไว้ด้านบน${err?' · '+esc(err):''}</div></div></div>`}
 
 /* ================= negotiation ================= */
 function rNego(){
@@ -1114,11 +1272,14 @@ function rReport(){
      <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>${reportSel==='eval'?evalPicker(p):''}
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
+  ${wordPanel(p)}
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
     (reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
-  $$('[data-evd]',el).forEach(x=>x.onchange=()=>{const cur=new Set(st.evalDocs||EVAL_DOCS.map(d=>d[0]));x.checked?cur.add(x.dataset.evd):cur.delete(x.dataset.evd);st.evalDocs=[...cur];save();rReport()});
+  $$('[data-word]',el).forEach(x=>x.onclick=()=>downloadWord(p,x.dataset.word));
+  $('#wAll').onclick=()=>{const ks=$$('[data-word]',el).map(x=>x.dataset.word);ks.forEach((k,i)=>setTimeout(()=>downloadWord(p,k),i*700));toast(`กำลังดาวน์โหลด ${ks.length} ไฟล์ (ถ้าเบราว์เซอร์ถามว่าอนุญาตให้ดาวน์โหลดหลายไฟล์ ให้กดอนุญาต)`)};
+  $$('[data-evd]',el).forEach(x=>x.onchange=()=>{const cur=new Set(st.evalOff||[]);x.checked?cur.delete(x.dataset.evd):cur.add(x.dataset.evd);st.evalOff=[...cur];save();rReport()});
   {const fe=$('#forceExt');if(fe)fe.onchange=()=>{st.forceExt=fe.checked;save();rReport()}}
   $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
   $('#tgWm').onchange=e=>{st.watermark=e.target.checked;save();rReport()};
@@ -1264,6 +1425,12 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <label class="f s4"><span>ตำแหน่งผู้อนุมัติ</span><input class="i" data-sl="directorPos" value="${esc(st.directorPos)}"></label>
    <label class="f s12"><span>ช่องสั่งการ (บรรทัดแรก)</span><input class="i" data-sl="approveTo" value="${esc(st.approveTo)}"></label>
    <label class="f s12"><span>ข้อความสั่งการ (บรรทัดละข้อ)</span><textarea class="i" rows="3" data-sl="approveLines">${esc(st.approveLines)}</textarea></label>
+   <label class="f s12"><span>ข้อความสั่งการ เมื่อวงเงินเกิน 10 ล้านบาท (บรรทัดละข้อ)</span><textarea class="i" rows="2" data-sl="approveLinesBig">${esc(st.approveLinesBig)}</textarea></label>
+   <label class="f s4"><span>บันทึกถึงเขต: เรียน</span><input class="i" data-sl="regionTo" value="${esc(st.regionTo)}"></label>
+   <label class="f s4"><span>บันทึกถึงเขต: ที่ (ก่อนเลข)</span><input class="i" data-sl="regionPrefix" value="${esc(st.regionPrefix)}"></label>
+   <label class="f s4"><span>ผู้ร่าง/พิมพ์/ตรวจ (ท้ายบันทึกถึงเขต)</span><textarea class="i" rows="3" data-sl="draftLine" placeholder="ณรมา/ร่าง/ทาน&#10;ปริฉัตร/พิมพ์&#10;........../ตรวจ">${esc(st.draftLine)}</textarea></label>
+   <label class="f s12"><span>บันทึกถึงเขต: กฎหมาย ระเบียบ และคำสั่ง (บรรทัดละข้อ)</span><textarea class="i" rows="4" data-sl="regionLaws">${esc(st.regionLaws)}</textarea></label>
+   <label class="f s12"><span>บันทึกถึงเขต: เอกสารแนบ (บรรทัดละรายการ)</span><textarea class="i" rows="5" data-sl="regionAtts">${esc(st.regionAtts)}</textarea></label>
    <label class="f s12"><span>ข้อระเบียบฯ ในบันทึกสรุปผล</span><textarea class="i" rows="4" data-sl="authority">${esc(st.authority)}</textarea></label>
    <label class="f s12"><span>วันหยุดราชการ (ใช้นับ 5 วันทำการ) — ใส่วันที่แบบ ปปปป-ดด-วว คั่นด้วยเว้นวรรค · ใส่ไว้เฉพาะวันหยุดที่ตรงวันทุกปี ต้องเพิ่มวันหยุดทางศาสนา และวันหยุดพิเศษเอง</span><textarea class="i" rows="3" data-sl="holidays">${esc(st.holidays)}</textarea></label>
   </div></div>
