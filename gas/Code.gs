@@ -180,7 +180,9 @@ function doPost(e) {
         if (d.action === 'unconfirm') { b.confirmed = ''; b.status = 'จองแล้ว'; }
         if (d.action === 'cancel') { b.status = 'ยกเลิก'; b.confirmed = ''; }
         b.updatedAt = now_(); write_('bookings', b); renumber_();
-        return json_({ ok: true });
+        const after = rows_('bookings').find(x => x.bookingId === d.bookingId);
+        const mailed = d.action === 'unconfirm' ? false : notify_(after, d.action);
+        return json_({ ok: true, mailed: mailed, email: after.email || '' });
       }
       throw new Error('ไม่รู้จักคำสั่ง');
     } finally { lock.releaseLock(); }
@@ -221,6 +223,7 @@ function submitBooking(projectId, token, form) {
     if (!times_(p).includes(form.time)) throw new Error('เวลานี้จองไม่ได้');
     if (form.date < today_()) throw new Error('วันที่ผ่านมาแล้ว');
     if (!form.contactName || !form.phone) throw new Error('กรุณากรอกชื่อผู้ติดต่อและเบอร์โทร');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(form.email || '').trim())) throw new Error('กรุณากรอกอีเมลให้ถูกต้อง เพื่อรับแจ้งผลการยืนยันนัด');
     if (form.poa !== 'yes' && (!form.signerName || !form.signerSurname || !form.signerPosition)) throw new Error('ไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล และตำแหน่งผู้ลงนามในสัญญา');
     const all = activeBookings_();
     let mine = all.find(b => b.projectId === projectId);
@@ -239,8 +242,45 @@ function submitBooking(projectId, token, form) {
     write_('bookings', b);
     renumber_();
     const saved = rows_('bookings').find(x => x.bookingId === b.bookingId);
+    if (!mine) notify_(saved, 'booked');
     return { bookingId: saved.bookingId, date: saved.date, time: saved.time, contractNo: saved.contractNo, confirmed: saved.confirmed === 'Y' };
   } finally { lock.releaseLock(); }
+}
+
+/* แจ้งบริษัททางอีเมล: booked = รับการจอง, confirm = ยืนยันนัดและเลขที่สัญญา, cancel = ยกเลิก */
+function addDays_(iso, n) { const d = new Date(iso + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+function addYears_(iso, n) { const y = +iso.slice(0, 4) + n, m = iso.slice(5, 7); let dd = +iso.slice(8, 10); if (m === '02' && dd === 29 && !((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0)) dd = 28; return y + '-' + m + '-' + String(dd).padStart(2, '0'); }
+function thDate_(iso) { if (!iso) return ''; const M = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']; return (+iso.slice(8, 10)) + ' ' + M[+iso.slice(5, 7) - 1] + ' ' + (+iso.slice(0, 4) + 543); }
+function esc_(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+function notify_(b, kind) {
+  try {
+    if (!b || !b.email) return false;
+    const p = project_(b.projectId);
+    const files = b.files ? JSON.parse(b.files) : [];
+    const miss = p.docs.filter(d => d.required && !files.some(f => f.docKey === d.key) && (d.key !== 'poa' || b.poa === 'มอบอำนาจ') && !(d.key === 'sec' && b.secType === 'เงินสด'));
+    const dur = +p.duration || 0, wy = p.warrantyYears === '' ? 2 : +p.warrantyYears, ex = p.extraDays === '' ? 30 : +p.extraDays;
+    const gTo = dur ? addDays_(addYears_(addDays_(b.date, dur), wy), ex) : '';
+    const link = ScriptApp.getService().getUrl() + '?p=' + encodeURIComponent(p.projectId) + '&t=' + p.token;
+    const title = { booked: 'ได้รับการจองวันลงนามสัญญาแล้ว (รอเจ้าหน้าที่ยืนยัน)', confirm: 'ยืนยันวันนัดลงนามสัญญาและเลขที่สัญญาแล้ว', cancel: 'ยกเลิกการจองวันลงนามสัญญา' }[kind];
+    if (!title) return false;
+    const row = (k, v) => v ? '<tr><td style="padding:4px 12px 4px 0;color:#76615f;vertical-align:top;white-space:nowrap">' + k + '</td><td style="padding:4px 0">' + v + '</td></tr>' : '';
+    let html = '<div style="font-family:Sarabun,Tahoma,sans-serif;font-size:15px;color:#2a1a1c;max-width:620px">'
+      + '<div style="background:#7a1f2b;color:#fff;padding:14px 16px;border-radius:8px 8px 0 0"><b style="font-size:17px">' + title + '</b><br>' + esc_(p.office) + '</div>'
+      + '<div style="border:1px solid #e8dcda;border-top:0;padding:14px 16px;border-radius:0 0 8px 8px"><p>เรียน ' + esc_(b.company) + ' (คุณ' + esc_(b.contactName) + ')</p>'
+      + (kind === 'cancel' ? '<p>เจ้าหน้าที่ได้ยกเลิกการจองวันลงนามสัญญาของงานด้านล่าง กรุณาเปิดลิงก์เดิมเพื่อจองใหม่ หรือติดต่อเจ้าหน้าที่</p>' : '')
+      + '<table style="border-collapse:collapse">' + row('งาน', esc_(p.name)) + row('ประกวดราคา', esc_(p.inviteNo))
+      + (kind !== 'cancel' ? row('วันนัดลงนาม', '<b>' + thDate_(b.date) + ' เวลา ' + String(b.time).replace(':', '.') + ' น.</b>') + row('เลขที่สัญญา', '<b>' + esc_(b.contractNo) + '</b>' + (kind === 'confirm' ? '' : ' (เบื้องต้น อาจเปลี่ยนตามลำดับเวลานัด)'))
+        + row('ผู้ลงนาม', b.poa === 'มอบอำนาจ' ? 'ผู้รับมอบอำนาจ (ตามหนังสือมอบอำนาจ)' : esc_(b.signerName + ' ' + b.signerSurname + ' ตำแหน่ง ' + b.signerPosition))
+        + row('หลักประกันสัญญา', esc_(b.secType) + (p.secAmount ? ' จำนวน ' + Number(p.secAmount).toLocaleString('th-TH') + ' บาท' : ''))
+        + row('ระยะค้ำประกัน', gTo ? 'ตั้งแต่ ' + thDate_(b.date) + ' ถึง <b>' + thDate_(gTo) + '</b>' : '') : '')
+      + '</table>'
+      + (kind !== 'cancel' && miss.length ? '<div style="margin-top:12px;padding:10px 12px;background:#fde6e3;color:#9d2a1f;border-radius:8px"><b>ยังไม่ได้แนบเอกสาร:</b> ' + miss.map(d => esc_(d.label)).join(', ') + '<br>กรุณาแนบผ่านลิงก์ด้านล่างก่อนวันลงนามสัญญา</div>' : '')
+      + (kind === 'confirm' ? '<p>กรุณามาลงนามในสัญญาตามวันและเวลาข้างต้น' + (p.note ? ' · ' + esc_(p.note) : '') + '</p>' : '')
+      + '<p><a href="' + link + '" style="display:inline-block;background:#7a1f2b;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">เปิดหน้าการจอง / แนบเอกสาร</a></p>'
+      + '<p style="color:#76615f;font-size:13px">อีเมลนี้ส่งอัตโนมัติจากระบบจองวันลงนามสัญญา ' + esc_(p.office) + ' · หากมีข้อสงสัยกรุณาติดต่อเจ้าหน้าที่</p></div></div>';
+    MailApp.sendEmail({ to: b.email, subject: '[' + (p.office || 'จองลงนามสัญญา') + '] ' + title + ' · ' + String(p.name || '').slice(0, 60), htmlBody: html, name: p.office || 'ระบบจองลงนามสัญญา' });
+    return true;
+  } catch (e) { Logger.log('ส่งอีเมลไม่สำเร็จ: ' + e); return false; }
 }
 
 /* แนบเอกสารเพิ่มภายหลัง (เช่น หนังสือค้ำประกันจากธนาคาร) ใช้ได้แม้เจ้าหน้าที่ยืนยันแล้ว */
@@ -259,6 +299,7 @@ function attachFiles(projectId, token, newFiles) {
 /* Run ครั้งแรกจากหน้า Apps Script เพื่อสร้างชีตและอนุญาตสิทธิ์ */
 function setup() {
   sheet_('projects'); sheet_('bookings'); sheet_('settings');
+  Logger.log('โควตาอีเมลวันนี้: ' + MailApp.getRemainingDailyQuota());
   const it = DriveApp.getFoldersByName(ROOT_FOLDER); if (!it.hasNext()) DriveApp.createFolder(ROOT_FOLDER);
   Logger.log('พร้อมใช้งาน · ขั้นต่อไป: Deploy > New deployment > Web app');
 }

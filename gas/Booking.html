@@ -77,7 +77,7 @@ function render(){
   h+='<div class="times">'+(day?day.times.map(function(t){return '<button class="t'+(t.time===SEL.time&&SEL.date===day.date?' on':'')+'" data-t="'+t.time+'"'+(t.free?'':' disabled')+'>'+t.time.replace(':','.')+'</button>';}).join(''):'')+'</div>';
   h+='<p class="hint">เวลาละ 1 โครงการ · ช่องที่ขีดฆ่ามีผู้จองแล้ว</p></div>';
   var bb=b||{};
-  h+='<div class="card"><h2>2. ผู้ติดต่อ</h2><div class="grid3"><div class="w"><label>ชื่อ-นามสกุลผู้ติดต่อ *</label><input type="text" id="cn" value="'+esc(bb.contactName)+'"></div><div><label>เบอร์โทรศัพท์ *</label><input type="tel" id="ph" value="'+esc(bb.phone)+'"></div><div><label>อีเมล</label><input type="email" id="em" value="'+esc(bb.email)+'"></div></div></div>';
+  h+='<div class="card"><h2>2. ผู้ติดต่อ</h2><div class="grid3"><div class="w"><label>ชื่อ-นามสกุลผู้ติดต่อ *</label><input type="text" id="cn" value="'+esc(bb.contactName)+'"></div><div><label>เบอร์โทรศัพท์ *</label><input type="tel" id="ph" value="'+esc(bb.phone)+'"></div><div><label>อีเมล * (รับแจ้งผลการยืนยันนัด)</label><input type="email" id="em" value="'+esc(bb.email)+'"></div></div></div>';
   var poa=bb.poa==='มอบอำนาจ'?'yes':(bb.poa==='ไม่มอบอำนาจ'?'no':'');
   h+='<div class="card"><h2>3. ผู้ลงนามในสัญญา</h2><div class="radio"><label><input type="radio" name="poa" value="no"'+(poa==='no'?' checked':'')+'> กรรมการผู้มีอำนาจลงนามเอง (ไม่มอบอำนาจ)</label><label><input type="radio" name="poa" value="yes"'+(poa==='yes'?' checked':'')+'> มอบอำนาจให้ผู้อื่นลงนามแทน</label></div>';
   h+='<div id="signer" style="display:'+(poa==='no'?'block':'none')+'"><p class="hint">กรณีไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล ตำแหน่ง ผู้ลงนามในสัญญา</p><div class="grid3"><div><label>ชื่อ *</label><input type="text" id="sn" value="'+esc(bb.signerName)+'"></div><div><label>นามสกุล *</label><input type="text" id="ss" value="'+esc(bb.signerSurname)+'"></div><div class="w"><label>ตำแหน่ง *</label><input type="text" id="sp" placeholder="เช่น กรรมการผู้จัดการ / หุ้นส่วนผู้จัดการ" value="'+esc(bb.signerPosition)+'"></div></div></div></div>';
@@ -89,7 +89,7 @@ function render(){
   bind();
 }
 function infoCard(p){return '<div class="card"><h2>โครงการ</h2><div class="kv"><b>งาน</b><span>'+esc(p.name)+'</span><b>ผู้รับจ้าง</b><span>'+esc(p.contractor)+'</span>'+(p.inviteNo?'<b>ประกวดราคา</b><span>'+esc(p.inviteNo)+'</span>':'')+'</div>'+(p.note?'<p class="hint" style="margin:10px 0 0">'+esc(p.note)+'</p>':'')+'</div>';}
-function doneHtml(b,fixed){return '<div class="card done"><div>'+(fixed?'เจ้าหน้าที่ยืนยันนัดหมายแล้ว':'จองสำเร็จ')+'</div><div class="big">'+esc(thd(b.date,1))+'<br>เวลา '+esc(tht(b.time))+'</div><div>เลขที่สัญญา'+(fixed?'':' (เบื้องต้น)')+' <b>'+esc(b.contractNo)+'</b></div><p class="hint">'+(fixed?'กรุณามาลงนามตามวันเวลาที่นัดหมาย พร้อมหลักประกันสัญญาและอากรแสตมป์':'เลขที่สัญญาอาจเปลี่ยนตามลำดับวันเวลานัดจนกว่าเจ้าหน้าที่จะยืนยัน · เปิดลิงก์เดิมเพื่อแก้ไขได้')+'</p></div>';}
+function doneHtml(b,fixed){return '<div class="card done"><div>'+(fixed?'เจ้าหน้าที่ยืนยันนัดหมายแล้ว':'จองสำเร็จ')+'</div><div class="big">'+esc(thd(b.date,1))+'<br>เวลา '+esc(tht(b.time))+'</div><div>เลขที่สัญญา'+(fixed?'':' (เบื้องต้น)')+' <b>'+esc(b.contractNo)+'</b></div><p class="hint">'+(fixed?'กรุณามาลงนามตามวันเวลาที่นัดหมาย พร้อมหลักประกันสัญญาและอากรแสตมป์':'เลขที่สัญญาอาจเปลี่ยนตามลำดับวันเวลานัดจนกว่าเจ้าหน้าที่จะยืนยัน'+(b.email?' · เมื่อเจ้าหน้าที่ยืนยันแล้ว ระบบจะแจ้งทางอีเมล '+esc(b.email):'')+' · เปิดลิงก์เดิมเพื่อตรวจสถานะหรือแก้ไขได้')+'</p></div>';}
 function bind(){
   document.querySelectorAll('.day').forEach(function(x){x.onclick=function(){keep();SEL.date=x.dataset.d;SEL.time='';render();};});
   document.querySelectorAll('.t').forEach(function(x){x.onclick=function(){keep();SEL.time=x.dataset.t;render();};});
@@ -140,6 +140,7 @@ function submit(){
   var poa=DRAFT.poa||'';
   if(!SEL.date||!SEL.time)return fail('กรุณาเลือกวันและเวลา');
   if(!DRAFT.cn||!DRAFT.ph)return fail('กรุณากรอกชื่อผู้ติดต่อและเบอร์โทร');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(DRAFT.em||'').trim()))return fail('กรุณากรอกอีเมลให้ถูกต้อง เพื่อรับแจ้งผลการยืนยันนัด');
   if(!poa)return fail('กรุณาเลือกว่ามีการมอบอำนาจหรือไม่');
   if(poa==='no'&&(!DRAFT.sn||!DRAFT.ss||!DRAFT.sp))return fail('ไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล และตำแหน่งผู้ลงนามในสัญญา');
   var sec=DRAFT.sec||(INFO.booking&&INFO.booking.secType)||'';

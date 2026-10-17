@@ -289,7 +289,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 38 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 39 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1512,7 +1512,7 @@ function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textCo
     btn.disabled=true;msg('กำลังเชื่อมต่อ…');
     try{if(a==='push'){await pushBooking(p)}
       else if(a==='fetch'){await fetchBookings(p)}
-      else{const x=b.booking;if(!x)throw new Error('ยังไม่มีการจอง');const no=a==='confirm'?($('#bkNo')?.value||'').trim():'';await gasCall({action:a,bookingId:x.bookingId,contractNo:no||undefined},true);if(a!=='confirm'&&x.confirmed==='Y'){p.contractNo='';p.contractDate=''}await fetchBookings(p)}
+      else{const x=b.booking;if(!x)throw new Error('ยังไม่มีการจอง');const no=a==='confirm'?($('#bkNo')?.value||'').trim():'';const rr=await gasCall({action:a,bookingId:x.bookingId,contractNo:no||undefined},true);if(a!=='unconfirm')toast(rr.mailed?'ส่งอีเมลแจ้งบริษัทแล้ว ('+rr.email+')':'บันทึกแล้ว · ไม่ได้ส่งอีเมล (บริษัทไม่ได้ให้อีเมล หรือส่งไม่สำเร็จ)');if(a!=='confirm'&&x.confirmed==='Y'){p.contractNo='';p.contractDate=''}await fetchBookings(p)}
       rerender()}catch(e){btn.disabled=false;msg('');alert(e.message)}})}
 let bookAuto=null;
 function bookAutoPush(p){const b=p.book;if(!bookOn()||!b||!b.pushed)return;clearTimeout(bookAuto);bookAuto=setTimeout(()=>{if(b.pushedDates===bookSig(p))return;pushBooking(p).then(()=>{const m=$('#bkMsg');if(m)m.textContent='อัปเดตช่วงวันจองแล้ว '+b.pushed}).catch(()=>{})},900)}
