@@ -159,12 +159,15 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 /* ===== Paper / reports ===== */
 .paper-wrap{overflow-x:auto;padding-block:16px}
 .paper{background:var(--paper);color:var(--paper-ink);width:210mm;min-height:200mm;margin:0 auto 18px;padding:14mm 13mm;box-shadow:0 2px 14px rgba(0,0,0,.14);font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;font-size:14px;line-height:1.45;position:relative}
-.paper.land{width:297mm}
-.paper th.desc{width:34%}.paper.land th.desc{width:30%}
+.paper th.desc{width:34%}
 .paper h2{font-family:inherit;font-size:18px;text-align:center;font-weight:700}
 .paper .c{text-align:center}
 .paper table.pt{width:100%;border-collapse:collapse;margin:6px 0 10px}
-.paper table.pt th,.paper table.pt td{border:1px solid var(--paper-line);padding:3px 6px;vertical-align:top}
+.paper table.pt{border:1px solid var(--paper-line)}
+.paper table.pt th,.paper table.pt td{border-left:1px solid var(--paper-line);border-right:1px solid var(--paper-line);padding:3px 6px;vertical-align:top}
+.paper table.pt th{border:1px solid var(--paper-line)}
+.paper table.pt tr.tot td{border-top:1px solid var(--paper-line);border-bottom:1px solid var(--paper-line)}
+.paper table.pt tbody tr:last-child td{border-bottom:1px solid var(--paper-line)}
 .paper table.pt th{font-weight:700;text-align:center;background:var(--paper-shade);vertical-align:middle}
 .paper table.pt td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .paper table.pt td.ct{text-align:center}
@@ -184,9 +187,8 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
 @page land{size:A4 landscape;margin:0}
-.paper.land.solo{page:auto}
 .paper .nrem{font-size:11px;line-height:1.4;display:grid;grid-template-columns:auto 1fr;column-gap:6px}.paper .nrem ol{margin:0;padding-left:16px}
-.paper.land table.pt td{padding:1px 5px}.paper.land .sig{margin-top:16mm}.paper.land .rem{margin-top:6px}
+.paper.nego table.pt td{padding:1px 5px}.paper.nego .sig{margin-top:16mm}.paper.nego .rem{margin-top:6px}
 /* official letter (หนังสือภายนอก) — positions measured from the paper's left edge */
 .paper.letter{width:210mm;min-height:297mm;padding:15mm 20mm 15mm 30mm;font-family:var(--lf);font-size:var(--ls);line-height:1.38;box-sizing:border-box;display:flex;flex-direction:column}
 .letter .garuda{display:block;height:30mm;margin:0 auto 2mm}
@@ -211,7 +213,6 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   .paper-wrap{overflow:visible;padding:0}
   .paper{box-shadow:none;margin:0;width:auto;min-height:0;padding:10mm}
   .paper+.paper{break-before:page}
-  .paper.land{width:auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -245,7 +246,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (9)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (10)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -814,7 +815,7 @@ function rReport(){
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
     (['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
-  {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent=reportSel==='nego'?'@page{size:A4 landscape;margin:0}':'@page{size:A4;margin:0}';if(reportSel==='nego')$$('.paper.land',el).forEach(x=>x.classList.add('solo'))}
+  {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
   $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
   $('#tgWm').onchange=e=>{st.watermark=e.target.checked;save();rReport()};
@@ -887,7 +888,7 @@ function repNego(p,r,b){const rn=b.key.startsWith('r:')?p.rounds.findIndex(x=>'r
     const ls=String(x.it.name||'').split('\n');
     return `<tr><td class="ct">${x.no}</td><td>${esc(ls[0])}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fmt(x.q,3)}</td><td class="n">${fS(costOf(x.it))}</td><td class="n">${fmt(x.cat.factor,4)}</td><td class="n">${fS(x.m)}</td><td class="n"${sh}>${fS(x.line)}</td><td class="n"${sh}>${fmt(x.uDisp)}</td></tr>`+
       ls.slice(1).map(l=>`<tr><td></td><td>${esc(l)}</td><td></td><td></td><td></td><td></td><td></td><td${sh}></td><td${sh}></td></tr>`).join('')}).join('');
-  return `<div class="paper land${wm()}"><h2>ตารางการขอต่อรองราคา${rn?` ครั้งที่ ${rn}`:''}</h2>
+  return `<div class="paper nego${wm()}"><h2>ตารางการขอต่อรองราคา${rn?` ครั้งที่ ${rn}`:''}</h2>
   <div style="margin:8px 0 4px;font-weight:600">${esc(p.name)}</div>
   <div style="display:grid;grid-template-columns:170px 160px auto;gap:2px 0;margin-bottom:8px"><span>เลขที่โครงการ :</span><span class="n" style="text-align:right">${esc(p.projectNo)}</span><span></span>
    <span>งบประมาณ &nbsp;&nbsp;:</span><span style="text-align:right">${fmt(p.budget)}</span><span>&nbsp;บาท</span>
@@ -992,10 +993,10 @@ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
   navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{reg.update();document.addEventListener('visibilitychange',()=>{if(!document.hidden)reg.update()})}).catch(()=>{})}
 
 /* fit the negotiation sheet onto one page when printing */
-function fitPrint(){const mm=96/25.4;$$('#printArea .paper.land').forEach(el=>{el.style.zoom='';const solo=el.classList.contains('solo');
-  const W=(solo?297:210)-20,H=(solo?210:297)-20-8;const ow=el.style.width,op=el.style.padding;el.style.width=W+'mm';el.style.padding='0';
-  const h=el.scrollHeight/mm;el.style.width=ow;el.style.padding=op;if(h>H){const z=Math.max(0.6,H/h);el.style.zoom=z.toFixed(3)}})}
-function unfitPrint(){$$('#printArea .paper.land').forEach(el=>el.style.zoom='')}
+function fitPrint(){const mm=96/25.4;$$('#printArea .paper.nego').forEach(el=>{el.style.zoom='';
+  const W=190,H=297-20-8;const ow=el.style.width,op=el.style.padding;el.style.width=W+'mm';el.style.padding='0';
+  const h=el.scrollHeight/mm;el.style.width=ow;el.style.padding=op;if(h>H&&H/h>=0.8)el.style.zoom=(H/h).toFixed(3)})}
+function unfitPrint(){$$('#printArea .paper.nego').forEach(el=>el.style.zoom='')}
 addEventListener('beforeprint',fitPrint);addEventListener('afterprint',unfitPrint);
 /* expose core for testing */
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S};
