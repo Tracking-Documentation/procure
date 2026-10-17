@@ -188,6 +188,15 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
 @page land{size:A4 landscape;margin:0}
+.paper.notice{width:210mm;min-height:297mm;padding:17mm 11mm 10mm 12.5mm;font-family:var(--lf);font-size:var(--ls);line-height:1.4;box-sizing:border-box}
+.notice .ttl{text-align:center;font-weight:700}
+.notice .att{text-align:right}
+.notice table.nt{width:100%;border-collapse:collapse;margin-top:3mm;border:1px solid var(--paper-line)}
+.notice table.nt td{border:1px solid var(--paper-line);padding:1.5mm 2.5mm;vertical-align:top}
+.notice table.nt td.hd{background:#fff2cc;font-weight:700}
+.notice .hang{display:grid;grid-template-columns:auto 1fr;column-gap:2mm}
+.notice .sg{margin:14mm 0 0 auto;width:95mm;text-align:center;line-height:1.7}
+.notice .cb{display:inline-block;margin-right:5mm;white-space:nowrap}
 .paper .nrem{font-size:11px;line-height:1.4;display:grid;grid-template-columns:auto 1fr;column-gap:6px}.paper .nrem ol{margin:0;padding-left:16px}
 .paper.nego table.pt td{padding:1px 5px}.paper.nego .sig{margin-top:16mm}.paper.nego .rem{margin-top:6px}
 /* official letter (หนังสือภายนอก) — positions measured from the paper's left edge */
@@ -242,12 +251,13 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 <main class="wrap">
   <section class="view" id="v-dash"></section>
   <section class="view" id="v-edit" hidden></section>
+  <section class="view" id="v-bid" hidden></section>
   <section class="view" id="v-nego" hidden></section>
   <section class="view" id="v-result" hidden></section>
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (13)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (14)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -285,6 +295,7 @@ function letterFont(){try{const c=document.createElement('canvas').getContext('2
   for(const f of ['TH SarabunIT๙','TH SarabunIT9','TH Sarabun New','TH SarabunNew','TH SarabunPSK']){if(w(`20px "${f}",monospace`)!==w('20px monospace'))return {lf:`"${f}","Sarabun",sans-serif`,ls:'16pt'}}}catch(e){}
   return {lf:'"Sarabun","Leelawadee UI",Tahoma,sans-serif',ls:'12pt'}}
 const ICON={
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.9 1.9 5.4 4.9"/></svg>',
   dash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
   edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>',
   nego:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>',
@@ -341,6 +352,7 @@ function sampleProject(){
     {id:uid(),kind:'item',name:'ค่าธรรมเนียมการไฟฟ้าฯ สำหรับเป็นค่าขยายเขตระบบไฟฟ้า\nค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด',unit:'P.S.',qty:3,unitCost:245000,catId:c3,midOverride:'',fixed:false},
     {id:uid(),kind:'item',name:'ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณไหล่ทาง\nสำหรับทางหลวง 2 ช่องจราจร',unit:'ชุด',qty:1,unitCost:6181.08,catId:c3,midOverride:'',fixed:false}
   ];
+  p.bidders=[['0105564015052','บริษัท กิจพัฒนแสง จำกัด',3097000],['0805561000171','บริษัท โชคคอนกรีต จำกัด',''],['0905555001187','บริษัท วริศพงศ์ กรุ๊ป จำกัด',''],['0745566002548','บริษัท แอสเซมเทค จำกัด',''],['0105547056773','บริษัท ซี-คอน ซิสเต็ม เทคโนโลยี จำกัด',''],['0745550002667','บริษัท เลคิเซ่ ไลท์ติ้ง จำกัด','']].map(([t,n,pr])=>({id:uid(),taxId:t,name:n,price:pr,qualified:true,issues:[]}));
   p.rounds=[{id:uid(),date:'',requested:3096658,result:'pending',replyPrice:'',note:'ราคาที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
   return p;
 }
@@ -476,11 +488,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['edit','ข้อมูลโครงการ / BOQ','edit'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){({dash:rDash,edit:rEdit,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
+function render(){({dash:rDash,edit:rEdit,bid:rBid,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -679,6 +691,70 @@ function pasteDialog(){const p=P();
     p.items=$('#pxRep').checked?o:p.items.concat(o);touch(p);m.close();rBoq();toast(`นำเข้า ${o.length} แถวแล้ว`)};
 }
 
+/* ================= bidders ================= */
+function bidRank(p){const L=(p.bidders||[]).map((b,i)=>({b,i}));L.sort((x,y)=>{const a=num(x.b.price),c=num(y.b.price);if(a&&c)return a-c||x.i-y.i;if(a)return -1;if(c)return 1;return x.i-y.i});return L.map((x,k)=>({...x.b,rank:k+1}))}
+function bidWinner(p){return bidRank(p).find(b=>b.qualified!==false&&num(b.price)>0)||null}
+function syncWinner(p){const w=bidWinner(p);if(!w)return;p.contractor=w.name;p.offerPrice=num(w.price)}
+const ISSUE_TYPES=[['doc','เอกสารไม่ถูกต้องหรือไม่ครบถ้วน'],['qual','คุณสมบัติไม่ผ่าน'],['tech','ข้อเสนอทางด้านเทคนิคไม่ผ่าน']];
+const REF_TYPES=[['tor','รายละเอียดขอบเขตของงานฯ'],['inv','ประกาศประกวดราคาฯ'],['doc','เอกสารประกวดราคาฯ']];
+function rBid(){
+  const el=$('#v-bid');if(needProject(el))return;const p=P();p.bidders=p.bidders||[];const t=totals(p);const ranked=bidRank(p);const w=bidWinner(p);
+  const low=ranked[0];
+  el.innerHTML=`${curBar('ผู้เสนอราคา')}
+  <div class="note ${w?'ok':'warn'}" style="margin-bottom:16px">${w?`<b>ผู้ชนะ: ${esc(w.name)}</b> — เสนอราคา ${fmt(w.price)} บาท (ลำดับที่ ${w.rank} จาก ${ranked.length} ราย)${low&&low.id!==w.id?` · ผู้เสนอราคาต่ำกว่า ${ranked.filter(x=>x.rank<w.rank).length} รายไม่ผ่านการพิจารณา`:''} · ระบบใช้รายนี้เป็นผู้เสนอราคาในการต่อรองโดยอัตโนมัติ`:'ยังไม่มีผู้ชนะ · กรอกผู้เสนอราคาและราคาที่เสนอ ผู้ที่ผ่านการพิจารณาและเสนอราคาต่ำสุดจะเป็นผู้ชนะ'}</div>
+  <div class="card"><div class="card-h"><h2>รายชื่อผู้เสนอราคา (${ranked.length} ราย)</h2><button class="btn ghost-brand sm" id="bAdd" type="button">+ เพิ่มผู้เสนอราคา</button><button class="btn pri sm" id="bPaste" type="button">วางจาก Excel</button><button class="btn blue sm" id="bPrint" type="button">${ICON.print} พิมพ์แบบแจ้งผล</button></div>
+  <div class="tbl-wrap"><table class="t boq"><thead><tr><th class="n">ลำดับราคา</th><th>เลขประจำตัวผู้เสียภาษี</th><th style="min-width:260px">ชื่อผู้ยื่นข้อเสนอ</th><th class="n">ราคาที่เสนอ (บาท)</th><th class="n">ต่ำกว่าราคากลาง</th><th>ผลการพิจารณา</th><th></th></tr></thead>
+  <tbody id="bBody">${ranked.length?ranked.map(b=>`<tr data-bid="${b.id}" class="${w&&w.id===b.id?'adj':''}"><td class="n"><b>${b.rank}</b></td>
+    <td><input class="i" data-b="taxId" value="${esc(b.taxId)}" style="width:150px" inputmode="numeric"></td>
+    <td><input class="i" data-b="name" value="${esc(b.name)}"></td>
+    <td><input class="i r" data-b="price" value="${num(b.price)?fmt(b.price):''}" style="width:150px" inputmode="decimal"></td>
+    <td class="n">${num(b.price)&&t.sumM?fmt((t.sumM/100-num(b.price))/(t.sumM/100)*100)+'%':'-'}</td>
+    <td><select class="i" data-b="qualified" style="width:190px"><option value="1" ${b.qualified!==false?'selected':''}>ผ่าน</option><option value="0" ${b.qualified===false?'selected':''}>ไม่ผ่าน (ตกคุณสมบัติ)</option></select>${w&&w.id===b.id?' <span class="pill p-ok">ผู้ชนะ</span>':''}</td>
+    <td class="act"><button class="icon-btn del" data-bdel type="button" title="ลบ">${ICON.x}</button></td></tr>
+    ${b.qualified===false?`<tr data-bid="${b.id}"><td></td><td colspan="6"><div class="note bad" style="display:grid;gap:10px"><b>เหตุผลที่ไม่ผ่านการพิจารณา (พิมพ์เป็นเอกสารแนบ 3)</b>
+      ${(b.issues||[]).map((is,k)=>`<div data-iss="${k}" style="border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--card);color:var(--ink);display:grid;gap:8px">
+        <div class="row"><b>ประเด็นที่ ${k+1}</b><span class="sp"></span><button class="btn sm danger" data-issdel type="button">ลบประเด็น</button></div>
+        <label class="f"><span>เรื่อง</span><textarea class="i" rows="2" data-is="topic">${esc(is.topic)}</textarea></label>
+        <div class="row">${ISSUE_TYPES.map(([k2,l])=>`<label class="switch"><input type="checkbox" data-ist="${k2}" ${is.types&&is.types[k2]?'checked':''}> ${l}</label>`).join('')}</div>
+        <label class="f"><span>เหตุผลที่ไม่ผ่านการพิจารณา</span><textarea class="i" rows="2" data-is="reason">${esc(is.reason)}</textarea></label>
+        <div class="row"><span style="font-size:13px">อ้างอิงเอกสาร:</span>${REF_TYPES.map(([k2,l])=>`<label class="switch"><input type="checkbox" data-isr="${k2}" ${is.refs&&is.refs[k2]?'checked':''}> ${l}</label>`).join('')}<input class="i" data-is="refText" value="${esc(is.refText)}" placeholder="เช่น ข้อ 2.10 และข้อ 3.2 (1)" style="max-width:260px"></div>
+      </div>`).join('')}
+      <div><button class="btn sm" data-issadd type="button">+ เพิ่มประเด็น</button></div></div></td></tr>`:''}`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีผู้เสนอราคา · กด “+ เพิ่มผู้เสนอราคา” หรือ “วางจาก Excel”</td></tr>`}</tbody></table></div>
+  <div class="card-b muted" style="font-size:13px">ลำดับราคาเรียงจากราคาต่ำไปสูงโดยอัตโนมัติ (รวมผู้ที่ไม่ผ่านการพิจารณาด้วย ตามแบบของ e-GP) · ผู้ชนะคือผู้ที่ผ่านการพิจารณาและเสนอราคาต่ำสุด · แบบแจ้งผลพิมพ์รายละ 1 หน้า ผู้ที่ไม่ผ่านจะมีเอกสารแนบ 3 ต่อท้าย</div></div>`;
+  const find=id=>p.bidders.find(x=>x.id===id);
+  const after=()=>{syncWinner(p);touch(p)};
+  $('#bAdd').onclick=()=>{p.bidders.push({id:uid(),taxId:'',name:'',price:'',qualified:true,issues:[]});after();rBid();const ins=$$('#bBody input[data-b="taxId"]');ins[ins.length-1]?.focus()};
+  $('#bPrint').onclick=()=>{reportSel='notice';go('report')};
+  $('#bPaste').onclick=()=>{const m=modal('วางรายชื่อผู้เสนอราคาจาก Excel',`<p class="muted" style="margin:0">คัดลอกจาก Excel 3 คอลัมน์: <b>เลขประจำตัวผู้เสียภาษี | ชื่อผู้ยื่นข้อเสนอ | ราคาที่เสนอ</b></p><textarea class="i" id="bpTxt" rows="8"></textarea><label class="switch"><input type="checkbox" id="bpRep"> แทนที่รายชื่อเดิมทั้งหมด</label>`,`<button class="btn pri" id="bpGo" type="button">นำเข้า</button>`);
+    $('#bpGo').onclick=()=>{const rows=parseTSV($('#bpTxt').value).map(r=>r.map(x=>x.trim()));const L=rows.filter(r=>r.some(Boolean)).map(r=>{let [a,b2,c]=r;if(!/\d{6,}/.test(a||'')&&b2&&/\d{6,}/.test(b2)){[a,b2]=[b2,a]}return {id:uid(),taxId:a||'',name:b2||'',price:c?num(c):'',qualified:true,issues:[]}});
+      if(!L.length){toast('ไม่พบข้อมูลที่วาง');return}p.bidders=$('#bpRep').checked?L:p.bidders.concat(L);after();m.close();rBid();toast(`นำเข้า ${L.length} ราย`)}};
+  const B=$('#bBody');
+  B.oninput=e=>{const tr=e.target.closest('[data-bid]');if(!tr)return;const b=find(tr.dataset.bid);const t2=e.target;
+    if(t2.dataset.b){const k=t2.dataset.b;if(k==='price')b.price=num(t2.value);else if(k==='qualified'){b.qualified=t2.value==='1';if(!b.qualified&&!(b.issues||[]).length)b.issues=[{topic:'',types:{},reason:'',refs:{},refText:''}];after();rBid();return}else b[k]=t2.value;after();return}
+    const ib=t2.closest('[data-iss]');if(!ib)return;const is=b.issues[+ib.dataset.iss];
+    if(t2.dataset.is)is[t2.dataset.is]=t2.value;else if(t2.dataset.ist){is.types=is.types||{};is.types[t2.dataset.ist]=t2.checked}else if(t2.dataset.isr){is.refs=is.refs||{};is.refs[t2.dataset.isr]=t2.checked}touch(p)};
+  B.addEventListener('change',e=>{if(e.target.dataset.b==='price'){rBid()}});
+  B.onclick=e=>{const tr=e.target.closest('[data-bid]');if(!tr)return;const b=find(tr.dataset.bid);
+    if(e.target.closest('[data-bdel]')){confirmBox(`ลบ “${b.name||'ผู้เสนอราคา'}” ?`,'ลบ',()=>{p.bidders=p.bidders.filter(x=>x.id!==b.id);after();rBid()});return}
+    if(e.target.closest('[data-issadd]')){b.issues.push({topic:'',types:{},reason:'',refs:{},refText:''});touch(p);rBid();return}
+    const d=e.target.closest('[data-issdel]');if(d){b.issues.splice(+d.closest('[data-iss]').dataset.iss,1);touch(p);rBid()}};
+}
+function repNotice(p){const F=letterFont();const ranked=bidRank(p);const n=ranked.length;const chair=(p.signers||[])[1]||{};
+  if(!n)return `<div class="note warn">ยังไม่มีรายชื่อผู้เสนอราคา · กรอกที่หน้า “ผู้เสนอราคา”</div>`;
+  const proj=`<tr><td class="hd">ข้อมูลโครงการ</td></tr><tr><td><div>เลขที่โครงการ ${esc(p.projectNo)}</div><div class="hang"><span>ชื่อโครงการ</span><span>ประกวดราคาจ้างก่อสร้าง ${esc(p.name)} ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)</span></div><div class="hang"><span>รายการพิจารณา</span><span>${esc(p.name)}</span></div></td></tr>`;
+  const sig=`<div class="sg">ลงชื่อ ............................................<br>${esc(chair.name||'(............................................)')}<br>ตำแหน่ง ประธานคณะกรรมการพิจารณาผลฯ</div>`;
+  const cb=(on,l)=>`<span class="cb">${on?'☑':'☐'} ${esc(l)}</span>`;
+  return ranked.map(b=>`<div class="paper notice${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+    <div class="ttl">แบบแจ้งเหตุผลเพิ่มเติม กรณีใช้เกณฑ์ราคา</div><div class="ttl">(แจ้งผู้ยื่นข้อเสนอทุกราย)</div>
+    <table class="nt">${proj}<tr><td class="hd">ข้อมูลผู้ยื่นข้อเสนอ</td></tr><tr><td><div>เลขประจำตัวผู้เสียภาษีอากร ${esc(b.taxId)} ชื่อผู้ยื่นข้อเสนอ ${esc(b.name)}</div><div>จำนวนผู้ยื่นข้อเสนอทั้งหมด ${n} ราย ราคาที่ท่านเสนออยู่ในลำดับที่ ${b.rank} ของจำนวนผู้ยื่นข้อเสนอทั้งหมด</div></td></tr></table>${sig}</div>`+
+   (b.qualified===false?`<div class="paper notice${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}"><div class="att">เอกสารแนบ 3</div><div class="ttl">แบบชี้แจงเหตุผลเพิ่มเติม สำหรับผู้ยื่นข้อเสนอที่ไม่ผ่านการพิจารณา</div>
+    <table class="nt">${proj}<tr><td class="hd">ชี้แจงเหตุผลเพิ่มเติม สำหรับผู้ยื่นข้อเสนอที่ไม่ผ่านการพิจารณา จำนวนทั้งสิ้น ${(b.issues||[]).length} ประเด็น</td></tr>
+    ${(b.issues||[]).map((is,k)=>`<tr><td><div class="hang"><b>ประเด็นที่ ${k+1}</b><span>เรื่อง ${escBr(is.topic)}</span></div>
+      <div style="margin-top:1mm">${ISSUE_TYPES.map(([k2,l])=>cb(is.types&&is.types[k2],l)).join('')}</div>
+      <div class="hang"><span>เหตุผลที่ไม่ผ่านการพิจารณา :</span><span>${escBr(is.reason)}</span></div>
+      <div class="hang"><span>อ้างอิงเอกสาร (${k+1})</span><span>${REF_TYPES.map(([k2,l])=>`<div>${is.refs&&is.refs[k2]?'☑':'☐'} ${esc(l)}${is.refs&&is.refs[k2]&&k2==='doc'&&is.refText?' '+esc(is.refText):''}</div>`).join('')}${is.refText&&!(is.refs&&is.refs.doc)?`<div>${esc(is.refText)}</div>`:''}</span></div></td></tr>`).join('')}</table>${sig}</div>`:'')).join('');
+}
+
 /* ================= negotiation ================= */
 function rNego(){
   const el=$('#v-nego');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const t=totals(p);const d=decision(p);const ag=agreed(p);const o=num(p.offerPrice);
@@ -813,7 +889,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const segs=[['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -824,7 +900,7 @@ function rReport(){
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
-    (['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
+    (reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
   $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
