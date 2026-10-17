@@ -272,7 +272,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 23 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 24 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -540,7 +540,7 @@ function rDash(){
         <td style="min-width:280px"><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')} · ${esc(p.contractor||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div></td>
         <td class="n">${fmt(p.budget)}</td><td class="n">${fS(t.sumM)}</td><td class="n">${fmt(p.offerPrice)}</td>
         <td class="n"><b>${fmt(fin)}</b><div class="muted" style="font-size:12px">${cp!==null?'ราคาที่ตกลง':'ต่อรองล่าสุด'}</div></td>
-        <td class="n">${r.errors.length?'-':fmt(r.pct)}</td><td>${statusPill(p.status)}</td><td class="muted" style="white-space:nowrap">${esc(p.updatedAt||'')}</td>
+        <td class="n">${r.errors.length?'-':fmt(r.pct)}</td><td>${statusPill(p.status)}${meetingConflicts(p).length?' <span class="pill p-nego" title="เวลาประชุมชนกับโครงการอื่น">⚠ เวลาประชุมชน</span>':''}</td><td class="muted" style="white-space:nowrap">${esc(p.updatedAt||'')}</td>
         <td class="n" style="white-space:nowrap"><button class="icon-btn" title="แก้ไข" data-edit="${p.id}" type="button">${ICON.pen}</button> <button class="icon-btn" title="รายงาน" data-print="${p.id}" type="button">${ICON.print}</button> <button class="icon-btn" title="ทำสำเนา" data-dup="${p.id}" type="button">${ICON.copy}</button> <button class="icon-btn del" title="ลบ" data-del="${p.id}" type="button">${ICON.trash}</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">ไม่พบโครงการ</td></tr>`}</tbody>
     </table></div>
   </div>`;
@@ -778,7 +778,7 @@ const EV_DEF={orderNo:'',orderDate:'',pubStart:'',pubEnd:'',submitDate:'',submit
   summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',
   m1:{no:'',date:'',start:'',end:'',absent:{}},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',hold:'',secretary:-1,
   rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false,apprNo:'',apprDate:'',hearStart:'',hearEnd:'',hearDays:'3',hearCount:'',hearDecide:'',hearApprove:'',hearResult:'เห็นว่าไม่ปรับปรุงตามข้อวิจารณ์'};
-function evOf(p){const e=Object.assign(structuredClone(EV_DEF),p.ev||{});e.m1=Object.assign({},structuredClone(EV_DEF.m1),e.m1);e.m2=Object.assign({},structuredClone(EV_DEF.m2),e.m2);e.rel=Object.assign({},EV_DEF.rel,e.rel);p.ev=e;
+function evOf(p){if(!p.ev||typeof p.ev!=='object')p.ev={};const e=p.ev;for(const k in EV_DEF){if(e[k]===undefined)e[k]=structuredClone(EV_DEF[k])}for(const k of ['m1','m2','rel']){for(const kk in EV_DEF[k]){if(e[k][kk]===undefined)e[k][kk]=structuredClone(EV_DEF[k][kk])}}
   if(!Array.isArray(p.committee)){const s=p.signers||[];const strip=x=>String(x||'').replace(/[()]/g,'').trim();
     p.committee=[{name:strip(s[1]?.name),position:'',role:'ประธานกรรมการฯ'},{name:strip(s[0]?.name),position:s[0]?.position||'',role:'กรรมการฯ'}].filter(m=>m.name||m.role)}
   if(e.secretary<0||e.secretary>=p.committee.length)e.secretary=Math.max(0,p.committee.findIndex(m=>/พัสดุ/.test(m.position)));
@@ -790,6 +790,15 @@ function isWorkday(d,H){const w=d.getDay();return w!==0&&w!==6&&!H.has(d.toISOSt
 function addWorkdays(iso,n){if(!iso)return '';const H=holidaySet();const d=new Date(iso+'T12:00:00Z');let c=0;while(c<n){d.setUTCDate(d.getUTCDate()+1);const x=new Date(d.toISOString().slice(0,10)+'T12:00:00');if(isWorkday(x,H))c++}return d.toISOString().slice(0,10)}
 function evDeadline(p){const e=evOf(p);return addWorkdays(e.openDate,5)}
 function evDoneDate(p){const e=evOf(p);return e.summaryDate||e.m2.date||e.m1.date||''}
+function tmin(t){const m=String(t||'').match(/(\d{1,2})\s*[.:]\s*(\d{2})/)||String(t||'').match(/^\s*(\d{1,2})\s*(?:น|$)/);if(!m)return null;return (+m[1])*60+(+(m[2]||0))}
+const hhmm=x=>`${String(Math.floor(x/60)).padStart(2,'0')}.${String(x%60).padStart(2,'0')} น.`;
+function meetingsOf(p){const e=evOf(p);const L=[];[['m1','ครั้งที่ 1'],['m2','ครั้งที่ 2']].forEach(([k,l])=>{const m=e[k];if(k==='m2'&&!p.rounds.length)return;if(!m||!m.date)return;const st=tmin(m.start);if(st===null)return;let en=tmin(m.end);if(en===null||en<=st)en=st+60;L.push({p,k,label:l,date:m.date,st,en,assumed:tmin(m.end)===null})});return L}
+function meetingConflicts(p){const mine=meetingsOf(p);const out=[];const names=q=>new Set((q.committee||[]).map(m=>String(m.name||'').replace(/\s+/g,' ').trim()).filter(Boolean));
+  const others=S.projects.flatMap(q=>meetingsOf(q));
+  mine.forEach(a=>others.forEach(b=>{if(a.p===b.p&&a.k===b.k)return;if(a.p===b.p&&a.k>b.k)return;if(a.date!==b.date)return;if(a.st<b.en&&b.st<a.en){
+    const na=names(a.p),nb=names(b.p);const shared=[...na].filter(x=>nb.has(x));out.push({a,b,shared})}}));return out}
+function conflictHtml(p){const C=meetingConflicts(p);if(!C.length)return `<div class="note ok"><b>✓ วันและเวลาประชุมไม่ซ้ำกับโครงการอื่น</b></div>`;
+  return `<div class="note bad"><b>เวลาประชุมซ้ำซ้อน ${C.length} รายการ</b> — กรรมการชุดเดียวกันประชุมพร้อมกันไม่ได้ ให้เลื่อนเวลา<ul style="margin:6px 0 0;padding-left:20px">${C.map(({a,b,shared})=>`<li>ประชุม${a.label} ${D(a.date)} ${hhmm(a.st)}–${hhmm(a.en)} ชนกับ ${a.p===b.p?'ประชุม'+b.label+'ของโครงการนี้':`<b>${esc(String(b.p.name||'(ไม่มีชื่อ)').slice(0,70))}</b> ประชุม${b.label}`} (${hhmm(b.st)}–${hhmm(b.en)})${shared.length?` · กรรมการซ้ำ: ${shared.map(esc).join(', ')}`:''}${a.assumed||b.assumed?' · ไม่ได้กรอกเวลาเลิก ถือว่าประชุม 1 ชั่วโมง':''}</li>`).join('')}</ul></div>`}
 function needExtend(p){const dl=evDeadline(p),dd=evDoneDate(p);return !!(dl&&dd&&dd>dl)}
 function shortFirm(n){return String(n||'').replace(/^บริษัท\s*/,'บจก.').replace(/^ห้างหุ้นส่วนจำกัด\s*/,'หจก.').replace(/\s*จำกัด\s*(\(มหาชน\))?\s*$/,'').replace(/\s+/g,' ').trim()}
 function nickOf(name){const n=String(name||'').replace(/^(นางสาว|นาย|นาง|น\.ส\.|ว่าที่ร้อยตรี|ว่าที่ ร\.ต\.)\s*/,'').trim().split(/\s+/)[0];return n?`คุณ${n}ฯ`:'กรรมการฯ'}
@@ -829,6 +838,7 @@ function rEval(){
      ${F2('m1.no','ประชุมครั้งที่ 1 (เลขครั้ง)','text','s3','1/2569')}${F2('m1.date','วันที่ประชุมครั้งที่ 1','date','s3')}${F2('m1.start','เริ่มประชุม','text','s3','15.00 น.')}${F2('m1.end','เลิกประชุม','text','s3','15.30 น.')}
      ${F2('m2.no','ประชุมครั้งที่ 2 (เลขครั้ง)','text','s3','2/2569')}${F2('m2.date','วันที่ประชุมครั้งที่ 2','date','s3')}${F2('m2.start','เริ่มประชุม','text','s3','10.00 น.')}${F2('m2.end','เลิกประชุม','text','s3','11.00 น.')}
      ${F2('replyNo','หนังสือตอบรับการต่อรองจากผู้ชนะ ที่','text','s6','KPS 106906/002')}${F2('replyDate','ลงวันที่','date','s6')}
+     <div class="s12" id="mtgWarn">${conflictHtml(p)}</div>
      <div class="s12 muted" style="font-size:13px">ถ้าไม่มีการต่อรองราคา (ไม่มีบันทึกในหน้าต่อรองราคา) รายงานการประชุมครั้งที่ 1 จะสรุปรับราคาเลย และไม่ต้องใช้ครั้งที่ 2</div>
    </div></div>
    <div class="card"><div class="card-h"><h2><span class="step">4</span>ผลการตรวจสอบผู้ยื่นข้อเสนอ</h2></div>
@@ -849,7 +859,7 @@ function rEval(){
        ${F2('hearResult','ผลการพิจารณาข้อวิจารณ์','text','s12')}</div>`:''}</div>
   </div>`;
   const setPath=(path,v)=>{const ks=path.split('.');let o=e;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=v};
-  $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p)};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
+  $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p);if(/^m[12]\./.test(i.dataset.ev)){const w=$('#mtgWarn');if(w)w.innerHTML=conflictHtml(p)}};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
   $$('[data-evb]',el).forEach(i=>i.onchange=()=>{setPath(i.dataset.evb,i.checked);touch(p)});
   $('#evPrint').onclick=()=>{reportSel='eval';go('report')};
   $('#cmAdd').onclick=()=>{p.committee.push({name:'',position:'',role:'กรรมการฯ'});touch(p);rEval()};
