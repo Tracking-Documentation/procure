@@ -289,7 +289,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 37 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 38 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -800,7 +800,7 @@ function repNotice(p){const F=letterFont();const ranked=bidRank(p);const n=ranke
 /* ================= evaluation (พิจารณาผล) ================= */
 const EV_DEF={orderNo:'',orderDate:'',pubStart:'',pubEnd:'',submitDate:'',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'',openTime:'08.30 น.',
   summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',
-  m1:{no:'',date:'',start:'',end:'',absent:{}},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',hold:'',secretary:-1,
+  m1:{no:'',date:'',start:'',end:'',absent:{}},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',warranty:'',hold:'',secretary:-1,
   rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false,apprNo:'',apprDate:'',hearStart:'',hearEnd:'',hearDays:'3',hearCount:'',hearDecide:'',hearApprove:'',hearResult:'เห็นว่าไม่ปรับปรุงตามข้อวิจารณ์'};
 function evOf(p){if(!p.ev||typeof p.ev!=='object')p.ev={};const e=p.ev;for(const k in EV_DEF){if(e[k]===undefined)e[k]=structuredClone(EV_DEF[k])}for(const k of ['m1','m2','rel']){for(const kk in EV_DEF[k]){if(e[k][kk]===undefined)e[k][kk]=structuredClone(EV_DEF[k][kk])}}
   if(!Array.isArray(p.committee)){const s=p.signers||[];const strip=x=>String(x||'').replace(/[()]/g,'').trim();
@@ -890,7 +890,7 @@ function rEval(){
      ${F2('pubStart','เผยแพร่ประกาศตั้งแต่วันที่','date')}${F2('pubEnd','ถึงวันที่','date')}<div class="s4"></div>
      ${F2('submitDate','วันยื่นข้อเสนอ','date')}${F2('submitTime','ช่วงเวลายื่นข้อเสนอ','text','s4')}<div class="s4"></div>
      ${F2('openDate','วันเปิดข้อเสนอ','date')}${F2('openTime','เวลาเปิดข้อเสนอ (ตั้งแต่)','text','s4')}${F2('summaryDate','วันที่สรุปผล (ถ้าว่าง ใช้วันประชุมครั้งล่าสุด)','date')}
-     ${F2('duration','ระยะเวลาดำเนินการ (วัน)','text','s3')}${F2('hold','กำหนดยืนราคา (วัน)','text','s3')}${F2('extendDays','ขอขยายเวลาอีก (วันทำการ)','text','s3')}${F2('extendReason','เหตุผลที่ขอขยายเวลา','text','s3')}
+     ${F2('duration','ระยะเวลาดำเนินการ (วัน)','text','s3')}${F2('hold','กำหนดยืนราคา (วัน)','text','s3')}${F2('extendDays','ขอขยายเวลาอีก (วันทำการ)','text','s3')}${F2('extendReason','เหตุผลที่ขอขยายเวลา','text','s3')}${F2('warranty','ระยะรับประกันความชำรุดบกพร่อง (ปี)','text','s3',String(num(S.settings.warrantyYears??2)))}<div class="s8" id="gpLine" style="font-size:14px;align-self:end;padding-bottom:10px">${periodLine(p,(p.book&&p.book.booking&&p.book.booking.date)||p.contractDate||'')||'<span class="muted" style="font-size:13px">ระยะค้ำประกันสัญญา = วันลงนาม ถึง สิ้นสุดสัญญา (ระยะเวลาดำเนินการ) + ปีรับประกัน + '+num(S.settings.secExtraDays??30)+' วัน · จะคำนวณเมื่อมีวันลงนาม (จากการจอง)</span>'}</div>
    </div></div>
    <div class="card"><div class="card-h"><h2><span class="step">2</span>คณะกรรมการพิจารณาผล</h2><button class="btn ghost-brand sm" id="cmAdd" type="button">+ เพิ่มกรรมการ</button></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>#</th><th>ชื่อ-สกุล (ไม่ต้องใส่วงเล็บ)</th><th>ตำแหน่ง</th><th>หน้าที่ในคณะกรรมการ</th><th>ผู้จดรายงานการประชุม</th><th>ประชุมครั้งที่ 1 ไม่มา (เหตุ)</th><th>ประชุมครั้งที่ 2 ไม่มา (เหตุ)</th><th></th></tr></thead>
@@ -927,7 +927,7 @@ function rEval(){
   $$('[data-sg]',el).forEach(i=>{i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)};if(['received','date','days','warranty'].includes(i.dataset.sg))i.onchange=()=>{bookAutoPush(p);rEval()}});
   bindBook(el,p,rEval);
   const setPath=(path,v)=>{const ks=path.split('.');let o=e;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=v};
-  $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p);if(/^m[12]\./.test(i.dataset.ev)){const w=$('#mtgWarn');if(w)w.innerHTML=conflictHtml(p)}};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
+  $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p);if(i.dataset.ev==='duration'||i.dataset.ev==='warranty'){bookAutoPush(p);const g=$('#gpLine');const x=periodLine(p,(p.book&&p.book.booking&&p.book.booking.date)||p.contractDate||'');if(g&&x)g.innerHTML=x}if(/^m[12]\./.test(i.dataset.ev)){const w=$('#mtgWarn');if(w)w.innerHTML=conflictHtml(p)}};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
   $$('[data-evb]',el).forEach(i=>i.onchange=()=>{setPath(i.dataset.evb,i.checked);touch(p)});
   {const on=$('#ordNum'),oy=$('#ordYear');const h=()=>{const e=evOf(p);e.orderNum=on.value.trim();e.orderYear=oy.value.trim();syncOrderNo(p);touch(p)};on.oninput=h;oy.oninput=h}
   $('#evPrint').onclick=()=>{reportSel='eval';go('report')};
@@ -1443,7 +1443,7 @@ function signCard(p){const i=signInfo(p)||(p.announceDate?{appealEnd:addWorkdays
   const f=(k,l,ph,type='text',cls='s3')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-sg="${k}" value="${esc(sg[k]||'')}" placeholder="${esc(ph)}"></label>`;
   return `<div class="card"><div class="card-h"><h2><span class="step">7</span>เรียกลงนามสัญญา</h2><button class="btn blue sm" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกลงนามสัญญา</button></div><div class="card-b grid g12">
    <div class="s12 note ${!p.announceDate?'warn':i&&i.ready?'ok':'warn'}">${!p.announceDate?'<b>ยังไม่ได้กรอกวันที่ประกาศผลผู้ชนะ</b> — กรอกที่หน้าข้อมูลโครงการ ระบบจะคำนวณวันพ้นระยะอุทธรณ์ให้':`ประกาศผู้ชนะ ${D(p.announceDate)} · ครบระยะอุทธรณ์ 7 วันทำการ ${D(i.appealEnd)} · <b>เรียกลงนามได้ตั้งแต่ ${D(i.signFrom)}</b>`}</div>
-   ${f('no','เลขที่หนังสือ (ต่อท้ายรหัส)','')}${f('date','ลงวันที่','','date')}${f('days','ให้มาลงนามภายใน (วันทำการ)','7')}${f('received','วันที่บริษัทได้รับหนังสือ','','date')}${f('warranty','รับประกันความชำรุดบกพร่อง (ปี)',String(num(S.settings.warrantyYears??2)))}
+   ${f('no','เลขที่หนังสือ (ต่อท้ายรหัส)','')}${f('date','ลงวันที่','','date')}${f('days','ให้มาลงนามภายใน (วันทำการ)','7')}${f('received','วันที่บริษัทได้รับหนังสือ','','date')}
    ${f('sec','หลักประกันสัญญา (บาท)',fmt(a.sec,0)+' (5% ปัดขึ้น)')}${f('stamp','ค่าอากรแสตมป์ (บาท)',fmt(a.stamp,0)+' (ราคาไม่รวม VAT ÷ 1,000 ปัดขึ้น)','text','s5')}
    <div class="s4 muted" style="font-size:13px;align-self:end">วงเงินค่างาน ${fmt(a.fp)} บาท · ว่างไว้ = ใช้ค่าที่คำนวณให้</div><div class="s12" style="font-size:14px">${periodLine(p,(p.book&&p.book.booking&&p.book.booking.date)||p.contractDate||sg.date||'')}</div>${bookCardHtml(p)}</div></div>`}
 function signAlertCard(){const L=S.projects.map(p=>({p,i:signInfo(p)})).filter(x=>x.i).sort((a,b)=>a.i.signFrom.localeCompare(b.i.signFrom));
@@ -1480,7 +1480,7 @@ function applyBookings(list,onlyId){const by={};list.forEach(x=>{if(x.status==='
   S.projects.forEach(p=>{if(onlyId&&p.id!==onlyId)return;if(!p.book&&!by[p.id])return;const b=bookOf(p);const x=by[p.id]||null;b.booking=x;b.fetched=nowStr();
     if(x&&x.confirmed==='Y'){p.contractNo=x.contractNo;p.contractDate=x.date}});save()}
 async function fetchBookings(p){const j=await gasCall({action:'list',p:p?p.id:''});applyBookings(j.bookings||[],p?p.id:null);return j}
-function warrantyOf(p){const v=(p.sign||{}).warranty;return v!==undefined&&String(v).trim()!==''?num(v):num(S.settings.warrantyYears??2)}
+function warrantyOf(p){const ev=evOf(p).warranty;const v=ev!==undefined&&String(ev).trim()!==''?ev:(p.sign||{}).warranty;return v!==undefined&&String(v).trim()!==''?num(v):num(S.settings.warrantyYears??2)}
 const SEC_LATER=['หนังสือค้ำประกันของธนาคารภายในประเทศ','หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)','หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์'];
 /* ระยะเวลาค้ำประกันสัญญา: วันลงนาม → สิ้นสุดสัญญา (+ระยะเวลาดำเนินการ) + รับประกันความชำรุดบกพร่อง N ปี + 30 วัน */
 function guaranteePeriod(p,sign){const dur=num(evOf(p).duration);if(!sign||!dur)return null;const ad=(iso,n)=>{const d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
