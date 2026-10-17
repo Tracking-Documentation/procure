@@ -136,7 +136,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .quick{display:flex;flex-wrap:wrap;gap:6px}
 .boq td{padding:5px 6px}
 .boq input.i,.boq select.i,.boq textarea.i{padding:5px 7px;font-size:14px;border-radius:6px}
-.boq textarea.i{min-height:34px;line-height:1.35}
+.boq textarea.i{min-height:34px;line-height:1.35;resize:none;overflow:hidden;field-sizing:content}
 .boq .w-unit{width:80px}.boq .w-qty{width:90px}.boq .w-cost{width:130px}.boq .w-cat{width:150px}.boq .w-mid{width:140px}
 .boq td.act{white-space:nowrap}
 .empty{padding:28px;text-align:center;color:var(--muted)}
@@ -246,7 +246,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (11)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (12)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -551,7 +551,7 @@ function rEdit(){
      <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>หมวดครุภัณฑ์และค่าใช้จ่ายพิเศษจะคงราคากลางไว้ ไม่ถูกปรับลด</b></div></div>
    <div class="card"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
      <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
-     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ที่</th><th style="min-width:260px">รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ค่างานต้นทุน/หน่วย</th><th>หมวด</th><th class="n">ราคากลาง (บาท)</th><th title="ติ๊กเพื่อไม่ปรับลดรายการนี้">ไม่ลด</th><th></th></tr></thead><tbody id="boqBody"></tbody>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ที่</th><th style="min-width:360px">รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ค่างานต้นทุน/หน่วย</th><th>หมวด</th><th class="n">ราคากลาง (บาท)</th><th title="ติ๊กเพื่อไม่ปรับลดรายการนี้">ไม่ลด</th><th></th></tr></thead><tbody id="boqBody"></tbody>
      <tfoot><tr><td colspan="6" class="n">ราคากลางรวม</td><td class="n" id="boqTotal"></td><td colspan="2"></td></tr></tfoot></table></div>
      <div class="card-b muted" style="font-size:13px;padding-top:10px">ราคากลาง = จำนวน × ค่างานต้นทุน/หน่วย × Factor (ตัดเศษทศนิยมเกิน 2 ตำแหน่ง) · ถ้าราคากลางรายการไม่ตรงกับ ปร.5 ให้พิมพ์ทับในช่องราคากลางได้ (ลบออกเพื่อกลับไปคำนวณอัตโนมัติ)</div></div>
    <div class="card"><div class="card-h"><h2><span class="step">4</span>ผู้ลงนามในรายงาน</h2></div><div class="card-b grid g12" id="signBox"></div></div>
@@ -596,11 +596,12 @@ function rBoq(){const p=P();const b=$('#boqBody');let n=0;
     <td><select class="i w-cat" data-k="catId">${catOpts(it.catId)}</select></td>
     <td><input class="i r w-mid" data-k="midOverride" value="${it.midOverride!==''&&it.midOverride!=null?fmt(num(it.midOverride)):''}" placeholder="${fS(midOf(p,it))}" data-mid="${it.id}" inputmode="decimal" title="ว่าง = คำนวณอัตโนมัติ"></td>
     <td style="text-align:center"><input type="checkbox" data-k="fixed" ${fx||it.fixed?'checked':''} ${fx?'disabled title="หมวดนี้ไม่ปรับลดอยู่แล้ว"':''}></td><td class="act">${acts}</td></tr>`}).join(''):`<tr><td colspan="9" class="empty">ยังไม่มีรายการ · กด “วางจาก Excel” เพื่อวางตาราง BOQ หรือ “+ รายการ” เพื่อเพิ่มทีละรายการ</td></tr>`;
+  requestAnimationFrame(growAll);
   $('#boqTotal').textContent=fS(totals(p).sumM);
   b.oninput=e=>{const tr=e.target.closest('[data-iid]');if(!tr)return;const it=p.items.find(x=>x.id===tr.dataset.iid);const k=e.target.dataset.k;
     if(k==='fixed')it.fixed=e.target.checked;else if(k==='qty')it.qty=num(e.target.value);else if(k==='unitCost')it.unitCost=num(e.target.value);
     else if(k==='midOverride')it.midOverride=e.target.value.trim()===''?'':num(e.target.value);else it[k]=e.target.value;
-    if(k==='name'&&e.target.tagName==='TEXTAREA')e.target.rows=Math.min(6,Math.max(1,e.target.value.split('\n').length));
+    if(e.target.tagName==='TEXTAREA')grow(e.target);
     touch(p);if(k==='catId'){rBoq();return}updMids()};
   b.onchange=e=>{const k=e.target.dataset.k;if(k==='unitCost'||k==='midOverride'){const v=e.target.value.trim();e.target.value=v===''?'':fmt(num(v))}};
   b.onclick=e=>{const tr=e.target.closest('[data-iid]');if(!tr)return;const i=p.items.findIndex(x=>x.id===tr.dataset.iid);
@@ -608,6 +609,9 @@ function rBoq(){const p=P();const b=$('#boqBody');let n=0;
     if(e.target.closest('[data-rm]')){p.items.splice(i,1);touch(p);rBoq()}};
   sideSum();
 }
+function grow(t){t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px'}
+function growAll(){$$('#boqBody textarea').forEach(grow)}
+addEventListener('resize',()=>{if(tab==='edit')growAll()});
 function updMids(){const p=P();p.items.forEach(it=>{const inp=$(`[data-mid="${it.id}"]`);if(inp)inp.placeholder=fS(midOf(p,it))});$('#boqTotal').textContent=fS(totals(p).sumM);sideSum()}
 function rSign(){const p=P();p.signers=p.signers||structuredClone(S.settings.signers);
   $('#signBox').innerHTML=p.signers.map((s,i)=>`<label class="f s4"><span>ตำแหน่งในคณะ/หน้าที่ (คนที่ ${i+1})</span><input class="i" data-si="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s4"><span>ชื่อ-สกุล</span><input class="i" data-si="${i}" data-sk="name" value="${esc(s.name)}" placeholder="(นาย/นาง/นางสาว ...)"></label><label class="f s4"><span>ตำแหน่ง</span><input class="i" data-si="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('');
