@@ -288,7 +288,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 29 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 30 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -836,7 +836,7 @@ function rCal(){const el=$('#v-cal');const t=todayISO();if(!calYM)calYM=t.slice(
    <div class="calleg">${CAL_KINDS.map(([k,l])=>`<span><i class="k-${k}"></i>${l}</span>`).join('')}</div>
    <div class="card"><div class="card-h"><h2>กำหนดการที่กำลังจะถึง</h2></div><div class="tbl-wrap"><table class="t"><thead><tr><th>วันที่</th><th>รายการ</th><th>โครงการ</th><th></th></tr></thead><tbody>
    ${up.length?up.map(x=>`<tr class="${x.date===t?'adj':''}"><td style="white-space:nowrap">${D(x.date)}${x.time?' · '+esc(x.time):''}${x.date===t?' <span class="pill p-adj">วันนี้</span>':''}</td><td><span class="ev1 k-${x.kind}" style="display:inline-block;cursor:default">${esc(x.label)}</span></td><td style="min-width:240px">${esc(String(x.p.name||'').slice(0,90))}<div class="muted" style="font-size:12px">${esc(x.p.contractor||'')}</div></td>
-     <td style="white-space:nowrap">${x.kind==='sign'||x.kind==='appeal'?`<button class="btn sm blue" data-signprint="${x.p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button>`:`<button class="btn sm" data-calp="${x.p.id}" type="button">เปิดโครงการ</button>`}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">ยังไม่มีกำหนดการ · กรอกวันเปิดข้อเสนอและวันประชุมที่หน้า “พิจารณาผล” และวันที่ประกาศผู้ชนะที่หน้าข้อมูลโครงการ</td></tr>'}
+     <td style="white-space:nowrap">${x.kind==='sign'||x.kind==='appeal'?`<button class="btn sm blue" data-signprint="${x.p.id}" type="button">${ICON.print} หนังสือเรียกลงนามสัญญา</button>`:`<button class="btn sm" data-calp="${x.p.id}" type="button">เปิดโครงการ</button>`}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">ยังไม่มีกำหนดการ · กรอกวันเปิดข้อเสนอและวันประชุมที่หน้า “พิจารณาผล” และวันที่ประกาศผู้ชนะที่หน้าข้อมูลโครงการ</td></tr>'}
    </tbody></table></div></div>`;
   $$('[data-calm]',el).forEach(b=>b.onclick=()=>{const k=+b.dataset.calm;if(!k)calYM=t.slice(0,7);else{const d=new Date(Y,M-1+k,1);calYM=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}rCal()});
   $$('[data-calp]',el).forEach(b=>b.onclick=()=>{cur=b.dataset.calp;save();go('eval')});
@@ -1209,7 +1209,7 @@ function papersToDocx(html){
   return zipStore(files)}
 function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
   const L=[['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
-  L.push(['sign','หนังสือเรียกเซ็นสัญญา',()=>repSign(p)]);
+  L.push(['sign','หนังสือเรียกลงนามสัญญา',()=>repSign(p)]);
   const map=EVMAP();
   evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
   return {L,err:r.errors.length?r.errors[0]:''}}
@@ -1357,7 +1357,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['eval','เอกสารพิจารณาผล'],['sign','หนังสือเรียกเซ็นสัญญา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const segs=[['eval','เอกสารพิจารณาผล'],['sign','หนังสือเรียกลงนามสัญญา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -1421,7 +1421,7 @@ function repSign(p){const st=S.settings,F=letterFont(),e=evOf(p),sg=p.sign||{};c
    ${copy?'<div style="text-align:center;margin-bottom:6mm">- สำเนาคู่ฉบับ -</div>':`<img class="garuda" src="${GARUDA}" alt="ตราครุฑ">`}
    <div class="top"><div>ที่ ${esc(st.docPrefix||'')}${sg.no?esc(sg.no):'<span style="display:inline-block;width:16mm"></span>'}</div><div>${esc(st.addr1||'')}<br>${esc(st.addr2||'')}<br>${esc(st.addr3||'')}</div></div>
    <div class="date">${dateTxt}</div>
-   <div class="hd"><span>เรื่อง</span><span>ให้ไปเซ็นสัญญา</span><span>เรียน</span><span>${esc(firmTitle(firm)+' '+firm)}</span></div>
+   <div class="hd"><span>เรื่อง</span><span>เรียกลงนามสัญญา</span><span>เรียน</span><span>${esc(firmTitle(firm)+' '+firm)}</span></div>
    <div class="gap"></div><p>ตามที่${esc(st.office||'')} ได้ประกาศรับราคา${esc(firm)} จ้าง${esc(p.name)} วงเงินค่างาน ${fmt(fp)} บาท${e.duration?` กำหนดเวลาทำการ ${esc(e.duration)} วัน`:''} นั้น</p>
    <p>${esc(st.office||'')} ขอให้${firmShort(firm)} ไปเซ็นสัญญาภายใน ${esc(days)} วันทำการโดยนำเอกสาร</p>
    <div style="padding-left:25mm">1. หลักประกันสัญญา เป็นจำนวนเงิน ${moneyDash(sec)} บาท${docs.map((d,i)=>`<br>${i+2}. ${esc(d)}`).join('')}<br>${docs.length+2}. ค่าอากรแสตมป์เป็นจำนวนเงิน ${moneyDash(stamp)} บาท</div>
@@ -1432,7 +1432,7 @@ function repSign(p){const st=S.settings,F=letterFont(),e=evOf(p),sg=p.sign||{};c
   return st.thaiDigits===false?out:out.replace(/>([^<]*)</g,(m,t)=>'>'+toTH(t)+'<')}
 function signCard(p){const i=signInfo(p)||(p.announceDate?{appealEnd:addWorkdays(p.announceDate,7),signFrom:addWorkdays(p.announceDate,8)}:null);const a=signAmounts(p);const sg=p.sign||{};
   const f=(k,l,ph,type='text',cls='s3')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-sg="${k}" value="${esc(sg[k]||'')}" placeholder="${esc(ph)}"></label>`;
-  return `<div class="card"><div class="card-h"><h2><span class="step">7</span>เรียกลงนามสัญญา</h2><button class="btn blue sm" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button></div><div class="card-b grid g12">
+  return `<div class="card"><div class="card-h"><h2><span class="step">7</span>เรียกลงนามสัญญา</h2><button class="btn blue sm" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกลงนามสัญญา</button></div><div class="card-b grid g12">
    <div class="s12 note ${!p.announceDate?'warn':i&&i.ready?'ok':'warn'}">${!p.announceDate?'<b>ยังไม่ได้กรอกวันที่ประกาศผลผู้ชนะ</b> — กรอกที่หน้าข้อมูลโครงการ ระบบจะคำนวณวันพ้นระยะอุทธรณ์ให้':`ประกาศผู้ชนะ ${D(p.announceDate)} · ครบระยะอุทธรณ์ 7 วันทำการ ${D(i.appealEnd)} · <b>เรียกลงนามได้ตั้งแต่ ${D(i.signFrom)}</b>`}</div>
    ${f('no','เลขที่หนังสือ (ต่อท้ายรหัส)','')}${f('date','ลงวันที่','','date')}${f('days','ให้มาเซ็นภายใน (วันทำการ)','7')}<div class="s3"></div>
    ${f('sec','หลักประกันสัญญา (บาท)',fmt(a.sec,0)+' (5% ปัดขึ้น)')}${f('stamp','ค่าอากรแสตมป์ (บาท)',fmt(a.stamp,0)+' (ราคาไม่รวม VAT ÷ 1,000 ปัดขึ้น)','text','s5')}
@@ -1442,7 +1442,7 @@ function signAlertCard(){const L=S.projects.map(p=>({p,i:signInfo(p)})).filter(x
   return `<div class="card" style="margin-bottom:18px"><div class="card-h"><h2>แจ้งเตือน: เรียกลงนามสัญญา</h2><span class="muted" style="font-size:13px">เรียกลงนามได้เมื่อพ้นระยะอุทธรณ์ 7 วันทำการนับถัดจากวันประกาศผู้ชนะ</span></div>
    <div class="tbl-wrap"><table class="t"><thead><tr><th>โครงการ</th><th>ประกาศผู้ชนะ</th><th>ครบระยะอุทธรณ์</th><th>เรียกลงนามได้ตั้งแต่</th><th>สถานะ</th><th></th></tr></thead><tbody>
    ${L.map(({p,i})=>`<tr class="${i.ready?'adj':''}"><td style="min-width:260px"><b>${esc(String(p.name||'(ยังไม่ตั้งชื่อ)').slice(0,90))}</b><div class="muted" style="font-size:13px">${esc(p.contractor||'-')}</div></td><td>${D(p.announceDate)}</td><td>${D(i.appealEnd)}</td><td><b>${D(i.signFrom)}</b></td>
-     <td>${i.ready?'<span class="pill p-adj">ถึงกำหนดเรียกลงนามแล้ว</span>':`<span class="pill p-draft">อีก ${i.left} วันทำการ</span>`}</td><td><button class="btn sm blue" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button></td></tr>`).join('')}
+     <td>${i.ready?'<span class="pill p-adj">ถึงกำหนดเรียกลงนามแล้ว</span>':`<span class="pill p-draft">อีก ${i.left} วันทำการ</span>`}</td><td><button class="btn sm blue" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกลงนามสัญญา</button></td></tr>`).join('')}
    </tbody></table></div></div>`}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
   return `<div class="sig">${s.map(x=>`<div>ลงชื่อ ......................................................<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`).join('')}</div>`}
@@ -1560,10 +1560,10 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <label class="f s12"><span>ข้อความสั่งการ เมื่อวงเงินเกิน 10 ล้านบาท (บรรทัดละข้อ)</span><textarea class="i" rows="2" data-sl="approveLinesBig">${esc(st.approveLinesBig)}</textarea></label>
    <label class="f s4"><span>บันทึกถึงเขต: เรียน</span><input class="i" data-sl="regionTo" value="${esc(st.regionTo)}"></label>
    <label class="f s4"><span>บันทึกถึงเขต: ที่ (ก่อนเลข)</span><input class="i" data-sl="regionPrefix" value="${esc(st.regionPrefix)}"></label>
-   <label class="f s4"><span>ตำแหน่งเต็มผู้ลงนามหนังสือเรียกเซ็นสัญญา</span><input class="i" data-sl="directorFull" value="${esc(st.directorFull)}"></label>
-   <label class="f s8"><span>หนังสือเรียกเซ็นสัญญา: เอกสารที่ต้องนำมา (ข้อ 2 เป็นต้นไป บรรทัดละข้อ · ข้อแรกหลักประกัน ข้อสุดท้ายอากรแสตมป์ใส่ให้เอง)</span><textarea class="i" rows="3" data-sl="signDocs">${esc(st.signDocs)}</textarea></label>
-   <label class="f s4"><span>ผู้ร่าง/พิมพ์/ตรวจ (สำเนาคู่ฉบับหนังสือเรียกเซ็นสัญญา)</span><textarea class="i" rows="3" data-sl="signDraft">${esc(st.signDraft)}</textarea></label>
-   <label class="switch s8"><input type="checkbox" id="signCopyCk" ${st.signCopy!==false?'checked':''}> พิมพ์ “สำเนาคู่ฉบับ” ของหนังสือเรียกเซ็นสัญญาต่อท้าย</label>
+   <label class="f s4"><span>ตำแหน่งเต็มผู้ลงนามหนังสือเรียกลงนามสัญญา</span><input class="i" data-sl="directorFull" value="${esc(st.directorFull)}"></label>
+   <label class="f s8"><span>หนังสือเรียกลงนามสัญญา: เอกสารที่ต้องนำมา (ข้อ 2 เป็นต้นไป บรรทัดละข้อ · ข้อแรกหลักประกัน ข้อสุดท้ายอากรแสตมป์ใส่ให้เอง)</span><textarea class="i" rows="3" data-sl="signDocs">${esc(st.signDocs)}</textarea></label>
+   <label class="f s4"><span>ผู้ร่าง/พิมพ์/ตรวจ (สำเนาคู่ฉบับหนังสือเรียกลงนามสัญญา)</span><textarea class="i" rows="3" data-sl="signDraft">${esc(st.signDraft)}</textarea></label>
+   <label class="switch s8"><input type="checkbox" id="signCopyCk" ${st.signCopy!==false?'checked':''}> พิมพ์ “สำเนาคู่ฉบับ” ของหนังสือเรียกลงนามสัญญาต่อท้าย</label>
    <label class="f s4"><span>ผู้ร่าง/พิมพ์/ตรวจ (ท้ายบันทึกถึงเขต)</span><textarea class="i" rows="3" data-sl="draftLine" placeholder="ณรมา/ร่าง/ทาน&#10;ปริฉัตร/พิมพ์&#10;........../ตรวจ">${esc(st.draftLine)}</textarea></label><label class="switch s4"><input type="checkbox" id="regCopy" ${st.regionCopy!==false?'checked':''}> พิมพ์ “สำเนาคู่ฉบับ” ของบันทึกถึงเขตต่อท้าย (มีผู้ร่าง/พิมพ์/ตรวจ)</label>
    <label class="f s12"><span>บันทึกถึงเขต: กฎหมาย ระเบียบ และคำสั่ง (บรรทัดละข้อ)</span><textarea class="i" rows="4" data-sl="regionLaws">${esc(st.regionLaws)}</textarea></label>
    <label class="f s12"><span>บันทึกถึงเขต: เอกสารแนบ (บรรทัดละรายการ)</span><textarea class="i" rows="5" data-sl="regionAtts">${esc(st.regionAtts)}</textarea></label>
