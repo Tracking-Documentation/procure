@@ -272,7 +272,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 19 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 20 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -776,9 +776,9 @@ function repNotice(p){const F=letterFont();const ranked=bidRank(p);const n=ranke
 /* ================= evaluation (พิจารณาผล) ================= */
 const EV_DEF={orderNo:'',orderDate:'',pubStart:'',pubEnd:'',submitDate:'',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'',openTime:'08.30 น.',
   summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',
-  m1:{no:'',date:'',start:'',end:''},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',hold:'',secretary:-1,
+  m1:{no:'',date:'',start:'',end:'',absent:{}},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',hold:'',secretary:-1,
   rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false,apprNo:'',apprDate:'',hearStart:'',hearEnd:'',hearDays:'3',hearCount:'',hearDecide:'',hearApprove:'',hearResult:'เห็นว่าไม่ปรับปรุงตามข้อวิจารณ์'};
-function evOf(p){const e=Object.assign(structuredClone(EV_DEF),p.ev||{});e.m1=Object.assign({},EV_DEF.m1,e.m1);e.m2=Object.assign({},structuredClone(EV_DEF.m2),e.m2);e.rel=Object.assign({},EV_DEF.rel,e.rel);p.ev=e;
+function evOf(p){const e=Object.assign(structuredClone(EV_DEF),p.ev||{});e.m1=Object.assign({},structuredClone(EV_DEF.m1),e.m1);e.m2=Object.assign({},structuredClone(EV_DEF.m2),e.m2);e.rel=Object.assign({},EV_DEF.rel,e.rel);p.ev=e;
   if(!Array.isArray(p.committee)){const s=p.signers||[];const strip=x=>String(x||'').replace(/[()]/g,'').trim();
     p.committee=[{name:strip(s[1]?.name),position:'',role:'ประธานกรรมการฯ'},{name:strip(s[0]?.name),position:s[0]?.position||'',role:'กรรมการฯ'}].filter(m=>m.name||m.role)}
   if(e.secretary<0||e.secretary>=p.committee.length)e.secretary=Math.max(0,p.committee.findIndex(m=>/พัสดุ/.test(m.position)));
@@ -819,11 +819,11 @@ function rEval(){
      ${F2('duration','ระยะเวลาดำเนินการ (วัน)','text','s3')}${F2('hold','กำหนดยืนราคา (วัน)','text','s3')}${F2('extendDays','ขอขยายเวลาอีก (วันทำการ)','text','s3')}${F2('extendReason','เหตุผลที่ขอขยายเวลา','text','s3')}
    </div></div>
    <div class="card"><div class="card-h"><h2><span class="step">2</span>คณะกรรมการพิจารณาผล</h2><button class="btn ghost-brand sm" id="cmAdd" type="button">+ เพิ่มกรรมการ</button></div>
-     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>#</th><th>ชื่อ-สกุล (ไม่ต้องใส่วงเล็บ)</th><th>ตำแหน่ง</th><th>หน้าที่ในคณะกรรมการ</th><th>ผู้จดรายงานการประชุม</th><th>ครั้งที่ 2 ไม่มาประชุม (เหตุ)</th><th></th></tr></thead>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>#</th><th>ชื่อ-สกุล (ไม่ต้องใส่วงเล็บ)</th><th>ตำแหน่ง</th><th>หน้าที่ในคณะกรรมการ</th><th>ผู้จดรายงานการประชุม</th><th>ประชุมครั้งที่ 1 ไม่มา (เหตุ)</th><th>ประชุมครั้งที่ 2 ไม่มา (เหตุ)</th><th></th></tr></thead>
      <tbody id="cmBody">${p.committee.map((m,i)=>`<tr data-cm="${i}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(m.name)}" placeholder="นายสมชาย ใจดี"></td><td><input class="i" data-c="position" value="${esc(m.position)}" style="min-width:260px"></td>
        <td><select class="i" data-c="role">${['ประธานกรรมการฯ','กรรมการฯ','กรรมการและเลขานุการ'].map(r=>`<option ${m.role===r?'selected':''}>${r}</option>`).join('')}</select></td>
        <td style="text-align:center"><input type="radio" name="sec" data-sec="${i}" ${e.secretary===i?'checked':''}></td>
-       <td><input class="i" data-abs="${i}" value="${esc(e.m2.absent[i]||'')}" placeholder="ว่าง = มาประชุม เช่น ไปราชการ" style="width:200px"></td>
+       <td><input class="i" data-abs1="${i}" value="${esc(e.m1.absent[i]||'')}" placeholder="ว่าง = มาประชุม" style="width:170px"></td><td><input class="i" data-abs="${i}" value="${esc(e.m2.absent[i]||'')}" placeholder="ว่าง = มาประชุม" style="width:170px"></td>
        <td><button class="icon-btn del" data-cmdel type="button">${ICON.x}</button></td></tr>`).join('')}</tbody></table></div></div>
    <div class="card"><div class="card-h"><h2><span class="step">3</span>การประชุม</h2></div><div class="card-b grid g12">
      ${F2('m1.no','ประชุมครั้งที่ 1 (เลขครั้ง)','text','s3','1/2569')}${F2('m1.date','วันที่ประชุมครั้งที่ 1','date','s3')}${F2('m1.start','เริ่มประชุม','text','s3','15.00 น.')}${F2('m1.end','เลิกประชุม','text','s3','15.30 น.')}
@@ -855,9 +855,9 @@ function rEval(){
   $('#cmAdd').onclick=()=>{p.committee.push({name:'',position:'',role:'กรรมการฯ'});touch(p);rEval()};
   const cb=$('#cmBody');
   cb.oninput=ev=>{const tr=ev.target.closest('[data-cm]');if(!tr)return;const i=+tr.dataset.cm,t=ev.target;
-    if(t.dataset.c){p.committee[i][t.dataset.c]=t.value}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}touch(p)};
+    if(t.dataset.c){p.committee[i][t.dataset.c]=t.value}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}else if(t.dataset.abs1!==undefined){if(t.value.trim())e.m1.absent[i]=t.value;else delete e.m1.absent[i]}touch(p)};
   cb.onchange=cb.oninput;
-  cb.onclick=ev=>{if(!ev.target.closest('[data-cmdel]'))return;const i=+ev.target.closest('[data-cm]').dataset.cm;p.committee.splice(i,1);const ab={};Object.entries(e.m2.absent).forEach(([k,v])=>{k=+k;if(k<i)ab[k]=v;else if(k>i)ab[k-1]=v});e.m2.absent=ab;if(e.secretary>=p.committee.length)e.secretary=0;touch(p);rEval()};
+  cb.onclick=ev=>{if(!ev.target.closest('[data-cmdel]'))return;const i=+ev.target.closest('[data-cm]').dataset.cm;p.committee.splice(i,1);for(const mm of [e.m1,e.m2]){const ab={};Object.entries(mm.absent||{}).forEach(([k,v])=>{k=+k;if(k<i)ab[k]=v;else if(k>i)ab[k-1]=v});mm.absent=ab}if(e.secretary>=p.committee.length)e.secretary=0;touch(p);rEval()};
   const bk=$('#bkBody');
   bk.oninput=ev=>{const tr=ev.target.closest('[data-bk]');if(!tr)return;const b=p.bidders.find(x=>x.id===tr.dataset.bk);const k=ev.target.dataset.k;
     b[k]=k==='netOk'?ev.target.value==='1':ev.target.value;touch(p)};
@@ -914,7 +914,7 @@ const spk=(who,txt)=>`<div class="spk"><span>${who}</span><div>${txt}</div></div
 function docM1(p){const e=evOf(p);const R=bidRank(p);const n=R.length;const w=bidWinner(p);const sec=p.committee[e.secretary]||{};const nego=p.rounds.length>0;
   const list=R.slice().sort((a,b)=>p.bidders.findIndex(x=>x.id===a.id)-p.bidders.findIndex(x=>x.id===b.id));
   const nq=R.filter(b=>b.qualified===false).length;
-  return evPaper(`${minutesHead(p,e.m1.no,e.m1.date)}${attendList(p,null)}<div>เริ่มประชุมเวลา ${esc(e.m1.start||'.......')}</div>
+  return evPaper(`${minutesHead(p,e.m1.no,e.m1.date)}${attendList(p,e.m1.absent)}<div>เริ่มประชุมเวลา ${esc(e.m1.start||'.......')}</div>
    ${agenda(1,'เรื่องที่ประธานแจ้งให้ที่ประชุมทราบ',spk('ประธานฯ',`ตามคำสั่ง${esc(S.settings.office||'')} ที่ ${esc(e.orderNo||'..........')} ลงวันที่ ${D(e.orderDate)} เรื่อง แต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ สำหรับการประกวดราคา${projTitle(p)} ขอให้คณะกรรมการฯ ร่วมกันพิจารณาตรวจสอบเอกสารของผู้ยื่นข้อเสนอ`)+`<div class="ind1">มติที่ประชุม รับทราบ</div>`)}
    ${agenda(2,'เรื่องเสนอเพื่อพิจารณาการตรวจสอบความถูกต้อง ครบถ้วนของเอกสาร',spk(nickOf(sec.name),`เรียนว่าตามประกาศประกวดราคาจ้างก่อสร้างด้วยวิธีประกวดราคาอิเล็กทรอนิกส์เลขที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)} ${projTitle(p)} กำหนดยื่นข้อเสนอและเสนอราคาทางระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์ ในวันที่ ${D(e.submitDate)} ระหว่างเวลา ${esc(e.submitTime)} และกำหนดเปิดเอกสารเสนอราคาในวันที่ ${D(e.openDate)} ปรากฏว่า มีผู้ยื่นข้อเสนอฯ จำนวน ${n} ราย คือ${list.map(b=>`<div class="ind1">- ${esc(b.name)}</div>`).join('')}
      และได้พิมพ์เอกสารของผู้ยื่นข้อเสนอทั้ง ${n} ราย จากระบบจัดซื้อจัดจ้างภาครัฐ (e-GP) เรียบร้อยแล้วจำนวน 1 ชุด โดยได้ตรวจสอบเอกสารต่างๆ ของผู้ยื่นข้อเสนอทั้ง ${n} ราย ตามบัญชีรายการเอกสารส่วนที่ 1 และส่วนที่ 2 ${nq?`ปรากฏว่า ถูกต้อง ครบถ้วน ${n-nq} ราย ไม่ถูกต้อง ${nq} ราย`:'ปรากฏว่า ถูกต้อง ครบถ้วน ตามบัญชีรายการเอกสาร'} จึงขอให้คณะกรรมการฯ ตรวจสอบอีกครั้ง`)+
