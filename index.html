@@ -1519,7 +1519,8 @@ function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textCo
 let bookAuto=null;
 function bookAutoPush(p){const b=p.book;if(!bookOn()||!b||!b.pushed)return;clearTimeout(bookAuto);bookAuto=setTimeout(()=>{if(b.pushedDates===bookSig(p))return;pushBooking(p).then(()=>{const m=$('#bkMsg');if(m)m.textContent='อัปเดตช่วงวันจองแล้ว '+b.pushed}).catch(()=>{})},900)}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
-  return `<div class="sig">${s.map(x=>`<div>ลงชื่อ ......................................................<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`).join('')}</div>`}
+  const dut=['ผู้ปรับลด','ผู้ตรวจสอบ'];
+  return `<div class="sig">${s.map((x,i)=>`<div>ลงชื่อ ......................................................${dut[i]?' '+dut[i]:''}<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`).join('')}</div>`}
 function catSummary(p){return p.categories.map(c=>{const its=p.items.filter(i=>i.kind==='item'&&i.catId===c.id);return {c,cost:its.reduce((a,i)=>a+costOf(i),0),mid:its.reduce((a,i)=>a+midOf(p,i),0)}}).filter(x=>x.mid||x.c.kind!=='construction'||true)}
 function repMid(p,r,b){const cs=catSummary(p);
   return `<div class="paper${wm()}"><h2>แบบสรุปราคากลางงานก่อสร้าง${esc(p.type&&p.type!=='อื่นๆ'?p.type:'')}</h2>
