@@ -188,6 +188,19 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
 @page land{size:A4 landscape;margin:0}
+.paper.ev{width:210mm;min-height:297mm;padding:15mm 20mm 15mm 30mm;font-family:var(--lf);font-size:var(--ls);line-height:1.38;box-sizing:border-box}
+.ev p{margin:0}.ev .pi{text-indent:25mm;text-align:justify}
+.ev .mh{position:relative;height:16mm;display:flex;align-items:flex-end;justify-content:center}.ev .mh img{position:absolute;left:0;bottom:0;height:15mm}.ev .mt{font-size:1.8em;font-weight:700;line-height:1}
+.ev .ml{display:flex;gap:3mm;align-items:baseline}.ev .ml>b{white-space:nowrap;font-size:1.15em}.ev .dl{flex:1;border-bottom:1px dotted #000;padding-left:2mm}
+.ev .ml.two{display:grid;grid-template-columns:1fr 1fr;gap:4mm}.ev .to{margin:2mm 0 1mm}
+.ev .ind1{padding-left:25mm}.ev .ind2{padding-left:35mm}.ev .ind3{padding-left:45mm}
+.ev .hg{display:grid;grid-template-columns:auto 1fr;gap:2mm}.ev .ct{text-align:center}.ev .b{font-weight:700}.ev .sh{font-weight:700;padding-left:15mm;margin-top:2mm}
+.ev .cms{margin-top:10mm;display:grid;gap:7mm;padding-left:15mm;break-inside:avoid}.ev .cm1 .nm{padding-left:22mm}
+.ev .sg1{margin-left:70mm;text-align:center;width:80mm}
+.ev .att{display:grid;grid-template-columns:7mm 48mm 1fr auto;gap:2mm;padding-left:8mm}
+.ev .ag{display:grid;grid-template-columns:20mm 1fr;margin-top:2mm}.ev .spk{display:grid;grid-template-columns:25mm 1fr}
+.ev .msig{display:grid;grid-template-columns:1fr 1fr;text-align:center;margin-top:14mm;break-inside:avoid}
+.ev table.et{width:100%;border-collapse:collapse;font-size:.88em}.ev .et th,.ev .et td{border:1px solid #000;padding:1mm 2mm;vertical-align:top}.ev .et th{text-align:center;vertical-align:middle}.ev .et .c{text-align:center}.ev .sm{font-weight:400;font-size:.85em}
 .paper.notice{width:210mm;min-height:297mm;padding:17mm 11mm 10mm 12.5mm;font-family:var(--lf);font-size:var(--ls);line-height:1.4;box-sizing:border-box}
 .notice .ttl{text-align:center;font-weight:700}
 .notice .att{text-align:right}
@@ -252,12 +265,13 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-dash"></section>
   <section class="view" id="v-edit" hidden></section>
   <section class="view" id="v-bid" hidden></section>
+  <section class="view" id="v-eval" hidden></section>
   <section class="view" id="v-nego" hidden></section>
   <section class="view" id="v-result" hidden></section>
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (14)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (15)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -295,6 +309,7 @@ function letterFont(){try{const c=document.createElement('canvas').getContext('2
   for(const f of ['TH SarabunIT๙','TH SarabunIT9','TH Sarabun New','TH SarabunNew','TH SarabunPSK']){if(w(`20px "${f}",monospace`)!==w('20px monospace'))return {lf:`"${f}","Sarabun",sans-serif`,ls:'16pt'}}}catch(e){}
   return {lf:'"Sarabun","Leelawadee UI",Tahoma,sans-serif',ls:'12pt'}}
 const ICON={
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg>',
   users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.9 1.9 5.4 4.9"/></svg>',
   dash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
   edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>',
@@ -313,7 +328,7 @@ const ICON={
 
 /* ================= state ================= */
 const LS='boqNego.v1';
-const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,
+const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,toShort:'ผอ.ขท.กระบี่',toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'นายทรงฤทธิ์ ชยานันท์',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
   signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
   showSign:true,watermark:false,theme:'system'};
 let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
@@ -352,7 +367,9 @@ function sampleProject(){
     {id:uid(),kind:'item',name:'ค่าธรรมเนียมการไฟฟ้าฯ สำหรับเป็นค่าขยายเขตระบบไฟฟ้า\nค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด',unit:'P.S.',qty:3,unitCost:245000,catId:c3,midOverride:'',fixed:false},
     {id:uid(),kind:'item',name:'ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณไหล่ทาง\nสำหรับทางหลวง 2 ช่องจราจร',unit:'ชุด',qty:1,unitCost:6181.08,catId:c3,midOverride:'',fixed:false}
   ];
-  p.bidders=[['0105564015052','บริษัท กิจพัฒนแสง จำกัด',3097000],['0805561000171','บริษัท โชคคอนกรีต จำกัด',''],['0905555001187','บริษัท วริศพงศ์ กรุ๊ป จำกัด',''],['0745566002548','บริษัท แอสเซมเทค จำกัด',''],['0105547056773','บริษัท ซี-คอน ซิสเต็ม เทคโนโลยี จำกัด',''],['0745550002667','บริษัท เลคิเซ่ ไลท์ติ้ง จำกัด','']].map(([t,n,pr])=>({id:uid(),taxId:t,name:n,price:pr,qualified:true,issues:[]}));
+  p.bidders=[['0105547056773','บริษัท ซี-คอน ซิสเต็ม เทคโนโลยี จำกัด',4808200,'นายกฤษยุ ภักดีชน','นายกฤษยุ ภักดีชน','no'],['0105564015052','บริษัท กิจพัฒนแสง จำกัด',3097000,'นายพงศกร จิระกรกุล','นายพงศกร จิระกรกุล','under'],['0745550002667','บริษัท เลคิเซ่ ไลท์ติ้ง จำกัด',4989000,'นายสมนึก โอวุฒิธรรม','บจก.เลคิเซ่ ไลท์ติ้ง โฮลดิ้ง','no'],['0745566002548','บริษัท แอสเซมเทค จำกัด',3447531.35,'นายมานิตย์ ภูยอดนิล','นายมานิตย์ ภูยอดนิล','under'],['0805561000171','บริษัท โชคคอนกรีต จำกัด',3280000,'นางขจิต ประชุมทอง\nนางสาวชาภรณ์ บริเพชร','นางขจิต ประชุมทอง','no'],['0905555001187','บริษัท วริศพงศ์ กรุ๊ป จำกัด',3347000,'นางสาวรสสุคนธ์ บุญญาวิโรจน์\nนายวรพันธ์ คงลิขิต','นางสาวรสสุคนธ์ บุญญาวิโรจน์','no']].map(([t,n,pr,mg,hd,sm])=>({id:uid(),taxId:t,name:n,price:pr,qualified:true,issues:[],mgrs:mg,holders:hd,netOk:true,sme:sm}));
+  p.committee=[{name:'นายสุวัฒชัย สิงหพันธ์',position:'รองผู้อำนวยการแขวงทางหลวงกระบี่ (ฝ่ายปฏิบัติการ)',role:'ประธานกรรมการฯ'},{name:'นางวัชดาภรณ์ ด้วงชู',position:'รองผู้อำนวยการแขวงทางหลวงกระบี่ (ฝ่ายบริหาร)',role:'กรรมการฯ'},{name:'นางสาวณรมา วรกลั่น',position:'นักวิชาการพัสดุปฏิบัติการ',role:'กรรมการฯ'},{name:'นายณรงค์ ช่วยสงค์',position:'นักจัดการงานทั่วไปปฏิบัติการ',role:'กรรมการฯ'}];
+  p.ev={orderNo:'สทล.17 ขท.กระบี่.1/293/2569',orderDate:'2026-09-30',pubStart:'2026-09-30',pubEnd:'2026-10-05',submitDate:'2026-10-06',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'2026-10-07',openTime:'08.30 น.',summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',m1:{no:'1/2569',date:'2026-10-09',start:'15.00 น.',end:'15.30 น.'},m2:{no:'2/2569',date:'2026-10-16',start:'10.00 น.',end:'11.00 น.',absent:{1:'ไปราชการ'}},replyNo:'KPS 106906/002',replyDate:'2026-10-15',duration:'90',hold:'270',secretary:2,rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false};
   p.rounds=[{id:uid(),date:'',requested:3096658,result:'pending',replyPrice:'',note:'ราคาที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
   return p;
 }
@@ -488,11 +505,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){({dash:rDash,edit:rEdit,bid:rBid,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
+function render(){({dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -755,6 +772,204 @@ function repNotice(p){const F=letterFont();const ranked=bidRank(p);const n=ranke
       <div class="hang"><span>อ้างอิงเอกสาร (${k+1})</span><span>${REF_TYPES.map(([k2,l])=>`<div>${is.refs&&is.refs[k2]?'☑':'☐'} ${esc(l)}${is.refs&&is.refs[k2]&&k2==='doc'&&is.refText?' '+esc(is.refText):''}</div>`).join('')}${is.refText&&!(is.refs&&is.refs.doc)?`<div>${esc(is.refText)}</div>`:''}</span></div></td></tr>`).join('')}</table>${sig}</div>`:'')).join('');
 }
 
+/* ================= evaluation (พิจารณาผล) ================= */
+const EV_DEF={orderNo:'',orderDate:'',pubStart:'',pubEnd:'',submitDate:'',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'',openTime:'08.30 น.',
+  summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',
+  m1:{no:'',date:'',start:'',end:''},m2:{no:'',date:'',start:'',end:'',absent:{}},replyNo:'',replyDate:'',duration:'',hold:'',secretary:-1,
+  rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false};
+function evOf(p){const e=Object.assign(structuredClone(EV_DEF),p.ev||{});e.m1=Object.assign({},EV_DEF.m1,e.m1);e.m2=Object.assign({},structuredClone(EV_DEF.m2),e.m2);e.rel=Object.assign({},EV_DEF.rel,e.rel);p.ev=e;
+  if(!Array.isArray(p.committee)){const s=p.signers||[];const strip=x=>String(x||'').replace(/[()]/g,'').trim();
+    p.committee=[{name:strip(s[1]?.name),position:'',role:'ประธานกรรมการฯ'},{name:strip(s[0]?.name),position:s[0]?.position||'',role:'กรรมการฯ'}].filter(m=>m.name||m.role)}
+  if(e.secretary<0||e.secretary>=p.committee.length)e.secretary=Math.max(0,p.committee.findIndex(m=>/พัสดุ/.test(m.position)));
+  return e}
+const D=iso=>{const x=thDateParts(iso);return x?`${x.d} ${x.m} ${x.y}`:'....................'};
+const dayBlank=()=>{const t=thDateParts(new Date().toISOString().slice(0,10));return `<span style="display:inline-block;width:14mm"></span>${t.m} ${t.y}`};
+function holidaySet(){return new Set(String(S.settings.holidays||'').split(/[\s,]+/).map(x=>x.trim()).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)))}
+function isWorkday(d,H){const w=d.getDay();return w!==0&&w!==6&&!H.has(d.toISOString().slice(0,10))}
+function addWorkdays(iso,n){if(!iso)return '';const H=holidaySet();const d=new Date(iso+'T12:00:00Z');let c=0;while(c<n){d.setUTCDate(d.getUTCDate()+1);const x=new Date(d.toISOString().slice(0,10)+'T12:00:00');if(isWorkday(x,H))c++}return d.toISOString().slice(0,10)}
+function evDeadline(p){const e=evOf(p);return addWorkdays(e.openDate,5)}
+function evDoneDate(p){const e=evOf(p);return e.summaryDate||e.m2.date||e.m1.date||''}
+function needExtend(p){const dl=evDeadline(p),dd=evDoneDate(p);return !!(dl&&dd&&dd>dl)}
+function shortFirm(n){return String(n||'').replace(/^บริษัท\s*/,'บจก.').replace(/^ห้างหุ้นส่วนจำกัด\s*/,'หจก.').replace(/\s*จำกัด\s*(\(มหาชน\))?\s*$/,'').replace(/\s+/g,' ').trim()}
+function nickOf(name){const n=String(name||'').replace(/^(นางสาว|นาย|นาง|น\.ส\.|ว่าที่ร้อยตรี|ว่าที่ ร\.ต\.)\s*/,'').trim().split(/\s+/)[0];return n?`คุณ${n}ฯ`:'กรรมการฯ'}
+function finalPrice(p){const cp=contractPrice(p);if(cp!==null)return cp;const b=basisOf(p);return b?b.price:num(p.offerPrice)}
+function rankText(b,n){return b.rank===1?'เสนอราคาต่ำสุด':b.rank===n?'เสนอราคาสูงสุด':`เสนอราคาต่ำสุดลำดับ ${b.rank}`}
+function bidLine(b,n){const reasons=(b.issues||[]).map(i=>i.reason||i.topic).filter(Boolean).join(' ');
+  return b.qualified===false?`${esc(b.name)} เสนอไม่ถูกต้องตามประกาศฯ${reasons?' เนื่องจาก '+esc(reasons):''} (เสนอราคา ${moneyDash(b.price)} บาท)`
+    :`${esc(b.name)} เสนอถูกต้องตามประกาศฯ เป็นเงิน ${moneyDash(b.price)} บาท (${bahtText(b.price)}) ${rankText(b,n)}`}
+function cmpLines(p){const fp=num(finalPrice(p)),bud=num(p.budget),mid=num(p.midDeclared)||totals(p).sumM/100;const r2=x=>Math.round(x*100)/100;
+  const f=x=>Number.isInteger(r2(x))?fmt(x,0):fmt(x);
+  return `<div class="ind1">- ต่ำกว่าวงเงินงบประมาณ (${f(bud)} – ${f(fp)}) = ${f(bud-fp)} บาท หรือ ${fmt(bud?(bud-fp)/bud*100:0)}%</div><div class="ind1">- ต่ำกว่าราคากลาง (${f(mid)} – ${f(fp)}) = ${f(r2(mid-fp))} บาท หรือ ${fmt(mid?(mid-fp)/mid*100:0)}%</div>`}
+
+/* ---------- page ---------- */
+function rEval(){
+  const el=$('#v-eval');if(needProject(el))return;const p=P();const e=evOf(p);const ranked=bidRank(p);const w=bidWinner(p);
+  const dl=evDeadline(p),dd=evDoneDate(p),ext=needExtend(p);
+  const F2=(path,label,type='text',cls='s4',ph='')=>{const v=path.split('.').reduce((o,k)=>o?.[k],e)??'';return `<label class="f ${cls}"><span>${label}</span><input class="i" type="${type}" data-ev="${path}" value="${esc(v)}" placeholder="${esc(ph)}"></label>`};
+  el.innerHTML=`${curBar('พิจารณาผล',`<button class="btn blue" id="evPrint" type="button">${ICON.print} พิมพ์เอกสารพิจารณาผล</button>`)}
+  <div class="note ${!e.openDate?'warn':ext?'bad':'ok'}" style="margin-bottom:16px">${!e.openDate?'<b>ยังไม่ได้กรอกวันเปิดข้อเสนอ</b> — กรอกเพื่อให้ระบบนับ 5 วันทำการ':`<b>ต้องพิจารณาผลให้แล้วเสร็จภายใน ${D(dl)}</b> (5 วันทำการนับถัดจากวันเปิดข้อเสนอ ${D(e.openDate)})${dd?` · วันที่สรุปผล ${D(dd)}`:''}${ext?` — <b>เกินกำหนด ต้องทำบันทึกขอขยายเวลาการพิจารณาผล</b> (พิมพ์ได้ในเอกสารพิจารณาผล)`:dd?' — อยู่ในกำหนด ไม่ต้องขอขยายเวลา':''}`}</div>
+  <div class="grid" style="gap:18px">
+   <div class="card"><div class="card-h"><h2><span class="step">1</span>กำหนดการ</h2></div><div class="card-b grid g12">
+     ${F2('orderNo','คำสั่งแต่งตั้งคณะกรรมการพิจารณาผล ที่','text','s4','สทล.17 ขท.กระบี่.1/293/2569')}${F2('orderDate','คำสั่งลงวันที่','date')}
+     <div class="f s4 muted" style="font-size:13px;align-self:end">ประกาศเลขที่ ${esc(p.inviteNo||'-')} ลงวันที่ ${D(p.inviteDate)} (แก้ที่หน้าข้อมูลโครงการ)</div>
+     ${F2('pubStart','เผยแพร่ประกาศตั้งแต่วันที่','date')}${F2('pubEnd','ถึงวันที่','date')}<div class="s4"></div>
+     ${F2('submitDate','วันยื่นข้อเสนอ','date')}${F2('submitTime','ช่วงเวลายื่นข้อเสนอ','text','s4')}<div class="s4"></div>
+     ${F2('openDate','วันเปิดข้อเสนอ','date')}${F2('openTime','เวลาเปิดข้อเสนอ (ตั้งแต่)','text','s4')}${F2('summaryDate','วันที่สรุปผล (ถ้าว่าง ใช้วันประชุมครั้งล่าสุด)','date')}
+     ${F2('duration','ระยะเวลาดำเนินการ (วัน)','text','s3')}${F2('hold','กำหนดยืนราคา (วัน)','text','s3')}${F2('extendDays','ขอขยายเวลาอีก (วันทำการ)','text','s3')}${F2('extendReason','เหตุผลที่ขอขยายเวลา','text','s3')}
+   </div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">2</span>คณะกรรมการพิจารณาผล</h2><button class="btn ghost-brand sm" id="cmAdd" type="button">+ เพิ่มกรรมการ</button></div>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>#</th><th>ชื่อ-สกุล (ไม่ต้องใส่วงเล็บ)</th><th>ตำแหน่ง</th><th>หน้าที่ในคณะกรรมการ</th><th>ผู้จดรายงานการประชุม</th><th>ครั้งที่ 2 ไม่มาประชุม (เหตุ)</th><th></th></tr></thead>
+     <tbody id="cmBody">${p.committee.map((m,i)=>`<tr data-cm="${i}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(m.name)}" placeholder="นายสมชาย ใจดี"></td><td><input class="i" data-c="position" value="${esc(m.position)}" style="min-width:260px"></td>
+       <td><select class="i" data-c="role">${['ประธานกรรมการฯ','กรรมการฯ','กรรมการและเลขานุการ'].map(r=>`<option ${m.role===r?'selected':''}>${r}</option>`).join('')}</select></td>
+       <td style="text-align:center"><input type="radio" name="sec" data-sec="${i}" ${e.secretary===i?'checked':''}></td>
+       <td><input class="i" data-abs="${i}" value="${esc(e.m2.absent[i]||'')}" placeholder="ว่าง = มาประชุม เช่น ไปราชการ" style="width:200px"></td>
+       <td><button class="icon-btn del" data-cmdel type="button">${ICON.x}</button></td></tr>`).join('')}</tbody></table></div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">3</span>การประชุม</h2></div><div class="card-b grid g12">
+     ${F2('m1.no','ประชุมครั้งที่ 1 (เลขครั้ง)','text','s3','1/2569')}${F2('m1.date','วันที่ประชุมครั้งที่ 1','date','s3')}${F2('m1.start','เริ่มประชุม','text','s3','15.00 น.')}${F2('m1.end','เลิกประชุม','text','s3','15.30 น.')}
+     ${F2('m2.no','ประชุมครั้งที่ 2 (เลขครั้ง)','text','s3','2/2569')}${F2('m2.date','วันที่ประชุมครั้งที่ 2','date','s3')}${F2('m2.start','เริ่มประชุม','text','s3','10.00 น.')}${F2('m2.end','เลิกประชุม','text','s3','11.00 น.')}
+     ${F2('replyNo','หนังสือตอบรับการต่อรองจากผู้ชนะ ที่','text','s6','KPS 106906/002')}${F2('replyDate','ลงวันที่','date','s6')}
+     <div class="s12 muted" style="font-size:13px">ถ้าไม่มีการต่อรองราคา (ไม่มีบันทึกในหน้าต่อรองราคา) รายงานการประชุมครั้งที่ 1 จะสรุปรับราคาเลย และไม่ต้องใช้ครั้งที่ 2</div>
+   </div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">4</span>ผลการตรวจสอบผู้ยื่นข้อเสนอ</h2></div>
+     <div class="card-b row" style="gap:18px">
+       ${[['rel.admin','มีความสัมพันธ์ในเชิงบริหาร'],['rel.capital','มีความสัมพันธ์ในเชิงทุน'],['rel.cross','มีความสัมพันธ์ไขว้กัน'],['coi','กรรมการมีส่วนได้เสียกับผู้ยื่นข้อเสนอ'],['obstruct','มีการขัดขวางการแข่งขันอย่างเป็นธรรม']].map(([k,l])=>`<label class="switch"><input type="checkbox" data-evb="${k}" ${k.split('.').reduce((o,x)=>o?.[x],e)?'checked':''}> ${l}</label>`).join('')}
+       <span class="muted" style="font-size:13px">ไม่ติ๊ก = “ไม่มี”</span></div>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th class="n">ลำดับราคา</th><th>ผู้ยื่นข้อเสนอ</th><th>ผู้บริหาร / ผู้มีอำนาจ (บรรทัดละคน)</th><th>ผู้ถือหุ้นรายใหญ่ / หุ้นส่วน</th><th>มูลค่าสุทธิของกิจการ</th><th>SMEs</th></tr></thead>
+     <tbody id="bkBody">${ranked.map(b=>`<tr data-bk="${b.id}"><td class="n">${b.rank}</td><td>${esc(b.name)}${b.qualified===false?' <span class="pill p-nego">ไม่ผ่าน</span>':''}${w&&w.id===b.id?' <span class="pill p-ok">ผู้ชนะ</span>':''}</td>
+       <td><textarea class="i" rows="2" data-k="mgrs" style="min-width:200px">${esc(b.mgrs||'')}</textarea></td><td><textarea class="i" rows="2" data-k="holders" style="min-width:200px">${esc(b.holders||'')}</textarea></td>
+       <td><select class="i" data-k="netOk"><option value="1" ${b.netOk!==false?'selected':''}>ถูกต้อง (เป็นบวก)</option><option value="0" ${b.netOk===false?'selected':''}>ไม่ถูกต้อง</option></select></td>
+       <td><select class="i" data-k="sme"><option value="no" ${(b.sme||'no')==='no'?'selected':''}>ไม่เป็น SMEs</option><option value="under" ${b.sme==='under'?'selected':''}>เป็น SMEs ไม่เกินมูลค่า</option><option value="over" ${b.sme==='over'?'selected':''}>เป็น SMEs เกินมูลค่า</option></select></td></tr>`).join('')||'<tr><td colspan="6" class="empty">ยังไม่มีผู้เสนอราคา · กรอกที่หน้า “ผู้เสนอราคา”</td></tr>'}</tbody></table></div></div>
+  </div>`;
+  const setPath=(path,v)=>{const ks=path.split('.');let o=e;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=v};
+  $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p)};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
+  $$('[data-evb]',el).forEach(i=>i.onchange=()=>{setPath(i.dataset.evb,i.checked);touch(p)});
+  $('#evPrint').onclick=()=>{reportSel='eval';go('report')};
+  $('#cmAdd').onclick=()=>{p.committee.push({name:'',position:'',role:'กรรมการฯ'});touch(p);rEval()};
+  const cb=$('#cmBody');
+  cb.oninput=ev=>{const tr=ev.target.closest('[data-cm]');if(!tr)return;const i=+tr.dataset.cm,t=ev.target;
+    if(t.dataset.c){p.committee[i][t.dataset.c]=t.value}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}touch(p)};
+  cb.onchange=cb.oninput;
+  cb.onclick=ev=>{if(!ev.target.closest('[data-cmdel]'))return;const i=+ev.target.closest('[data-cm]').dataset.cm;p.committee.splice(i,1);const ab={};Object.entries(e.m2.absent).forEach(([k,v])=>{k=+k;if(k<i)ab[k]=v;else if(k>i)ab[k-1]=v});e.m2.absent=ab;if(e.secretary>=p.committee.length)e.secretary=0;touch(p);rEval()};
+  const bk=$('#bkBody');
+  bk.oninput=ev=>{const tr=ev.target.closest('[data-bk]');if(!tr)return;const b=p.bidders.find(x=>x.id===tr.dataset.bk);const k=ev.target.dataset.k;
+    b[k]=k==='netOk'?ev.target.value==='1':ev.target.value;touch(p)};
+  bk.onchange=bk.oninput;
+}
+
+/* ---------- printable documents ---------- */
+const EVAL_DOCS=[['ext','บันทึกขอขยายเวลาการพิจารณาผล'],['qual','แจ้งผลการตรวจสอบคุณสมบัติ'],['coi','การมีส่วนได้เสีย'],['docchk','รายงานผลการตรวจเอกสาร'],['m1','รายงานการประชุม ครั้งที่ 1'],['joint','ตรวจสอบผู้มีผลประโยชน์ร่วมกัน'],['sme','มูลค่าสุทธิ / SMEs'],['m2','รายงานการประชุม ครั้งที่ 2'],['sum','บันทึกสรุปผลการพิจารณา']];
+function evPaper(inner){const F=letterFont();return `<div class="paper ev${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">${inner}</div>`}
+function memoHead(sec,subject,to){const st=S.settings;return `<div class="mh"><img src="${GARUDA}" alt=""><div class="mt">บันทึกข้อความ</div></div>
+  <div class="ml"><b>ส่วนราชการ</b><span class="dl">${sec}</span></div>
+  <div class="ml two"><div class="ml"><b>ที่</b><span class="dl">-</span></div><div class="ml"><b>วันที่</b><span class="dl">${dayBlank()}</span></div></div>
+  <div class="ml"><b>เรื่อง</b><span class="dl">${subject}</span></div><div class="to">เรียน ${esc(to)}</div>`}
+function cmSigList(p,{title=true}={}){return `<div class="cms">${p.committee.map(m=>`<div class="cm1"><div>(ลงชื่อ)......................................................${esc(m.role==='ประธานกรรมการฯ'?(title?'ประธานกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์':'ประธานกรรมการฯ'):m.role)}</div><div class="nm">(${esc(m.name||'......................................................')})</div></div>`).join('')}</div>`}
+function chairOf(p){return p.committee.find(m=>m.role==='ประธานกรรมการฯ')||p.committee[0]||{name:''}}
+function projTitle(p){return esc(p.name)}
+const ck=on=>on?'☑':'☐';
+
+function docExt(p){const e=evOf(p);const ch=chairOf(p);
+  return evPaper(`${memoHead('คณะกรรมการพิจารณาผลฯ',`ขอขยายเวลาการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์เลขที่ ${esc(p.inviteNo)}`,S.settings.toShort||'ผอ.ขท.กระบี่')}
+   <p class="pi">ตามประกาศประกวดราคาอิเล็กทรอนิกส์เลขที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)} ${projTitle(p)} วงเงินงบประมาณ ${moneyDash(p.budget)} บาท (${bahtText(p.budget)}) กำหนดยื่นข้อเสนอและเสนอราคาทางระบบจัดซื้อจัดจ้างภาครัฐ ในวันที่ ${D(e.submitDate)} ระหว่างเวลา ${esc(e.submitTime)} และกำหนดเปิดข้อเสนอในวันที่ ${D(e.openDate)} ตั้งแต่เวลา ${esc(e.openTime)} เป็นต้นไป นั้น</p>
+   <p class="pi">${esc(e.extendReason)} จึงขอขยายเวลาการพิจารณาผลอีก ${esc(e.extendDays)} วันทำการ</p>
+   <p class="pi">จึงเรียนมาเพื่อโปรดพิจารณา</p>
+   <div class="sg1"><div style="height:18mm"></div>(${esc(ch.name)})<br>ประธานกรรมการพิจารณาผลฯ</div>`)}
+function relBlock(n,label,on){return `<div class="hg"><span>${n}.</span><div>${esc(label)} &nbsp;${ck(!on)} ไม่มี<br>${ck(on)} มี ได้แก่ ${[1,2,3].map(i=>`<div class="ind2">${i}. ระหว่าง..................................................กับ..................................................</div>`).join('')}</div></div>`}
+function docQual(p){const e=evOf(p);const st=S.settings;
+  return evPaper(`${memoHead(`${esc(st.office||'')} &nbsp; โทร. ${esc(st.tel||'')} &nbsp; โทรสาร ${esc(st.fax||'')}`,'แจ้งผลการตรวจสอบคุณสมบัติของผู้เสนอราคา',st.toShort||'ผอ.ขท.กระบี่')}
+   <p class="pi">คณะกรรมการพิจารณาผลประกวดราคา ขอแจ้งผลการตรวจสอบคุณสมบัติของผู้เสนอราคา ปรากฏผล ดังนี้.-</p>
+   <div class="ind1">${relBlock(1,'มีความสัมพันธ์กันในเชิงบริหาร',e.rel.admin)}${relBlock(2,'มีความสัมพันธ์กันในเชิงทุน',e.rel.capital)}${relBlock(3,'มีความสัมพันธ์ในลักษณะไขว้กันระหว่าง (1) และ (2)',e.rel.cross)}</div>
+   ${cmSigList(p)}`)}
+function docCoi(p){const e=evOf(p);
+  return evPaper(`<div class="ct b">การมีส่วนได้เสียกับผู้ยื่นข้อเสนอหรือคู่สัญญาในการจัดซื้อจัดจ้าง</div><div class="ct">${projTitle(p)}</div><div class="ct">เลขที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)}</div>
+   <div class="ct b" style="margin-top:6mm">คณะกรรมการพิจารณาผลการประกวดราคาจ้างอิเล็กทรอนิกส์ (e-bidding)</div>
+   <div style="margin-top:3mm">${ck(!e.coi)} ไม่มีส่วนได้เสียกับผู้ยื่นข้อเสนอหรือคู่สัญญา</div><div>${ck(e.coi)} มีส่วนได้เสียกับผู้ยื่นข้อเสนอหรือคู่สัญญา กับ.....................................................................................</div>
+   ${p.committee.map(m=>`<div>${esc(m.role)}.......................................................................เกี่ยวข้องเป็น....................................</div>`).join('')}
+   ${cmSigList(p)}`)}
+function docDocchk(p){const e=evOf(p);const R=bidRank(p);const n=R.length;const bad=t=>R.filter(b=>b.qualified===false&&(b.issues||[]).some(i=>i.types&&i.types[t]));
+  const why=L=>L.map(b=>`${shortFirm(b.name)}: ${(b.issues||[]).map(i=>i.reason||i.topic).filter(Boolean).join(' ')}`).join(' / ');
+  const blk=(no,title,cl,L)=>`<div class="ind1">${no}. ${title} จำนวน ${n} ราย</div><div class="ind2">${ck(L.length<n)} ${cl.ok} ${n-L.length} ราย</div><div class="ind2">${ck(L.length>0)} ${cl.bad} ${L.length||'........'} ราย</div><div class="ind3">เนื่องจาก ${L.length?esc(why(L)):'..........................................................................................'}</div>`;
+  return evPaper(`<div class="ct b">บันทึกรายงานผลการตรวจเอกสารประกวดราคาจ้างอิเล็กทรอนิกส์ (e-bidding)</div><div class="ct b">ตามประกาศที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)}</div><div style="height:4mm"></div>
+   ${blk(1,'เอกสารการประกวดราคา',{ok:'ถูกต้องตามเงื่อนไขในประกาศ',bad:'ไม่ถูกต้องตามเงื่อนไขในประกาศ'},bad('doc'))}
+   ${blk(2,'เอกสารหลักฐานส่วนที่ 1',{ok:'ครบถ้วนถูกต้องตามเงื่อนไขในประกาศ ข้อ 3.1',bad:'ไม่ครบถ้วนถูกต้องตามเงื่อนไขในประกาศ ข้อ 3.1'},bad('qual'))}
+   ${blk(3,'เอกสารหลักฐานส่วนที่ 2',{ok:'ครบถ้วนถูกต้องตามเงื่อนไขในประกาศ ข้อ 3.2',bad:'ไม่ครบถ้วนถูกต้องตามเงื่อนไขในประกาศ ข้อ 3.2'},bad('tech'))}
+   <div class="ind1" style="margin-top:3mm">รับเอกสารประกวดราคา วันที่ ${D(e.openDate)}</div>${cmSigList(p)}`)}
+function attendees(p,absent){return p.committee.map((m,i)=>({m,i})).filter(x=>!absent||!absent[x.i])}
+function minutesHead(p,no,date){return `<div class="ct b">รายงานการประชุม</div><div class="ct b">คณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์</div><div class="ct b">${projTitle(p)}</div><div class="ct b">ครั้งที่ ${esc(no||'....')}</div><div class="ct b">วันที่ ${D(date)}</div><div class="ct b">ณ ${esc(S.settings.place||'ห้องประชุมแขวงทางหลวงกระบี่')}</div><div class="ct">…………………</div>`}
+function attendList(p,absent){const A=attendees(p,absent);const ab=p.committee.map((m,i)=>({m,i})).filter(x=>absent&&absent[x.i]);
+  return `<div class="b">ผู้มาประชุม</div>${A.map((x,k)=>`<div class="att"><span>${k+1}.</span><span>${esc(x.m.name)}</span><span>${esc(x.m.position)}</span><span>${esc(x.m.role)}</span></div>`).join('')}${ab.length?`<div class="b">ผู้ไม่มาประชุม</div>${ab.map((x,k)=>`<div class="att"><span>${k+1}.</span><span>${esc(x.m.name)}</span><span>${esc(x.m.position)} (${esc(absent[x.i])})</span><span>${esc(x.m.role)}</span></div>`).join('')}`:''}`}
+function minutesSig(p){const e=evOf(p);const sec=p.committee[e.secretary]||{};const ch=chairOf(p);
+  return `<div class="msig"><div>…………………………………………<br>(${esc(sec.name)})<br>${esc(sec.role)}<br>ผู้จดรายงานการประชุม</div><div>…………………………………………<br>(${esc(ch.name)})<br>${esc(ch.role)}<br>ผู้ตรวจรายงานการประชุม</div></div>`}
+function agenda(no,title,body){return `<div class="ag"><b>วาระที่ ${no}</b><b>${title}</b></div>${body}`}
+const spk=(who,txt)=>`<div class="spk"><span>${who}</span><div>${txt}</div></div>`;
+function docM1(p){const e=evOf(p);const R=bidRank(p);const n=R.length;const w=bidWinner(p);const sec=p.committee[e.secretary]||{};const nego=p.rounds.length>0;
+  const list=R.slice().sort((a,b)=>p.bidders.findIndex(x=>x.id===a.id)-p.bidders.findIndex(x=>x.id===b.id));
+  const nq=R.filter(b=>b.qualified===false).length;
+  return evPaper(`${minutesHead(p,e.m1.no,e.m1.date)}${attendList(p,null)}<div>เริ่มประชุมเวลา ${esc(e.m1.start||'.......')}</div>
+   ${agenda(1,'เรื่องที่ประธานแจ้งให้ที่ประชุมทราบ',spk('ประธานฯ',`ตามคำสั่ง${esc(S.settings.office||'')} ที่ ${esc(e.orderNo||'..........')} ลงวันที่ ${D(e.orderDate)} เรื่อง แต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ สำหรับการประกวดราคา${projTitle(p)} ขอให้คณะกรรมการฯ ร่วมกันพิจารณาตรวจสอบเอกสารของผู้ยื่นข้อเสนอ`)+`<div class="ind1">มติที่ประชุม รับทราบ</div>`)}
+   ${agenda(2,'เรื่องเสนอเพื่อพิจารณาการตรวจสอบความถูกต้อง ครบถ้วนของเอกสาร',spk(nickOf(sec.name),`เรียนว่าตามประกาศประกวดราคาจ้างก่อสร้างด้วยวิธีประกวดราคาอิเล็กทรอนิกส์เลขที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)} ${projTitle(p)} กำหนดยื่นข้อเสนอและเสนอราคาทางระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์ ในวันที่ ${D(e.submitDate)} ระหว่างเวลา ${esc(e.submitTime)} และกำหนดเปิดเอกสารเสนอราคาในวันที่ ${D(e.openDate)} ปรากฏว่า มีผู้ยื่นข้อเสนอฯ จำนวน ${n} ราย คือ${list.map(b=>`<div class="ind1">- ${esc(b.name)}</div>`).join('')}
+     และได้พิมพ์เอกสารของผู้ยื่นข้อเสนอทั้ง ${n} ราย จากระบบจัดซื้อจัดจ้างภาครัฐ (e-GP) เรียบร้อยแล้วจำนวน 1 ชุด โดยได้ตรวจสอบเอกสารต่างๆ ของผู้ยื่นข้อเสนอทั้ง ${n} ราย ตามบัญชีรายการเอกสารส่วนที่ 1 และส่วนที่ 2 ${nq?`ปรากฏว่า ถูกต้อง ครบถ้วน ${n-nq} ราย ไม่ถูกต้อง ${nq} ราย`:'ปรากฏว่า ถูกต้อง ครบถ้วน ตามบัญชีรายการเอกสาร'} จึงขอให้คณะกรรมการฯ ตรวจสอบอีกครั้ง`)+
+     `<div class="pi">คณะกรรมการฯ ได้ตรวจสอบเอกสารตามบัญชีรายการเอกสารแล้ว ปรากฏว่า ${nq?`ถูกต้องครบถ้วน ${n-nq} ราย`:'ถูกต้องครบถ้วน'}</div>
+     <div class="b ind1">2.2 การตรวจสอบคุณสมบัติของผู้เสนอราคา</div><div class="pi">คณะกรรมการฯ ได้ตรวจสอบเอกสารของผู้ยื่นข้อเสนอฯ ดังนี้</div>
+     <div class="ind2">- ตรวจสอบการมีผลประโยชน์ร่วมกัน โดยตรวจสอบรายชื่อตามเอกสารของผู้ยื่นข้อเสนอฯ ทั้ง ${n} ราย ทั้งในด้านผู้บริหารและผู้ถือหุ้นรายใหญ่แล้ว ปรากฏว่า ${e.rel.admin||e.rel.capital||e.rel.cross?'มีผู้ที่มีผลประโยชน์ร่วมกัน':'ไม่เป็นผู้ที่มีผลประโยชน์ร่วมกัน'} และ${e.obstruct?'มี':'ไม่มี'}การขัดขวางการแข่งขันเสนอราคาอย่างเป็นธรรม (ตามเอกสารแนบ)</div>
+     <div class="ind2">- ตรวจสอบมูลค่าสุทธิของกิจการ ของผู้ยื่นข้อเสนอฯ ทั้ง ${n} รายแล้ว ปรากฏว่า ${R.every(b=>b.netOk!==false)?'มีค่าเป็นบวก 1 ปีสุดท้ายก่อนวันยื่นข้อเสนอฯ ถูกต้องตรงกับข้อมูลของกรมพัฒนาธุรกิจการค้า':'มีผู้ที่มูลค่าสุทธิของกิจการไม่ถูกต้อง'} (ตามเอกสารแนบ)</div>
+     <div class="ind2">- ตรวจสอบคุณสมบัติผู้เสนอราคาฯ ทั้ง ${n} รายแล้ว ปรากฏว่า ${nq?`ถูกต้องเป็นไปตามประกาศฯ ${n-nq} ราย ไม่ถูกต้อง ${nq} ราย`:'ถูกต้องเป็นไปตามประกาศฯ'}</div>
+     <div class="b ind1">2.3 การตรวจสอบผู้มีอำนาจลงนามในเอกสารและหนังสือมอบอำนาจ</div><div class="pi">คณะกรรมการฯ ได้ร่วมกันตรวจสอบผู้มีอำนาจลงนามในเอกสารของผู้ยื่นข้อเสนอฯ ทั้ง ${n} รายแล้ว ปรากฏว่า ผู้ลงนามในเอกสารทุกฉบับของผู้ยื่นข้อเสนอฯ มีอำนาจลงนามผูกพันถูกต้องตรงตามหนังสือมอบอำนาจ และหนังสือรับรองของกรมพัฒนาธุรกิจการค้า กระทรวงพาณิชย์</div>
+     <div class="b ind1">2.4 การตรวจสอบด้านเทคนิคและพิจารณาด้านราคา</div><div class="pi">คณะกรรมการฯ ได้ร่วมกันตรวจสอบเอกสารด้านเทคนิคฯ ของผู้ยื่นข้อเสนอฯ ทั้ง ${n} รายแล้ว ปรากฏว่า</div>
+     ${R.map((b,k)=>`<div class="hg ind1"><span>2.4.${k+1}</span><div>${bidLine(b,n)}</div></div>`).join('')}
+     ${w?(nego?`<div class="pi">คณะกรรมการฯ ได้ร่วมกันพิจารณาแล้ว เพื่อประโยชน์ของทางราชการ เห็นควร ต่อรองราคากับ${esc(w.name)} แล้วค่อยสรุปผลพิจารณาการประกวดราคาอิเล็กทรอนิกส์ฯ ต่อไป</div><div class="ind1">มติที่ประชุม เห็นชอบ และนัดประชุมครั้งที่ 2 เมื่อได้รับหนังสือจาก${esc(w.name)}</div>`
+       :`<div class="pi">คณะกรรมการฯ ได้ร่วมกันพิจารณาแล้ว เห็นควรรับราคา${esc(w.name)} เป็นเงินทั้งสิ้น ${moneyDash(w.price)} บาท (${bahtText(w.price)}) ซึ่งเป็นราคาที่รวมภาษีมูลค่าเพิ่มแล้ว${e.duration?` กำหนดระยะเวลาดำเนินการให้แล้วเสร็จภายใน ${esc(e.duration)} วัน`:''}${e.hold?` กำหนดยืนราคา ${esc(e.hold)} วัน`:''}</div>${cmpLines(p)}<div class="ind1">มติที่ประชุม เห็นชอบรับราคา</div>`):''}`)}
+   ${agenda(3,'เรื่องอื่นๆ','<div class="ind1">- ไม่มี</div>')}<div>เลิกประชุม ${esc(e.m1.end||'.......')}</div>${minutesSig(p)}`)}
+function docM2(p){const e=evOf(p);const w=bidWinner(p);const fp=finalPrice(p);
+  return evPaper(`${minutesHead(p,e.m2.no,e.m2.date)}${attendList(p,e.m2.absent)}<div>เริ่มประชุมเวลา ${esc(e.m2.start||'.......')}</div>
+   ${agenda(1,'เรื่องที่ประธานแจ้งให้ที่ประชุมทราบ',spk('ประธานฯ','- ไม่มี'))}
+   ${agenda(2,`การรับรองรายงานการประชุม ครั้งที่ ${esc(e.m1.no||'....')} ลงวันที่ ${D(e.m1.date)}`,spk('ประธานฯ',`เรียนว่า ขอให้พิจารณารายงานการประชุม ครั้งที่ ${esc(e.m1.no)} ลงวันที่ ${D(e.m1.date)} หากไม่มีผู้ใดเพิ่มเติมหรือขอแก้ไข ขอให้ที่ประชุมรับรองรายงานการประชุม ครั้งที่ ${esc(e.m1.no)} ลงวันที่ ${D(e.m1.date)}`)+`<div class="ind1">มติที่ประชุม รับรองรายงานการประชุม ครั้งที่ ${esc(e.m1.no)} ลงวันที่ ${D(e.m1.date)}</div>`)}
+   ${agenda(3,'เรื่องเสนอเพื่อพิจารณาการพิจารณาข้อเสนอด้านราคา',spk('ประธานฯ',`ตามที่ คณะกรรมการฯ ได้มีมติต่อรองราคากับ${esc(w?.name||p.contractor)} และบริษัทฯ ได้มีหนังสือ ที่ ${esc(e.replyNo||'..........')} ลงวันที่ ${D(e.replyDate)} ยินดีปรับลดราคาลงอีก ขอให้คณะกรรมการฯ ร่วมกันพิจารณาข้อเสนอด้านราคาต่อไป`)+
+     `<div class="pi">คณะกรรมการฯ ได้ร่วมกันพิจารณาแล้ว เพื่อประโยชน์ของทางราชการ และบริษัทฯ ยินดีลดราคาคงเหลือราคา ${moneyDash(fp)} บาท (${bahtText(fp)}) ตามหนังสือที่ ${esc(e.replyNo||'..........')} ลงวันที่ ${D(e.replyDate)} คณะกรรมการฯ จึงเห็นควรรับราคา${esc(w?.name||p.contractor)} เป็นเงินทั้งสิ้น ${moneyDash(fp)} บาท (${bahtText(fp)}) ซึ่งเป็นราคาที่รวมภาษีมูลค่าเพิ่มแล้ว${e.duration?` กำหนดระยะเวลาดำเนินการให้แล้วเสร็จภายใน ${esc(e.duration)} วัน`:''}${e.hold?` กำหนดยืนราคา ${esc(e.hold)} วัน`:''}</div>${cmpLines(p)}<div class="ind1">มติที่ประชุม เห็นชอบรับราคา</div>`)}
+   ${agenda(4,'เรื่องอื่นๆ','<div class="ind1">- ไม่มี</div>')}<div>เลิกประชุม ${esc(e.m2.end||'.......')}</div>${minutesSig(p)}`)}
+function docJoint(p){const e=evOf(p);const R=bidRank(p);const L=s=>esc(s||'').replace(/\n/g,'<br>');
+  return evPaper(`<div class="ct b">การตรวจสอบ “ผู้มีผลประโยชน์ร่วมกัน” และ “การขัดขวางการแข่งขันอย่างเป็นธรรม”</div><div class="ct b">ตามวิธีประกวดราคาอิเล็กทรอนิกส์ (Electronic Bidding: e-bidding)</div><div class="ct b">เลขที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)}</div>
+   <div class="b" style="margin-top:3mm">1. การตรวจสอบผู้มีผลประโยชน์ร่วมกัน</div>
+   <table class="et"><thead><tr><th style="width:9%">ลำดับที่</th><th style="width:23%">ชื่อบุคคลธรรมดาหรือนิติบุคคลที่เข้าเสนอราคา</th><th>(1) ความสัมพันธ์กันในเชิงบริหาร<div class="sm">ชื่อ ผู้จัดการ / หุ้นส่วนผู้จัดการ / กรรมการผู้จัดการ / ผู้บริหารหรือผู้มีอำนาจในการบริหารจัดการ</div></th><th>(2) ความสัมพันธ์กันในเชิงทุน<div class="sm">(ถือหุ้นเกินกว่าร้อยละยี่สิบห้า) ชื่อผู้ถือหุ้นรายใหญ่ (บริษัท) / หุ้นส่วน (ห้าง)</div></th><th style="width:15%">(3) ความสัมพันธ์กันในเชิงไขว้กัน ระหว่าง (1) และ (2)</th></tr></thead>
+   <tbody>${R.map((b,k)=>`<tr><td class="c">${k+1}.</td><td>${esc(shortFirm(b.name))}</td><td>${L(b.mgrs)}</td><td>${L(b.holders)}</td><td class="c">${e.rel.cross?'':'ไม่มี'}</td></tr>`).join('')}</tbody></table>
+   <div class="b" style="margin-top:3mm">2. การขัดขวางการแข่งขันเสนอราคาอย่างเป็นธรรม</div><div class="ind1">${ck(!e.obstruct)} ไม่มีการกระทำ</div><div class="ind1">${ck(e.obstruct)} มีการกระทำ คือ..............................................................................................</div>
+   ${cmSigList(p,{title:false})}`)}
+function docSme(p){const R=bidRank(p);const c=on=>on?'✓':'-';
+  return evPaper(`<div class="ct b">รายละเอียดการตรวจสอบ “มูลค่าสุทธิของกิจการ” และ “การตรวจสอบรายได้ SMEs”</div><div class="ct b">ตามประกาศประกวดราคาด้วยวิธีการทางอิเล็กทรอนิกส์เลขที่ ${esc(p.inviteNo)}</div><div class="ct b">ลงวันที่ ${D(p.inviteDate)}</div><div class="ct b">${projTitle(p)}</div>
+   <table class="et" style="margin-top:4mm"><thead><tr><th rowspan="3" style="width:8%">ลำดับที่</th><th rowspan="3">ชื่อบุคคลธรรมดาหรือนิติบุคคลที่เข้ายื่นข้อเสนอฯ</th><th colspan="2" rowspan="2">มูลค่าสุทธิของกิจการ<div class="sm">ตรวจสอบงบแสดงฐานะการเงินที่มีการตรวจรับรองแล้วมีค่าเป็นบวก 1 ปีสุดท้ายก่อนวันยื่นข้อเสนอฯ</div></th><th colspan="3">การตรวจสอบรายได้ SMEs<div class="sm">ตรวจสอบมูลค่าสัญญาสะสมไม่เกินกว่ามูลค่าของรายได้ตามขนาดที่ได้ขึ้นทะเบียนไว้กับ สสว.</div></th></tr>
+   <tr><th colspan="2">เป็น SMEs</th><th rowspan="2">ไม่เป็น SMEs</th></tr><tr><th>ถูกต้อง</th><th>ไม่ถูกต้อง</th><th>เกินมูลค่า</th><th>ไม่เกินมูลค่า</th></tr></thead>
+   <tbody>${R.map((b,k)=>`<tr><td class="c">${k+1}</td><td>${esc(shortFirm(b.name))}</td><td class="c">${c(b.netOk!==false)}</td><td class="c">${c(b.netOk===false)}</td><td class="c">${c(b.sme==='over')}</td><td class="c">${c(b.sme==='under')}</td><td class="c">${c(!b.sme||b.sme==='no')}</td></tr>`).join('')}</tbody></table>
+   ${cmSigList(p,{title:false})}`)}
+function docSum(p){const e=evOf(p);const st=S.settings;const R=bidRank(p);const n=R.length;const w=bidWinner(p);const fp=finalPrice(p);const mid=num(p.midDeclared)||totals(p).sumM/100;const nego=p.rounds.length>0;
+  const list=R.slice().sort((a,b)=>p.bidders.findIndex(x=>x.id===a.id)-p.bidders.findIndex(x=>x.id===b.id));
+  const accept=`เป็นเงินทั้งสิ้น ${moneyDash(fp)} บาท (${bahtText(fp)}) ซึ่งเป็นราคาที่รวมภาษีมูลค่าเพิ่มแล้ว${e.duration?` กำหนดระยะเวลาดำเนินการให้แล้วเสร็จภายใน ${esc(e.duration)} วัน`:''}${e.hold?` กำหนดยืนราคา ${esc(e.hold)} วัน`:''}`;
+  return evPaper(`${memoHead(`${esc(st.office||'')} &nbsp; โทร. ${esc(st.tel||'')} &nbsp; โทรสาร ${esc(st.fax||'')}`,`สรุปผลการพิจารณาผู้ชนะการเสนอราคาตามประกาศประกวดราคาอิเล็กทรอนิกส์ เลขที่ ${esc(p.inviteNo)}`,st.toSum||'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่')}
+   <div class="sh">1. เรื่องเดิม</div>
+   <p class="pi">ตามคำสั่ง ${esc(st.officeShort||'')} ที่ ${esc(e.orderNo||'..........')} ลงวันที่ ${D(e.orderDate)} ได้แต่งตั้งให้ผู้มีรายนามข้างท้ายนี้ เป็นคณะกรรมการพิจารณาผลการประกวดราคาจ้างอิเล็กทรอนิกส์ (e-bidding) ${projTitle(p)} ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) วงเงินงบประมาณ ${moneyDash(p.budget)} บาท ราคากลาง ${fmt(mid)} บาท โดย${esc(st.office||'')} ได้ดำเนินการออกประกาศฯ ที่ ${esc(p.inviteNo)} ลงวันที่ ${D(p.inviteDate)} เผยแพร่ประกาศฯ ระหว่างวันที่ ${D(e.pubStart)} ถึงวันที่ ${D(e.pubEnd)} กำหนดยื่นข้อเสนอและใบเสนอราคาทางระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์ ในวันที่ ${D(e.submitDate)} ระหว่างเวลา ${esc(e.submitTime)} และกำหนดเปิดข้อเสนอฯ วันที่ ${D(e.openDate)} โดยมีกำหนดพิจารณาผลให้แล้วเสร็จภายใน 5 วันทำการ${needExtend(p)?` และได้ขอขยายเวลาการพิจารณาผลอีก ${esc(e.extendDays)} วันทำการ`:''} ซึ่งในการพิจารณาผู้ชนะการเสนอราคาจะพิจารณาตัดสินโดยใช้หลักเกณฑ์ราคาและพิจารณาจากราคารวมต่ำสุด นั้น</p>
+   <div class="sh">2. ข้อเท็จจริง</div>
+   <p class="pi">เมื่อสิ้นสุดวันยื่นข้อเสนอและเสนอราคาผ่านทางระบบจัดซื้อจัดจ้างด้วยอิเล็กทรอนิกส์ คณะกรรมการฯ ได้ดำเนินการจัดพิมพ์เอกสารของผู้เสนอราคาทุกรายผ่านทางระบบฯ จำนวน 1 ชุด เพื่อดำเนินการในส่วนที่เกี่ยวข้องตามระเบียบฯ ซึ่งมีผู้สนใจยื่นข้อเสนอและเสนอราคา จำนวน ${n} ราย ดังนี้</p>
+   ${list.map((b,k)=>`<div class="ind2">2.${k+1} ${esc(b.name)}</div>`).join('')}
+   <p class="pi">คณะกรรมการฯ ได้ดำเนินการดังนี้</p>
+   <div class="ind1">1. ตรวจสอบเอกสารหลักฐาน ปรากฏว่า ในส่วนของการตรวจสอบมูลค่าสุทธิของกิจการ${R.every(b=>b.netOk!==false)?'ถูกต้องตรงกับข้อมูลของกรมพัฒนาธุรกิจการค้า':'มีผู้ที่ไม่ถูกต้อง'}</div>
+   <div class="ind1">2. ตรวจสอบรายชื่อตามเอกสารของผู้ยื่นเอกสารการเสนอราคาในด้านผู้บริหาร และผู้ถือหุ้นรายใหญ่แล้ว ปรากฏว่า ${e.rel.admin||e.rel.capital||e.rel.cross?'มีผู้ที่มีผลประโยชน์ร่วมกัน':'ถูกต้อง ครบถ้วนตามประกาศฯ'}</div>
+   <div class="ind1">3. คณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ ได้พิจารณารายละเอียดทางด้านเทคนิคของผู้ยื่นข้อเสนอและเสนอราคา ทั้ง ${n} รายแล้ว ปรากฏว่า</div>
+   ${R.map((b,k)=>`<div class="hg ind1"><span>3.${k+1}</span><div>${bidLine(b,n)}</div></div>`).join('')}
+   <p class="pi">คณะกรรมการฯ ได้ร่วมกันพิจารณาแล้วเห็นว่า ${esc(w?.name||'..........')} เสนอถูกต้องตามประกาศฯ เป็นเงิน ${moneyDash(w?.price)} บาท (${bahtText(w?.price)}) ${nego?`เพื่อประโยชน์ของทางราชการ คณะกรรมการฯ ได้ต่อรองราคากับบริษัทฯ แล้ว โดยบริษัทฯ ยินดีลดราคาคงเหลือราคา ${moneyDash(fp)} บาท (${bahtText(fp)}) ตามหนังสือที่ ${esc(e.replyNo||'..........')} ลงวันที่ ${D(e.replyDate)} `:''}คณะกรรมการฯ จึงเห็นควรรับราคา ${esc(w?.name||'')} ${accept}</p>${cmpLines(p)}
+   <div class="sh">3. ข้อระเบียบฯ</div><p class="pi">${esc(st.authority||'')}</p>
+   <div class="sh">4. ข้อเรียนมาเพื่อโปรดพิจารณา</div>
+   <p class="pi">คณะกรรมการฯ จึงเห็นควรรับราคา ${esc(w?.name||'')} ${accept}</p>${cmpLines(p)}
+   <p class="pi">จึงเรียนมาเพื่อโปรดพิจารณาเห็นชอบรายงานผลการพิจารณาฯ ต่อไป</p>
+   ${cmSigList(p,{title:false})}
+   <div style="margin-top:8mm;break-inside:avoid">${esc(st.approveTo||'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.')}
+     ${String(st.approveLines||'').split('\n').filter(Boolean).map(l=>`<div class="ind1">${esc(l)}</div>`).join('')}
+     <div style="margin:16mm 0 0 18mm;text-align:center;width:70mm">(${esc(st.director||'..............................')})<br>${esc(st.directorPos||'')}</div></div>`)}
+function repEval(p){evOf(p);const sel=S.settings.evalDocs||EVAL_DOCS.map(x=>x[0]);const map={ext:docExt,qual:docQual,coi:docCoi,docchk:docDocchk,m1:docM1,joint:docJoint,sme:docSme,m2:docM2,sum:docSum};
+  if(!(p.bidders||[]).length)return `<div class="note warn">ยังไม่มีรายชื่อผู้เสนอราคา · กรอกที่หน้า “ผู้เสนอราคา”</div>`;
+  return EVAL_DOCS.filter(([k])=>sel.includes(k)).filter(([k])=>k!=='ext'||needExtend(p)||S.settings.forceExt).filter(([k])=>k!=='m2'||p.rounds.length).map(([k])=>map[k](p)).join('')}
+function evalPicker(p){const sel=S.settings.evalDocs||EVAL_DOCS.map(x=>x[0]);
+  return `<div class="row" style="margin-top:10px;gap:14px">${EVAL_DOCS.map(([k,l])=>{const off=(k==='ext'&&!needExtend(p))||(k==='m2'&&!p.rounds.length);return `<label class="switch"${off?' style="opacity:.55" title="'+(k==='ext'?'ยังไม่เกิน 5 วันทำการ':'ไม่มีการต่อรองราคา')+'"':''}><input type="checkbox" data-evd="${k}" ${sel.includes(k)?'checked':''}> ${l}${k==='ext'&&!needExtend(p)?' (ไม่ต้องทำ)':''}</label>`}).join('')}
+    ${!needExtend(p)?`<label class="switch"><input type="checkbox" id="forceExt" ${S.settings.forceExt?'checked':''}> พิมพ์บันทึกขอขยายเวลาแม้ยังไม่เกินกำหนด</label>`:''}</div>`}
+
 /* ================= negotiation ================= */
 function rNego(){
   const el=$('#v-nego');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const t=totals(p);const d=decision(p);const ag=agreed(p);const o=num(p.offerPrice);
@@ -889,20 +1104,22 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const segs=[['eval','เอกสารพิจารณาผล'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
      <label class="switch"><input type="checkbox" id="tgSign" ${st.showSign?'checked':''}> ช่องลงนาม</label>
      <label class="switch"><input type="checkbox" id="tgWm" ${st.watermark?'checked':''}> คำว่า “ตัวอย่าง”</label>
      <span class="sp"></span><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div>
-     <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>
+     <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>${reportSel==='eval'?evalPicker(p):''}
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
-    (reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
+    (reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
+  $$('[data-evd]',el).forEach(x=>x.onchange=()=>{const cur=new Set(st.evalDocs||EVAL_DOCS.map(d=>d[0]));x.checked?cur.add(x.dataset.evd):cur.delete(x.dataset.evd);st.evalDocs=[...cur];save();rReport()});
+  {const fe=$('#forceExt');if(fe)fe.onchange=()=>{st.forceExt=fe.checked;save();rReport()}}
   $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
   $('#tgWm').onchange=e=>{st.watermark=e.target.checked;save();rReport()};
   $('#basisSel2').onchange=e=>{p.basis=e.target.value;touch(p);rReport()};
@@ -1037,6 +1254,18 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <label class="f s4"><span>ส่วนราชการเจ้าของเรื่อง</span><input class="i" data-sl="unit" value="${esc(st.unit)}"></label><label class="f s4"><span>โทร.</span><input class="i" data-sl="tel" value="${esc(st.tel)}"></label><label class="f s4"><span>โทรสาร</span><input class="i" data-sl="fax" value="${esc(st.fax)}"></label>
    <label class="switch s12"><input type="checkbox" id="thDig" ${st.thaiDigits!==false?'checked':''}> ใช้เลขไทยในหนังสือ</label>
    <div class="s12 muted" style="font-size:13px">ฟอนต์หนังสือ: ใช้ TH SarabunIT๙ 16pt ถ้ามีในเครื่อง ถ้าไม่มีจะใช้ Sarabun ขนาดใกล้เคียงแทน</div>
+  </div></div>
+  <div class="card"><div class="card-h"><h2>เอกสารพิจารณาผล</h2></div><div class="card-b grid g12">
+   <label class="f s4"><span>เรียน (บันทึกทั่วไป)</span><input class="i" data-sl="toShort" value="${esc(st.toShort)}"></label>
+   <label class="f s4"><span>เรียน (บันทึกสรุปผล)</span><input class="i" data-sl="toSum" value="${esc(st.toSum)}"></label>
+   <label class="f s4"><span>ชื่อย่อหน่วยงาน (ในคำสั่ง)</span><input class="i" data-sl="officeShort" value="${esc(st.officeShort)}"></label>
+   <label class="f s4"><span>สถานที่ประชุม</span><input class="i" data-sl="place" value="${esc(st.place)}"></label>
+   <label class="f s4"><span>ผู้อนุมัติ (ชื่อ-สกุล)</span><input class="i" data-sl="director" value="${esc(st.director)}"></label>
+   <label class="f s4"><span>ตำแหน่งผู้อนุมัติ</span><input class="i" data-sl="directorPos" value="${esc(st.directorPos)}"></label>
+   <label class="f s12"><span>ช่องสั่งการ (บรรทัดแรก)</span><input class="i" data-sl="approveTo" value="${esc(st.approveTo)}"></label>
+   <label class="f s12"><span>ข้อความสั่งการ (บรรทัดละข้อ)</span><textarea class="i" rows="3" data-sl="approveLines">${esc(st.approveLines)}</textarea></label>
+   <label class="f s12"><span>ข้อระเบียบฯ ในบันทึกสรุปผล</span><textarea class="i" rows="4" data-sl="authority">${esc(st.authority)}</textarea></label>
+   <label class="f s12"><span>วันหยุดราชการ (ใช้นับ 5 วันทำการ) — ใส่วันที่แบบ ปปปป-ดด-วว คั่นด้วยเว้นวรรค · ใส่ไว้เฉพาะวันหยุดที่ตรงวันทุกปี ต้องเพิ่มวันหยุดทางศาสนา และวันหยุดพิเศษเอง</span><textarea class="i" rows="3" data-sl="holidays">${esc(st.holidays)}</textarea></label>
   </div></div>
   <div class="card"><div class="card-h"><h2>การปัดเศษราคาที่ปรับลด</h2></div><div class="card-b"><div class="seg">${[['total','ยอดรวมเป็นจำนวนเต็ม (ค่าเริ่มต้น)'],['unit','ราคาต่อหน่วยเป็นจำนวนเต็มบาท']].map(([k,l])=>`<button class="${(st.roundMode||'total')===k?'on':''}" data-rm2="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>การแสดงผล</h2></div><div class="card-b row"><span>ธีม</span><div class="seg">${[['system','ตามเครื่อง'],['light','สว่าง'],['dark','มืด']].map(([k,l])=>`<button class="${st.theme===k?'on':''}" data-th="${k}" type="button">${l}</button>`).join('')}</div></div></div>
