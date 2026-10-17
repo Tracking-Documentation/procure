@@ -245,7 +245,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (6)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (7)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -885,7 +885,7 @@ function repNego(p,r,b){const rn=b.key.startsWith('r:')?p.rounds.findIndex(x=>'r
   const body=rowsWithHeads(p,r).map(x=>{
     if(x.head)return `<tr><td></td><td><b>${esc(x.head)}</b></td><td></td><td></td><td></td><td></td><td></td><td${sh}></td><td${sh}></td></tr>`;
     const ls=String(x.it.name||'').split('\n');
-    return `<tr><td class="ct">${x.no}</td><td>${esc(ls[0])}${x.delta||x.frac?' (*)':''}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fmt(x.q,3)}</td><td class="n">${fS(costOf(x.it))}</td><td class="n">${fmt(x.cat.factor,4)}</td><td class="n">${fS(x.m)}</td><td class="n"${sh}>${fS(x.line)}</td><td class="n"${sh}>${fmt(x.uDisp)}</td></tr>`+
+    return `<tr><td class="ct">${x.no}</td><td>${esc(ls[0])}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fmt(x.q,3)}</td><td class="n">${fS(costOf(x.it))}</td><td class="n">${fmt(x.cat.factor,4)}</td><td class="n">${fS(x.m)}</td><td class="n"${sh}>${fS(x.line)}</td><td class="n"${sh}>${fmt(x.uDisp)}</td></tr>`+
       ls.slice(1).map(l=>`<tr><td></td><td>${esc(l)}</td><td></td><td></td><td></td><td></td><td></td><td${sh}></td><td${sh}></td></tr>`).join('')}).join('');
   return `<div class="paper land${wm()}"><h2>ตารางการขอต่อรองราคา${rn?` ครั้งที่ ${rn}`:''}</h2>
   <div style="margin:8px 0 4px;font-weight:600">${esc(p.name)}</div>
@@ -897,7 +897,6 @@ function repNego(p,r,b){const rn=b.key.startsWith('r:')?p.rounds.findIndex(x=>'r
    <tr><th>ค่างานต้นทุน</th><th>Factor F / Vat</th><th>ราคากลาง</th><th>ราคาที่ปรับลด</th><th>ราคาที่ขอปรับลด (ต่อหน่วย)</th></tr></thead><tbody>
    ${body}
    <tr class="tot"><td colspan="6" class="n">ราคารวม (บาท)</td><td class="n">${fS(r.sumM)}</td><td class="n">${fS(r.total)}</td><td></td></tr></tbody></table>
-  ${r.adjusted.length?`<div class="rem">(*) รายการที่รับส่วนต่างจากการปัดเศษให้ราคาต่อหน่วยเป็นจำนวนเต็ม</div>`:''}
   ${sigBlock(p)}
   <div class="rem nrem"><b>หมายเหตุ :</b><ol><li>หากผู้ยื่นเสนอราคา ยินดีปรับลดราคาเท่ากับที่คณะกรรมการฯ ขอต่อรองราคา โปรดทำหนังสือยืนยันราคาและใบแจ้งปริมาณงานและราคาให้คณะกรรมการพิจารณาผลฯ ทราบด้วย</li><li>หากผู้ยื่นเสนอราคา ยินดีปรับลดราคามากกว่าที่คณะกรรมการฯ ขอต่อรองราคา โปรดทำหนังสือยืนยันราคาและใบแจ้งปริมาณงานและราคาให้คณะกรรมการพิจารณาผลฯ ทราบด้วย</li><li>หากผู้ยื่นเสนอราคา ไม่ยินดีปรับลดราคาตามที่คณะกรรมการฯ ขอต่อรองราคา โปรดทำหนังสือยืนยันราคาและใบแจ้งปริมาณงานและราคาให้คณะกรรมการพิจารณาผลฯ ทราบด้วย</li></ol></div></div>`}
 function repContract(p,r,b){
