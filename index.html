@@ -51,6 +51,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .chip-off{background:rgba(255,255,255,.14);border-radius:999px;padding:6px 12px;font-size:13px}
 .tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-top:8px}
 .tabs::-webkit-scrollbar{display:none}
+@media (min-width:760px){.tabs{flex-wrap:wrap;overflow:visible;row-gap:4px}.tab{padding:10px 13px}}
 .tab{background:transparent;border:0;color:var(--brand-ink);opacity:.86;padding:10px 16px;border-radius:10px 10px 0 0;font-family:var(--f-head);font-size:15px;white-space:nowrap;cursor:pointer;display:flex;gap:7px;align-items:center}
 .tab:hover{opacity:1;background:rgba(255,255,255,.08)}
 .tab.on{background:var(--bg);color:var(--tab-on);opacity:1;font-weight:600}
@@ -288,7 +289,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 32 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 33 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
