@@ -272,7 +272,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 24 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 25 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -329,7 +329,7 @@ const ICON={
 
 /* ================= state ================= */
 const LS='boqNego.v1';
-const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,toShort:'ผอ.ขท.กระบี่',regionTo:'ผส.ทล.17',regionPrefix:'สทล.17 ขท.กระบี่.1(พ)/',approveLinesBig:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- ขออนุมัติรับราคาและขออนุมัติสั่งจ้างจาก ผส.ทล.17 ต่อไป',regionLaws:'พระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560\nระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560 กฎกระทรวงอื่นๆ ที่เกี่ยวข้อง ในการดำเนินการสั่งการ ทุกวิธี ทุกขั้นตอน เต็มวงเงินที่ได้รับการอนุมัติ\nอำนาจอนุมัติเป็นของ ผส.ทล.17 ตามนัยคำสั่งกรมทางหลวง ที่ บ.1/115/2560 ลงวันที่ 29 สิงหาคม 2560 เรื่อง มอบอำนาจการสั่งซื้อสั่งจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',regionAtts:'ประกาศประกวดราคาจำนวน 1 ชุด\nราคากลางจำนวน 1 ชุด\nเอกสารเสนอราคาจากระบบอิเล็กทรอนิกส์จำนวน 1 ชุด\nรายงานสรุปผลการตรวจสอบเอกสารจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาจำนวน 1 ชุด\nหนังสือปรับลดราคาบริษัทและบัญชีเปรียบเทียบราคาจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาของคณะกรรมการจำนวน 1 ชุด',draftLine:'ณรมา/ร่าง/ทาน\nปริฉัตร/พิมพ์\n........../ตรวจ',regionCopy:true,toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'นายทรงฤทธิ์ ชยานันท์',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
+const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,toShort:'ผอ.ขท.กระบี่',regionTo:'ผส.ทล.17',regionPrefix:'สทล.17 ขท.กระบี่.1(พ)/',approveLinesBig:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- ขออนุมัติรับราคาและขออนุมัติสั่งจ้างจาก ผส.ทล.17 ต่อไป',regionLaws:'พระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560\nระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560 กฎกระทรวงอื่นๆ ที่เกี่ยวข้อง ในการดำเนินการสั่งการ ทุกวิธี ทุกขั้นตอน เต็มวงเงินที่ได้รับการอนุมัติ\nอำนาจอนุมัติเป็นของ ผส.ทล.17 ตามนัยคำสั่งกรมทางหลวง ที่ บ.1/115/2560 ลงวันที่ 29 สิงหาคม 2560 เรื่อง มอบอำนาจการสั่งซื้อสั่งจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',regionAtts:'ประกาศประกวดราคาจำนวน 1 ชุด\nราคากลางจำนวน 1 ชุด\nเอกสารเสนอราคาจากระบบอิเล็กทรอนิกส์จำนวน 1 ชุด\nรายงานสรุปผลการตรวจสอบเอกสารจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาจำนวน 1 ชุด\nหนังสือปรับลดราคาบริษัทและบัญชีเปรียบเทียบราคาจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาของคณะกรรมการจำนวน 1 ชุด',directorFull:'ผู้อำนวยการแขวงทางหลวงกระบี่',signCopy:true,signDraft:'ณรมา/ร่าง/ทาน\nณัฐภูมินทร์/พิมพ์\n........../ตรวจ',signDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคลฉบับปัจจุบันหรือออกให้ไม่เกิน 6 เดือน\nหนังสือมอบอำนาจ ในกรณีมอบอำนาจให้เซ็นสัญญาแทน\nสำเนาหน้าสมุดบัญชีธนาคาร',draftLine:'ณรมา/ร่าง/ทาน\nปริฉัตร/พิมพ์\n........../ตรวจ',regionCopy:true,toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'นายทรงฤทธิ์ ชยานันท์',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
   signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
   showSign:true,watermark:false,theme:'system'};
 let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
@@ -522,7 +522,7 @@ function rDash(){
   const rows=S.projects.map(p=>{const t=totals(p);const b=basisOf(p);const cp=contractPrice(p);tm+=t.sumM;const fin=cp??b.price;tc+=toS(fin);if(cp!==null)cnt++;
     const r=compute(p,fin);return {p,t,b,fin,r,cp}});
   const shown=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor].join(' ').toLowerCase().includes(q));
-  el.innerHTML=`
+  el.innerHTML=`${signAlertCard()}
   <div class="kpis">
     <div class="kpi hl"><div class="l">จำนวนโครงการ</div><div class="v">${S.projects.length}</div><div class="s">ได้ราคาที่ตกลงแล้ว ${cnt} โครงการ</div></div>
     <div class="kpi"><div class="l">ราคากลางรวม (บาท)</div><div class="v">${fS(tm)}</div><div class="s">รวมค่าใช้จ่ายพิเศษและครุภัณฑ์</div></div>
@@ -547,6 +547,7 @@ function rDash(){
   const qi=$('#dashQ');qi.oninput=()=>{el._q=qi.value;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
 }
 document.addEventListener('click',e=>{
+  const sp=e.target.closest('[data-signprint]');if(sp){cur=sp.dataset.signprint;save();reportSel='sign';go('report');return}
   const t=e.target.closest('[data-act],[data-open],[data-edit],[data-print],[data-dup],[data-del]');if(!t)return;
   if(t.dataset.open||t.dataset.edit){e.preventDefault();cur=t.dataset.open||t.dataset.edit;save();go('edit')}
   else if(t.dataset.print){cur=t.dataset.print;save();go('report')}
@@ -857,7 +858,9 @@ function rEval(){
        ${F2('hearStart','เผยแพร่ร่างประกาศ (วิจารณ์) ตั้งแต่','date')}${F2('hearEnd','ถึงวันที่','date')}${F2('hearDays','รวม (วันทำการ)','text')}
        ${F2('hearCount','จำนวนผู้เสนอแนะ/วิจารณ์ (ราย) — 0 = ไม่มี','text')}${F2('hearDecide','วันที่พิจารณาข้อวิจารณ์','date')}${F2('hearApprove','วันที่ ผอ. เห็นชอบ','date')}
        ${F2('hearResult','ผลการพิจารณาข้อวิจารณ์','text','s12')}</div>`:''}</div>
+   ${signCard(p)}
   </div>`;
+  $$('[data-sg]',el).forEach(i=>i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)});
   const setPath=(path,v)=>{const ks=path.split('.');let o=e;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=v};
   $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p);if(/^m[12]\./.test(i.dataset.ev)){const w=$('#mtgWarn');if(w)w.innerHTML=conflictHtml(p)}};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
   $$('[data-evb]',el).forEach(i=>i.onchange=()=>{setPath(i.dataset.evb,i.checked);touch(p)});
@@ -1148,6 +1151,7 @@ function papersToDocx(html){
   return zipStore(files)}
 function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
   const L=[['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
+  L.push(['sign','หนังสือเรียกเซ็นสัญญา',()=>repSign(p)]);
   const map=EVMAP();
   evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
   return {L,err:r.errors.length?r.errors[0]:''}}
@@ -1295,7 +1299,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['eval','เอกสารพิจารณาผล'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const segs=[['eval','เอกสารพิจารณาผล'],['sign','หนังสือเรียกเซ็นสัญญา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -1307,7 +1311,7 @@ function rReport(){
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   ${wordPanel(p)}
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
-    (reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
+    (reportSel==='sign'?repSign(p):'')+(reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
   $$('[data-word]',el).forEach(x=>x.onclick=()=>downloadWord(p,x.dataset.word));
@@ -1346,6 +1350,42 @@ function repLetter(p,r){const st=S.settings,L=p.letter||{},th=toTH,ex=needExplai
    <div class="foot-l">${esc(st.unit||'')}<br>โทร. ${esc(st.tel||'')}<br>โทรสาร ${esc(st.fax||'')}</div></div>`;
   return st.thaiDigits===false?out:out.replace(/>([^<]*)</g,(m,t)=>'>'+toTH(t)+'<');
 }
+/* ---------- เรียกลงนามสัญญา: หลังพ้นระยะอุทธรณ์ 7 วันทำการนับจากวันประกาศผู้ชนะ ---------- */
+const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+function workdaysBetween(a,b){if(!a||!b||b<=a)return 0;let n=0,d=a;while(d<b){d=addWorkdays(d,1);if(d<=b)n++}return n}
+function signInfo(p){if(!p.announceDate||p.status==='ลงนามสัญญาแล้ว')return null;const appealEnd=addWorkdays(p.announceDate,7),signFrom=addWorkdays(p.announceDate,8),t=todayISO();
+  return {appealEnd,signFrom,ready:t>=signFrom,left:workdaysBetween(t,signFrom)}}
+function signAmounts(p){const fp=num(finalPrice(p));const sg=p.sign||{};return {fp,sec:num(sg.sec)||Math.ceil(fp*0.05-1e-9),stamp:num(sg.stamp)||Math.ceil(fp/1.07/1000-1e-9),days:sg.days||7}}
+function repSign(p){const st=S.settings,F=letterFont(),e=evOf(p),sg=p.sign||{};const {fp,sec,stamp,days}=signAmounts(p);const firm=p.contractor||'..............................';
+  const dp=thDateParts(sg.date),today=thDateParts(todayISO());const dateTxt=dp?`${dp.d} ${dp.m} ${dp.y}`:`<span style="display:inline-block;width:14mm"></span>${today.m} ${today.y}`;
+  const docs=String(st.signDocs||'').split('\n').filter(Boolean);
+  const body=copy=>`<div class="paper letter${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   ${copy?'<div style="text-align:center;margin-bottom:6mm">- สำเนาคู่ฉบับ -</div>':`<img class="garuda" src="${GARUDA}" alt="ตราครุฑ">`}
+   <div class="top"><div>ที่ ${esc(st.docPrefix||'')}${sg.no?esc(sg.no):'<span style="display:inline-block;width:16mm"></span>'}</div><div>${esc(st.addr1||'')}<br>${esc(st.addr2||'')}<br>${esc(st.addr3||'')}</div></div>
+   <div class="date">${dateTxt}</div>
+   <div class="hd"><span>เรื่อง</span><span>ให้ไปเซ็นสัญญา</span><span>เรียน</span><span>${esc(firmTitle(firm)+' '+firm)}</span></div>
+   <div class="gap"></div><p>ตามที่${esc(st.office||'')} ได้ประกาศรับราคา${esc(firm)} จ้าง${esc(p.name)} วงเงินค่างาน ${fmt(fp)} บาท${e.duration?` กำหนดเวลาทำการ ${esc(e.duration)} วัน`:''} นั้น</p>
+   <p>${esc(st.office||'')} ขอให้${firmShort(firm)} ไปเซ็นสัญญาภายใน ${esc(days)} วันทำการโดยนำเอกสาร</p>
+   <div style="padding-left:25mm">1. หลักประกันสัญญา เป็นจำนวนเงิน ${moneyDash(sec)} บาท${docs.map((d,i)=>`<br>${i+2}. ${esc(d)}`).join('')}<br>${docs.length+2}. ค่าอากรแสตมป์เป็นจำนวนเงิน ${moneyDash(stamp)} บาท</div>
+   <p>จึงเรียนมาเพื่อทราบ และดำเนินการต่อไปภายในกำหนดเวลา</p>
+   <div class="gap"></div><div class="close">ขอแสดงความนับถือ<div style="height:20mm"></div>(${esc(st.director||'..............................')})<br>${esc(st.directorFull||st.directorPos||'')}</div>
+   <div class="foot-l">${esc(st.unit||'')}<br>โทร. ${esc(st.tel||'')}<br>โทรสาร ${esc(st.fax||'')}${copy&&st.signDraft?`<div style="text-align:right;margin-top:-18mm">${String(st.signDraft).split('\n').map(esc).join('<br>')}</div>`:''}</div></div>`;
+  const out=body(false)+(st.signCopy!==false?body(true):'');
+  return st.thaiDigits===false?out:out.replace(/>([^<]*)</g,(m,t)=>'>'+toTH(t)+'<')}
+function signCard(p){const i=signInfo(p)||(p.announceDate?{appealEnd:addWorkdays(p.announceDate,7),signFrom:addWorkdays(p.announceDate,8)}:null);const a=signAmounts(p);const sg=p.sign||{};
+  const f=(k,l,ph,type='text',cls='s3')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-sg="${k}" value="${esc(sg[k]||'')}" placeholder="${esc(ph)}"></label>`;
+  return `<div class="card"><div class="card-h"><h2><span class="step">7</span>เรียกลงนามสัญญา</h2><button class="btn blue sm" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button></div><div class="card-b grid g12">
+   <div class="s12 note ${!p.announceDate?'warn':i&&i.ready?'ok':'warn'}">${!p.announceDate?'<b>ยังไม่ได้กรอกวันที่ประกาศผลผู้ชนะ</b> — กรอกที่หน้าข้อมูลโครงการ ระบบจะคำนวณวันพ้นระยะอุทธรณ์ให้':`ประกาศผู้ชนะ ${D(p.announceDate)} · ครบระยะอุทธรณ์ 7 วันทำการ ${D(i.appealEnd)} · <b>เรียกลงนามได้ตั้งแต่ ${D(i.signFrom)}</b>`}</div>
+   ${f('no','เลขที่หนังสือ (ต่อท้ายรหัส)','')}${f('date','ลงวันที่','','date')}${f('days','ให้มาเซ็นภายใน (วันทำการ)','7')}<div class="s3"></div>
+   ${f('sec','หลักประกันสัญญา (บาท)',fmt(a.sec,0)+' (5% ปัดขึ้น)')}${f('stamp','ค่าอากรแสตมป์ (บาท)',fmt(a.stamp,0)+' (ราคาไม่รวม VAT ÷ 1,000 ปัดขึ้น)','text','s5')}
+   <div class="s4 muted" style="font-size:13px;align-self:end">วงเงินค่างาน ${fmt(a.fp)} บาท · ว่างไว้ = ใช้ค่าที่คำนวณให้</div></div></div>`}
+function signAlertCard(){const L=S.projects.map(p=>({p,i:signInfo(p)})).filter(x=>x.i).sort((a,b)=>a.i.signFrom.localeCompare(b.i.signFrom));
+  if(!L.length)return '';
+  return `<div class="card" style="margin-bottom:18px"><div class="card-h"><h2>แจ้งเตือน: เรียกลงนามสัญญา</h2><span class="muted" style="font-size:13px">เรียกลงนามได้เมื่อพ้นระยะอุทธรณ์ 7 วันทำการนับถัดจากวันประกาศผู้ชนะ</span></div>
+   <div class="tbl-wrap"><table class="t"><thead><tr><th>โครงการ</th><th>ประกาศผู้ชนะ</th><th>ครบระยะอุทธรณ์</th><th>เรียกลงนามได้ตั้งแต่</th><th>สถานะ</th><th></th></tr></thead><tbody>
+   ${L.map(({p,i})=>`<tr class="${i.ready?'adj':''}"><td style="min-width:260px"><b>${esc(String(p.name||'(ยังไม่ตั้งชื่อ)').slice(0,90))}</b><div class="muted" style="font-size:13px">${esc(p.contractor||'-')}</div></td><td>${D(p.announceDate)}</td><td>${D(i.appealEnd)}</td><td><b>${D(i.signFrom)}</b></td>
+     <td>${i.ready?'<span class="pill p-adj">ถึงกำหนดเรียกลงนามแล้ว</span>':`<span class="pill p-draft">อีก ${i.left} วันทำการ</span>`}</td><td><button class="btn sm blue" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button></td></tr>`).join('')}
+   </tbody></table></div></div>`}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
   return `<div class="sig">${s.map(x=>`<div>ลงชื่อ ......................................................<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`).join('')}</div>`}
 function catSummary(p){return p.categories.map(c=>{const its=p.items.filter(i=>i.kind==='item'&&i.catId===c.id);return {c,cost:its.reduce((a,i)=>a+costOf(i),0),mid:its.reduce((a,i)=>a+midOf(p,i),0)}}).filter(x=>x.mid||x.c.kind!=='construction'||true)}
@@ -1461,6 +1501,10 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <label class="f s12"><span>ข้อความสั่งการ เมื่อวงเงินเกิน 10 ล้านบาท (บรรทัดละข้อ)</span><textarea class="i" rows="2" data-sl="approveLinesBig">${esc(st.approveLinesBig)}</textarea></label>
    <label class="f s4"><span>บันทึกถึงเขต: เรียน</span><input class="i" data-sl="regionTo" value="${esc(st.regionTo)}"></label>
    <label class="f s4"><span>บันทึกถึงเขต: ที่ (ก่อนเลข)</span><input class="i" data-sl="regionPrefix" value="${esc(st.regionPrefix)}"></label>
+   <label class="f s4"><span>ตำแหน่งเต็มผู้ลงนามหนังสือเรียกเซ็นสัญญา</span><input class="i" data-sl="directorFull" value="${esc(st.directorFull)}"></label>
+   <label class="f s8"><span>หนังสือเรียกเซ็นสัญญา: เอกสารที่ต้องนำมา (ข้อ 2 เป็นต้นไป บรรทัดละข้อ · ข้อแรกหลักประกัน ข้อสุดท้ายอากรแสตมป์ใส่ให้เอง)</span><textarea class="i" rows="3" data-sl="signDocs">${esc(st.signDocs)}</textarea></label>
+   <label class="f s4"><span>ผู้ร่าง/พิมพ์/ตรวจ (สำเนาคู่ฉบับหนังสือเรียกเซ็นสัญญา)</span><textarea class="i" rows="3" data-sl="signDraft">${esc(st.signDraft)}</textarea></label>
+   <label class="switch s8"><input type="checkbox" id="signCopyCk" ${st.signCopy!==false?'checked':''}> พิมพ์ “สำเนาคู่ฉบับ” ของหนังสือเรียกเซ็นสัญญาต่อท้าย</label>
    <label class="f s4"><span>ผู้ร่าง/พิมพ์/ตรวจ (ท้ายบันทึกถึงเขต)</span><textarea class="i" rows="3" data-sl="draftLine" placeholder="ณรมา/ร่าง/ทาน&#10;ปริฉัตร/พิมพ์&#10;........../ตรวจ">${esc(st.draftLine)}</textarea></label><label class="switch s4"><input type="checkbox" id="regCopy" ${st.regionCopy!==false?'checked':''}> พิมพ์ “สำเนาคู่ฉบับ” ของบันทึกถึงเขตต่อท้าย (มีผู้ร่าง/พิมพ์/ตรวจ)</label>
    <label class="f s12"><span>บันทึกถึงเขต: กฎหมาย ระเบียบ และคำสั่ง (บรรทัดละข้อ)</span><textarea class="i" rows="4" data-sl="regionLaws">${esc(st.regionLaws)}</textarea></label>
    <label class="f s12"><span>บันทึกถึงเขต: เอกสารแนบ (บรรทัดละรายการ)</span><textarea class="i" rows="5" data-sl="regionAtts">${esc(st.regionAtts)}</textarea></label>
@@ -1475,6 +1519,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   </div></div></div>`;
   $('#sAgency').oninput=e=>{st.agency=e.target.value;save()};
   $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
+  {const sc=$('#signCopyCk');if(sc)sc.onchange=()=>{st.signCopy=sc.checked;save()}}
   {const rc=$('#regCopy');if(rc)rc.onchange=()=>{st.regionCopy=rc.checked;save()}}
   $$('[data-sl]').forEach(i=>i.oninput=()=>{st[i.dataset.sl]=i.dataset.sl==='explainPct'?num(i.value):i.value;save()});
   $('#thDig').onchange=e=>{st.thaiDigits=e.target.checked;save()};
