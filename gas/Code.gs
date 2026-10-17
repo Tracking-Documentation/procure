@@ -290,7 +290,9 @@ function attachFiles(projectId, token, newFiles) {
   try {
     const mine = activeBookings_().find(b => b.projectId === projectId);
     if (!mine) throw new Error('ยังไม่มีการจอง');
-    const files = (mine.files ? JSON.parse(mine.files) : []).filter(f => !(newFiles || []).some(n => n.docKey === f.docKey)).concat(newFiles || []);
+    const old = mine.files ? JSON.parse(mine.files) : [];
+    if (mine.confirmed === 'Y' && (newFiles || []).some(n => old.some(f => f.docKey === n.docKey))) throw new Error('เจ้าหน้าที่ยืนยันการจองแล้ว ไม่สามารถแก้ไขไฟล์ที่แนบไว้ได้ แนบได้เฉพาะเอกสารที่ยังขาด · หากต้องแก้ไข กรุณาติดต่อเจ้าหน้าที่');
+    const files = old.filter(f => !(newFiles || []).some(n => n.docKey === f.docKey)).concat(newFiles || []);
     mine.files = JSON.stringify(files); mine.updatedAt = now_(); write_('bookings', mine);
     return files;
   } finally { lock.releaseLock(); }
