@@ -826,7 +826,7 @@ function rCal(){const el=$('#v-cal');const t=todayISO();if(!calYM)calYM=t.slice(
   const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const cells=[];for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);if(i>=35&&d.getMonth()!==M-1)break;cells.push(d)}
   const up=E.filter(x=>x.date>=t).slice(0,40);const overdue=E.filter(x=>x.kind==='sign'&&x.date<=t);
-  el.innerHTML=`<div class="calhd"><button class="btn" data-cm="-1" type="button">‹ เดือนก่อน</button><h2>${TH_MONTH[M-1]} ${Y+543}</h2><button class="btn" data-cm="1" type="button">เดือนถัดไป ›</button><button class="btn ghost-brand" data-cm="0" type="button">วันนี้</button><span class="sp"></span><span class="muted" style="font-size:13px">ไม่นับเสาร์–อาทิตย์และวันหยุดราชการในหน้าตั้งค่า</span></div>
+  el.innerHTML=`<div class="calhd"><button class="btn" data-calm="-1" type="button">‹ เดือนก่อน</button><h2>${TH_MONTH[M-1]} ${Y+543}</h2><button class="btn" data-calm="1" type="button">เดือนถัดไป ›</button><button class="btn ghost-brand" data-calm="0" type="button">วันนี้</button><span class="sp"></span><span class="muted" style="font-size:13px">ไม่นับเสาร์–อาทิตย์และวันหยุดราชการในหน้าตั้งค่า</span></div>
    ${overdue.length?`<div class="note ok" style="margin-bottom:12px"><b>ถึงกำหนดเรียกลงนามสัญญาแล้ว ${overdue.length} โครงการ</b> — ${overdue.map(x=>esc(shortName(x.p))).join(', ')}</div>`:''}
    <div class="calg">${['จ.','อ.','พ.','พฤ.','ศ.','ส.','อา.'].map(d=>`<div class="dow">${d}</div>`).join('')}
    ${cells.map(d=>{const k=iso(d);const off=!isWorkday(new Date(k+'T12:00:00'),H);const L=by[k]||[];
@@ -837,7 +837,7 @@ function rCal(){const el=$('#v-cal');const t=todayISO();if(!calYM)calYM=t.slice(
    ${up.length?up.map(x=>`<tr class="${x.date===t?'adj':''}"><td style="white-space:nowrap">${D(x.date)}${x.time?' · '+esc(x.time):''}${x.date===t?' <span class="pill p-adj">วันนี้</span>':''}</td><td><span class="ev1 k-${x.kind}" style="display:inline-block;cursor:default">${esc(x.label)}</span></td><td style="min-width:240px">${esc(String(x.p.name||'').slice(0,90))}<div class="muted" style="font-size:12px">${esc(x.p.contractor||'')}</div></td>
      <td style="white-space:nowrap">${x.kind==='sign'||x.kind==='appeal'?`<button class="btn sm blue" data-signprint="${x.p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button>`:`<button class="btn sm" data-calp="${x.p.id}" type="button">เปิดโครงการ</button>`}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">ยังไม่มีกำหนดการ · กรอกวันเปิดข้อเสนอและวันประชุมที่หน้า “พิจารณาผล” และวันที่ประกาศผู้ชนะที่หน้าข้อมูลโครงการ</td></tr>'}
    </tbody></table></div></div>`;
-  $$('[data-cm]',el).forEach(b=>b.onclick=()=>{const k=+b.dataset.cm;if(!k)calYM=t.slice(0,7);else{const d=new Date(Y,M-1+k,1);calYM=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}rCal()});
+  $$('[data-calm]',el).forEach(b=>b.onclick=()=>{const k=+b.dataset.calm;if(!k)calYM=t.slice(0,7);else{const d=new Date(Y,M-1+k,1);calYM=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}rCal()});
   $$('[data-calp]',el).forEach(b=>b.onclick=()=>{cur=b.dataset.calp;save();go('eval')});
 }
 function evDeadline(p){const e=evOf(p);return addWorkdays(e.openDate,5)}
