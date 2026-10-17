@@ -10,9 +10,11 @@ const ADMIN_KEY = 'เปลี่ยนเป็นรหัสลับขอ�
 const TZ = 'Asia/Bangkok';
 const ROOT_FOLDER = 'เอกสารจองลงนามสัญญา';
 const MAX_FILE_MB = 10;
+/* หลักประกันสัญญา ตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 ข้อ 167 */
+const SEC_TYPES = ['เงินสด', 'เช็คหรือดราฟท์ที่ธนาคารเซ็นสั่งจ่าย', 'หนังสือค้ำประกันของธนาคารภายในประเทศ', 'หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)', 'หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์', 'พันธบัตรรัฐบาลไทย'];
 const COLS = {
-  projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt'],
-  bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq'],
+  projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt', 'secAmount', 'stamp'],
+  bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType'],
   settings: ['key', 'value']
 };
 
@@ -159,7 +161,7 @@ function doPost(e) {
         write_('projects', {
           _row: old ? old._row : undefined, projectId: p.projectId, token: p.token || (old ? old.token : uid_()), name: p.name, contractor: p.contractor,
           inviteNo: p.inviteNo, office: p.office, dates: JSON.stringify(p.dates || []), slotStart: p.slotStart, slotEnd: p.slotEnd,
-          slotMinutes: p.slotMinutes, docs: JSON.stringify(p.docs || []), note: p.note || '', updatedAt: now_()
+          slotMinutes: p.slotMinutes, docs: JSON.stringify(p.docs || []), note: p.note || '', updatedAt: now_(), secAmount: p.secAmount || '', stamp: p.stamp || ''
         });
         const saved = rows_('projects').find(x => x.projectId === p.projectId);
         return json_({ ok: true, token: saved.token });
@@ -193,7 +195,7 @@ function getBookingInfo(projectId, token) {
   const t = today_(), nowHM = Utilities.formatDate(new Date(), TZ, 'HH:mm');
   const days = p.dates.filter(d => d >= t).map(d => ({ date: d, times: times_(p).map(tm => ({ time: tm, free: !taken[d + ' ' + tm] && !(d === t && tm <= nowHM) })) }));
   if (mine) mine.files = mine.files ? JSON.parse(mine.files) : [];
-  return { project: { name: p.name, contractor: p.contractor, inviteNo: p.inviteNo, office: p.office, docs: p.docs, note: p.note }, days: days, booking: mine, maxMB: MAX_FILE_MB };
+  return { project: { name: p.name, contractor: p.contractor, inviteNo: p.inviteNo, office: p.office, docs: p.docs, note: p.note, secAmount: p.secAmount, stamp: p.stamp, secTypes: SEC_TYPES }, days: days, booking: mine, maxMB: MAX_FILE_MB };
 }
 
 function uploadFile(projectId, token, docKey, fileName, mime, b64) {
@@ -223,13 +225,14 @@ function submitBooking(projectId, token, form) {
     if (mine && mine.confirmed === 'Y' && (mine.date !== form.date || mine.time !== form.time)) throw new Error('เจ้าหน้าที่ยืนยันวันนัดและเลขที่สัญญาแล้ว ถ้าต้องการเปลี่ยนวัน กรุณาติดต่อเจ้าหน้าที่');
     if (all.some(b => b.date === form.date && b.time === form.time && (!mine || b.bookingId !== mine.bookingId))) throw new Error('ช่วงเวลานี้มีผู้จองแล้ว กรุณาเลือกเวลาอื่น');
     const files = (mine && mine.files ? JSON.parse(mine.files) : []).filter(f => !(form.files || []).some(n => n.docKey === f.docKey)).concat(form.files || []);
-    const required = p.docs.filter(d => d.required && (d.key !== 'poa' || form.poa === 'yes'));
+    if (SEC_TYPES.indexOf(form.secType) < 0) throw new Error('กรุณาเลือกประเภทหลักประกันสัญญา');
+    const required = p.docs.filter(d => d.required && (d.key !== 'poa' || form.poa === 'yes') && (d.key !== 'sec' || form.secType !== 'เงินสด'));
     const missing = required.filter(d => !files.some(f => f.docKey === d.key));
     if (missing.length) throw new Error('ยังไม่ได้แนบ: ' + missing.map(d => d.label).join(', '));
     const b = Object.assign(mine || { bookingId: uid_(), projectId: projectId, createdAt: now_(), status: 'จองแล้ว', confirmed: '' }, {
       date: form.date, time: form.time, company: p.contractor, contactName: form.contactName, phone: form.phone, email: form.email || '',
       poa: form.poa === 'yes' ? 'มอบอำนาจ' : 'ไม่มอบอำนาจ', signerName: form.signerName || '', signerSurname: form.signerSurname || '',
-      signerPosition: form.signerPosition || '', files: JSON.stringify(files), updatedAt: now_()
+      signerPosition: form.signerPosition || '', secType: form.secType, files: JSON.stringify(files), updatedAt: now_()
     });
     write_('bookings', b);
     renumber_();
