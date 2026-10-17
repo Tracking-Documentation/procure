@@ -289,7 +289,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 39 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 40 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1049,7 +1049,7 @@ function docSum(p){const e=evOf(p);const st=S.settings;const R=bidRank(p);const 
    <p class="pi">จึงเรียนมาเพื่อโปรดพิจารณาเห็นชอบรายงานผลการพิจารณาฯ ต่อไป</p>
    ${cmSigList(p,{title:false})}
    <div style="margin-top:8mm;break-inside:avoid">${esc(st.approveTo||'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.')}
-     ${String(isBig10(p)?(st.approveLinesBig||st.approveLines):(st.approveLines||'')).split('\n').filter(Boolean).map(l=>`<div class="ind1">${esc(l)}</div>`).join('')}
+     ${String(isBig10(p)?(st.approveLinesBig||st.approveLines):(st.approveLines||'')).split('\n').filter(Boolean).filter(l=>!/สตง/.test(l)||needExplain(p)).map(l=>`<div class="ind1">${esc(l)}</div>`).join('')}
      <div style="margin:16mm 0 0 18mm;text-align:center;width:70mm">(${esc(st.director||'..............................')})<br>${esc(st.directorPos||'')}</div></div>`)}
 const isBig5=p=>num(p.budget)>5000000, isBig10=p=>num(p.budget)>10000000;
 function evApplies(p,k){if(k==='ext'&&!needExtend(p)&&!S.settings.forceExt)return 'ยังไม่เกิน 5 วันทำการ';if(k==='m2'&&!p.rounds.length)return 'ไม่มีการต่อรองราคา';if(k==='sec'&&!isBig5(p))return 'วงเงินไม่เกิน 5 ล้านบาท';if(k==='region'&&!isBig10(p))return 'วงเงินไม่เกิน 10 ล้านบาท';return ''}
@@ -1636,7 +1636,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <label class="f s4"><span>ผู้อนุมัติ (ชื่อ-สกุล)</span><input class="i" data-sl="director" value="${esc(st.director)}"></label>
    <label class="f s4"><span>ตำแหน่งผู้อนุมัติ</span><input class="i" data-sl="directorPos" value="${esc(st.directorPos)}"></label>
    <label class="f s12"><span>ช่องสั่งการ (บรรทัดแรก)</span><input class="i" data-sl="approveTo" value="${esc(st.approveTo)}"></label>
-   <label class="f s12"><span>ข้อความสั่งการ (บรรทัดละข้อ)</span><textarea class="i" rows="3" data-sl="approveLines">${esc(st.approveLines)}</textarea></label>
+   <label class="f s12"><span>ข้อความสั่งการ (บรรทัดละข้อ · บรรทัดที่มีคำว่า “สตง” จะพิมพ์เฉพาะโครงการที่เสนอราคาต่ำกว่าราคากลางเกินเกณฑ์ขอให้ชี้แจง)</span><textarea class="i" rows="3" data-sl="approveLines">${esc(st.approveLines)}</textarea></label>
    <label class="f s12"><span>ข้อความสั่งการ เมื่อวงเงินเกิน 10 ล้านบาท (บรรทัดละข้อ)</span><textarea class="i" rows="2" data-sl="approveLinesBig">${esc(st.approveLinesBig)}</textarea></label>
    <label class="f s4"><span>บันทึกถึงเขต: เรียน</span><input class="i" data-sl="regionTo" value="${esc(st.regionTo)}"></label>
    <label class="f s4"><span>บันทึกถึงเขต: ที่ (ก่อนเลข)</span><input class="i" data-sl="regionPrefix" value="${esc(st.regionPrefix)}"></label>
