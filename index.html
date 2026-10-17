@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ต่อรองราคา BOQ</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="theme-color" content="#14563a">
+<meta name="theme-color" content="#7a1f2b">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -15,21 +15,21 @@
 <style>
 /* Layout: green government-office header band with tabs, content in a 1240px column; cards for forms, white A4 "paper" for reports */
 :root{
-  --bg:#f2f5f3; --card:#ffffff; --ink:#18291f; --muted:#5f7368; --line:#dbe5df; --soft:#eaf2ed;
-  --brand:#14563a; --brand2:#1f7a50; --brand-ink:#ffffff; --accent:#f3c623; --accent-ink:#3a2f00;
+  --bg:#f6f2f1; --card:#ffffff; --ink:#2a1a1c; --muted:#76615f; --line:#e8dcda; --soft:#f6eaea; --tab-on:#7a1f2b;
+  --brand:#7a1f2b; --brand2:#9a2d3a; --brand-ink:#ffffff; --accent:#f3c623; --accent-ink:#3a2f00;
   --blue:#1b66d1; --danger:#c23b2e; --warn-bg:#fff4cf; --warn-ink:#6d5300; --ok-bg:#e3f4ea; --ok-ink:#17633d; --bad-bg:#fde6e3; --bad-ink:#9d2a1f;
-  --paper:#ffffff; --paper-ink:#000000; --paper-line:#333333; --paper-shade:#e9ece9;
+  --paper:#ffffff; --paper-ink:#000000; --paper-line:#333333; --paper-shade:#ececec;
   --f-head:"Prompt","Sarabun","Leelawadee UI",Tahoma,sans-serif;
   --f-body:"Sarabun","Leelawadee UI","Thonburi",Tahoma,sans-serif;
   --r:12px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0e1612; --card:#16211b; --ink:#e3ece6; --muted:#97aa9f; --line:#2a3a31; --soft:#1c2c23;
-  --brand:#0f4630; --brand2:#18694a; --accent:#f3c623; --blue:#5b9bf0; --danger:#ef7a6c;
+  --bg:#170f10; --card:#221718; --ink:#efe4e4; --muted:#b39d9d; --line:#3b2a2c; --soft:#2c1d1f; --tab-on:#f2a7b0;
+  --brand:#5e1620; --brand2:#8a2a37; --accent:#f3c623; --blue:#5b9bf0; --danger:#ef7a6c;
   --warn-bg:#3a3110; --warn-ink:#f4dc87; --ok-bg:#163527; --ok-ink:#8fe0b4; --bad-bg:#3d1c18; --bad-ink:#f3a397; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0e1612; --card:#16211b; --ink:#e3ece6; --muted:#97aa9f; --line:#2a3a31; --soft:#1c2c23;
-  --brand:#0f4630; --brand2:#18694a; --accent:#f3c623; --blue:#5b9bf0; --danger:#ef7a6c;
+  --bg:#170f10; --card:#221718; --ink:#efe4e4; --muted:#b39d9d; --line:#3b2a2c; --soft:#2c1d1f; --tab-on:#f2a7b0;
+  --brand:#5e1620; --brand2:#8a2a37; --accent:#f3c623; --blue:#5b9bf0; --danger:#ef7a6c;
   --warn-bg:#3a3110; --warn-ink:#f4dc87; --ok-bg:#163527; --ok-ink:#8fe0b4; --bad-bg:#3d1c18; --bad-ink:#f3a397; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{background:var(--bg);color:var(--ink)}
@@ -53,9 +53,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .tabs::-webkit-scrollbar{display:none}
 .tab{background:transparent;border:0;color:var(--brand-ink);opacity:.86;padding:10px 16px;border-radius:10px 10px 0 0;font-family:var(--f-head);font-size:15px;white-space:nowrap;cursor:pointer;display:flex;gap:7px;align-items:center}
 .tab:hover{opacity:1;background:rgba(255,255,255,.08)}
-.tab.on{background:var(--bg);color:var(--brand);opacity:1;font-weight:600}
-:root[data-theme="dark"] .tab.on{color:var(--ok-ink)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab.on{color:var(--ok-ink)}}
+.tab.on{background:var(--bg);color:var(--tab-on);opacity:1;font-weight:600}
+
+
 .tab svg{width:17px;height:17px}
 main{padding-block:20px 40px}
 .view[hidden]{display:none}
@@ -66,14 +66,14 @@ main{padding-block:20px 40px}
 .card-b{padding:16px 18px}
 .step{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:inline-grid;place-items:center;font-size:14px;flex:none}
 .btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:var(--f-head);font-size:14px;white-space:nowrap}
-.btn:hover{border-color:var(--brand2)}
+.btn:hover{border-color:var(--tab-on)}
 .btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
-.btn.ghost-brand{border-color:var(--brand2);color:var(--brand2)}
+.btn.ghost-brand{border-color:var(--tab-on);color:var(--tab-on)}
 .btn.danger{border-color:var(--danger);color:var(--danger)}
 .btn.sm{padding:4px 9px;font-size:13px}
 .btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
-.icon-btn{border:1px solid var(--line);background:var(--card);width:32px;height:30px;border-radius:6px;cursor:pointer;display:inline-grid;place-items:center;color:var(--brand2)}
+.icon-btn{border:1px solid var(--line);background:var(--card);width:32px;height:30px;border-radius:6px;cursor:pointer;display:inline-grid;place-items:center;color:var(--tab-on)}
 .icon-btn.del{color:var(--danger)}
 .icon-btn svg{width:16px;height:16px}
 label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
@@ -124,10 +124,10 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .sumrow{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
 .sumrow b{font-variant-numeric:tabular-nums;white-space:nowrap}
 .big-pct{text-align:center;padding:6px 0 10px}
-.big-pct .v{font-family:var(--f-head);font-size:42px;font-weight:600;color:var(--brand2);line-height:1.1}
+.big-pct .v{font-family:var(--f-head);font-size:42px;font-weight:600;color:var(--tab-on);line-height:1.1}
 .calc3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 @media (max-width:900px){.calc3{grid-template-columns:1fr}}
-.calc3 h3{font-size:15px;color:var(--brand2);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.calc3 h3{font-size:15px;color:var(--tab-on);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .calc3 .tot{font-weight:700;border-top:1px solid var(--ink);border-bottom:3px double var(--ink)}
 .checks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .checks li{display:flex;gap:9px;align-items:flex-start;font-size:14px}
@@ -146,7 +146,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;z-index:40;padding:16px}
 .modal{background:var(--card);border-radius:14px;max-width:760px;width:100%;max-height:90vh;overflow:auto;border:1px solid var(--line)}
 .modal .card-b{display:grid;gap:12px}
-.legal h3{font-size:18px;color:var(--brand2);margin-top:16px}
+.legal h3{font-size:18px;color:var(--tab-on);margin-top:16px}
 .legal blockquote{margin:8px 0;border-left:4px solid var(--brand2);padding:4px 14px}
 .legal p{margin:6px 0}
 .flow{display:grid;gap:8px}
@@ -154,7 +154,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .flow .y{background:var(--warn-bg);color:var(--warn-ink)}.flow .g{background:var(--ok-bg);color:var(--ok-ink)}.flow .r{background:var(--bad-bg);color:var(--bad-ink)}
 .switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:14px}
 .seg{display:inline-flex;border:1px solid var(--brand2);border-radius:8px;overflow:hidden;flex-wrap:wrap}
-.seg button{border:0;background:var(--card);padding:7px 12px;cursor:pointer;font-family:var(--f-head);font-size:13.5px;color:var(--brand2)}
+.seg button{border:0;background:var(--card);padding:7px 12px;cursor:pointer;font-family:var(--f-head);font-size:13.5px;color:var(--tab-on)}
 .seg button.on{background:var(--brand);color:#fff}
 /* ===== Paper / reports ===== */
 .paper-wrap{overflow-x:auto;padding-block:16px}
@@ -223,7 +223,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <div class="wrap">
     <div class="hdr">
       <div class="logo" aria-hidden="true">
-        <svg width="34" height="34" viewBox="0 0 64 64"><rect x="12" y="6" width="34" height="46" rx="4" fill="#e9f3ec" stroke="#14563a" stroke-width="3"/><path d="M19 18h20M19 26h20M19 34h12" stroke="#14563a" stroke-width="3" stroke-linecap="round"/><circle cx="45" cy="45" r="13" fill="#f3c623" stroke="#14563a" stroke-width="2.5"/><path d="M45 37v14m-5-5 5 5 5-5" stroke="#14563a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="34" height="34" viewBox="0 0 64 64"><rect x="12" y="6" width="34" height="46" rx="4" fill="#f8ecec" stroke="#7a1f2b" stroke-width="3"/><path d="M19 18h20M19 26h20M19 34h12" stroke="#7a1f2b" stroke-width="3" stroke-linecap="round"/><circle cx="45" cy="45" r="13" fill="#f3c623" stroke="#7a1f2b" stroke-width="2.5"/><path d="M45 37v14m-5-5 5 5 5-5" stroke="#7a1f2b" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="ttl">
         <h1>ระบบต่อรองและปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา (BOQ)</h1>
@@ -246,7 +246,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (10)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (11)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -742,7 +742,7 @@ function tryOut(p,price){const box=$('#tryOut');const r=compute(p,price);const o
   box.innerHTML=`<div class="grid g12" style="margin-bottom:10px">
      <div class="s4"><div class="muted" style="font-size:13px">ลดลงจากราคาเสนอ</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600" class="num">${fmt(o-r.T/100)} <span class="muted" style="font-size:13px">(${o?fmt((o-r.T/100)/o*100):'0.00'}%)</span></div></div>
      <div class="s4"><div class="muted" style="font-size:13px">ต่ำกว่าราคากลาง</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600" class="num">${fS(r.sumM-r.T)}</div></div>
-     <div class="s4"><div class="muted" style="font-size:13px">อัตราร้อยละที่ปรับลด (3)÷(1)</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600;color:var(--brand2)" class="num">${fmt(r.pct)}</div></div></div>
+     <div class="s4"><div class="muted" style="font-size:13px">อัตราร้อยละที่ปรับลด (3)÷(1)</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600;color:var(--tab-on)" class="num">${fmt(r.pct)}</div></div></div>
    ${sug}
    <div class="row" style="margin-top:10px"><button class="btn pri" id="saveRound" type="button">บันทึกเป็นการต่อรองครั้งใหม่</button><span class="muted" style="font-size:13px">จะใช้ราคา ${fS(r.T)} บาท</span></div>`;
   $$('[data-pick]',box).forEach(b=>b.onclick=()=>{$('#tryP').value=fmt(+b.dataset.pick/100);$('#v-nego')._try=$('#tryP').value;tryOut(p,+b.dataset.pick/100)});
@@ -912,7 +912,7 @@ function repContract(p,r,b){
 
 /* ================= legal ================= */
 function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card card-b legal" style="min-width:0">
-  <h2 style="font-size:22px;color:var(--brand2)">สาระสำคัญและหลักการคำนวณ</h2>
+  <h2 style="font-size:22px;color:var(--tab-on)">สาระสำคัญและหลักการคำนวณ</h2>
   <p class="muted">หนังสือคณะกรรมการวินิจฉัยปัญหาการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ (กวจ.) ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568 เรื่อง แนวทางการปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา (ยกเลิกหนังสือ ที่ กค (กวจ) 0405.3/ว 232 ลงวันที่ 8 เมษายน 2568) · ใช้สรุปนี้ประกอบการทำงานเท่านั้น ให้ยึดตัวหนังสือฉบับจริง</p>
   <h3>1. ขอบเขต (ข้อ 1.1)</h3><blockquote>ใช้กับงานจ้างก่อสร้างที่หน่วยงานของรัฐจัดทำแบบรูปรายการงานก่อสร้างโดยถูกต้อง</blockquote>
   <h3>2. การยื่นข้อเสนอ (ข้อ 1.2.1)</h3><blockquote>ผู้ยื่นข้อเสนอกรอกใบเสนอราคาโดยไม่ต้องยื่น BOQ เป็นไฟล์ PDF</blockquote>
