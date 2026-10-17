@@ -676,7 +676,7 @@ function growAll(){$$('#boqBody textarea').forEach(grow)}
 addEventListener('resize',()=>{if(tab==='edit')growAll()});
 function updMids(){const p=P();p.items.forEach(it=>{const inp=$(`[data-mid="${it.id}"]`);if(inp){inp.placeholder=fS(midOf(p,it));const mm=midMismatch(p,it);inp.style.borderColor=mm?'var(--danger)':'';inp.style.borderWidth=mm?'2px':''}});$('#boqTotal').textContent=fS(totals(p).sumM);sideSum()}
 function rSign(){const p=P();p.signers=p.signers||structuredClone(S.settings.signers);
-  $('#signBox').innerHTML=p.signers.map((s,i)=>`<label class="f s4"><span>ตำแหน่งในคณะ/หน้าที่ (คนที่ ${i+1})</span><input class="i" data-si="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s4"><span>ชื่อ-สกุล</span><input class="i" data-si="${i}" data-sk="name" value="${esc(s.name)}" placeholder="(นาย/นาง/นางสาว ...)"></label><label class="f s4"><span>ตำแหน่ง</span><input class="i" data-si="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('');
+  $('#signBox').innerHTML=p.signers.map((s,i)=>`<label class="f s3"><span>ลงนามในฐานะ (คนที่ ${i+1})</span><input class="i" data-si="${i}" data-sk="duty" value="${esc(sigDuty(s,i))}" placeholder="เช่น ผู้ปรับลด / ผู้ตรวจสอบ / ผู้อนุมัติ" list="dutyList"></label><label class="f s3"><span>ตำแหน่งในคณะ/หน้าที่</span><input class="i" data-si="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s3"><span>ชื่อ-สกุล</span><input class="i" data-si="${i}" data-sk="name" value="${esc(s.name)}" placeholder="(นาย/นาง/นางสาว ...)"></label><label class="f s3"><span>ตำแหน่ง</span><input class="i" data-si="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('')+`<datalist id="dutyList"><option value="ผู้ปรับลด"><option value="ผู้ตรวจสอบ"><option value="ผู้ปรับลด/ผู้ตรวจสอบ"><option value="ผู้อนุมัติ"></datalist><div class="s12" style="font-size:12px;opacity:.75">"ลงนามในฐานะ" จะพิมพ์ต่อท้ายช่องลงชื่อในแบบสรุปราคากลางและแบบแนบท้ายสัญญา · เว้นว่างได้ถ้าไม่ต้องการ</div>`;
   $('#signBox').oninput=e=>{const t=e.target;if(t.dataset.si===undefined)return;p.signers[+t.dataset.si][t.dataset.sk]=t.value;touch(p)};
 }
 function sideSum(){const p=P();const box=$('#sideSum');if(!box)return;const t=totals(p);const b=basisOf(p);const r=compute(p,b.price);const d=decision(p);
@@ -1519,8 +1519,9 @@ function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textCo
 let bookAuto=null;
 function bookAutoPush(p){const b=p.book;if(!bookOn()||!b||!b.pushed)return;clearTimeout(bookAuto);bookAuto=setTimeout(()=>{if(b.pushedDates===bookSig(p))return;pushBooking(p).then(()=>{const m=$('#bkMsg');if(m)m.textContent='อัปเดตช่วงวันจองแล้ว '+b.pushed}).catch(()=>{})},900)}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
-  const dut=['ผู้ปรับลด','ผู้ตรวจสอบ'];
-  return `<div class="sig">${s.map((x,i)=>`<div>ลงชื่อ ......................................................${dut[i]?' '+dut[i]:''}<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`).join('')}</div>`}
+  return `<div class="sig">${s.map((x,i)=>{const d=sigDuty(x,i);return `<div>ลงชื่อ ......................................................${d?' '+esc(d):''}<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`}).join('')}</div>`}
+const SIG_DUTY=['ผู้ปรับลด','ผู้ตรวจสอบ'];
+function sigDuty(x,i){return x&&x.duty!==undefined?String(x.duty).trim():(SIG_DUTY[i]||'')}
 function catSummary(p){return p.categories.map(c=>{const its=p.items.filter(i=>i.kind==='item'&&i.catId===c.id);return {c,cost:its.reduce((a,i)=>a+costOf(i),0),mid:its.reduce((a,i)=>a+midOf(p,i),0)}}).filter(x=>x.mid||x.c.kind!=='construction'||true)}
 function repMid(p,r,b){const cs=catSummary(p);
   return `<div class="paper${wm()}"><h2>แบบสรุปราคากลางงานก่อสร้าง${esc(p.type&&p.type!=='อื่นๆ'?p.type:'')}</h2>
@@ -1619,7 +1620,7 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
 function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" style="gap:18px;max-width:900px">
   <div class="card"><div class="card-h"><h2>ค่าเริ่มต้นสำหรับโครงการใหม่</h2></div><div class="card-b grid g12">
    <label class="f s12"><span>หน่วยงานเจ้าของโครงการ</span><input class="i" id="sAgency" value="${esc(st.agency)}"></label>
-   ${st.signers.map((s,i)=>`<label class="f s4"><span>ผู้ลงนามคนที่ ${i+1}: หน้าที่</span><input class="i" data-ss="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s4"><span>ชื่อ-สกุล</span><input class="i" data-ss="${i}" data-sk="name" value="${esc(s.name)}"></label><label class="f s4"><span>ตำแหน่ง</span><input class="i" data-ss="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('')}
+   ${st.signers.map((s,i)=>`<label class="f s3"><span>ผู้ลงนามคนที่ ${i+1}: ลงนามในฐานะ</span><input class="i" data-ss="${i}" data-sk="duty" value="${esc(sigDuty(s,i))}" placeholder="ผู้ปรับลด / ผู้ตรวจสอบ"></label><label class="f s3"><span>หน้าที่</span><input class="i" data-ss="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s3"><span>ชื่อ-สกุล</span><input class="i" data-ss="${i}" data-sk="name" value="${esc(s.name)}"></label><label class="f s3"><span>ตำแหน่ง</span><input class="i" data-ss="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('')}
   </div></div>
   <div class="card"><div class="card-h"><h2>หนังสือราชการ</h2></div><div class="card-b grid g12">
    <label class="f s4"><span>รหัสหนังสือ (ก่อนเลขที่)</span><input class="i" data-sl="docPrefix" value="${esc(st.docPrefix)}"></label>
