@@ -1468,7 +1468,7 @@ function bookWindow(p){const sg=p.sign||{};const days=Math.max(1,num(sg.days)||7
   const ok=dates.filter(x=>!sf||x>=sf);return {base,days,end,sf,dates:ok,assumed:!sg.received}}
 function bookDocsList(){return String(S.settings.bookDocs||'').split('\n').map(x=>x.trim()).filter(Boolean).map((l,i)=>{const opt=/\(ถ้ามี\)/.test(l);const poa=/^หนังสือมอบอำนาจ/.test(l);return {key:poa?'poa':'d'+(i+1),label:l,required:!opt}})}
 async function gasCall(params,post){const st=S.settings;const url=String(st.gasUrl||'').trim();if(!url)throw new Error('ยังไม่ได้ใส่ URL ของ Google Apps Script ในหน้าตั้งค่า');
-  let r;try{r=post?await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...params,key:st.gasKey||''})}):await fetch(url+'?'+new URLSearchParams({...params,key:st.gasKey||''}))}
+  let r;try{r=post?await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...params,key:String(st.gasKey||'').trim()})}):await fetch(url+'?'+new URLSearchParams({...params,key:String(st.gasKey||'').trim()}))}
   catch(e){throw new Error('เชื่อมต่อ Google Apps Script ไม่ได้ — ตรวจ URL และการ Deploy (Who has access: Anyone)')}
   let j;try{j=await r.json()}catch(e){throw new Error('Google Apps Script ตอบกลับไม่ถูกต้อง — ตรวจว่าใช้ URL ที่ลงท้ายด้วย /exec')}
   if(!j.ok)throw new Error(j.error||'เกิดข้อผิดพลาด');return j}
