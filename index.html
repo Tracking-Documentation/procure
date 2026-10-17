@@ -57,6 +57,20 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 
 .tab svg{width:17px;height:17px}
+/* calendar */
+.calhd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.calhd h2{font-size:20px;min-width:180px}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card)}
+.calg .dow{background:var(--soft);padding:6px 8px;font-family:var(--f-head);font-size:13px;text-align:center}
+.calg .cd{min-height:104px;border-top:1px solid var(--line);border-left:1px solid var(--line);padding:4px 5px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.calg .cd:nth-child(7n+1){border-left:0}.calg .cd.off{background:var(--bg)}.calg .cd.out{opacity:.45}
+.calg .cd .dn{font-size:13px;font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;gap:4px}.calg .cd .dn small{color:var(--danger);font-size:11px;text-align:right;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.calg .cd.today .dn b{background:var(--brand);color:#fff;border-radius:999px;padding:0 7px}
+.ev1{font-size:12px;line-height:1.3;border-radius:5px;padding:2px 5px;border-left:3px solid;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:var(--soft)}
+.ev1:hover{filter:brightness(.96)}
+.k-open{border-color:#7a8a99}.k-dead{border-color:#d29a00;background:var(--warn-bg);color:var(--warn-ink)}.k-mtg{border-color:#2f7fd1}.k-ann{border-color:#7b52c7}
+.k-appeal{border-color:#c2410c}.k-sign{border-color:#20a160;background:var(--ok-bg);color:var(--ok-ink)}.k-signdue{border-color:var(--danger);background:var(--bad-bg);color:var(--bad-ink)}.k-signed{border-color:#20a160}
+.calleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;margin:10px 0 18px}.calleg span{display:inline-flex;align-items:center;gap:6px}.calleg i{width:12px;height:12px;border-radius:3px;border-left-width:4px;border-left-style:solid;background:var(--soft)}
+@media (max-width:700px){.calg .cd{min-height:64px;padding:3px}.ev1{font-size:0;padding:0;height:6px;border-left-width:0;border-top-width:6px;border-top-style:solid;background:none}.calg .cd .dn small{display:none}}
 main{padding-block:20px 40px}
 .view[hidden]{display:none}
 /* generic */
@@ -269,10 +283,11 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-eval" hidden></section>
   <section class="view" id="v-nego" hidden></section>
   <section class="view" id="v-result" hidden></section>
+  <section class="view" id="v-cal" hidden></section>
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 25 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 26 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -310,6 +325,7 @@ function letterFont(){try{const c=document.createElement('canvas').getContext('2
   for(const f of ['TH SarabunIT๙','TH SarabunIT9','TH Sarabun New','TH SarabunNew','TH SarabunPSK']){if(w(`20px "${f}",monospace`)!==w('20px monospace'))return {lf:`"${f}","Sarabun",sans-serif`,ls:'16pt'}}}catch(e){}
   return {lf:'"Sarabun","Leelawadee UI",Tahoma,sans-serif',ls:'12pt'}}
 const ICON={
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg>',
   users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.9 1.9 5.4 4.9"/></svg>',
   dash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
@@ -506,11 +522,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){({dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
+function render(){({cal:rCal,dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -789,6 +805,41 @@ const dayBlank=()=>{const t=thDateParts(new Date().toISOString().slice(0,10));re
 function holidaySet(){return new Set(String(S.settings.holidays||'').split(/[\s,]+/).map(x=>x.trim()).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)))}
 function isWorkday(d,H){const w=d.getDay();return w!==0&&w!==6&&!H.has(d.toISOString().slice(0,10))}
 function addWorkdays(iso,n){if(!iso)return '';const H=holidaySet();const d=new Date(iso+'T12:00:00Z');let c=0;while(c<n){d.setUTCDate(d.getUTCDate()+1);const x=new Date(d.toISOString().slice(0,10)+'T12:00:00');if(isWorkday(x,H))c++}return d.toISOString().slice(0,10)}
+/* ---------- calendar ---------- */
+let calYM=null;
+function calEvents(){const out=[];const add=(p,date,kind,label,time)=>{if(date)out.push({p,date,kind,label,time:time||''})};
+  S.projects.forEach(p=>{const e=evOf(p);
+    add(p,e.openDate,'open','เปิดข้อเสนอ',e.openTime);
+    if(e.openDate)add(p,evDeadline(p),'dead','ครบกำหนดพิจารณาผล (5 วันทำการ)');
+    add(p,e.m1.date,'mtg',`ประชุมครั้งที่ ${e.m1.no||1}`,e.m1.start);
+    if(p.rounds.length)add(p,e.m2.date,'mtg',`ประชุมครั้งที่ ${e.m2.no||2}`,e.m2.start);
+    if(p.announceDate){add(p,p.announceDate,'ann','ประกาศผู้ชนะ');
+      if(p.status!=='ลงนามสัญญาแล้ว'){add(p,addWorkdays(p.announceDate,7),'appeal','ครบระยะอุทธรณ์ (7 วันทำการ)');add(p,addWorkdays(p.announceDate,8),'sign','เรียกลงนามสัญญาได้')}}
+    const sg=p.sign||{};if(sg.date&&p.status!=='ลงนามสัญญาแล้ว')add(p,addWorkdays(sg.date,num(sg.days)||7),'signdue','ครบกำหนดมาเซ็นสัญญา');
+    add(p,p.contractDate,'signed','ลงนามสัญญา')});
+  return out.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))}
+const CAL_KINDS=[['open','เปิดข้อเสนอ'],['dead','ครบกำหนดพิจารณาผล'],['mtg','ประชุมคณะกรรมการ'],['ann','ประกาศผู้ชนะ'],['appeal','ครบระยะอุทธรณ์'],['sign','เรียกลงนามได้'],['signdue','ครบกำหนดมาเซ็นสัญญา'],['signed','ลงนามสัญญาแล้ว']];
+function shortName(p){const n=String(p.name||'(ยังไม่ตั้งชื่อ)');const m=n.match(/ทางหลวงหมายเลข\s*(\d+)/);return (p.inviteNo?p.inviteNo+' ':'')+(m?'ทล.'+m[1]:n.slice(0,28))}
+function rCal(){const el=$('#v-cal');const t=todayISO();if(!calYM)calYM=t.slice(0,7);
+  const [Y,M]=calYM.split('-').map(Number);const first=new Date(Y,M-1,1);const start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
+  const H=holidaySet();const hn=S.settings.holidayNames||{};const E=calEvents();const by={};E.forEach(x=>(by[x.date]=by[x.date]||[]).push(x));
+  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const cells=[];for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);if(i>=35&&d.getMonth()!==M-1)break;cells.push(d)}
+  const up=E.filter(x=>x.date>=t).slice(0,40);const overdue=E.filter(x=>x.kind==='sign'&&x.date<=t);
+  el.innerHTML=`<div class="calhd"><button class="btn" data-cm="-1" type="button">‹ เดือนก่อน</button><h2>${TH_MONTH[M-1]} ${Y+543}</h2><button class="btn" data-cm="1" type="button">เดือนถัดไป ›</button><button class="btn ghost-brand" data-cm="0" type="button">วันนี้</button><span class="sp"></span><span class="muted" style="font-size:13px">ไม่นับเสาร์–อาทิตย์และวันหยุดราชการในหน้าตั้งค่า</span></div>
+   ${overdue.length?`<div class="note ok" style="margin-bottom:12px"><b>ถึงกำหนดเรียกลงนามสัญญาแล้ว ${overdue.length} โครงการ</b> — ${overdue.map(x=>esc(shortName(x.p))).join(', ')}</div>`:''}
+   <div class="calg">${['จ.','อ.','พ.','พฤ.','ศ.','ส.','อา.'].map(d=>`<div class="dow">${d}</div>`).join('')}
+   ${cells.map(d=>{const k=iso(d);const off=!isWorkday(new Date(k+'T12:00:00'),H);const L=by[k]||[];
+     return `<div class="cd${off?' off':''}${d.getMonth()!==M-1?' out':''}${k===t?' today':''}"><div class="dn"><b>${d.getDate()}</b>${H.has(k)?`<small title="${esc(hn[k]||'วันหยุดราชการ')}">${esc(hn[k]||'วันหยุด')}</small>`:''}</div>
+       ${L.map(x=>`<div class="ev1 k-${x.kind}" data-calp="${x.p.id}" title="${esc(x.label+' · '+(x.p.name||''))}">${x.time?esc(x.time.replace(/\s*น\.?$/,''))+' ':''}${esc(x.label)} · ${esc(shortName(x.p))}</div>`).join('')}</div>`}).join('')}</div>
+   <div class="calleg">${CAL_KINDS.map(([k,l])=>`<span><i class="k-${k}"></i>${l}</span>`).join('')}</div>
+   <div class="card"><div class="card-h"><h2>กำหนดการที่กำลังจะถึง</h2></div><div class="tbl-wrap"><table class="t"><thead><tr><th>วันที่</th><th>รายการ</th><th>โครงการ</th><th></th></tr></thead><tbody>
+   ${up.length?up.map(x=>`<tr class="${x.date===t?'adj':''}"><td style="white-space:nowrap">${D(x.date)}${x.time?' · '+esc(x.time):''}${x.date===t?' <span class="pill p-adj">วันนี้</span>':''}</td><td><span class="ev1 k-${x.kind}" style="display:inline-block;cursor:default">${esc(x.label)}</span></td><td style="min-width:240px">${esc(String(x.p.name||'').slice(0,90))}<div class="muted" style="font-size:12px">${esc(x.p.contractor||'')}</div></td>
+     <td style="white-space:nowrap">${x.kind==='sign'||x.kind==='appeal'?`<button class="btn sm blue" data-signprint="${x.p.id}" type="button">${ICON.print} หนังสือเรียกเซ็นสัญญา</button>`:`<button class="btn sm" data-calp="${x.p.id}" type="button">เปิดโครงการ</button>`}</td></tr>`).join(''):'<tr><td colspan="4" class="empty">ยังไม่มีกำหนดการ · กรอกวันเปิดข้อเสนอและวันประชุมที่หน้า “พิจารณาผล” และวันที่ประกาศผู้ชนะที่หน้าข้อมูลโครงการ</td></tr>'}
+   </tbody></table></div></div>`;
+  $$('[data-cm]',el).forEach(b=>b.onclick=()=>{const k=+b.dataset.cm;if(!k)calYM=t.slice(0,7);else{const d=new Date(Y,M-1+k,1);calYM=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`}rCal()});
+  $$('[data-calp]',el).forEach(b=>b.onclick=()=>{cur=b.dataset.calp;save();go('eval')});
+}
 function evDeadline(p){const e=evOf(p);return addWorkdays(e.openDate,5)}
 function evDoneDate(p){const e=evOf(p);return e.summaryDate||e.m2.date||e.m1.date||''}
 function tmin(t){const m=String(t||'').match(/(\d{1,2})\s*[.:]\s*(\d{2})/)||String(t||'').match(/^\s*(\d{1,2})\s*(?:น|$)/);if(!m)return null;return (+m[1])*60+(+(m[2]||0))}
