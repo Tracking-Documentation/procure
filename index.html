@@ -311,7 +311,7 @@ function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.pars
   if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
 let saveT=null;
 function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}},250)}
-function P(){return S.projects.find(p=>p.id===cur)}
+function P(){const p=S.projects.find(p=>p.id===cur);if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
 function touch(p){p.updatedAt=nowStr();save()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
 
@@ -331,7 +331,7 @@ function sampleProject(){
     type:'ไฟฟ้าแสงสว่าง',projectNo:'69099579623',budget:4997000,midDeclared:4996422.25,offerPrice:3097000,contractor:'บริษัท กิจพัฒนแสง จำกัด',status:'กำลังต่อรอง',
     note:'ตัวอย่างจากไฟล์ e-กบ.40-69'});
   p.signers=[{role:'เจ้าหน้าที่',name:'(นางสาวณรมา  วรกลั่น)',position:'นักวิชาการพัสดุปฏิบัติการ'},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'(นายสุวัฒชัย  สิงหพันธ์)',position:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์'}];
-  p.letter={no:'3775',date:'2026-10-14',inviteNo:'e-กบ.40/2569',inviteDate:'2026-09-30',reply:'',explain:'auto',to:''};
+  p.inviteNo='e-กบ.40/2569';p.inviteDate='2026-09-30';p.letter={no:'',date:'',reply:'',explain:'auto',to:''};
   p.items=[
     {id:uid(),kind:'heading',name:'งานไฟฟ้าแสงสว่าง',catId:c1},
     {id:uid(),kind:'item',name:'9.00 M. (MOUNTING HEIGHT) TAPERED STEEL\nPOLE DOUBLE BRACKETS WITH HIGH PRESSURE\nSODIUM LAMPS 250 WATTS. CUT-OFF MOUNTED\nAT GRADE',unit:'EACH',qty:83,unitCost:37150.70,catId:c1,midOverride:'',fixed:false},
@@ -541,6 +541,7 @@ function rEdit(){
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
      ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
      ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
+     ${F('inviteNo','ประกาศประกวดราคาเลขที่',{cls:'s6'})}${F('inviteDate','ประกาศลงวันที่',{cls:'s6',type:'date'})}
      ${F('contractor','ชื่อผู้ชนะ / ผู้รับจ้าง',{cls:'s6'})}${F('announceDate','วันที่ประกาศผลผู้ชนะ',{cls:'s3',type:'date'})}${F('status','สถานะ',{cls:'s3',sel:['ร่าง','กำลังต่อรอง','ตกลงราคาแล้ว','ลงนามสัญญาแล้ว']})}
      ${F('contractNo','เลขที่สัญญา',{cls:'s4'})}${F('contractDate','วันที่ลงนามสัญญา',{cls:'s4',type:'date'})}${F('note','หมายเหตุ',{cls:'s4'})}
    </div></div>
@@ -701,8 +702,7 @@ function rNego(){
      <label class="f s4"><span>เลขที่หนังสือ (${esc(S.settings.docPrefix)}...)</span><input class="i" data-l="no" value="${esc(p.letter.no)}"></label>
      <label class="f s4"><span>ลงวันที่</span><input class="i" type="date" data-l="date" value="${esc(p.letter.date)}"></label>
      <label class="f s4"><span>ขอให้ตอบภายในวันที่</span><input class="i" type="date" data-l="reply" value="${esc(p.letter.reply)}"></label>
-     <label class="f s4"><span>อ้างถึง: เลขที่ประกาศประกวดราคา</span><input class="i" data-l="inviteNo" value="${esc(p.letter.inviteNo)}" placeholder="e-กบ.40/2569"></label>
-     <label class="f s4"><span>ประกาศลงวันที่</span><input class="i" type="date" data-l="inviteDate" value="${esc(p.letter.inviteDate)}"></label>
+     <div class="f s4 muted" style="font-size:13px;align-self:end">อ้างถึงประกาศเลขที่ ${esc(p.inviteNo||'(ยังไม่ได้กรอก)')} — แก้ได้ที่หน้าข้อมูลโครงการ</div>
      <label class="f s4"><span>ข้อความขอให้ชี้แจง</span><select class="i" data-l="explain"><option value="auto" ${p.letter.explain==='auto'?'selected':''}>อัตโนมัติ (ต่ำกว่าราคากลาง ≥ ${num(S.settings.explainPct||15)}%)</option><option value="yes" ${p.letter.explain==='yes'?'selected':''}>ใส่เสมอ</option><option value="no" ${p.letter.explain==='no'?'selected':''}>ไม่ใส่</option></select></label>
      <label class="f s12"><span>เรียน</span><input class="i" data-l="to" value="${esc(p.letter.to)}" placeholder="${esc(firmTitle(p.contractor)+' '+(p.contractor||''))}"></label>
      <div class="s12 note ${needExplain(p)?'warn':'ok'}" id="explainNote">${explainMsg(p)}</div>
@@ -829,8 +829,8 @@ function firmTitle(c){return /^ห้างหุ้นส่วน|^หจก/.
 const moneyDash=x=>{x=num(x);return Number.isInteger(x)?fmt(x,0)+'.-':fmt(x)};
 function repLetter(p,r){const st=S.settings,L=p.letter||{},th=toTH,ex=needExplain(p),bp=belowPct(p),F=letterFont();
   const dp=thDateParts(L.date),today=thDateParts(new Date().toISOString().slice(0,10));
-  const dateTxt=dp?`${dp.d} ${dp.m} ${dp.y}`:`<span class="dots">..........</span> ${today.m} ${today.y}`;
-  const inv=thDateParts(L.inviteDate);const rep=thDateParts(L.reply);
+  const dateTxt=dp?`${dp.d} ${dp.m} ${dp.y}`:`<span style="display:inline-block;width:14mm"></span>${today.m} ${today.y}`;
+  const inv=thDateParts(p.inviteDate||L.inviteDate);const rep=thDateParts(L.reply);
   const chair=(p.signers||[])[1]||{};const firm=p.contractor||'..............................';
   const subject='ขอต่อรองราคาค่างาน'+(ex?` และขอให้ชี้แจงกรณีเสนอราคาต่ำกว่าราคากลางร้อยละ ${num(st.explainPct||15)} ขึ้นไป`:'');
   const excTxt='ยกเว้นค่าใช้จ่ายพิเศษ ตามข้อกำหนด'+(r&&r.sumEquip>0?' และค่าครุภัณฑ์':'');
@@ -838,10 +838,10 @@ function repLetter(p,r){const st=S.settings,L=p.letter||{},th=toTH,ex=needExplai
   const p2=`ในการนี้ คณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ ขอต่อรองราคา โดยปรับลดราคาทุกรายการตามอัตราร้อยละเท่ากันทุกรายการหรือตามความเหมาะสม ${excTxt} จึงขอให้${esc(firm)} พิจารณาราคารายละเอียดตามสิ่งที่ส่งมาด้วย ทั้งนี้ ขอให้ ${firmShort(firm)} ปรับลดราคาและจัดทำใบแจ้งปริมาณงานและราคาให้คณะกรรมการฯ ทราบ ภายในวันที่${rep?` ${rep.d} ${rep.m} ${rep.y}`:'<span class="dots">..........................................</span>'}${ex?` พร้อมชี้แจงเหตุผลและหนังสือยืนยันว่าจะสามารถปฏิบัติตามข้อกำหนดและเงื่อนไขตามประกาศฯ ของ${esc(st.office||'')}ทุกประการ`:''}`;
   const out=`<div class="paper letter${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
    <img class="garuda" src="${GARUDA}" alt="ตราครุฑ">
-   <div class="top"><div>ที่ ${esc(st.docPrefix||'')}${esc(L.no||'')}</div><div>${esc(st.addr1||'')}<br>${esc(st.addr2||'')}<br>${esc(st.addr3||'')}</div></div>
+   <div class="top"><div>ที่ ${esc(st.docPrefix||'')}${L.no?esc(L.no):'<span style="display:inline-block;width:16mm"></span>'}</div><div>${esc(st.addr1||'')}<br>${esc(st.addr2||'')}<br>${esc(st.addr3||'')}</div></div>
    <div class="date">${dateTxt}</div>
    <div class="hd"><span>เรื่อง</span><span>${subject}</span><span>เรียน</span><span>${esc(L.to||firmTitle(firm)+' '+firm)}</span>
-    <span>อ้างถึง</span><span>ประกาศประกวดราคาจ้างอิเล็กทรอนิกส์ เลขที่ ${esc(L.inviteNo||'..........')} ลงวันที่ ${inv?`${inv.d} ${inv.m} ${inv.y}`:'..........'}</span>
+    <span>อ้างถึง</span><span>ประกาศประกวดราคาจ้างอิเล็กทรอนิกส์ เลขที่ ${esc(p.inviteNo||L.inviteNo||'..........')} ลงวันที่ ${inv?`${inv.d} ${inv.m} ${inv.y}`:'..........'}</span>
     <span>สิ่งที่ส่งมาด้วย</span><span>ราคาที่ขอต่อรองปรับลดราคาตามอัตราร้อยละหรือตามความเหมาะสม จำนวน 1 ฉบับ</span></div>
    <div class="gap"></div><p>${p1}</p><div class="gap"></div><p>${p2}</p><div class="gap"></div><p>จึงเรียนมาเพื่อพิจารณา</p>
    <div class="gap"></div><div class="close">ขอแสดงความนับถือ<div style="height:20mm"></div>${esc(chair.name||'(......................................................)')}<br>${esc(chair.role||chair.position||'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์')}</div>
