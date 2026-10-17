@@ -43,11 +43,11 @@ input[type=text],input[type=tel],input[type=email]{width:100%;padding:10px 12px;
 @media(max-width:480px){.grid3{grid-template-columns:1fr}}
 </style>
 </head>
-<body>
+<body data-p="<?= projectId ?>" data-t="<?= token ?>">
 <header><h1>จองวันลงนามสัญญา</h1><p id="hd">กำลังโหลด…</p></header>
 <main id="app"><div class="card">กำลังโหลดข้อมูล…</div></main>
 <script>
-var PID = <?= JSON.stringify(projectId) ?>, TOK = <?= JSON.stringify(token) ?>;
+var PID = document.body.getAttribute('data-p') || '', TOK = document.body.getAttribute('data-t') || '';
 var INFO = null, SEL = { date: '', time: '' }, FILES = {};
 var MON = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 var DOW = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
