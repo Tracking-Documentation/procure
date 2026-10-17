@@ -48,6 +48,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ttl p{margin:2px 0 0;font-size:13px;opacity:.85}
 .hdr-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn-install{background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:7px 14px;font-family:var(--f-head);font-weight:500;cursor:pointer}
+.btn-lock{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 12px;font-family:var(--f-head);cursor:pointer;white-space:nowrap}.btn-lock.on{background:#fff;color:var(--brand)}
 .chip-off{background:rgba(255,255,255,.14);border-radius:999px;padding:6px 12px;font-size:13px}
 .tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-top:8px}
 .tabs::-webkit-scrollbar{display:none}
@@ -270,6 +271,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
         <p>ตามหนังสือ กวจ. ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568 · ราคาต่อรองรวมเป็นจำนวนเต็ม ไม่ปรับลดค่าใช้จ่ายพิเศษและครุภัณฑ์</p>
       </div>
       <div class="hdr-actions">
+        <button class="btn-lock" id="btnLock" type="button">🔑 ตั้งรหัสผ่าน</button>
         <button class="btn-install" id="btnInstall" type="button">⤓ ติดตั้งแอป</button>
         <span class="chip-off" id="netChip">ใช้งานออฟไลน์ได้ · ข้อมูลอยู่ในเครื่องนี้</span>
       </div>
@@ -289,7 +291,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 40 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 41 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1676,6 +1678,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
     <li>กด “ทดสอบการเชื่อมต่อ” และ “ส่งรูปแบบเลขที่สัญญา” · จากนั้นในหน้า “พิจารณาผล” การ์ดเรียกลงนามสัญญา กด “เปิดรับจอง” ก่อนพิมพ์หนังสือ</li>
     <li>ถ้าแก้โค้ดภายหลัง ต้อง Deploy › Manage deployments › แก้ไข › Version: New version (URL เดิมใช้ต่อได้)</li></ol></details>
   </div></div>
+  <div class="card"><div class="card-h"><h2>รหัสผ่าน</h2></div><div class="card-b row" style="gap:10px;flex-wrap:wrap"><span>${pwRec()?'ตั้งรหัสผ่านแล้ว — ต้องใส่รหัสเมื่อติดตั้งแอปและเมื่อแก้ไขข้อมูล':'ยังไม่ได้ตั้งรหัสผ่าน — ใครเปิดเครื่องนี้ก็แก้ไขได้'}</span><button class="btn pri" id="pwSetBtn" type="button">${pwRec()?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่าน'}</button></div></div>
   <div class="card"><div class="card-h"><h2>การปัดเศษราคาที่ปรับลด</h2></div><div class="card-b"><div class="seg">${[['total','ยอดรวมเป็นจำนวนเต็ม (ค่าเริ่มต้น)'],['unit','ราคาต่อหน่วยเป็นจำนวนเต็มบาท']].map(([k,l])=>`<button class="${(st.roundMode||'total')===k?'on':''}" data-rm2="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>การแสดงผล</h2></div><div class="card-b row"><span>ธีม</span><div class="seg">${[['system','ตามเครื่อง'],['light','สว่าง'],['dark','มืด']].map(([k,l])=>`<button class="${st.theme===k?'on':''}" data-th="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>สำรองและกู้คืนข้อมูล</h2></div><div class="card-b grid">
@@ -1686,6 +1689,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
   {const sc=$('#signCopyCk');if(sc)sc.onchange=()=>{st.signCopy=sc.checked;save()}}
   {const rc=$('#regCopy');if(rc)rc.onchange=()=>{st.regionCopy=rc.checked;save()}}
+  $('#pwSetBtn').onclick=()=>setPwDialog();
   $$('[data-sl]').forEach(i=>i.oninput=()=>{st[i.dataset.sl]=i.dataset.sl==='explainPct'?num(i.value):i.value;save()});
   {const m=t=>{$('#gasMsg').textContent=t};
    $('#gasPing').onclick=async()=>{m('กำลังทดสอบ…');try{const j=await gasCall({action:'ping'});m('เชื่อมต่อสำเร็จ · รูปแบบเลขในชีต: '+(j.settings.contractFormat||'-')+' เริ่ม '+(j.settings.contractStart||'1')+' ปีงบ '+(j.settings.contractFY||''))}catch(e){m(e.message)}};
@@ -1704,6 +1708,35 @@ function importData(txt,merge){try{const d=JSON.parse(txt);const list=Array.isAr
   cur=S.projects[0]?.id||null;save();toast(`นำเข้า ${list.length} โครงการแล้ว`);go('dash')}catch(e){toast('อ่านข้อมูลไม่ได้ ตรวจว่าเป็นไฟล์สำรองจากระบบนี้')}}
 function applyTheme(){const t=S.settings.theme;if(t==='system')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t)}
 
+/* ================= รหัสผ่าน: ติดตั้งแอป และแก้ไขข้อมูล ================= */
+const PWK='boqNego.v1.pw',UNK='boqNego.v1.unl',LOCK_MIN=30;
+function pwRec(){try{return JSON.parse(localStorage.getItem(PWK)||'null')}catch(e){return null}}
+async function pwHash(pw,salt){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(salt+'|'+pw));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function pwCheck(pw){const r=pwRec();return !!r&&(await pwHash(pw,r.salt))===r.hash}
+async function pwSet(pw){const a=new Uint8Array(8);crypto.getRandomValues(a);const salt=[...a].map(x=>x.toString(16).padStart(2,'0')).join('');localStorage.setItem(PWK,JSON.stringify({salt,hash:await pwHash(pw,salt)}))}
+let unlockedUntil=0;try{unlockedUntil=+sessionStorage.getItem(UNK)||0}catch(e){}
+function isLocked(){return !!pwRec()&&Date.now()>unlockedUntil}
+function setUnlocked(on){unlockedUntil=on?Date.now()+LOCK_MIN*60000:0;try{sessionStorage.setItem(UNK,String(unlockedUntil))}catch(e){}lockUI()}
+function touchUnlock(){if(pwRec()&&Date.now()<=unlockedUntil){unlockedUntil=Date.now()+LOCK_MIN*60000;try{sessionStorage.setItem(UNK,String(unlockedUntil))}catch(e){}}}
+function lockUI(){const b=$('#btnLock');const has=!!pwRec(),lk=isLocked();if(b){b.textContent=!has?'🔑 ตั้งรหัสผ่าน':lk?'🔒 ปลดล็อกเพื่อแก้ไข':'🔓 ล็อก';b.title=!has?'ตั้งรหัสผ่านสำหรับติดตั้งและแก้ไข':lk?'ตอนนี้ดูและพิมพ์ได้อย่างเดียว':'ปลดล็อกอยู่ · กดเพื่อล็อกทันที';b.classList.toggle('on',has&&!lk)}document.body.classList.toggle('locked',lk)}
+function askPw(title,msg,cb){const m=modal(title,`<p style="margin:0 0 10px">${esc(msg)}</p><input class="i" type="password" id="pwIn" autocomplete="current-password" style="width:100%"><div id="pwErr" style="color:var(--danger);font-size:13px;margin-top:6px"></div>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">ตกลง</button>`);
+  const q=s=>m.root.querySelector(s),i=q('#pwIn');setTimeout(()=>i.focus(),50);
+  const go=async()=>{if(await pwCheck(i.value)){m.close();cb()}else{q('#pwErr').textContent='รหัสผ่านไม่ถูกต้อง';i.select()}};
+  q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go;i.onkeydown=e=>{if(e.key==='Enter')go()}}
+function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่าน',`<div class="grid">${has?'<label class="f"><span>รหัสผ่านเดิม</span><input class="i" type="password" id="pw0"></label>':''}<label class="f"><span>รหัสผ่านใหม่ (อย่างน้อย 4 ตัวอักษร)</span><input class="i" type="password" id="pw1" autocomplete="new-password"></label><label class="f"><span>ยืนยันรหัสผ่านใหม่</span><input class="i" type="password" id="pw2" autocomplete="new-password"></label></div>
+   <p class="muted" style="font-size:13px;margin:10px 0 0">ใช้รหัสนี้ทั้งตอนกดติดตั้งแอปและตอนแก้ไขข้อมูล · เมื่อล็อก ยังดูข้อมูล พิมพ์ และดาวน์โหลด Word ได้ · ปลดล็อกแล้วจะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที หรือเมื่อปิดแอป · รหัสเก็บในเครื่องนี้เท่านั้น แต่ละเครื่องตั้งแยกกัน ถ้าลืมรหัสต้องล้างข้อมูลเว็บไซต์ (ข้อมูลโครงการในเครื่องจะหาย) จึงควรสำรองข้อมูลเป็นไฟล์ไว้</p><div id="pwErr" style="color:var(--danger);font-size:13px;margin-top:6px"></div>`,
+   `${has?'<button class="btn" data-mrm type="button">ยกเลิกการใช้รหัสผ่าน</button>':''}<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">บันทึก</button>`);
+  const q=s=>m.root.querySelector(s),err=t=>q('#pwErr').textContent=t;q('[data-mc]').onclick=m.close;setTimeout(()=>q(has?'#pw0':'#pw1').focus(),50);
+  q('[data-mo]').onclick=async()=>{if(has&&!(await pwCheck(q('#pw0').value)))return err('รหัสผ่านเดิมไม่ถูกต้อง');const a=q('#pw1').value;if(a.length<4)return err('รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร');if(a!==q('#pw2').value)return err('ยืนยันรหัสผ่านไม่ตรงกัน');await pwSet(a);m.close();setUnlocked(true);toast('ตั้งรหัสผ่านแล้ว · ปลดล็อกไว้ให้แก้ไขต่อได้')};
+  const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
+function unlockThen(cb){askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
+/* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
+const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],#modalRoot';
+function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
+  e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
+['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
+['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev,touchUnlock,true));
+setInterval(lockUI,20000);
 /* ================= install / offline ================= */
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
 window.addEventListener('appinstalled',()=>{$('#btnInstall').hidden=true;toast('ติดตั้งแอปแล้ว')});
@@ -1731,6 +1764,9 @@ addEventListener('beforeprint',fitPrint);addEventListener('afterprint',unfitPrin
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S};
 /* boot */
 load();applyTheme();renderTabs();go(cur?'dash':'dash');
+{const inst=$('#btnInstall').onclick;$('#btnInstall').onclick=()=>{if(!pwRec()){toast('ตั้งรหัสผ่านก่อนติดตั้งแอป');setPwDialog();return}askPw('ติดตั้งแอป','กรอกรหัสผ่านเพื่อติดตั้งแอป',()=>inst())}}
+$('#btnLock').onclick=()=>{if(!pwRec())return setPwDialog();if(isLocked())return unlockThen();setUnlocked(false);toast('ล็อกแล้ว · ดูและพิมพ์ได้ แก้ไขต้องใส่รหัสผ่าน')};
+lockUI();
 })();
 </script>
 
