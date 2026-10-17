@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ต่อรองราคา BOQ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#14563a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&family=Sarabun:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: green government-office header band with tabs, content in a 1240px column; cards for forms, white A4 "paper" for reports */
+:root{
+  --bg:#f2f5f3; --card:#ffffff; --ink:#18291f; --muted:#5f7368; --line:#dbe5df; --soft:#eaf2ed;
+  --brand:#14563a; --brand2:#1f7a50; --brand-ink:#ffffff; --accent:#f3c623; --accent-ink:#3a2f00;
+  --blue:#1b66d1; --danger:#c23b2e; --warn-bg:#fff4cf; --warn-ink:#6d5300; --ok-bg:#e3f4ea; --ok-ink:#17633d; --bad-bg:#fde6e3; --bad-ink:#9d2a1f;
+  --paper:#ffffff; --paper-ink:#000000; --paper-line:#333333; --paper-shade:#e9ece9;
+  --f-head:"Prompt","Sarabun","Leelawadee UI",Tahoma,sans-serif;
+  --f-body:"Sarabun","Leelawadee UI","Thonburi",Tahoma,sans-serif;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1612; --card:#16211b; --ink:#e3ece6; --muted:#97aa9f; --line:#2a3a31; --soft:#1c2c23;
+  --brand:#0f4630; --brand2:#18694a; --accent:#f3c623; --blue:#5b9bf0; --danger:#ef7a6c;
+  --warn-bg:#3a3110; --warn-ink:#f4dc87; --ok-bg:#163527; --ok-ink:#8fe0b4; --bad-bg:#3d1c18; --bad-ink:#f3a397; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1612; --card:#16211b; --ink:#e3ece6; --muted:#97aa9f; --line:#2a3a31; --soft:#1c2c23;
+  --brand:#0f4630; --brand2:#18694a; --accent:#f3c623; --blue:#5b9bf0; --danger:#ef7a6c;
+  --warn-bg:#3a3110; --warn-ink:#f4dc87; --ok-bg:#163527; --ok-ink:#8fe0b4; --bad-bg:#3d1c18; --bad-ink:#f3a397; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-body);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-head);font-weight:600;text-wrap:balance;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+.num,td.n,.tab-n{font-variant-numeric:tabular-nums}
+/* header */
+.app-header{background:linear-gradient(120deg,var(--brand),var(--brand2));color:var(--brand-ink)}
+.hdr{display:flex;align-items:center;gap:14px;padding-block:16px 6px;flex-wrap:wrap}
+.logo{width:50px;height:50px;border-radius:12px;background:#fff;display:grid;place-items:center;flex:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.ttl{flex:1;min-width:220px}
+.ttl h1{font-size:19px;line-height:1.3}
+.ttl p{margin:2px 0 0;font-size:13px;opacity:.85}
+.hdr-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn-install{background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:7px 14px;font-family:var(--f-head);font-weight:500;cursor:pointer}
+.chip-off{background:rgba(255,255,255,.14);border-radius:999px;padding:6px 12px;font-size:13px}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-top:8px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:transparent;border:0;color:var(--brand-ink);opacity:.86;padding:10px 16px;border-radius:10px 10px 0 0;font-family:var(--f-head);font-size:15px;white-space:nowrap;cursor:pointer;display:flex;gap:7px;align-items:center}
+.tab:hover{opacity:1;background:rgba(255,255,255,.08)}
+.tab.on{background:var(--bg);color:var(--brand);opacity:1;font-weight:600}
+:root[data-theme="dark"] .tab.on{color:var(--ok-ink)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tab.on{color:var(--ok-ink)}}
+.tab svg{width:17px;height:17px}
+main{padding-block:20px 40px}
+.view[hidden]{display:none}
+/* generic */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+.card-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.card-h h2{font-size:17px;flex:1;min-width:180px;display:flex;gap:10px;align-items:center}
+.card-b{padding:16px 18px}
+.step{width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:inline-grid;place-items:center;font-size:14px;flex:none}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:var(--f-head);font-size:14px;white-space:nowrap}
+.btn:hover{border-color:var(--brand2)}
+.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.ghost-brand{border-color:var(--brand2);color:var(--brand2)}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--blue);outline-offset:1px}
+.icon-btn{border:1px solid var(--line);background:var(--card);width:32px;height:30px;border-radius:6px;cursor:pointer;display:inline-grid;place-items:center;color:var(--brand2)}
+.icon-btn.del{color:var(--danger)}
+.icon-btn svg{width:16px;height:16px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+label.f>span b{color:var(--danger)}
+input.i,select.i,textarea.i{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 11px;font-size:15px;color:var(--ink);width:100%;min-width:0}
+input.i.r{text-align:right;font-variant-numeric:tabular-nums}
+textarea.i{resize:vertical}
+.grid{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+.g12{grid-template-columns:repeat(12,minmax(0,1fr))}
+.s3{grid-column:span 3}.s4{grid-column:span 4}.s5{grid-column:span 5}.s6{grid-column:span 6}.s8{grid-column:span 8}.s12{grid-column:span 12}
+@media (max-width:760px){.g12>*{grid-column:span 12!important}}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.kpis{grid-template-columns:1fr}}
+.kpi{padding:16px 18px;border-radius:var(--r);background:var(--card);border:1px solid var(--line);min-width:0}
+.kpi .l{font-size:13px;color:var(--muted)}
+.kpi .v{font-family:var(--f-head);font-size:25px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3;overflow-wrap:anywhere}
+.kpi .s{font-size:13px;color:var(--muted)}
+.kpi.hl{background:var(--brand);border-color:var(--brand);color:#fff}
+.kpi.hl .l,.kpi.hl .s{color:rgba(255,255,255,.82)}
+.tbl-wrap{overflow-x:auto}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th{font-family:var(--f-head);font-weight:500;text-align:left;padding:9px 10px;background:var(--soft);border-bottom:1px solid var(--line);white-space:nowrap;font-size:13.5px}
+table.t td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+table.t td.n,table.t th.n{text-align:right;white-space:nowrap}
+table.t tr.hd td{background:var(--soft);font-weight:600}
+table.t tr.adj td{background:var(--warn-bg)}
+table.t tr.fx td{color:var(--muted)}
+table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-family:var(--f-head);white-space:nowrap}
+.p-draft{background:var(--soft);color:var(--muted)}
+.p-nego{background:var(--warn-bg);color:var(--warn-ink)}
+.p-ok{background:var(--ok-bg);color:var(--ok-ink)}
+.p-sign{background:var(--brand);color:#fff}
+.p-fix{background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.p-adj{background:var(--accent);color:var(--accent-ink)}
+.note{border-radius:10px;padding:12px 14px;font-size:14px}
+.note.ok{background:var(--ok-bg);color:var(--ok-ink)}
+.note.warn{background:var(--warn-bg);color:var(--warn-ink)}
+.note.bad{background:var(--bad-bg);color:var(--bad-ink)}
+.note b{font-family:var(--f-head);font-weight:600}
+.muted{color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sp{flex:1}
+.two{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media (max-width:1000px){.two{grid-template-columns:minmax(0,1fr)}.side{position:static}}
+.side{position:sticky;top:12px}
+.sumrow{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.sumrow b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.big-pct{text-align:center;padding:6px 0 10px}
+.big-pct .v{font-family:var(--f-head);font-size:42px;font-weight:600;color:var(--brand2);line-height:1.1}
+.calc3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.calc3{grid-template-columns:1fr}}
+.calc3 h3{font-size:15px;color:var(--brand2);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.calc3 .tot{font-weight:700;border-top:1px solid var(--ink);border-bottom:3px double var(--ink)}
+.checks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.checks li{display:flex;gap:9px;align-items:flex-start;font-size:14px}
+.ck{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;margin-top:2px}
+.ck.y{background:#20a160}.ck.n{background:var(--danger)}.ck.w{background:#d29a00}
+.quick{display:flex;flex-wrap:wrap;gap:6px}
+.boq td{padding:5px 6px}
+.boq input.i,.boq select.i,.boq textarea.i{padding:5px 7px;font-size:14px;border-radius:6px}
+.boq textarea.i{min-height:34px;line-height:1.35}
+.boq .w-unit{width:80px}.boq .w-qty{width:90px}.boq .w-cost{width:130px}.boq .w-cat{width:150px}.boq .w-mid{width:140px}
+.boq td.act{white-space:nowrap}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.foot{text-align:center;color:var(--muted);font-size:13px;padding:24px 0 8px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 18px;border-radius:999px;font-size:14px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;z-index:40;padding:16px}
+.modal{background:var(--card);border-radius:14px;max-width:760px;width:100%;max-height:90vh;overflow:auto;border:1px solid var(--line)}
+.modal .card-b{display:grid;gap:12px}
+.legal h3{font-size:18px;color:var(--brand2);margin-top:16px}
+.legal blockquote{margin:8px 0;border-left:4px solid var(--brand2);padding:4px 14px}
+.legal p{margin:6px 0}
+.flow{display:grid;gap:8px}
+.flow div{border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:14px}
+.flow .y{background:var(--warn-bg);color:var(--warn-ink)}.flow .g{background:var(--ok-bg);color:var(--ok-ink)}.flow .r{background:var(--bad-bg);color:var(--bad-ink)}
+.switch{display:inline-flex;align-items:center;gap:7px;cursor:pointer;font-size:14px}
+.seg{display:inline-flex;border:1px solid var(--brand2);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;background:var(--card);padding:7px 12px;cursor:pointer;font-family:var(--f-head);font-size:13.5px;color:var(--brand2)}
+.seg button.on{background:var(--brand);color:#fff}
+/* ===== Paper / reports ===== */
+.paper-wrap{overflow-x:auto;padding-block:16px}
+.paper{background:var(--paper);color:var(--paper-ink);width:210mm;min-height:200mm;margin:0 auto 18px;padding:14mm 13mm;box-shadow:0 2px 14px rgba(0,0,0,.14);font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;font-size:14px;line-height:1.45;position:relative}
+.paper.land{width:297mm;page:land}
+.paper th.desc{width:34%}.paper.land th.desc{width:30%}
+.paper h2{font-family:inherit;font-size:18px;text-align:center;font-weight:700}
+.paper .c{text-align:center}
+.paper table.pt{width:100%;border-collapse:collapse;margin:6px 0 10px}
+.paper table.pt th,.paper table.pt td{border:1px solid var(--paper-line);padding:3px 6px;vertical-align:top}
+.paper table.pt th{font-weight:700;text-align:center;background:var(--paper-shade);vertical-align:middle}
+.paper table.pt td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.paper table.pt td.ct{text-align:center}
+.paper table.pt tr.hd td{font-weight:700;text-decoration:underline}
+.paper table.pt tr.tot td{font-weight:700;background:var(--paper-shade)}
+.paper .kv{display:grid;grid-template-columns:auto 1fr;gap:0 12px}
+.paper .calc{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;margin:6px 0}
+.paper .calc .h{font-weight:700;text-decoration:underline;background:var(--paper-shade);padding:0 4px}
+.paper .calc .ln{display:flex;justify-content:space-between;gap:10px}
+.paper .calc .ln b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.paper .calc .tt b{border-top:1px solid var(--paper-ink);border-bottom:3px double var(--paper-ink);background:var(--paper-shade)}
+.paper .box{border:1px solid var(--paper-line);padding:6px 10px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.paper .sig{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px;text-align:center;break-inside:avoid}
+.paper .sig div{line-height:1.7}
+.paper .rem{font-size:13.5px;margin-top:10px}
+.paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
+.paper tr,.paper .calc,.paper .box{break-inside:avoid}
+.paper thead{display:table-header-group}
+@page land{size:A4 landscape;margin:0}
+.paper.land.solo{page:auto}
+.paper .nrem{font-size:11px;line-height:1.4;display:grid;grid-template-columns:auto 1fr;column-gap:6px}.paper .nrem ol{margin:0;padding-left:16px}
+.paper.land table.pt td{padding:1px 5px}.paper.land .sig{margin-top:14px}.paper.land .rem{margin-top:6px}
+/* official letter (หนังสือภายนอก) — positions measured from the paper's left edge */
+.paper.letter{width:210mm;min-height:297mm;padding:15mm 20mm 15mm 30mm;font-family:var(--lf);font-size:var(--ls);line-height:1.38;box-sizing:border-box;display:flex;flex-direction:column}
+.letter .garuda{display:block;height:30mm;margin:0 auto 2mm}
+.letter .top{display:grid;grid-template-columns:105mm 1fr;align-items:start}
+.letter .top>div:last-child{white-space:nowrap}
+.letter .date{margin:4mm 0 4mm 80mm}
+.letter .hd{display:grid;grid-template-columns:auto 1fr;column-gap:4mm}
+.letter .hd span:nth-child(odd){white-space:nowrap}
+.letter p{margin:0;text-indent:25mm;text-align:justify;text-justify:inter-character}
+.letter .gap{height:5mm}
+.letter .close{margin-left:50mm;text-align:center;width:110mm}
+.letter .foot-l{margin-top:auto;padding-top:8mm;line-height:1.3}
+.letter .dots{letter-spacing:1px}
+@media print{
+  .paper.letter{padding:15mm 20mm 15mm 30mm!important;width:210mm!important;height:296mm;min-height:0!important}
+}
+@media print{
+  html,body{background:#fff!important}
+  body::before{display:none}
+  .app-header,.no-print,.toast,.view:not(#v-report){display:none!important}
+  main{padding:0}.wrap{max-width:none;padding:0}
+  .paper-wrap{overflow:visible;padding:0}
+  .paper{box-shadow:none;margin:0;width:auto;min-height:0;padding:10mm}
+  .paper+.paper{break-before:page}
+  .paper.land{width:auto}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="app-header">
+  <div class="wrap">
+    <div class="hdr">
+      <div class="logo" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 64 64"><rect x="12" y="6" width="34" height="46" rx="4" fill="#e9f3ec" stroke="#14563a" stroke-width="3"/><path d="M19 18h20M19 26h20M19 34h12" stroke="#14563a" stroke-width="3" stroke-linecap="round"/><circle cx="45" cy="45" r="13" fill="#f3c623" stroke="#14563a" stroke-width="2.5"/><path d="M45 37v14m-5-5 5 5 5-5" stroke="#14563a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="ttl">
+        <h1>ระบบต่อรองและปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา (BOQ)</h1>
+        <p>ตามหนังสือ กวจ. ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568 · ราคาต่อรองรวมเป็นจำนวนเต็ม ไม่ปรับลดค่าใช้จ่ายพิเศษและครุภัณฑ์</p>
+      </div>
+      <div class="hdr-actions">
+        <button class="btn-install" id="btnInstall" type="button">⤓ ติดตั้งแอป</button>
+        <span class="chip-off" id="netChip">ใช้งานออฟไลน์ได้ · ข้อมูลอยู่ในเครื่องนี้</span>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="เมนูหลัก"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view" id="v-dash"></section>
+  <section class="view" id="v-edit" hidden></section>
+  <section class="view" id="v-nego" hidden></section>
+  <section class="view" id="v-result" hidden></section>
+  <section class="view" id="v-report" hidden></section>
+  <section class="view" id="v-legal" hidden></section>
+  <section class="view" id="v-set" hidden></section>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<div id="modalRoot"></div>
+<input type="file" id="fileImport" accept=".json,application/json" hidden>
+
+<script>
+(function(){
+'use strict';
+/* ================= helpers ================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const escBr=s=>esc(s).replace(/\n/g,'<br>');
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+const num=v=>{if(v===null||v===undefined||v==='')return 0;const n=parseFloat(String(v).replace(/[, ]/g,''));return isFinite(n)?n:0};
+const toS=x=>Math.round(num(x)*100);              // baht -> satang (integer)
+const tr2=x=>(x>=0?Math.floor(x*100+1e-7):Math.ceil(x*100-1e-7))/100; // truncate to 2 dp
+const fmt=(x,d=2)=>Number(x||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fS=s=>fmt(s/100);
+const fQ=q=>Number.isInteger(+q)?fmt(q,0):fmt(q,Math.min(4,(String(q).split('.')[1]||'').length));
+const thDate=iso=>{if(!iso)return '';const d=new Date(iso+'T00:00:00');if(isNaN(d))return iso;return d.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'})};
+const nowStr=()=>{const d=new Date();const p=n=>String(n).padStart(2,'0');return `${d.getFullYear()+543}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`};
+const gcd=(a,b)=>{a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b]}return a};
+const egcd=(a,b)=>{let [r0,r1,s0,s1,t0,t1]=[a,b,1,0,0,1];while(r1){const q=Math.floor(r0/r1);[r0,r1]=[r1,r0-q*r1];[s0,s1]=[s1,s0-q*s1];[t0,t1]=[t1,t0-q*t1]}return [r0,s0,t0]};
+const toTH=s=>String(s??'').replace(/[0-9]/g,d=>'๐๑๒๓๔๕๖๗๘๙'[d]);
+const TH_MONTH=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const thDateParts=iso=>{const d=iso?new Date(iso+'T00:00:00'):null;return d&&!isNaN(d)?{d:d.getDate(),m:TH_MONTH[d.getMonth()],y:d.getFullYear()+543}:null};
+function bahtText(n){n=Math.round(num(n)*100)/100;if(!n)return 'ศูนย์บาทถ้วน';
+  const D=['','หนึ่ง','สอง','สาม','สี่','ห้า','หก','เจ็ด','แปด','เก้า'],P=['','สิบ','ร้อย','พัน','หมื่น','แสน'];
+  const rd=x=>{let out='';const str=String(x);const L=str.length;for(let i=0;i<L;i++){const d=+str[i],pos=L-i-1;if(!d)continue;
+    if(pos===0&&d===1&&L>1)out+='เอ็ด';else if(pos===1&&d===2)out+='ยี่';else if(pos===1&&d===1)out+='';else out+=D[d];out+=P[pos]}return out};
+  const big=x=>{if(x<1e6)return rd(x);return big(Math.floor(x/1e6))+'ล้าน'+(x%1e6?rd(x%1e6):'')};
+  const b=Math.floor(n),st=Math.round((n-b)*100);return (b?big(b)+'บาท':'')+(st?rd(st)+'สตางค์':'ถ้วน')}
+const GARUDA='data:image/png;base64,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';
+function letterFont(){try{const c=document.createElement('canvas').getContext('2d');const t='กขคงจฉ ๑๒๓ abc';const w=f=>{c.font=f;return c.measureText(t).width};
+  for(const f of ['TH SarabunIT๙','TH SarabunIT9','TH Sarabun New','TH SarabunNew','TH SarabunPSK']){if(w(`20px "${f}",monospace`)!==w('20px monospace'))return {lf:`"${f}","Sarabun",sans-serif`,ls:'16pt'}}}catch(e){}
+  return {lf:'"Sarabun","Leelawadee UI",Tahoma,sans-serif',ls:'12pt'}}
+const ICON={
+  dash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>',
+  nego:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>',
+  calc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h2M16 15v3"/></svg>',
+  print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H4zM20 4h-6a3 3 0 0 0-3 3"/><path d="M20 4v14h-7"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',
+  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>',
+  up:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 15l6-6 6 6"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>',
+  x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+
+/* ================= state ================= */
+const LS='boqNego.v1';
+const DEF_SETTINGS={agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,
+  signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
+  showSign:true,watermark:false,theme:'system'};
+let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
+let cur=null, tab='dash', reportSel='pack', deferredPrompt=null;
+function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.projects)){S=d;S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings||{})}}}catch(e){}
+  if(!S.projects.length){S.projects.push(sampleProject())}
+  try{cur=localStorage.getItem(LS+'.cur')}catch(e){}
+  if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
+let saveT=null;
+function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}},250)}
+function P(){return S.projects.find(p=>p.id===cur)}
+function touch(p){p.updatedAt=nowStr();save()}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
+
+function newProject(){
+  const c1=uid(),c2=uid(),c3=uid();
+  return {id:uid(),name:'',type:'ทาง',projectNo:'',agency:S.settings.agency,budget:0,midDeclared:0,offerPrice:0,contractor:'',
+    announceDate:'',contractNo:'',contractDate:'',status:'ร่าง',note:'',
+    categories:[{id:c1,name:'งานก่อสร้าง',kind:'construction',factor:1},{id:c2,name:'งานครุภัณฑ์จัดซื้อ',kind:'equipment',factor:1.07},{id:c3,name:'ค่าใช้จ่ายพิเศษตามข้อกำหนด',kind:'special',factor:1}],
+    items:[],rounds:[],basis:'auto',adjustPref:'auto',
+    signers:structuredClone(S.settings.signers),updatedAt:nowStr()};
+}
+function sampleProject(){
+  const p=newProject();
+  const [c1,,c3]=p.categories.map(c=>c.id);
+  p.categories[0].factor=1.38;
+  Object.assign(p,{name:'งานติดตั้งไฟฟ้าแสงสว่าง ทางหลวงหมายเลข 4345 ตอน ควนกุน - หนองชุมแสง ระหว่าง กม.2+128 - กม.4+916 (RT.) ปริมาณงาน 1 แห่ง (83 EACH) (ตัวอย่าง)',
+    type:'ไฟฟ้าแสงสว่าง',projectNo:'69099579623',budget:4997000,midDeclared:4996422.25,offerPrice:3097000,contractor:'บริษัท กิจพัฒนแสง จำกัด',status:'กำลังต่อรอง',
+    note:'ตัวอย่างจากไฟล์ e-กบ.40-69'});
+  p.signers=[{role:'เจ้าหน้าที่',name:'(นางสาวณรมา  วรกลั่น)',position:'นักวิชาการพัสดุปฏิบัติการ'},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'(นายสุวัฒชัย  สิงหพันธ์)',position:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์'}];
+  p.letter={no:'3775',date:'2026-10-14',inviteNo:'e-กบ.40/2569',inviteDate:'2026-09-30',reply:'',explain:'auto',to:''};
+  p.items=[
+    {id:uid(),kind:'heading',name:'งานไฟฟ้าแสงสว่าง',catId:c1},
+    {id:uid(),kind:'item',name:'9.00 M. (MOUNTING HEIGHT) TAPERED STEEL\nPOLE DOUBLE BRACKETS WITH HIGH PRESSURE\nSODIUM LAMPS 250 WATTS. CUT-OFF MOUNTED\nAT GRADE',unit:'EACH',qty:83,unitCost:37150.70,catId:c1,midOverride:'',fixed:false},
+    {id:uid(),kind:'heading',name:'ค่าใช้จ่ายพิเศษตามข้อกำหนด',catId:c3},
+    {id:uid(),kind:'item',name:'ค่าธรรมเนียมการไฟฟ้าฯ สำหรับเป็นค่าขยายเขตระบบไฟฟ้า\nค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด',unit:'P.S.',qty:3,unitCost:245000,catId:c3,midOverride:'',fixed:false},
+    {id:uid(),kind:'item',name:'ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณไหล่ทาง\nสำหรับทางหลวง 2 ช่องจราจร',unit:'ชุด',qty:1,unitCost:6181.08,catId:c3,midOverride:'',fixed:false}
+  ];
+  p.rounds=[{id:uid(),date:'',requested:3096658,result:'pending',replyPrice:'',note:'ราคาที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
+  return p;
+}
+
+/* ================= calculation core ================= */
+function catOf(p,id){return p.categories.find(c=>c.id===id)||p.categories[0]||{kind:'construction',factor:1,name:''}}
+function midOf(p,it){ // satang
+  if(it.midOverride!==''&&it.midOverride!==null&&it.midOverride!==undefined&&String(it.midOverride).trim()!=='')return toS(it.midOverride);
+  const f=num(catOf(p,it.catId).factor)||0;
+  return Math.floor(num(it.qty)*num(it.unitCost)*f*100+1e-6);
+}
+function costOf(it){return Math.round(num(it.qty)*num(it.unitCost)*100)}
+function isFixed(p,it){return catOf(p,it.catId).kind!=='construction'||!!it.fixed}
+function baseRows(p){let n=0;return p.items.filter(i=>i.kind==='item').map(it=>({it,no:++n,q:num(it.qty),m:midOf(p,it),fixed:isFixed(p,it),cat:catOf(p,it.catId)}))}
+function totals(p){const rows=baseRows(p);const sumM=rows.reduce((a,r)=>a+r.m,0);const sumF=rows.filter(r=>r.fixed).reduce((a,r)=>a+r.m,0);
+  const sumSpecial=rows.filter(r=>r.cat.kind==='special').reduce((a,r)=>a+r.m,0);const sumEquip=rows.filter(r=>r.cat.kind==='equipment').reduce((a,r)=>a+r.m,0);
+  return {rows,sumM,sumF,sumA:sumM-sumF,sumSpecial,sumEquip,sumOtherFixed:sumF-sumSpecial-sumEquip}}
+
+function absorb(rows,r,prefId){ // rows: adjustable rows with integer q>0; r: integer baht to add (can be negative)
+  if(r===0)return true;
+  const apply=(x,k)=>{x.u+=k;x.delta=(x.delta||0)+k};
+  const snap=()=>rows.map(x=>[x.u,x.delta||0]); const restore=s=>rows.forEach((x,i)=>{x.u=s[i][0];x.delta=s[i][1]});
+  const order=rows.slice().sort((a,b)=>((b.it.id===prefId)-(a.it.id===prefId))||(b.m-a.m));
+  const single=()=>{for(const x of order){if(r%x.q===0&&x.u+r/x.q>=0){apply(x,r/x.q);r=0;return true}}return false};
+  const s0=snap();
+  if(r%order[0].q===0&&order[0].u+r/order[0].q>=0){apply(order[0],r/order[0].q);return true}
+  const main=order[0];const k=Math.floor(r/main.q);if(k){apply(main,k);r-=k*main.q}
+  if(r===0||single())return chkNeg()||(restore(s0),false);
+  // greedy by quantity
+  const s1=snap();let rr=r;
+  for(const x of order.slice().sort((a,b)=>b.q-a.q)){const kk=Math.floor(rr/x.q);if(kk>0){apply(x,kk);rr-=kk*x.q}}
+  if(rr===0)return chkNeg()||(restore(s0),false);
+  restore(s1);
+  // two-item combination: main item + one other item, smallest change to the other item
+  {let best=null;const qm=main.q;
+   for(const x of order){if(x===main)continue;const [g,,b]=egcd(qm,x.q);if(r%g)continue;const M=qm/g;let ki=((b*(r/g))%M+M)%M;if(ki>M/2)ki-=M;
+     if((r-ki*x.q)%qm)continue;const km=(r-ki*x.q)/qm;const cost=Math.abs(ki)*x.q/Math.max(1,x.m/100);
+     if(x.u+ki>=0&&main.u+km>=0&&(!best||cost<best.cost))best={x,ki,km,cost}}
+   if(best){if(best.ki)apply(best.x,best.ki);if(best.km)apply(main,best.km);return true}}
+  // Bezout combination (allows +/- on secondary items)
+  let g=order[0].q;const coef=[1];
+  for(let i=1;i<order.length;i++){const [g2,a,b]=egcd(g,order[i].q);for(let j=0;j<coef.length;j++)coef[j]*=a;coef.push(b);g=g2}
+  if(r%g!==0){restore(s0);return false}
+  const mult=r/g;const kv=coef.map(c=>c*mult);
+  for(let i=1;i<order.length;i++){const L=order[0].q/gcd(order[0].q,order[i].q)*order[i].q;const si=L/order[i].q,s0q=L/order[0].q;const t=Math.round(kv[i]/si);kv[i]-=t*si;kv[0]+=t*s0q}
+  kv.forEach((kk,i)=>{if(kk)apply(order[i],kk)});
+  return chkNeg()||(restore(s0),false);
+  function chkNeg(){return rows.every(x=>x.u>=0)}
+}
+
+const RSTEP=()=>S.settings.roundMode==='unit'?100:1; // smallest unit-price step in satang
+function compute(p,targetBaht){
+  const T0=totals(p);const step=RSTEP();
+  const res={...T0,T:toS(targetBaht),errors:[],warnings:[],pct:0,pctRaw:0,fractional:null,suggest:null,step};
+  const rows=res.rows.map(r=>({...r}));res.rows=rows;
+  res.Tadj=res.T-res.sumF;
+  if(!rows.length){res.errors.push('ยังไม่มีรายการใน BOQ');return res}
+  if(res.T<=0){res.errors.push('ยังไม่ได้ระบุราคาที่ใช้คำนวณ');return res}
+  if(res.sumA<=0){res.errors.push('ไม่มีรายการที่ปรับลดได้ (ทุกรายการเป็นค่าใช้จ่ายพิเศษ/ครุภัณฑ์)');return res}
+  if(res.Tadj<0){res.errors.push('ราคาที่ใช้คำนวณต่ำกว่ายอดรายการที่ไม่ปรับลด (ค่าใช้จ่ายพิเศษ + ครุภัณฑ์) จึงคำนวณไม่ได้');return res}
+  res.pctRaw=(res.sumA-res.Tadj)/res.sumA*100;
+  res.pct=S.settings.pctMode==='exact'?res.pctRaw:tr2(res.pctRaw);
+  const factor=1-res.pct/100;
+  for(const r of rows){
+    if(r.fixed){r.line=r.m;r.uDisp=r.q?r.m/r.q/100:0;continue}
+    if(r.q<=0){r.u=0;r.line=0;continue}
+    r.u=Math.floor(r.m*factor/r.q/step+1e-9); // unit price in steps, truncated
+  }
+  const adj=rows.filter(r=>!r.fixed&&r.q>0);
+  const lineOf=r=>Math.round(r.u*r.q*step);
+  let sumLines=adj.reduce((a,r)=>a+lineOf(r),0);
+  let rem=res.Tadj-sumLines;
+  const ints=adj.filter(r=>Number.isInteger(r.q));
+  if(rem!==0&&rem%step===0&&ints.length)absorb(ints,rem/step,p.adjustPref);
+  for(const r of adj){r.line=lineOf(r);r.uDisp=r.u*step/100;r.dB=(r.delta||0)*step/100}
+  sumLines=adj.reduce((a,r)=>a+r.line,0);rem=res.Tadj-sumLines;
+  if(rem!==0){ // fallback: put remainder into one item
+    const pref=adj.find(r=>r.it.id===p.adjustPref);const main=pref||adj.slice().sort((a,b)=>b.m-a.m)[0];
+    main.line+=rem;main.uDisp=main.line/main.q/100;main.frac=true;res.fractional=main;
+    res.warnings.push(step===100?`ราคานี้ทำให้ราคาต่อหน่วยเป็นจำนวนเต็มไม่ได้ จึงใส่เศษ ${fS(rem)} บาทไว้ในรายการที่ ${main.no}`:`ราคานี้หารจำนวนหน่วยไม่ลงตัวถึงหลักสตางค์ จึงใส่เศษ ${fS(rem)} บาทไว้ในรายการที่ ${main.no} (ราคาต่อหน่วย × จำนวน จะไม่ตรงกับจำนวนเงินพอดี)`);
+  }
+  const fe=feasibleNear(p,res.T/100);
+  if(fe&&!fe.ok)res.suggest=fe;
+  if(step===1&&res.T%100!==0)res.warnings.push('ราคารวมมีเศษสตางค์ ควรใช้ราคาที่เป็นจำนวนเต็มบาท');
+  for(const r of rows){r.diff=r.m-r.line;r.pd=r.m?tr2(r.diff/r.m*100):0;r.pk=r.m?tr2(r.line/r.m*100):0}
+  res.total=rows.reduce((a,r)=>a+r.line,0);
+  res.d1=res.sumA;res.d2=res.Tadj;res.d3=res.d1-res.d2;
+  res.allInt=!res.fractional&&(step===100?adj.every(r=>Number.isInteger(r.uDisp)):res.T%100===0);
+  res.adjusted=adj.filter(r=>r.delta||r.frac);
+  if(res.pct<0)res.warnings.push('ราคาที่ใช้คำนวณสูงกว่าราคากลาง รายการจะถูกปรับเพิ่มแทนการปรับลด');
+  return res;
+}
+// nearest prices that satisfy the rounding rule:
+//  mode 'total' : total is whole baht AND (total - fixed) splits exactly into unit prices with 2 decimals
+//  mode 'unit'  : (total - fixed) splits exactly into whole-baht unit prices (total may carry satang of fixed items)
+function feasibleNear(p,priceBaht){
+  const t=totals(p);const step=RSTEP();const ints=t.rows.filter(r=>!r.fixed&&r.q>0&&Number.isInteger(r.q));
+  if(!ints.length||t.rows.some(r=>!r.fixed&&r.q>0&&!Number.isInteger(r.q)))return null;
+  const g=ints.reduce((a,r)=>gcd(a,r.q),0);const U=g*step;const T=toS(priceBaht);
+  if(T-t.sumF<0)return null;
+  const fits=x=>x-t.sumF>=0&&(x-t.sumF)%U===0&&(step===100||x%100===0);
+  if(fits(T))return {ok:true,lo:T,hi:T,g};
+  if(step===100){const lo=t.sumF+Math.floor((T-t.sumF)/U)*U;return {ok:false,lo,hi:lo+U,g}}
+  let lo=null,hi=null;const base=Math.floor(T/100)*100;
+  for(let i=0;i<20000&&(lo===null||hi===null);i++){const a=base-i*100,b=base+(i+1)*100;if(lo===null&&a<T&&fits(a))lo=a;if(hi===null&&fits(b))hi=b}
+  if(lo===null&&hi===null)return null;
+  return {ok:false,lo:lo??hi,hi:hi??lo,g};
+}
+/* ================= negotiation bases ================= */
+function agreed(p){for(let i=p.rounds.length-1;i>=0;i--){const r=p.rounds[i];if(r.result==='accept')return {key:'r:'+r.id,price:num(r.requested),label:`ราคาที่ตกลง (ยินดีตามที่ขอต่อรอง ครั้งที่ ${i+1})`};if(r.result==='better'&&num(r.replyPrice)>0)return {key:'b:'+r.id,price:num(r.replyPrice),label:`ราคาที่ตกลง (ผู้เสนอลดให้มากกว่าที่ขอ ครั้งที่ ${i+1})`}}return null}
+function bases(p){
+  const L=[{key:'offer',price:num(p.offerPrice),label:'ราคาที่ผู้ชนะเสนอ (เดิม)'}];
+  p.rounds.forEach((r,i)=>{L.push({key:'r:'+r.id,price:num(r.requested),label:`ราคาที่ขอต่อรอง ครั้งที่ ${i+1}`});if((r.result==='better'||r.result==='reject')&&num(r.replyPrice)>0)L.push({key:'b:'+r.id,price:num(r.replyPrice),label:`ราคาที่ผู้เสนอยืนยัน ครั้งที่ ${i+1}`})});
+  return L;
+}
+function basisOf(p){
+  const L=bases(p);
+  if(p.basis&&p.basis!=='auto'){const f=L.find(b=>b.key===p.basis);if(f)return f}
+  const a=agreed(p);if(a)return {...a,auto:true};
+  if(p.rounds.length){const r=p.rounds[p.rounds.length-1];return {key:'r:'+r.id,price:num(r.requested),label:`ราคาที่ขอต่อรอง ครั้งที่ ${p.rounds.length}`,auto:true}}
+  return {...L[0],auto:true};
+}
+function contractPrice(p){const a=agreed(p);if(a)return a.price;const t=totals(p);const o=num(p.offerPrice);if(!p.rounds.length&&o>0&&toS(o)<=t.sumM&&(!num(p.budget)||o<=num(p.budget)))return o;return null}
+function decision(p){
+  const t=totals(p),o=toS(p.offerPrice),b=toS(p.budget);
+  if(!o)return {cls:'warn',head:'ยังไม่ได้ระบุราคาที่ผู้ชนะเสนอ',txt:'กรอกราคาตามคำเสนอของผู้ชนะเพื่อตรวจสอบกรณีตาม ว 651'};
+  const okMid=o<=t.sumM,okBud=!b||o<=b;
+  if(okMid&&okBud)return {cls:'ok',head:'ราคาเสนอไม่สูงกว่าราคากลางและวงเงิน',txt:'ปรับลดได้ทุกรายการตามข้อ 1.2.2 แล้วลงนามสัญญา (ข้อ 1.2.3) · ต่อรองให้ลดลงอีกได้ตามดุลยพินิจของคณะกรรมการ'};
+  return {cls:'bad',head:'ราคาเสนอสูงกว่า'+(!okMid?'ราคากลาง':'')+(!okMid&&!okBud?'และ':'')+(!okBud?'วงเงินงบประมาณ':''),txt:'ต้องต่อรองราคาให้ไม่สูงกว่าราคากลาง/วงเงิน ก่อนปรับลดรายการและลงนามสัญญา'};
+}
+
+/* ================= tabs ================= */
+const TABS=[['dash','แดชบอร์ด','dash'],['edit','ข้อมูลโครงการ / BOQ','edit'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
+function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
+function render(){({dash:rDash,edit:rEdit,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
+function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
+function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
+
+/* ================= dashboard ================= */
+function statusPill(s){const m={'ร่าง':'p-draft','กำลังต่อรอง':'p-nego','ตกลงราคาแล้ว':'p-ok','ลงนามสัญญาแล้ว':'p-sign'};return `<span class="pill ${m[s]||'p-draft'}">${esc(s||'ร่าง')}</span>`}
+function rDash(){
+  const el=$('#v-dash');let tm=0,tc=0,cnt=0;
+  const q=(el._q||'').toLowerCase();
+  const rows=S.projects.map(p=>{const t=totals(p);const b=basisOf(p);const cp=contractPrice(p);tm+=t.sumM;const fin=cp??b.price;tc+=toS(fin);if(cp!==null)cnt++;
+    const r=compute(p,fin);return {p,t,b,fin,r,cp}});
+  const shown=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor].join(' ').toLowerCase().includes(q));
+  el.innerHTML=`
+  <div class="kpis">
+    <div class="kpi hl"><div class="l">จำนวนโครงการ</div><div class="v">${S.projects.length}</div><div class="s">ได้ราคาที่ตกลงแล้ว ${cnt} โครงการ</div></div>
+    <div class="kpi"><div class="l">ราคากลางรวม (บาท)</div><div class="v">${fS(tm)}</div><div class="s">รวมค่าใช้จ่ายพิเศษและครุภัณฑ์</div></div>
+    <div class="kpi"><div class="l">ราคาตกลง / ราคาต่อรองล่าสุด (บาท)</div><div class="v">${fS(tc)}</div><div class="s">ใช้ราคาที่ตกลงก่อน ถ้ายังไม่มีใช้ราคาต่อรองล่าสุด</div></div>
+    <div class="kpi"><div class="l">ต่ำกว่าราคากลาง (บาท)</div><div class="v">${fS(tm-tc)}</div><div class="s">คิดเป็น ${tm?fmt((tm-tc)/tm*100):'0.00'}% ของราคากลาง</div></div>
+  </div>
+  <div class="card">
+    <div class="card-h"><h2>โครงการทั้งหมด</h2>
+      <input class="i" id="dashQ" placeholder="ค้นหาชื่อโครงการ / เลขที่โครงการ / ผู้รับจ้าง" value="${esc(el._q||'')}" style="max-width:340px">
+      <button class="btn ghost-brand" data-act="sample" type="button">โหลดตัวอย่าง</button>
+      <button class="btn pri" data-act="new" type="button">+ สร้างโครงการใหม่</button></div>
+    <div class="tbl-wrap"><table class="t">
+      <thead><tr><th>โครงการ</th><th class="n">วงเงินงบประมาณ</th><th class="n">ราคากลาง</th><th class="n">ราคาเสนอ</th><th class="n">ราคาตกลง/ต่อรอง</th><th class="n">% ปรับลด</th><th>สถานะ</th><th>ปรับปรุงล่าสุด</th><th class="n">จัดการ</th></tr></thead>
+      <tbody>${shown.length?shown.map(({p,t,fin,r,cp})=>`<tr>
+        <td style="min-width:280px"><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')} · ${esc(p.contractor||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div></td>
+        <td class="n">${fmt(p.budget)}</td><td class="n">${fS(t.sumM)}</td><td class="n">${fmt(p.offerPrice)}</td>
+        <td class="n"><b>${fmt(fin)}</b><div class="muted" style="font-size:12px">${cp!==null?'ราคาที่ตกลง':'ต่อรองล่าสุด'}</div></td>
+        <td class="n">${r.errors.length?'-':fmt(r.pct)}</td><td>${statusPill(p.status)}</td><td class="muted" style="white-space:nowrap">${esc(p.updatedAt||'')}</td>
+        <td class="n" style="white-space:nowrap"><button class="icon-btn" title="แก้ไข" data-edit="${p.id}" type="button">${ICON.pen}</button> <button class="icon-btn" title="รายงาน" data-print="${p.id}" type="button">${ICON.print}</button> <button class="icon-btn" title="ทำสำเนา" data-dup="${p.id}" type="button">${ICON.copy}</button> <button class="icon-btn del" title="ลบ" data-del="${p.id}" type="button">${ICON.trash}</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">ไม่พบโครงการ</td></tr>`}</tbody>
+    </table></div>
+  </div>`;
+  const qi=$('#dashQ');qi.oninput=()=>{el._q=qi.value;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act],[data-open],[data-edit],[data-print],[data-dup],[data-del]');if(!t)return;
+  if(t.dataset.open||t.dataset.edit){e.preventDefault();cur=t.dataset.open||t.dataset.edit;save();go('edit')}
+  else if(t.dataset.print){cur=t.dataset.print;save();go('report')}
+  else if(t.dataset.dup){const s=S.projects.find(p=>p.id===t.dataset.dup);const c=structuredClone(s);c.id=uid();c.name=s.name+' (สำเนา)';c.updatedAt=nowStr();S.projects.unshift(c);save();rDash();toast('ทำสำเนาแล้ว')}
+  else if(t.dataset.del){const s=S.projects.find(p=>p.id===t.dataset.del);confirmBox(`ลบโครงการ “${s.name||'(ยังไม่ตั้งชื่อ)'}” ? ลบแล้วกู้คืนไม่ได้ (ยกเว้นมีไฟล์สำรอง)`,'ลบโครงการ',()=>{S.projects=S.projects.filter(p=>p.id!==s.id);if(cur===s.id)cur=S.projects[0]?.id||null;save();rDash();toast('ลบแล้ว')})}
+  else if(t.dataset.act==='new'){const p=newProject();S.projects.unshift(p);cur=p.id;save();go('edit')}
+  else if(t.dataset.act==='sample'){const p=sampleProject();S.projects.unshift(p);cur=p.id;save();go('edit');toast('โหลดตัวอย่างแล้ว')}
+});
+
+/* ================= modal ================= */
+function modal(title,body,buttons){
+  const root=$('#modalRoot');root.innerHTML=`<div class="modal-bg"><div class="modal" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="card-h"><h2>${esc(title)}</h2><button class="icon-btn" data-mclose type="button" aria-label="ปิด">${ICON.x}</button></div><div class="card-b">${body}<div class="row" style="justify-content:flex-end">${buttons||''}</div></div></div></div>`;
+  const close=()=>root.innerHTML='';root.querySelector('[data-mclose]').onclick=close;root.querySelector('.modal-bg').addEventListener('click',e=>{if(e.target.classList.contains('modal-bg'))close()});return {root,close};
+}
+function confirmBox(msg,okLabel,fn){const m=modal('ยืนยัน',`<p style="margin:0">${esc(msg)}</p>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn danger" data-mo type="button">${esc(okLabel)}</button>`);m.root.querySelector('[data-mc]').onclick=m.close;m.root.querySelector('[data-mo]').onclick=()=>{m.close();fn()}}
+
+/* ================= editor ================= */
+const F=(k,label,opt={})=>{const p=P();const v=p[k]??'';const req=opt.req?' <b>*</b>':'';
+  if(opt.sel)return `<label class="f ${opt.cls||''}"><span>${label}${req}</span><select class="i" id="f_${k}" data-f="${k}">${opt.sel.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
+  if(opt.area)return `<label class="f ${opt.cls||''}"><span>${label}${req}</span><textarea class="i" rows="2" id="f_${k}" data-f="${k}">${esc(v)}</textarea></label>`;
+  return `<label class="f ${opt.cls||''}"><span>${label}${req}</span><input class="i ${opt.money?'r':''}" id="f_${k}" data-f="${k}" ${opt.money?'data-money inputmode="decimal"':''} type="${opt.type||'text'}" value="${opt.money?(v?fmt(v):''):esc(v)}"></label>`};
+function rEdit(){
+  const el=$('#v-edit');if(needProject(el))return;const p=P();
+  el.innerHTML=`${curBar('กำลังแก้ไข',`<button class="btn" data-goto="result" type="button">${ICON.calc} ดูผลคำนวณ</button><button class="btn pri" id="btnSave" type="button">บันทึก</button>`)}
+  <div class="two"><div class="grid" style="gap:18px;min-width:0">
+   <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
+     ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
+     ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
+     ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
+     ${F('contractor','ชื่อผู้ชนะ / ผู้รับจ้าง',{cls:'s6'})}${F('announceDate','วันที่ประกาศผลผู้ชนะ',{cls:'s3',type:'date'})}${F('status','สถานะ',{cls:'s3',sel:['ร่าง','กำลังต่อรอง','ตกลงราคาแล้ว','ลงนามสัญญาแล้ว']})}
+     ${F('contractNo','เลขที่สัญญา',{cls:'s4'})}${F('contractDate','วันที่ลงนามสัญญา',{cls:'s4',type:'date'})}${F('note','หมายเหตุ',{cls:'s4'})}
+   </div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">2</span>หมวดงานและค่า Factor F / VAT</h2><button class="btn ghost-brand sm" id="addCat" type="button">+ เพิ่มหมวด</button></div>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ลำดับ</th><th>ชื่อหมวด</th><th>ประเภท</th><th class="n">Factor F / VAT</th><th>การปรับลด</th><th></th></tr></thead><tbody id="catBody"></tbody></table></div>
+     <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>หมวดครุภัณฑ์และค่าใช้จ่ายพิเศษจะคงราคากลางไว้ ไม่ถูกปรับลด</b></div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
+     <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ที่</th><th style="min-width:260px">รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ค่างานต้นทุน/หน่วย</th><th>หมวด</th><th class="n">ราคากลาง (บาท)</th><th title="ติ๊กเพื่อไม่ปรับลดรายการนี้">ไม่ลด</th><th></th></tr></thead><tbody id="boqBody"></tbody>
+     <tfoot><tr><td colspan="6" class="n">ราคากลางรวม</td><td class="n" id="boqTotal"></td><td colspan="2"></td></tr></tfoot></table></div>
+     <div class="card-b muted" style="font-size:13px;padding-top:10px">ราคากลาง = จำนวน × ค่างานต้นทุน/หน่วย × Factor (ตัดเศษทศนิยมเกิน 2 ตำแหน่ง) · ถ้าราคากลางรายการไม่ตรงกับ ปร.5 ให้พิมพ์ทับในช่องราคากลางได้ (ลบออกเพื่อกลับไปคำนวณอัตโนมัติ)</div></div>
+   <div class="card"><div class="card-h"><h2><span class="step">4</span>ผู้ลงนามในรายงาน</h2></div><div class="card-b grid g12" id="signBox"></div></div>
+  </div>
+  <aside class="card side" id="sideSum"></aside></div>`;
+  // bind fields
+  $$('[data-f]',el).forEach(inp=>{
+    inp.addEventListener('input',()=>{const k=inp.dataset.f;p[k]=inp.hasAttribute('data-money')?num(inp.value):inp.value;touch(p);sideSum()});
+    if(inp.hasAttribute('data-money'))inp.addEventListener('blur',()=>{inp.value=num(inp.value)?fmt(num(inp.value)):''});
+  });
+  $('#btnSave').onclick=()=>{touch(p);try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}toast('บันทึกแล้ว')};
+  $('#addCat').onclick=()=>{p.categories.push({id:uid(),name:'หมวดใหม่',kind:'construction',factor:1});touch(p);rCats();rBoq()};
+  $('#addItem').onclick=()=>{const last=[...p.items].reverse().find(i=>i.catId);p.items.push({id:uid(),kind:'item',name:'',unit:'',qty:1,unitCost:0,catId:last?.catId||p.categories[0]?.id,midOverride:'',fixed:false});touch(p);rBoq();const tas=$$('#boqBody textarea');tas[tas.length-1]?.focus()};
+  $('#addHead').onclick=()=>{p.items.push({id:uid(),kind:'heading',name:'',catId:p.categories[0]?.id});touch(p);rBoq()};
+  $('#pasteXl').onclick=pasteDialog;
+  rCats();rBoq();rSign();sideSum();
+}
+el$('click','[data-goto]',(t)=>go(t.dataset.goto));
+function el$(ev,sel,fn){document.addEventListener(ev,e=>{const t=e.target.closest(sel);if(t)fn(t,e)})}
+const KIND={construction:'งานก่อสร้าง (Factor F)',equipment:'ครุภัณฑ์จัดซื้อ (VAT)',special:'ค่าใช้จ่ายพิเศษตามข้อกำหนด'};
+function rCats(){const p=P();const b=$('#catBody');
+  b.innerHTML=p.categories.map((c,i)=>`<tr data-cid="${c.id}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(c.name)}"></td>
+  <td><select class="i w-cat" data-c="kind" style="width:220px">${Object.entries(KIND).map(([k,l])=>`<option value="${k}" ${c.kind===k?'selected':''}>${l}</option>`).join('')}</select></td>
+  <td class="n"><input class="i r" data-c="factor" value="${fmt(c.factor,4)}" style="width:110px" inputmode="decimal"></td>
+  <td>${c.kind==='construction'?'<span class="pill p-ok">ปรับลด</span>':'<span class="pill p-fix">ไม่ปรับลด</span>'}</td>
+  <td><button class="icon-btn del" data-cdel type="button" title="ลบหมวด">${ICON.x}</button></td></tr>`).join('');
+  b.oninput=e=>{const tr=e.target.closest('[data-cid]');const c=p.categories.find(x=>x.id===tr.dataset.cid);const k=e.target.dataset.c;
+    if(k==='factor')c.factor=num(e.target.value);else if(k==='kind'){c.kind=e.target.value;if(c.kind==='equipment'&&(c.factor===1||!c.factor))c.factor=1.07;if(c.kind==='special')c.factor=1;rCats();rBoq()}else c.name=e.target.value;
+    touch(p);if(k!=='kind'){updMids();if(k==='name')$$('#boqBody select[data-k="catId"]').forEach(s=>{const o=s.querySelector(`option[value="${c.id}"]`);if(o)o.textContent=c.name})}};
+  b.onchange=e=>{if(e.target.dataset.c==='factor')e.target.value=fmt(num(e.target.value),4)};
+  b.onclick=e=>{if(!e.target.closest('[data-cdel]'))return;const id=e.target.closest('[data-cid]').dataset.cid;if(p.items.some(i=>i.catId===id&&i.kind==='item')){toast('ยังมีรายการในหมวดนี้ ย้ายหรือลบรายการก่อน');return}p.categories=p.categories.filter(c=>c.id!==id);touch(p);rCats();rBoq()};
+}
+function rBoq(){const p=P();const b=$('#boqBody');let n=0;
+  const catOpts=sel=>p.categories.map(c=>`<option value="${c.id}" ${c.id===sel?'selected':''}>${esc(c.name)}</option>`).join('');
+  const acts=`<button class="icon-btn" data-mv="-1" type="button" title="เลื่อนขึ้น">${ICON.up}</button><button class="icon-btn" data-mv="1" type="button" title="เลื่อนลง">${ICON.down}</button><button class="icon-btn del" data-rm type="button" title="ลบ">${ICON.x}</button>`;
+  b.innerHTML=p.items.length?p.items.map(it=>{
+    if(it.kind==='heading')return `<tr class="hd" data-iid="${it.id}"><td></td><td colspan="4"><input class="i" data-k="name" value="${esc(it.name)}" placeholder="หัวข้อ เช่น งานดิน / ค่าใช้จ่ายพิเศษตามข้อกำหนด" style="font-weight:600"></td><td><select class="i w-cat" data-k="catId">${catOpts(it.catId)}</select></td><td colspan="2" class="muted" style="font-size:12px">หัวข้อ</td><td class="act">${acts}</td></tr>`;
+    n++;const fx=catOf(p,it.catId).kind!=='construction';
+    return `<tr data-iid="${it.id}"><td class="n">${n}</td><td><textarea class="i" data-k="name" rows="${Math.min(4,Math.max(1,String(it.name).split('\n').length))}">${esc(it.name)}</textarea></td>
+    <td><input class="i w-unit" data-k="unit" value="${esc(it.unit)}"></td><td><input class="i r w-qty" data-k="qty" value="${esc(it.qty)}" inputmode="decimal"></td>
+    <td><input class="i r w-cost" data-k="unitCost" value="${it.unitCost?fmt(it.unitCost):''}" inputmode="decimal"></td>
+    <td><select class="i w-cat" data-k="catId">${catOpts(it.catId)}</select></td>
+    <td><input class="i r w-mid" data-k="midOverride" value="${it.midOverride!==''&&it.midOverride!=null?fmt(num(it.midOverride)):''}" placeholder="${fS(midOf(p,it))}" data-mid="${it.id}" inputmode="decimal" title="ว่าง = คำนวณอัตโนมัติ"></td>
+    <td style="text-align:center"><input type="checkbox" data-k="fixed" ${fx||it.fixed?'checked':''} ${fx?'disabled title="หมวดนี้ไม่ปรับลดอยู่แล้ว"':''}></td><td class="act">${acts}</td></tr>`}).join(''):`<tr><td colspan="9" class="empty">ยังไม่มีรายการ · กด “วางจาก Excel” เพื่อวางตาราง BOQ หรือ “+ รายการ” เพื่อเพิ่มทีละรายการ</td></tr>`;
+  $('#boqTotal').textContent=fS(totals(p).sumM);
+  b.oninput=e=>{const tr=e.target.closest('[data-iid]');if(!tr)return;const it=p.items.find(x=>x.id===tr.dataset.iid);const k=e.target.dataset.k;
+    if(k==='fixed')it.fixed=e.target.checked;else if(k==='qty')it.qty=num(e.target.value);else if(k==='unitCost')it.unitCost=num(e.target.value);
+    else if(k==='midOverride')it.midOverride=e.target.value.trim()===''?'':num(e.target.value);else it[k]=e.target.value;
+    if(k==='name'&&e.target.tagName==='TEXTAREA')e.target.rows=Math.min(6,Math.max(1,e.target.value.split('\n').length));
+    touch(p);if(k==='catId'){rBoq();return}updMids()};
+  b.onchange=e=>{const k=e.target.dataset.k;if(k==='unitCost'||k==='midOverride'){const v=e.target.value.trim();e.target.value=v===''?'':fmt(num(v))}};
+  b.onclick=e=>{const tr=e.target.closest('[data-iid]');if(!tr)return;const i=p.items.findIndex(x=>x.id===tr.dataset.iid);
+    const mv=e.target.closest('[data-mv]');if(mv){const j=i+ +mv.dataset.mv;if(j<0||j>=p.items.length)return;[p.items[i],p.items[j]]=[p.items[j],p.items[i]];touch(p);rBoq();return}
+    if(e.target.closest('[data-rm]')){p.items.splice(i,1);touch(p);rBoq()}};
+  sideSum();
+}
+function updMids(){const p=P();p.items.forEach(it=>{const inp=$(`[data-mid="${it.id}"]`);if(inp)inp.placeholder=fS(midOf(p,it))});$('#boqTotal').textContent=fS(totals(p).sumM);sideSum()}
+function rSign(){const p=P();p.signers=p.signers||structuredClone(S.settings.signers);
+  $('#signBox').innerHTML=p.signers.map((s,i)=>`<label class="f s4"><span>ตำแหน่งในคณะ/หน้าที่ (คนที่ ${i+1})</span><input class="i" data-si="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s4"><span>ชื่อ-สกุล</span><input class="i" data-si="${i}" data-sk="name" value="${esc(s.name)}" placeholder="(นาย/นาง/นางสาว ...)"></label><label class="f s4"><span>ตำแหน่ง</span><input class="i" data-si="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('');
+  $('#signBox').oninput=e=>{const t=e.target;if(t.dataset.si===undefined)return;p.signers[+t.dataset.si][t.dataset.sk]=t.value;touch(p)};
+}
+function sideSum(){const p=P();const box=$('#sideSum');if(!box)return;const t=totals(p);const b=basisOf(p);const r=compute(p,b.price);const d=decision(p);
+  const md=toS(p.midDeclared);const midOk=!md||md===t.sumM;
+  box.innerHTML=`<div class="card-h"><h2>สรุปผลแบบทันที</h2></div><div class="card-b">
+   <div class="big-pct"><div class="muted" style="font-size:13px">อัตราร้อยละที่ปรับลด · ${esc(b.label)}</div><div class="v">${r.errors.length?'–':fmt(r.pct)}</div></div>
+   <div class="sumrow"><span>ราคากลางรวม</span><b>${fS(t.sumM)}</b></div>
+   ${md?`<div class="sumrow"><span>ตรวจกับ ปร.5/ปร.6</span><b style="color:${midOk?'var(--ok-ink)':'var(--danger)'}">${midOk?'✓ ตรงกัน':'ต่าง '+fS(t.sumM-md)}</b></div>`:''}
+   <div class="sumrow"><span>ค่าใช้จ่ายพิเศษฯ (ไม่ลด)</span><b>${fS(t.sumSpecial)}</b></div>
+   <div class="sumrow"><span>ครุภัณฑ์จัดซื้อ (ไม่ลด)</span><b>${fS(t.sumEquip)}</b></div>
+   ${t.sumOtherFixed?`<div class="sumrow"><span>รายการอื่นที่ติ๊กไม่ลด</span><b>${fS(t.sumOtherFixed)}</b></div>`:''}
+   <div class="sumrow"><span>(1) ราคากลางส่วนที่ปรับลดได้</span><b>${fS(t.sumA)}</b></div>
+   <div class="sumrow"><span>ราคาที่ใช้คำนวณ</span><b>${fmt(b.price)}</b></div>
+   ${r.errors.length?'':`<div class="sumrow"><span>(2) ราคาหักรายการที่ไม่ลด</span><b>${fS(r.d2)}</b></div><div class="sumrow"><span>(3) ผลต่าง (1)−(2)</span><b>${fS(r.d3)}</b></div>`}
+   <div class="sumrow"><span>จำนวนรายการ</span><b>${t.rows.length} รายการ</b></div>
+   <div class="note ${d.cls}" style="margin-top:12px"><b>${esc(d.head)}</b><div style="font-size:13px">${esc(d.txt)}</div></div>
+   ${r.errors.length?`<div class="note bad" style="margin-top:10px">${r.errors.map(esc).join('<br>')}</div>`:''}
+   <div class="grid" style="margin-top:12px"><button class="btn pri" data-goto="nego" type="button" style="justify-content:center">${ICON.nego} ไปหน้าต่อรองราคา</button><button class="btn" data-goto="result" type="button" style="justify-content:center">${ICON.calc} ดูผลการปรับลดราคา</button></div>
+  </div>`;
+}
+
+/* ================= paste from Excel ================= */
+function parseTSV(t){const rows=[];let row=[],cell='',q=false;for(let i=0;i<t.length;i++){const ch=t[i];
+  if(q){if(ch==='"'){if(t[i+1]==='"'){cell+='"';i++}else q=false}else cell+=ch}
+  else if(ch==='"'&&cell==='')q=true;else if(ch==='\t'){row.push(cell);cell=''}else if(ch==='\n'){row.push(cell);rows.push(row);row=[];cell=''}else if(ch!=='\r')cell+=ch}
+  if(cell!==''||row.length){row.push(cell);rows.push(row)}return rows.filter(r=>r.some(c=>c.trim()!==''))}
+function pasteDialog(){const p=P();
+  const m=modal('วาง BOQ จาก Excel',`
+  <p class="muted" style="margin:0">คัดลอกตารางจาก Excel (ปร.4) แล้ววางในช่องด้านล่าง · ลำดับคอลัมน์: <b>ลำดับ | รายการ | หน่วย | จำนวน | ค่างานต้นทุน</b> (ไม่มีคอลัมน์ลำดับก็ได้)</p>
+  <textarea class="i" id="pxText" rows="9" placeholder="1&#9;งานถางป่าขุดตอ&#9;ตร.ม.&#9;1200&#9;6.50"></textarea>
+  <div class="grid g12">
+   <label class="f s4"><span>คอลัมน์ค่างานต้นทุนเป็น</span><select class="i" id="pxCost"><option value="unit">ราคาต่อหน่วย</option><option value="total">ยอดรวมของรายการ</option></select></label>
+   <label class="f s4"><span>ใส่ในหมวด</span><select class="i" id="pxCat">${p.categories.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></label>
+   <label class="f s4"><span>แถวที่มีแต่ข้อความ</span><select class="i" id="pxText2"><option value="head">เป็นหัวข้อ</option><option value="cont">ต่อท้ายชื่อรายการก่อนหน้า</option></select></label>
+  </div>
+  <label class="switch"><input type="checkbox" id="pxAuto" checked> ถ้าหัวข้อมีคำว่า “ค่าใช้จ่ายพิเศษ” หรือ “ครุภัณฑ์” ให้รายการที่ตามมาเข้าหมวดนั้นอัตโนมัติ</label>
+  <label class="switch"><input type="checkbox" id="pxRep"> แทนที่รายการเดิมทั้งหมด</label>
+  <div id="pxPrev" class="muted" style="font-size:13px"></div>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">นำเข้า</button>`);
+  const build=()=>{const rows=parseTSV($('#pxText').value);const out=[];const costMode=$('#pxCost').value,txtMode=$('#pxText2').value,auto=$('#pxAuto').checked;let cat=$('#pxCat').value;
+    const catKind=k=>p.categories.find(c=>c.kind===k)?.id;
+    for(const r of rows){let c=r.map(x=>x.trim());
+      if(c.length>=5&&(c[0]===''||/^[\d.]+$/.test(c[0])))c=c.slice(1);
+      const [name,unit,qtyS,costS]=[c[0]||'',c[1]||'',c[2]||'',c[3]||''];
+      const qty=num(qtyS),cost=num(costS);
+      if(!qtyS&&!costS){ if(!name)continue;
+        if(txtMode==='cont'&&out.length&&out[out.length-1].kind==='item'&&!(auto&&/ค่าใช้จ่ายพิเศษ|ครุภัณฑ์/.test(name))){out[out.length-1].name+='\n'+name;continue}
+        if(auto&&/ค่าใช้จ่ายพิเศษ/.test(name)&&catKind('special'))cat=catKind('special');else if(auto&&/ครุภัณฑ์/.test(name)&&catKind('equipment'))cat=catKind('equipment');
+        out.push({id:uid(),kind:'heading',name,catId:cat});continue}
+      out.push({id:uid(),kind:'item',name,unit,qty,unitCost:costMode==='total'&&qty?Math.round(cost/qty*1e6)/1e6:cost,catId:cat,midOverride:costMode==='total'?'':'',fixed:false,_tc:costMode==='total'?cost:null});
+    }return out};
+  const prev=()=>{const o=build();$('#pxPrev').textContent=o.length?`พบ ${o.filter(x=>x.kind==='item').length} รายการ และ ${o.filter(x=>x.kind==='heading').length} หัวข้อ`:''};
+  ['pxText','pxCost','pxText2','pxAuto'].forEach(id=>$('#'+id).addEventListener('input',prev));
+  m.root.querySelector('[data-mc]').onclick=m.close;
+  m.root.querySelector('[data-mo]').onclick=()=>{const o=build();if(!o.length){toast('ไม่พบข้อมูลที่วาง');return}
+    o.forEach(x=>{if(x._tc!=null){const f=num(catOf(p,x.catId).factor);x.midOverride=Math.floor(x._tc*f*100+1e-6)/100;x.unitCost=x.qty?x._tc/x.qty:0}delete x._tc});
+    p.items=$('#pxRep').checked?o:p.items.concat(o);touch(p);m.close();rBoq();toast(`นำเข้า ${o.length} แถวแล้ว`)};
+}
+
+/* ================= negotiation ================= */
+function rNego(){
+  const el=$('#v-nego');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const t=totals(p);const d=decision(p);const ag=agreed(p);const o=num(p.offerPrice);
+  el._try=el._try??'';
+  el.innerHTML=`${curBar('ต่อรองราคา')}
+  <div class="kpis">
+    <div class="kpi"><div class="l">ราคากลาง</div><div class="v">${fS(t.sumM)}</div><div class="s">ไม่ลด ${fS(t.sumF)} · ลดได้ ${fS(t.sumA)}</div></div>
+    <div class="kpi"><div class="l">วงเงินงบประมาณ</div><div class="v">${fmt(p.budget)}</div><div class="s">&nbsp;</div></div>
+    <div class="kpi"><div class="l">ราคาที่ผู้ชนะเสนอ</div><div class="v">${fmt(o)}</div><div class="s">${t.sumM?`${toS(o)<=t.sumM?'ต่ำกว่า':'สูงกว่า'}ราคากลาง ${fmt(Math.abs(t.sumM/100-o))} (${fmt(Math.abs(t.sumM/100-o)/(t.sumM/100)*100)}%)`:''}</div></div>
+    <div class="kpi hl"><div class="l">ราคาที่ตกลง</div><div class="v">${ag?fmt(ag.price):'ยังไม่ได้ข้อยุติ'}</div><div class="s">${ag?esc(ag.label):'บันทึกผลการต่อรองด้านล่าง'}</div></div>
+  </div>
+  <div class="note ${d.cls}" style="margin-bottom:18px"><b>${esc(d.head)}</b> — ${esc(d.txt)}</div>
+  <div class="two"><div class="grid" style="gap:18px;min-width:0">
+   <div class="card"><div class="card-h"><h2>ตั้งราคาที่จะขอต่อรอง</h2></div><div class="card-b grid" style="gap:12px">
+     <div class="grid g12"><label class="f s6"><span>ราคาที่จะขอต่อรอง (บาท)</span><input class="i r" id="tryP" inputmode="decimal" value="${esc(el._try)}" style="font-size:20px;font-weight:600" placeholder="${fmt(o)}"></label>
+     <label class="f s6"><span>หรือ ลดจากราคาเสนออีก (%)</span><input class="i r" id="tryPct" inputmode="decimal" placeholder="เช่น 1.5"></label></div>
+     <div class="quick"><span class="muted" style="font-size:13px;align-self:center">ปัดราคาเสนอลง:</span>
+       ${[1000,10000,100000].map(s=>`<button class="btn sm" data-q="${s}" type="button">หลัก${s===1000?'พัน':s===10000?'หมื่น':'แสน'} (${fmt(Math.floor(o/s)*s,0)})</button>`).join('')}
+       <button class="btn sm" data-q="mid" type="button">= ราคากลาง</button><button class="btn sm" data-q="bud" type="button">= วงเงินงบประมาณ</button></div>
+     <div id="tryOut"></div>
+   </div></div>
+   <div class="card"><div class="card-h"><h2>บันทึกการต่อรองราคา</h2></div>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ครั้งที่</th><th>วันที่</th><th class="n">ราคาที่ขอต่อรอง</th><th>ผลการตอบกลับ</th><th class="n">ราคาที่ผู้เสนอยืนยัน</th><th>หมายเหตุ</th><th></th></tr></thead>
+     <tbody id="rdBody">${p.rounds.length?p.rounds.map((r,i)=>`<tr data-rid="${r.id}"><td class="n">${i+1}</td><td><input class="i" type="date" data-r="date" value="${esc(r.date)}" style="width:150px"></td>
+       <td><input class="i r" data-r="requested" value="${fmt(r.requested)}" style="width:150px" inputmode="decimal"></td>
+       <td><select class="i" data-r="result" style="width:190px">${[['pending','รอผล'],['accept','ยินดีตามที่ขอ'],['better','ยินดีลดมากกว่าที่ขอ'],['reject','ไม่ยินดี (ยืนราคาอื่น)']].map(([k,l])=>`<option value="${k}" ${r.result===k?'selected':''}>${l}</option>`).join('')}</select></td>
+       <td><input class="i r" data-r="replyPrice" value="${r.replyPrice?fmt(r.replyPrice):''}" style="width:150px" ${r.result==='better'||r.result==='reject'?'':'disabled'} inputmode="decimal"></td>
+       <td><input class="i" data-r="note" value="${esc(r.note)}" style="min-width:160px"></td>
+       <td class="act"><button class="btn sm" data-use="${r.id}" type="button">ใช้คำนวณ</button> <button class="icon-btn del" data-rdel type="button" title="ลบ">${ICON.x}</button></td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีการต่อรอง · ตั้งราคาด้านบนแล้วกด “บันทึกเป็นการต่อรองครั้งใหม่”</td></tr>`}</tbody></table></div>
+     <div class="card-b muted" style="font-size:13px">เมื่อผู้เสนอตอบรับ ให้เลือกผล “ยินดีตามที่ขอ” หรือ “ยินดีลดมากกว่าที่ขอ” (กรอกราคาที่ยืนยัน) ระบบจะใช้ราคานั้นเป็นวงเงินตามสัญญาโดยอัตโนมัติ</div></div>
+   <div class="card"><div class="card-h"><h2>หนังสือขอต่อรองราคา</h2><button class="btn blue sm" id="btnLetter" type="button">${ICON.print} พิมพ์หนังสือ + ใบขอต่อรอง</button></div><div class="card-b grid g12">
+     <label class="f s4"><span>เลขที่หนังสือ (${esc(S.settings.docPrefix)}...)</span><input class="i" data-l="no" value="${esc(p.letter.no)}"></label>
+     <label class="f s4"><span>ลงวันที่</span><input class="i" type="date" data-l="date" value="${esc(p.letter.date)}"></label>
+     <label class="f s4"><span>ขอให้ตอบภายในวันที่</span><input class="i" type="date" data-l="reply" value="${esc(p.letter.reply)}"></label>
+     <label class="f s4"><span>อ้างถึง: เลขที่ประกาศประกวดราคา</span><input class="i" data-l="inviteNo" value="${esc(p.letter.inviteNo)}" placeholder="e-กบ.40/2569"></label>
+     <label class="f s4"><span>ประกาศลงวันที่</span><input class="i" type="date" data-l="inviteDate" value="${esc(p.letter.inviteDate)}"></label>
+     <label class="f s4"><span>ข้อความขอให้ชี้แจง</span><select class="i" data-l="explain"><option value="auto" ${p.letter.explain==='auto'?'selected':''}>อัตโนมัติ (ต่ำกว่าราคากลาง ≥ ${num(S.settings.explainPct||15)}%)</option><option value="yes" ${p.letter.explain==='yes'?'selected':''}>ใส่เสมอ</option><option value="no" ${p.letter.explain==='no'?'selected':''}>ไม่ใส่</option></select></label>
+     <label class="f s12"><span>เรียน</span><input class="i" data-l="to" value="${esc(p.letter.to)}" placeholder="${esc(firmTitle(p.contractor)+' '+(p.contractor||''))}"></label>
+     <div class="s12 note ${needExplain(p)?'warn':'ok'}" id="explainNote">${explainMsg(p)}</div>
+   </div></div>
+  </div>
+  <aside class="card side"><div class="card-h"><h2>ขั้นตอนการต่อรอง</h2></div><div class="card-b flow" style="font-size:14px">
+    <div>1. ตั้งราคาที่จะขอต่อรอง ระบบบอกทันทีว่าราคานี้ลงตัวหรือไม่</div>
+    <div class="y">2. ถ้าไม่ลงตัว ให้เลือกราคาที่ลงตัวใกล้ที่สุดที่ระบบแนะนำ เพื่อให้ยอดรวมเป็นจำนวนเต็ม และราคาต่อหน่วย × จำนวน ได้จำนวนเงินพอดี</div>
+    <div>3. บันทึกเป็นการต่อรองครั้งใหม่ แล้วพิมพ์ “ใบขอต่อรองราคา” ส่งผู้เสนอ</div>
+    <div class="g">4. ได้รับหนังสือยืนยัน → บันทึกผล → พิมพ์แบบแนบท้ายสัญญา</div>
+    <div class="r">ค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์คงราคากลางเสมอ ไม่ว่าจะต่อรองเท่าใด</div>
+  </div></aside></div>`;
+  const tp=$('#tryP'),tpc=$('#tryPct');
+  const upd=()=>{el._try=tp.value;tryOut(p,num(tp.value)||o)};
+  tp.oninput=()=>{tpc.value='';upd()};tp.onblur=()=>{if(tp.value)tp.value=fmt(num(tp.value))};
+  tpc.oninput=()=>{const v=num(tpc.value);tp.value=v?fmt(Math.floor(o*(1-v/100))):'';upd()};
+  $$('[data-q]',el).forEach(b=>b.onclick=()=>{const q=b.dataset.q;tp.value=fmt(q==='mid'?t.sumM/100:q==='bud'?num(p.budget):Math.floor(o/+q)*+q);upd()});
+  upd();
+  $$('[data-l]',el).forEach(i=>{const h=()=>{p.letter[i.dataset.l]=i.value;touch(p);$('#explainNote').className='s12 note '+(needExplain(p)?'warn':'ok');$('#explainNote').innerHTML=explainMsg(p)};i.oninput=h;i.onchange=h});
+  $('#btnLetter').onclick=()=>{reportSel='pack';go('report')};
+  const rb=$('#rdBody');
+  rb.oninput=e=>{const tr=e.target.closest('[data-rid]');if(!tr)return;const r=p.rounds.find(x=>x.id===tr.dataset.rid);const k=e.target.dataset.r;
+    r[k]=(k==='requested'||k==='replyPrice')?num(e.target.value):e.target.value;touch(p);if(k==='result'){if(r.result==='accept'||r.result==='better')p.status=p.status==='ลงนามสัญญาแล้ว'?p.status:'ตกลงราคาแล้ว';rNego()}};
+  rb.onchange=e=>{const k=e.target.dataset.r;if(k==='requested'||k==='replyPrice'){e.target.value=num(e.target.value)?fmt(num(e.target.value)):'';rNego()}};
+  rb.onclick=e=>{const tr=e.target.closest('[data-rid]');if(!tr)return;const id=tr.dataset.rid;
+    if(e.target.closest('[data-use]')){p.basis='r:'+id;touch(p);go('result')}
+    if(e.target.closest('[data-rdel]')){p.rounds=p.rounds.filter(x=>x.id!==id);if(p.basis.endsWith(id))p.basis='auto';touch(p);rNego()}};
+}
+function explainMsg(p){const bp=belowPct(p),t=num(S.settings.explainPct||15);return needExplain(p)?`<b>มีข้อความขอให้ชี้แจง</b> — ราคาเสนอต่ำกว่าราคากลางร้อยละ ${fmt(bp)}${p.letter?.explain==='yes'?' (เลือกใส่เสมอ)':''} หนังสือจะมีหัวเรื่อง “และขอให้ชี้แจงกรณีเสนอราคาต่ำกว่าราคากลางร้อยละ ${t} ขึ้นไป” และท้ายย่อหน้าขอให้ชี้แจงเหตุผลพร้อมหนังสือยืนยัน`:`<b>ไม่มีข้อความขอให้ชี้แจง</b> — ราคาเสนอ${bp>=0?'ต่ำกว่าราคากลางร้อยละ '+fmt(bp):'สูงกว่าราคากลาง'}${p.letter?.explain==='no'?' (เลือกไม่ใส่)':` (ไม่ถึง ${t}%)`}`}
+function tryOut(p,price){const box=$('#tryOut');const r=compute(p,price);const o=num(p.offerPrice);const fe=feasibleNear(p,price);
+  if(r.errors.length){box.innerHTML=`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`;return}
+  const unitMode=RSTEP()===100;
+  const sug=fe&&!fe.ok?`<div class="note warn"><b>${unitMode?'ราคานี้ทำให้ราคาต่อหน่วยเป็นจำนวนเต็มไม่ได้':'ราคานี้หารลงตัวไม่ได้ หรือยอดรวมมีเศษสตางค์'}</b><div style="font-size:13px;margin:4px 0 8px">${unitMode?'ราคาที่ลงตัวใกล้ที่สุด (ราคาต่อหน่วยเป็นจำนวนเต็มบาท ค่าใช้จ่ายพิเศษและครุภัณฑ์คงเดิม):':'ราคาที่ลงตัวใกล้ที่สุด (ยอดรวมเป็นจำนวนเต็มบาท ราคาต่อหน่วย × จำนวน = จำนวนเงินพอดี ค่าใช้จ่ายพิเศษและครุภัณฑ์คงเดิม):'}</div>
+    <div class="row"><button class="btn sm" data-pick="${fe.lo}" type="button">↓ ${fS(fe.lo)}</button><button class="btn sm" data-pick="${fe.hi}" type="button">↑ ${fS(fe.hi)}</button></div></div>`
+    :fe&&fe.ok?`<div class="note ok"><b>✓ ลงตัว</b> ${unitMode?'ราคาต่อหน่วยของรายการที่ปรับลดเป็นจำนวนเต็มบาท':'ยอดรวมเป็นจำนวนเต็มบาท และราคาต่อหน่วย × จำนวน ได้จำนวนเงินพอดีทุกรายการ'} ยอดรวมเท่ากับราคานี้</div>`:'';
+  box.innerHTML=`<div class="grid g12" style="margin-bottom:10px">
+     <div class="s4"><div class="muted" style="font-size:13px">ลดลงจากราคาเสนอ</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600" class="num">${fmt(o-r.T/100)} <span class="muted" style="font-size:13px">(${o?fmt((o-r.T/100)/o*100):'0.00'}%)</span></div></div>
+     <div class="s4"><div class="muted" style="font-size:13px">ต่ำกว่าราคากลาง</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600" class="num">${fS(r.sumM-r.T)}</div></div>
+     <div class="s4"><div class="muted" style="font-size:13px">อัตราร้อยละที่ปรับลด (3)÷(1)</div><div style="font-family:var(--f-head);font-size:19px;font-weight:600;color:var(--brand2)" class="num">${fmt(r.pct)}</div></div></div>
+   ${sug}
+   <div class="row" style="margin-top:10px"><button class="btn pri" id="saveRound" type="button">บันทึกเป็นการต่อรองครั้งใหม่</button><span class="muted" style="font-size:13px">จะใช้ราคา ${fS(r.T)} บาท</span></div>`;
+  $$('[data-pick]',box).forEach(b=>b.onclick=()=>{$('#tryP').value=fmt(+b.dataset.pick/100);$('#v-nego')._try=$('#tryP').value;tryOut(p,+b.dataset.pick/100)});
+  $('#saveRound').onclick=()=>{p.rounds.push({id:uid(),date:new Date().toISOString().slice(0,10),requested:r.T/100,result:'pending',replyPrice:'',note:''});p.basis='auto';if(p.status==='ร่าง')p.status='กำลังต่อรอง';touch(p);$('#v-nego')._try='';rNego();toast('บันทึกการต่อรองแล้ว')};
+}
+
+/* ================= result ================= */
+function basisSelect(p,id){const b=basisOf(p);return `<select class="i" id="${id}" style="max-width:360px"><option value="auto" ${p.basis==='auto'?'selected':''}>อัตโนมัติ (${esc(basisOf({...p,basis:'auto'}).label)})</option>${bases(p).map(x=>`<option value="${x.key}" ${p.basis===x.key?'selected':''}>${esc(x.label)} — ${fmt(x.price)}</option>`).join('')}</select>`}
+function rResult(){
+  const el=$('#v-result');if(needProject(el))return;const p=P();const b=basisOf(p);const r=compute(p,b.price);
+  const adjOpts=r.rows.filter(x=>!x.fixed).map(x=>`<option value="${x.it.id}" ${p.adjustPref===x.it.id?'selected':''}>รายการที่ ${x.no}: ${esc(String(x.it.name).split('\n')[0].slice(0,60))}</option>`).join('');
+  el.innerHTML=`${curBar('ผลการปรับลดราคา',`<button class="btn" data-goto="edit" type="button">${ICON.pen} แก้ข้อมูล</button><button class="btn blue" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
+  <div class="card" style="margin-bottom:16px"><div class="card-b grid g12">
+    <label class="f s5"><span>ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel')}</label>
+    <label class="f s4"><span>การปัดเศษ</span><select class="i" id="rndSel"><option value="total" ${S.settings.roundMode!=='unit'?'selected':''}>ยอดรวมเป็นจำนวนเต็ม (ราคาต่อหน่วยทศนิยม 2 ตำแหน่ง)</option><option value="unit" ${S.settings.roundMode==='unit'?'selected':''}>ราคาต่อหน่วยเป็นจำนวนเต็มบาท</option></select></label>
+    <label class="f s5"><span>รายการที่รับส่วนต่างจากการปัดเศษ (*)</span><select class="i" id="adjSel"><option value="auto">อัตโนมัติ — รายการที่มีราคากลางสูงสุด</option>${adjOpts}</select></label>
+    <label class="f s4"><span>อัตราร้อยละ</span><select class="i" id="pctSel"><option value="trunc2" ${S.settings.pctMode==='trunc2'?'selected':''}>ทศนิยม 2 ตำแหน่ง ตัดเศษ (ตามตัวอย่าง ว 651)</option><option value="exact" ${S.settings.pctMode==='exact'?'selected':''}>ใช้ค่าเต็ม ไม่ตัดเศษ</option></select></label>
+  </div></div>
+  ${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:resultBody(p,r,b)}`;
+  $('#basisSel').onchange=e=>{p.basis=e.target.value;touch(p);rResult()};
+  $('#adjSel').onchange=e=>{p.adjustPref=e.target.value;touch(p);rResult()};
+  $('#pctSel').onchange=e=>{S.settings.pctMode=e.target.value;save();rResult()};
+  $('#rndSel').onchange=e=>{S.settings.roundMode=e.target.value;save();rResult()};
+  $$('[data-pick2]',el).forEach(x=>x.onclick=()=>{const v=+x.dataset.pick2/100;const key=b.key;
+    if(key.startsWith('r:')){const rd=p.rounds.find(z=>'r:'+z.id===key);rd.requested=v}else{p.rounds.push({id:uid(),date:new Date().toISOString().slice(0,10),requested:v,result:'pending',replyPrice:'',note:'ราคาที่ลงตัว'});p.basis='auto'}
+    touch(p);rResult();toast('ปรับราคาแล้ว')});
+}
+function resultBody(p,r,b){
+  const okSum=r.total===r.T;const fixedOk=r.rows.filter(x=>x.fixed).every(x=>x.line===x.m);const noNeg=r.rows.every(x=>x.line>=0);
+  const adjTxt=r.adjusted.map(x=>`รายการที่ ${x.no} (${x.frac?'ใส่เศษสตางค์':(x.dB>0?'+':'')+fmt(x.dB)+' บาท/หน่วย'})`).join(', ');
+  return `<div class="kpis">
+    <div class="kpi"><div class="l">ราคากลาง</div><div class="v">${fS(r.sumM)}</div></div>
+    <div class="kpi"><div class="l">${esc(b.label)}</div><div class="v">${fS(r.T)}</div></div>
+    <div class="kpi"><div class="l">ผลต่าง (3)</div><div class="v">${fS(r.d3)}</div></div>
+    <div class="kpi hl"><div class="l">อัตราร้อยละที่ปรับลด</div><div class="v">${fmt(r.pct)}</div><div class="s">ตัวคูณ = ${(1-r.pct/100).toFixed(4)}</div></div></div>
+  <div class="card card-b calc3" style="margin-bottom:16px">
+    <div><h3>ราคากลางหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>${r.sumOtherFixed?`<div class="sumrow"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}<div class="sumrow tot"><span>(1)</span><b>${fS(r.d1)}</b></div></div>
+    <div><h3>ราคาที่ใช้คำนวณหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>${esc(b.label)}</span><b>${fS(r.T)}</b></div><div class="sumrow"><span><u>หัก</u> รายการที่ไม่ปรับลด</span><b>${fS(r.sumF)}</b></div><div class="sumrow tot"><span>(2)</span><b>${fS(r.d2)}</b></div></div>
+    <div><h3>ผลต่างและอัตราร้อยละ</h3><div class="sumrow"><span>(1)</span><b>${fS(r.d1)}</b></div><div class="sumrow"><span><u>หัก</u> (2)</span><b>${fS(r.d2)}</b></div><div class="sumrow tot"><span>(3)</span><b>${fS(r.d3)}</b></div><div class="muted" style="font-size:13px;margin-top:8px">(3) ÷ (1) × 100 = ${r.pctRaw.toFixed(6)} → ใช้ ${fmt(r.pct)}</div></div>
+  </div>
+  <div class="card" style="margin-bottom:16px"><div class="card-h"><h2>ตรวจสอบความถูกต้อง</h2></div><div class="card-b"><ul class="checks">
+    <li><span class="ck ${okSum?'y':'n'}">${okSum?'✓':'✕'}</span><span>ผลรวมราคาที่ปรับลด ${fS(r.total)} ${okSum?'= ':'≠ '}${esc(b.label)} ${fS(r.T)}</span></li>
+    <li><span class="ck ${fixedOk?'y':'n'}">${fixedOk?'✓':'✕'}</span><span>ค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์ไม่ถูกปรับลด (คงราคากลาง ${fS(r.sumF)})</span></li>
+    <li><span class="ck ${r.allInt?'y':'w'}">${r.allInt?'✓':'!'}</span><span>${r.step===100?(r.allInt?'ราคาต่อหน่วยของรายการที่ปรับลดเป็นจำนวนเต็มบาททุกรายการ':'มีรายการที่ราคาต่อหน่วยไม่เป็นจำนวนเต็ม'):(r.allInt?'ยอดรวมเป็นจำนวนเต็มบาท และราคาต่อหน่วย × จำนวน = จำนวนเงินพอดีทุกรายการ':'ยอดรวมมีเศษสตางค์ หรือมีรายการที่ราคาต่อหน่วย × จำนวน ไม่ตรงพอดี')}</span></li>
+    <li><span class="ck ${noNeg?'y':'n'}">${noNeg?'✓':'✕'}</span><span>ไม่มีรายการติดลบ</span></li>
+    ${r.adjusted.length?`<li><span class="ck w">*</span><span>ส่วนต่างจากการปัดเศษ ${fmt(r.adjusted.reduce((a,x)=>a+(x.dB||0)*x.q,0))} บาท ปรับใน ${esc(adjTxt)}</span></li>`:''}
+    ${r.warnings.map(w=>`<li><span class="ck w">!</span><span>${esc(w)}</span></li>`).join('')}
+  </ul>
+  ${r.suggest?`<div class="note warn" style="margin-top:12px"><b>แนะนำ:</b> เปลี่ยนเป็นราคาที่ลงตัว แล้วทุกรายการจะเป็นจำนวนเต็ม <div class="row" style="margin-top:8px"><button class="btn sm" data-pick2="${r.suggest.lo}" type="button">ใช้ ${fS(r.suggest.lo)}</button><button class="btn sm" data-pick2="${r.suggest.hi}" type="button">ใช้ ${fS(r.suggest.hi)}</button></div></div>`:''}
+  </div></div>
+  <div class="card"><div class="card-h"><h2>ตารางราคากลางและราคาที่ปรับลด</h2><span class="muted" style="font-size:13px">แถวสีเหลือง = รายการที่รับส่วนต่างปัดเศษ</span></div>
+  <div class="tbl-wrap"><table class="t"><thead><tr><th>ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ราคากลาง</th><th class="n">ราคากลาง/หน่วย</th><th class="n">ราคาที่ปรับลด</th><th class="n">ราคาต่อหน่วย</th><th class="n">ส่วนต่าง</th><th class="n">% ส่วนต่าง</th><th></th></tr></thead>
+  <tbody>${rowsWithHeads(p,r).map(x=>x.head?`<tr class="hd"><td></td><td colspan="10">${esc(x.head)}</td></tr>`:`<tr class="${x.fixed?'fx':''} ${x.delta||x.frac?'adj':''}"><td class="n">${x.no}</td><td style="min-width:240px">${escBr(x.it.name)}</td><td>${esc(x.it.unit)}</td><td class="n">${fQ(x.q)}</td><td class="n">${fS(x.m)}</td><td class="n">${x.q?fmt(x.m/x.q/100):'-'}</td><td class="n"><b>${fS(x.line)}</b></td><td class="n"><b>${fmt(x.uDisp)}</b></td><td class="n">${fS(x.diff)}</td><td class="n">${fmt(x.pd)}</td><td>${x.fixed?`<span class="pill p-fix">${x.cat.kind==='special'?'ค่าใช้จ่ายพิเศษ':x.cat.kind==='equipment'?'ครุภัณฑ์':'ไม่ลด'}</span>`:x.delta||x.frac?'<span class="pill p-adj">รับส่วนต่าง</span>':''}</td></tr>`).join('')}</tbody>
+  <tfoot><tr><td></td><td colspan="3">รวม</td><td class="n">${fS(r.sumM)}</td><td></td><td class="n">${fS(r.total)}</td><td></td><td class="n">${fS(r.sumM-r.total)}</td><td class="n">${r.sumM?fmt(tr2((r.sumM-r.total)/r.sumM*100)):''}</td><td></td></tr></tfoot></table></div></div>`;
+}
+function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.kind==='heading'){if(it.name)out.push({head:it.name})}else out.push(r.rows[i++])}return out}
+
+/* ================= reports ================= */
+function rReport(){
+  const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
+  const segs=[['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
+  el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
+     <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
+     <label class="switch"><input type="checkbox" id="tgSign" ${st.showSign?'checked':''}> ช่องลงนาม</label>
+     <label class="switch"><input type="checkbox" id="tgWm" ${st.watermark?'checked':''}> คำว่า “ตัวอย่าง”</label>
+     <span class="sp"></span><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div>
+     <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>
+     ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
+     <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
+  <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
+    (['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
+  {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent=reportSel==='nego'?'@page{size:A4 landscape;margin:0}':'@page{size:A4;margin:0}';if(reportSel==='nego')$$('.paper.land',el).forEach(x=>x.classList.add('solo'))}
+  $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
+  $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
+  $('#tgWm').onchange=e=>{st.watermark=e.target.checked;save();rReport()};
+  $('#basisSel2').onchange=e=>{p.basis=e.target.value;touch(p);rReport()};
+  $('#btnPrint').onclick=()=>{try{window.print()}catch(e){}};
+}
+const wm=()=>S.settings.watermark?' wm':'';
+function belowPct(p){const m=totals(p).sumM,o=toS(p.offerPrice);return m&&o?Math.round((m-o)/m*10000)/100:0}
+function needExplain(p){const L=p.letter||{};if(L.explain==='yes')return true;if(L.explain==='no')return false;return belowPct(p)>=num(S.settings.explainPct||15)}
+function firmShort(c){c=String(c||'').trim();return /^ห้างหุ้นส่วน|^หจก/.test(c)?'ห้างฯ':'บริษัทฯ'}
+function firmTitle(c){return /^ห้างหุ้นส่วน|^หจก/.test(String(c||'').trim())?'หุ้นส่วนผู้จัดการ':'กรรมการผู้จัดการ'}
+const moneyDash=x=>{x=num(x);return Number.isInteger(x)?fmt(x,0)+'.-':fmt(x)};
+function repLetter(p,r){const st=S.settings,L=p.letter||{},th=toTH,ex=needExplain(p),bp=belowPct(p),F=letterFont();
+  const dp=thDateParts(L.date),today=thDateParts(new Date().toISOString().slice(0,10));
+  const dateTxt=dp?`${dp.d} ${dp.m} ${dp.y}`:`<span class="dots">..........</span> ${today.m} ${today.y}`;
+  const inv=thDateParts(L.inviteDate);const rep=thDateParts(L.reply);
+  const chair=(p.signers||[])[1]||{};const firm=p.contractor||'..............................';
+  const subject='ขอต่อรองราคาค่างาน'+(ex?` และขอให้ชี้แจงกรณีเสนอราคาต่ำกว่าราคากลางร้อยละ ${num(st.explainPct||15)} ขึ้นไป`:'');
+  const excTxt='ยกเว้นค่าใช้จ่ายพิเศษ ตามข้อกำหนด'+(r&&r.sumEquip>0?' และค่าครุภัณฑ์':'');
+  const p1=`ตามประกาศที่อ้างถึง${esc(firm)} เป็นผู้เสนอราคาจ้าง ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ${esc(p.name)} วงเงินงบประมาณ ${moneyDash(p.budget)} บาท ซึ่งเป็นผู้เสนอราคาต่ำสุดเป็นเงินทั้งสิ้น ${moneyDash(p.offerPrice)} บาท (เงิน${bahtText(p.offerPrice)})${ex&&bp>0?` และเสนอราคาต่ำกว่าราคากลางร้อยละ ${fmt(bp)}`:''} นั้น`;
+  const p2=`ในการนี้ คณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ ขอต่อรองราคา โดยปรับลดราคาทุกรายการตามอัตราร้อยละเท่ากันทุกรายการหรือตามความเหมาะสม ${excTxt} จึงขอให้${esc(firm)} พิจารณาราคารายละเอียดตามสิ่งที่ส่งมาด้วย ทั้งนี้ ขอให้ ${firmShort(firm)} ปรับลดราคาและจัดทำใบแจ้งปริมาณงานและราคาให้คณะกรรมการฯ ทราบ ภายในวันที่${rep?` ${rep.d} ${rep.m} ${rep.y}`:'<span class="dots">..........................................</span>'}${ex?` พร้อมชี้แจงเหตุผลและหนังสือยืนยันว่าจะสามารถปฏิบัติตามข้อกำหนดและเงื่อนไขตามประกาศฯ ของ${esc(st.office||'')}ทุกประการ`:''}`;
+  const out=`<div class="paper letter${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <img class="garuda" src="${GARUDA}" alt="ตราครุฑ">
+   <div class="top"><div>ที่ ${esc(st.docPrefix||'')}${esc(L.no||'')}</div><div>${esc(st.addr1||'')}<br>${esc(st.addr2||'')}<br>${esc(st.addr3||'')}</div></div>
+   <div class="date">${dateTxt}</div>
+   <div class="hd"><span>เรื่อง</span><span>${subject}</span><span>เรียน</span><span>${esc(L.to||firmTitle(firm)+' '+firm)}</span>
+    <span>อ้างถึง</span><span>ประกาศประกวดราคาจ้างอิเล็กทรอนิกส์ เลขที่ ${esc(L.inviteNo||'..........')} ลงวันที่ ${inv?`${inv.d} ${inv.m} ${inv.y}`:'..........'}</span>
+    <span>สิ่งที่ส่งมาด้วย</span><span>ราคาที่ขอต่อรองปรับลดราคาตามอัตราร้อยละหรือตามความเหมาะสม จำนวน 1 ฉบับ</span></div>
+   <div class="gap"></div><p>${p1}</p><div class="gap"></div><p>${p2}</p><div class="gap"></div><p>จึงเรียนมาเพื่อพิจารณา</p>
+   <div class="gap"></div><div class="close">ขอแสดงความนับถือ<div style="height:20mm"></div>${esc(chair.name||'(......................................................)')}<br>${esc(chair.role||chair.position||'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์')}</div>
+   <div class="foot-l">${esc(st.unit||'')}<br>โทร. ${esc(st.tel||'')}<br>โทรสาร ${esc(st.fax||'')}</div></div>`;
+  return st.thaiDigits===false?out:out.replace(/>([^<]*)</g,(m,t)=>'>'+toTH(t)+'<');
+}
+function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
+  return `<div class="sig">${s.map(x=>`<div>ลงชื่อ ......................................................<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`).join('')}</div>`}
+function catSummary(p){return p.categories.map(c=>{const its=p.items.filter(i=>i.kind==='item'&&i.catId===c.id);return {c,cost:its.reduce((a,i)=>a+costOf(i),0),mid:its.reduce((a,i)=>a+midOf(p,i),0)}}).filter(x=>x.mid||x.c.kind!=='construction'||true)}
+function repMid(p,r,b){const cs=catSummary(p);
+  return `<div class="paper${wm()}"><h2>แบบสรุปราคากลางงานก่อสร้าง${esc(p.type&&p.type!=='อื่นๆ'?p.type:'')}</h2>
+  <div class="c">โครงการ ${esc(p.name)} งบประมาณ ${fmt(p.budget)} บาท เลขที่โครงการ ${esc(p.projectNo)}</div>
+  <div style="margin-top:8px"><b>ตาราง :</b> สรุปราคากลางโครงการงานก่อสร้าง</div>
+  <table class="pt"><thead><tr><th style="width:56px">ลำดับที่</th><th>รายการ</th><th style="width:60px">หน่วย</th><th>ค่างานต้นทุน</th><th>Factor F / Vat</th><th>ราคากลาง</th></tr></thead><tbody>
+   ${cs.map((x,i)=>`<tr><td class="ct">${i+1}</td><td>${esc(x.c.name)}</td><td class="ct">บาท</td><td class="n">${fS(x.cost)}</td><td class="n">${fmt(x.c.factor,4)}</td><td class="n">${fS(x.mid)}</td></tr>`).join('')}
+   <tr class="tot"><td colspan="5" class="n">รวม</td><td class="n">${fS(r.sumM)}</td></tr></tbody></table>
+  <div><b>ตาราง :</b> ราคาที่ใช้คำนวณ (${esc(b.label)})</div>
+  <table class="pt" style="width:65%"><thead><tr><th style="width:56px">ลำดับที่</th><th>รายการ</th><th>หน่วย</th><th>ราคา</th></tr></thead><tbody><tr><td class="ct">1</td><td>${esc(b.label)}</td><td class="ct">บาท</td><td class="n">${fS(r.T)}</td></tr></tbody></table>
+  <div class="calc">
+   <div><div class="h">วิธีการคำนวณราคากลางหักรายการที่ไม่ปรับลด</div>
+     <div class="ln"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="ln"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div><div class="ln"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>${r.sumOtherFixed?`<div class="ln"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}
+     <div class="ln tt"><span>ผลต่างระหว่างราคากลางหักรายการที่ไม่ปรับลด (1)</span><b>${fS(r.d1)}</b></div></div>
+   <div><div class="h">วิธีการคำนวณราคาตามคำเสนอฯ หักรายการที่ไม่ปรับลด</div>
+     <div class="ln"><span>${esc(b.label)}</span><b>${fS(r.T)}</b></div><div class="ln"><span><u>หัก</u> ค่าใช้จ่ายพิเศษและค่าครุภัณฑ์</span><b>${fS(r.sumF)}</b></div>
+     <div class="ln tt"><span>ผลต่างระหว่างราคาตามคำเสนอฯ หักรายการที่ไม่ปรับลด (2)</span><b>${fS(r.d2)}</b></div></div>
+   <div><div class="h">ผลต่างระหว่างราคากลางกับราคาตามคำเสนอฯ</div>
+     <div class="ln"><span>(1)</span><b>${fS(r.d1)}</b></div><div class="ln"><span><u>หัก</u> (2)</span><b>${fS(r.d2)}</b></div><div class="ln tt"><span>ผลต่าง (3)</span><b>${fS(r.d3)}</b></div></div>
+   <div style="align-self:end"><div class="box"><span>ผลต่างตาม (3) เทียบกับ (1) คิดเป็นอัตราร้อยละ</span><b style="font-size:20px">${fmt(r.pct)}</b></div></div>
+  </div>
+  ${tableFull(p,r,'ราคาที่ปรับลดตามคำเสนอ (บาท)')}
+  <div class="rem">หมายเหตุ (*) ส่วนต่างจากการปัดเศษให้ปรับเพิ่ม/ลดในรายการใดรายการหนึ่ง ยกเว้นรายการค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์ ทั้งนี้วงเงินรวมต้องเท่ากับราคาที่ใช้คำนวณ</div>
+  ${sigBlock(p)}</div>`}
+function tableFull(p,r,title){
+  return `<table class="pt" style="font-size:13px"><thead><tr><th rowspan="2" style="width:40px">ที่</th><th rowspan="2" class="desc">รายการ</th><th rowspan="2">หน่วย</th><th rowspan="2">จำนวน</th><th colspan="3">ราคากลางงานก่อสร้าง (บาท)</th><th colspan="2">${esc(title)}</th></tr>
+   <tr><th>ค่างานต้นทุน</th><th>Factor F / Vat</th><th>ราคากลาง</th><th>ราคาที่ปรับลด</th><th>ราคาต่อหน่วย</th></tr></thead><tbody>
+   ${rowsWithHeads(p,r).map(x=>x.head?`<tr class="hd"><td></td><td colspan="8">${esc(x.head)}</td></tr>`:`<tr><td class="ct">${x.no}</td><td>${escBr(x.it.name)}${x.delta||x.frac?' (*)':''}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fQ(x.q)}</td><td class="n">${fS(costOf(x.it))}</td><td class="n">${fmt(x.cat.factor,4)}</td><td class="n">${fS(x.m)}</td><td class="n">${fS(x.line)}</td><td class="n">${fmt(x.uDisp)}</td></tr>`).join('')}
+   <tr class="tot"><td colspan="6" class="n">รวม</td><td class="n">${fS(r.sumM)}</td><td class="n">${fS(r.total)}</td><td></td></tr></tbody></table>`}
+function repNego(p,r,b){const rn=b.key.startsWith('r:')?p.rounds.findIndex(x=>'r:'+x.id===b.key)+1:0;
+  const exc='ยกเว้นรายการค่าใช้จ่ายพิเศษตามข้อกำหนด'+(r.sumEquip>0?'และค่าครุภัณฑ์':'');
+  const sh=' style="background:var(--paper-shade)"';
+  const body=rowsWithHeads(p,r).map(x=>{
+    if(x.head)return `<tr><td></td><td><b>${esc(x.head)}</b></td><td></td><td></td><td></td><td></td><td></td><td${sh}></td><td${sh}></td></tr>`;
+    const ls=String(x.it.name||'').split('\n');
+    return `<tr><td class="ct">${x.no}</td><td>${esc(ls[0])}${x.delta||x.frac?' (*)':''}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fmt(x.q,3)}</td><td class="n">${fS(costOf(x.it))}</td><td class="n">${fmt(x.cat.factor,4)}</td><td class="n">${fS(x.m)}</td><td class="n"${sh}>${fS(x.line)}</td><td class="n"${sh}>${fmt(x.uDisp)}</td></tr>`+
+      ls.slice(1).map(l=>`<tr><td></td><td>${esc(l)}</td><td></td><td></td><td></td><td></td><td></td><td${sh}></td><td${sh}></td></tr>`).join('')}).join('');
+  return `<div class="paper land${wm()}"><h2>ตารางการขอต่อรองราคา${rn?` ครั้งที่ ${rn}`:''}</h2>
+  <div style="margin:8px 0 4px;font-weight:600">${esc(p.name)}</div>
+  <div style="display:grid;grid-template-columns:170px 160px auto;gap:2px 0;margin-bottom:8px"><span>เลขที่โครงการ :</span><span class="n" style="text-align:right">${esc(p.projectNo)}</span><span></span>
+   <span>งบประมาณ &nbsp;&nbsp;:</span><span style="text-align:right">${fmt(p.budget)}</span><span>&nbsp;บาท</span>
+   <span>ราคาที่เสนอ &nbsp;:</span><span style="text-align:right">${fmt(p.offerPrice)}</span><span>&nbsp;บาท</span>
+   <span>ราคาที่ขอต่อรอง :</span><span style="text-align:right"><b>${fS(r.T)}</b></span><span>&nbsp;บาท</span></div>
+  <table class="pt" style="font-size:13px"><thead><tr><th rowspan="2" style="width:30px">ที่</th><th rowspan="2" class="desc">รายการ</th><th rowspan="2">หน่วย</th><th rowspan="2">จำนวน</th><th colspan="3">ราคากลางงานก่อสร้าง (บาท)</th><th colspan="2">ราคาที่ขอต่อรองปรับลดตามอัตราร้อยละเท่ากันทุกรายการ ${exc}</th></tr>
+   <tr><th>ค่างานต้นทุน</th><th>Factor F / Vat</th><th>ราคากลาง</th><th>ราคาที่ปรับลด</th><th>ราคาที่ขอปรับลด (ต่อหน่วย)</th></tr></thead><tbody>
+   ${body}
+   <tr class="tot"><td colspan="6" class="n">ราคารวม (บาท)</td><td class="n">${fS(r.sumM)}</td><td class="n">${fS(r.total)}</td><td></td></tr></tbody></table>
+  ${r.adjusted.length?`<div class="rem">(*) รายการที่รับส่วนต่างจากการปัดเศษให้ราคาต่อหน่วยเป็นจำนวนเต็ม</div>`:''}
+  ${sigBlock(p)}
+  <div class="rem nrem"><b>หมายเหตุ :</b><ol><li>หากผู้ยื่นเสนอราคา ยินดีปรับลดราคาเท่ากับที่คณะกรรมการฯ ขอต่อรองราคา โปรดทำหนังสือยืนยันราคาและใบแจ้งปริมาณงานและราคาให้คณะกรรมการพิจารณาผลฯ ทราบด้วย</li><li>หากผู้ยื่นเสนอราคา ยินดีปรับลดราคามากกว่าที่คณะกรรมการฯ ขอต่อรองราคา โปรดทำหนังสือยืนยันราคาและใบแจ้งปริมาณงานและราคาให้คณะกรรมการพิจารณาผลฯ ทราบด้วย</li><li>หากผู้ยื่นเสนอราคา ไม่ยินดีปรับลดราคาตามที่คณะกรรมการฯ ขอต่อรองราคา โปรดทำหนังสือยืนยันราคาและใบแจ้งปริมาณงานและราคาให้คณะกรรมการพิจารณาผลฯ ทราบด้วย</li></ol></div></div>`}
+function repContract(p,r,b){
+  return `<div class="paper${wm()}"><h2>แบบแสดงรายการ ปริมาณงาน และราคา</h2><div class="c">เอกสารแนบท้ายสัญญาจ้างก่อสร้าง${p.type&&p.type!=='อื่นๆ'?' : งาน'+esc(p.type.replace(/^งาน/,'')):''}</div>
+  <div class="c">สัญญาเลขที่ ${esc(p.contractNo||'....................')} ลงวันที่ ${esc(thDate(p.contractDate)||'....................')}</div>
+  <div style="margin:8px 0">โครงการ ${esc(p.name)}</div>
+  <div class="kv"><span>เลขที่โครงการ</span><span>: ${esc(p.projectNo)}</span><span>หน่วยงานเจ้าของโครงการ</span><span>: ${esc(p.agency)}</span><span>วงเงินงบประมาณ</span><span>: ${fmt(p.budget)} บาท</span><span>ราคากลางงานก่อสร้าง</span><span>: ${fS(r.sumM)} บาท</span><span>วงเงินตามสัญญา</span><span>: <b>${fS(r.total)}</b> บาท</span><span>ชื่อผู้รับจ้าง</span><span>: ${esc(p.contractor)}</span></div>
+  <table class="pt" style="margin-top:10px"><thead><tr><th rowspan="2" style="width:50px">ลำดับที่</th><th rowspan="2" class="desc" style="width:auto">รายการ</th><th rowspan="2" style="width:70px">หน่วย</th><th rowspan="2" style="width:80px">ปริมาณ</th><th colspan="2">ราคาที่ปรับลดตามคำเสนอ (บาท)</th></tr><tr><th style="width:120px">ราคาต่อหน่วย</th><th style="width:140px">จำนวนเงิน</th></tr></thead><tbody>
+   ${rowsWithHeads(p,r).map(x=>x.head?`<tr class="hd"><td></td><td colspan="5">${esc(x.head)}</td></tr>`:`<tr><td class="ct">${x.no}</td><td>${escBr(x.it.name)}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fQ(x.q)}</td><td class="n">${fmt(x.uDisp)}</td><td class="n">${fS(x.line)}</td></tr>`).join('')}
+   <tr class="tot"><td colspan="5" class="n">วงเงินตามสัญญา (บาท)</td><td class="n">${fS(r.total)}</td></tr></tbody></table>
+  ${S.settings.showSign?`<div class="sig"><div>ลงชื่อ ...................................................... ผู้ว่าจ้าง<br>(......................................................)</div><div>ลงชื่อ ...................................................... ผู้รับจ้าง<br>(......................................................)</div></div>`:''}</div>`}
+
+/* ================= legal ================= */
+function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card card-b legal" style="min-width:0">
+  <h2 style="font-size:22px;color:var(--brand2)">สาระสำคัญและหลักการคำนวณ</h2>
+  <p class="muted">หนังสือคณะกรรมการวินิจฉัยปัญหาการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ (กวจ.) ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568 เรื่อง แนวทางการปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา (ยกเลิกหนังสือ ที่ กค (กวจ) 0405.3/ว 232 ลงวันที่ 8 เมษายน 2568) · ใช้สรุปนี้ประกอบการทำงานเท่านั้น ให้ยึดตัวหนังสือฉบับจริง</p>
+  <h3>1. ขอบเขต (ข้อ 1.1)</h3><blockquote>ใช้กับงานจ้างก่อสร้างที่หน่วยงานของรัฐจัดทำแบบรูปรายการงานก่อสร้างโดยถูกต้อง</blockquote>
+  <h3>2. การยื่นข้อเสนอ (ข้อ 1.2.1)</h3><blockquote>ผู้ยื่นข้อเสนอกรอกใบเสนอราคาโดยไม่ต้องยื่น BOQ เป็นไฟล์ PDF</blockquote>
+  <h3>3. การปรับลดราคา (ข้อ 1.2.2)</h3><blockquote>หน่วยงานเป็นผู้ปรับราคาทุกรายการใน BOQ โดยเทียบกับราคากลาง ตามแบบสรุปราคากลาง แล้วนำรายละเอียดที่ปรับลดไปเป็นเอกสารแนบท้ายสัญญา · <b>ค่าใช้จ่ายพิเศษตามข้อกำหนด ห้ามนำมาปรับลด</b></blockquote>
+  <h3>4. การลงนามสัญญา (ข้อ 1.2.3)</h3><blockquote>แจ้งผู้ชนะมาลงนามในสัญญาภายในระยะเวลายืนราคา</blockquote>
+  <h3>5. BOQ คลาดเคลื่อนจากแบบรูปรายการ (ข้อ 1.2.4)</h3><blockquote>คำนวณราคากลางใหม่ก่อนปรับลด</blockquote>
+  <h3>หลักการของระบบนี้</h3>
+  <p><b>รายการที่ไม่ปรับลด:</b> หมวดค่าใช้จ่ายพิเศษตามข้อกำหนด (ตาม ว 651) และหมวดครุภัณฑ์จัดซื้อ (ตามแนวปฏิบัติของหน่วยงาน) คงราคากลางไว้ทุกบาท รวมถึงรายการที่ติ๊ก “ไม่ลด” เอง</p>
+  <p><b>อัตราร้อยละ:</b> (1) ราคากลางหักรายการที่ไม่ปรับลด · (2) ราคาที่ใช้คำนวณหักรายการที่ไม่ปรับลด · (3) = (1) − (2) · อัตรา = (3) ÷ (1) × 100 ตัดเศษเหลือทศนิยม 2 ตำแหน่ง</p>
+  <p><b>การปัดเศษ (ค่าเริ่มต้น):</b> ราคาที่ขอต่อรองรวมเป็นจำนวนเต็มบาท · ราคาต่อหน่วยที่ปรับลด = ราคากลางรายการ × (1 − อัตรา) ÷ จำนวน ตัดเศษเหลือทศนิยม 2 ตำแหน่ง · จำนวนเงิน = ราคาต่อหน่วย × จำนวน · เปลี่ยนเป็น “ราคาต่อหน่วยเป็นจำนวนเต็มบาท” ได้ที่หน้าผลการปรับลดราคาหรือตั้งค่า</p>
+  <p><b>ส่วนต่างปัดเศษ (*):</b> ปรับเข้ารายการเดียวก่อน (รายการที่เลือก หรือรายการที่ราคากลางสูงสุด) ถ้าหารไม่ลงตัวจึงกระจายไปรายการอื่นที่ปรับลดได้ ยอดรวมต้องเท่ากับราคาที่ใช้คำนวณพอดี</p>
+  <p><b>ราคาที่ลงตัว:</b> บางราคาหารจำนวนหน่วยไม่ลงตัว (เช่น มีรายการที่ปรับลดได้รายการเดียว จำนวน 83 หน่วย) ระบบจะแนะนำราคารวมที่เป็นจำนวนเต็มและลงตัวใกล้ที่สุดให้เลือกใช้ในการต่อรอง</p>
+  </div>
+  <div class="grid" style="gap:18px">
+  <div class="card"><div class="card-h"><h2>ผังการพิจารณา</h2></div><div class="card-b flow">
+   <div>ประกาศผลผู้ชนะแล้ว ยังไม่ลงนามสัญญา</div><div class="y">BOQ คลาดเคลื่อนจากแบบรูปรายการหรือไม่? ใช่ → คำนวณราคากลางใหม่ (ข้อ 1.2.4)</div>
+   <div class="y">ราคาเสนอ ≤ ราคากลาง และ ≤ วงเงิน?</div><div class="g">ใช่ → ปรับลดทุกรายการ (1.2.2) → ต่อรองเพิ่มได้ → แนบท้ายสัญญา → ลงนาม (1.2.3)</div>
+   <div class="y">สูงกว่าราคากลาง/วงเงิน → ต่อรองราคา</div><div class="g">ลดลงได้ → ปรับลดตามราคาที่ตกลง → ลงนาม</div><div class="r">ไม่ลด / ยังเกินวงเงิน → พิจารณายกเลิก</div></div></div>
+  <div class="card"><div class="card-h"><h2>คู่มือการใช้งานโดยย่อ</h2></div><div class="card-b"><ol style="margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px">
+   <li>แดชบอร์ด → สร้างโครงการใหม่ (หรือโหลดตัวอย่างเพื่อทดลอง)</li><li>กรอกข้อมูลโครงการ วงเงิน ราคากลางตาม ปร.5 และราคาที่ผู้ชนะเสนอ</li>
+   <li>ตั้งหมวดและ Factor F · ครุภัณฑ์ (VAT 1.07) และค่าใช้จ่ายพิเศษจะไม่ถูกปรับลด</li><li>วาง BOQ จาก Excel (ลำดับ | รายการ | หน่วย | จำนวน | ค่างานต้นทุน) แล้วตรวจยอดกับ ปร.5</li>
+   <li>หน้าต่อรองราคา → ตั้งราคาที่จะขอ เลือกราคาที่ลงตัว → บันทึกครั้งที่ต่อรอง</li><li>รายงาน → พิมพ์ใบขอต่อรองราคา ส่งผู้เสนอ</li><li>บันทึกผลการตอบกลับ → พิมพ์แบบสรุปราคากลางและแบบแนบท้ายสัญญา</li>
+   <li>ตั้งค่า → สำรองข้อมูลเป็นไฟล์เป็นระยะ</li></ol></div></div></div></div>`}
+
+/* ================= settings ================= */
+function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" style="gap:18px;max-width:900px">
+  <div class="card"><div class="card-h"><h2>ค่าเริ่มต้นสำหรับโครงการใหม่</h2></div><div class="card-b grid g12">
+   <label class="f s12"><span>หน่วยงานเจ้าของโครงการ</span><input class="i" id="sAgency" value="${esc(st.agency)}"></label>
+   ${st.signers.map((s,i)=>`<label class="f s4"><span>ผู้ลงนามคนที่ ${i+1}: หน้าที่</span><input class="i" data-ss="${i}" data-sk="role" value="${esc(s.role)}"></label><label class="f s4"><span>ชื่อ-สกุล</span><input class="i" data-ss="${i}" data-sk="name" value="${esc(s.name)}"></label><label class="f s4"><span>ตำแหน่ง</span><input class="i" data-ss="${i}" data-sk="position" value="${esc(s.position)}"></label>`).join('')}
+  </div></div>
+  <div class="card"><div class="card-h"><h2>หนังสือราชการ</h2></div><div class="card-b grid g12">
+   <label class="f s4"><span>รหัสหนังสือ (ก่อนเลขที่)</span><input class="i" data-sl="docPrefix" value="${esc(st.docPrefix)}"></label>
+   <label class="f s4"><span>ชื่อหน่วยงานในเนื้อหนังสือ</span><input class="i" data-sl="office" value="${esc(st.office)}"></label>
+   <label class="f s4"><span>ขอให้ชี้แจงเมื่อต่ำกว่าราคากลางตั้งแต่ (%)</span><input class="i r" data-sl="explainPct" value="${esc(st.explainPct)}" inputmode="decimal"></label>
+   <label class="f s4"><span>ที่อยู่ บรรทัด 1</span><input class="i" data-sl="addr1" value="${esc(st.addr1)}"></label><label class="f s4"><span>ที่อยู่ บรรทัด 2</span><input class="i" data-sl="addr2" value="${esc(st.addr2)}"></label><label class="f s4"><span>ที่อยู่ บรรทัด 3</span><input class="i" data-sl="addr3" value="${esc(st.addr3)}"></label>
+   <label class="f s4"><span>ส่วนราชการเจ้าของเรื่อง</span><input class="i" data-sl="unit" value="${esc(st.unit)}"></label><label class="f s4"><span>โทร.</span><input class="i" data-sl="tel" value="${esc(st.tel)}"></label><label class="f s4"><span>โทรสาร</span><input class="i" data-sl="fax" value="${esc(st.fax)}"></label>
+   <label class="switch s12"><input type="checkbox" id="thDig" ${st.thaiDigits!==false?'checked':''}> ใช้เลขไทยในหนังสือ</label>
+   <div class="s12 muted" style="font-size:13px">ฟอนต์หนังสือ: ใช้ TH SarabunIT๙ 16pt ถ้ามีในเครื่อง ถ้าไม่มีจะใช้ Sarabun ขนาดใกล้เคียงแทน</div>
+  </div></div>
+  <div class="card"><div class="card-h"><h2>การปัดเศษราคาที่ปรับลด</h2></div><div class="card-b"><div class="seg">${[['total','ยอดรวมเป็นจำนวนเต็ม (ค่าเริ่มต้น)'],['unit','ราคาต่อหน่วยเป็นจำนวนเต็มบาท']].map(([k,l])=>`<button class="${(st.roundMode||'total')===k?'on':''}" data-rm2="${k}" type="button">${l}</button>`).join('')}</div></div></div>
+  <div class="card"><div class="card-h"><h2>การแสดงผล</h2></div><div class="card-b row"><span>ธีม</span><div class="seg">${[['system','ตามเครื่อง'],['light','สว่าง'],['dark','มืด']].map(([k,l])=>`<button class="${st.theme===k?'on':''}" data-th="${k}" type="button">${l}</button>`).join('')}</div></div></div>
+  <div class="card"><div class="card-h"><h2>สำรองและกู้คืนข้อมูล</h2></div><div class="card-b grid">
+   <p class="muted" style="margin:0">ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหาย ควรสำรองเป็นไฟล์ไว้</p>
+   <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
+  </div></div></div>`;
+  $('#sAgency').oninput=e=>{st.agency=e.target.value;save()};
+  $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
+  $$('[data-sl]').forEach(i=>i.oninput=()=>{st[i.dataset.sl]=i.dataset.sl==='explainPct'?num(i.value):i.value;save()});
+  $('#thDig').onchange=e=>{st.thaiDigits=e.target.checked;save()};
+  $$('[data-rm2]').forEach(b=>b.onclick=()=>{st.roundMode=b.dataset.rm2;save();rSet()});
+  $$('[data-th]').forEach(b=>b.onclick=()=>{st.theme=b.dataset.th;applyTheme();save();rSet()});
+  $('#bExport').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`boq-nego-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();toast('กำลังดาวน์โหลด (ถ้าไม่มีไฟล์ ให้ใช้ “คัดลอกข้อมูลสำรอง”)')};
+  $('#bCopy').onclick=()=>{const txt=JSON.stringify(S);navigator.clipboard?.writeText(txt).then(()=>toast('คัดลอกแล้ว นำไปวางเก็บในไฟล์ข้อความ'),()=>{const m=modal('ข้อมูลสำรอง',`<textarea class="i" rows="10" readonly>${esc(txt)}</textarea>`,'');m.root.querySelector('textarea').select()})};
+  $('#bImport').onclick=()=>$('#fileImport').click();
+  $('#bPasteImp').onclick=()=>{const m=modal('วางข้อมูลสำรอง',`<textarea class="i" id="impTxt" rows="10" placeholder="วางข้อความ JSON ที่สำรองไว้"></textarea><label class="switch"><input type="checkbox" id="impMerge" checked> รวมกับโครงการที่มีอยู่ (ไม่ลบของเดิม)</label>`,`<button class="btn pri" id="impGo" type="button">นำเข้า</button>`);$('#impGo').onclick=()=>{importData($('#impTxt').value,$('#impMerge').checked);m.close()}};
+}
+$('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>importData(rd.result,true);rd.readAsText(f);e.target.value=''};
+function importData(txt,merge){try{const d=JSON.parse(txt);const list=Array.isArray(d)?d:d.projects;if(!Array.isArray(list))throw 0;
+  if(merge){const ids=new Set(S.projects.map(p=>p.id));list.forEach(p=>{if(ids.has(p.id))p.id=uid();S.projects.push(p)})}else{S.projects=list;if(d.settings)S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings)}
+  cur=S.projects[0]?.id||null;save();toast(`นำเข้า ${list.length} โครงการแล้ว`);go('dash')}catch(e){toast('อ่านข้อมูลไม่ได้ ตรวจว่าเป็นไฟล์สำรองจากระบบนี้')}}
+function applyTheme(){const t=S.settings.theme;if(t==='system')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t)}
+
+/* ================= install / offline ================= */
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
+window.addEventListener('appinstalled',()=>{$('#btnInstall').hidden=true;toast('ติดตั้งแอปแล้ว')});
+if(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)$('#btnInstall').hidden=true;
+$('#btnInstall').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();try{await deferredPrompt.userChoice}catch(e){}deferredPrompt=null;return}
+  modal('ติดตั้งแอป',`<div class="grid" style="font-size:14.5px">
+   <div><b>Chrome / Edge บนคอมพิวเตอร์:</b> กดไอคอน ⊕ “ติดตั้ง” ท้ายช่องที่อยู่เว็บ หรือเมนู ⋮ → “บันทึกและแชร์” → “ติดตั้งหน้าเว็บนี้เป็นแอป”</div>
+   <div><b>Android (Chrome):</b> เมนู ⋮ → “เพิ่มลงในหน้าจอหลัก” / “ติดตั้งแอป”</div>
+   <div><b>iPhone / iPad (Safari):</b> ปุ่มแชร์ → “เพิ่มไปยังหน้าจอโฮม”</div>
+   <div class="note warn">ถ้าไม่มีเมนูติดตั้ง แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้เปิดจากเว็บไซต์ที่อัปโหลดแพ็กเกจแอปไว้ (เช่น Netlify หรือ GitHub Pages) แล้วติดตั้งจากที่นั่น</div></div>`,'')};
+const setNet=()=>{$('#netChip').textContent=(navigator.onLine?'ใช้งานออฟไลน์ได้':'โหมดออฟไลน์')+' · ข้อมูลอยู่ในเครื่องนี้'};
+addEventListener('online',setNet);addEventListener('offline',setNet);setNet();
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+
+/* expose core for testing */
+window.__boq={compute,feasibleNear,totals,sampleProject,S:()=>S};
+/* boot */
+load();applyTheme();renderTabs();go(cur?'dash':'dash');
+})();
+</script>
+
+</body>
+</html>

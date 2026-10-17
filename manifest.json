@@ -1,0 +1,17 @@
+{
+  "name": "ระบบต่อรองและปรับลดราคา BOQ",
+  "short_name": "ต่อรองราคา BOQ",
+  "description": "ต่อรองและปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา ตาม ว 651 เป็นจำนวนเต็ม ไม่ปรับลดค่าใช้จ่ายพิเศษและครุภัณฑ์",
+  "lang": "th",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay","standalone"],
+  "background_color": "#f2f5f3",
+  "theme_color": "#14563a",
+  "icons": [
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}
