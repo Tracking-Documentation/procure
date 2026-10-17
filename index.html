@@ -159,7 +159,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 /* ===== Paper / reports ===== */
 .paper-wrap{overflow-x:auto;padding-block:16px}
 .paper{background:var(--paper);color:var(--paper-ink);width:210mm;min-height:200mm;margin:0 auto 18px;padding:14mm 13mm;box-shadow:0 2px 14px rgba(0,0,0,.14);font-family:"Sarabun","TH Sarabun New",Tahoma,sans-serif;font-size:14px;line-height:1.45;position:relative}
-.paper.land{width:297mm;page:land}
+.paper.land{width:297mm}
 .paper th.desc{width:34%}.paper.land th.desc{width:30%}
 .paper h2{font-family:inherit;font-size:18px;text-align:center;font-weight:700}
 .paper .c{text-align:center}
@@ -245,7 +245,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (8)</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (9)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -991,8 +991,14 @@ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
   navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadCtl&&!reloaded){reloaded=true;toast('อัปเดตแอปเป็นเวอร์ชันใหม่แล้ว');setTimeout(()=>location.reload(),600)}});
   navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{reg.update();document.addEventListener('visibilitychange',()=>{if(!document.hidden)reg.update()})}).catch(()=>{})}
 
+/* fit the negotiation sheet onto one page when printing */
+function fitPrint(){const mm=96/25.4;$$('#printArea .paper.land').forEach(el=>{el.style.zoom='';const solo=el.classList.contains('solo');
+  const W=(solo?297:210)-20,H=(solo?210:297)-20-8;const ow=el.style.width,op=el.style.padding;el.style.width=W+'mm';el.style.padding='0';
+  const h=el.scrollHeight/mm;el.style.width=ow;el.style.padding=op;if(h>H){const z=Math.max(0.6,H/h);el.style.zoom=z.toFixed(3)}})}
+function unfitPrint(){$$('#printArea .paper.land').forEach(el=>el.style.zoom='')}
+addEventListener('beforeprint',fitPrint);addEventListener('afterprint',unfitPrint);
 /* expose core for testing */
-window.__boq={compute,feasibleNear,totals,sampleProject,S:()=>S};
+window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S};
 /* boot */
 load();applyTheme();renderTabs();go(cur?'dash':'dash');
 })();
