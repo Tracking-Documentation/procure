@@ -32,6 +32,7 @@ input[type=text],input[type=tel],input[type=email]{width:100%;padding:10px 12px;
 .grid3{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.grid3 .w{grid-column:1/-1}
 .sec{display:grid;gap:6px}.sec label{display:flex;gap:8px;align-items:flex-start;color:var(--ink);font-size:15px;margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer}.sec label small{display:block;color:var(--mut);font-size:12px}.sec input{margin-top:4px}
 .gp{margin-top:10px;background:#f7f2f2;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:15px}
+.doc.miss{background:#fdecea;border:1px solid #f3b8b0;border-radius:8px;padding:10px;margin:8px 0}
 .doc{border-top:1px dashed var(--line);padding:10px 0}.doc:first-child{border-top:0}
 .doc .n{font-weight:600}.doc .req{color:var(--bad);font-size:13px}
 .doc .st{font-size:13px;color:var(--ok);margin-top:4px;word-break:break-all}
@@ -108,10 +109,11 @@ function period(sign){var p=INFO.project,dur=+p.duration||0;if(!sign||!dur)retur
 function periodHtml(sign){var g=period(sign);if(!g)return sign?'<div class="gp"><b>ระยะเวลาค้ำประกันสัญญา</b><div class="hint">เจ้าหน้าที่ยังไม่ได้ระบุระยะเวลาดำเนินการตามสัญญา จึงยังคำนวณไม่ได้ (ตั้งแต่วันลงนามในสัญญา ถึงวันสิ้นสุดสัญญา + ระยะรับประกันความชำรุดบกพร่อง + 30 วัน) · กรุณาติดต่อเจ้าหน้าที่ หรือเปิดลิงก์นี้อีกครั้งภายหลัง</div></div>':'';return '<div class="gp"><b>ระยะเวลาค้ำประกันสัญญา</b><br>ตั้งแต่ <b>'+esc(thd(g.sign))+'</b> ถึง <b>'+esc(thd(g.to))+'</b><div class="hint">นับจากวันลงนามในสัญญา · สิ้นสุดสัญญา '+esc(thd(g.end))+' ('+g.dur+' วัน) + รับประกันความชำรุดบกพร่อง '+g.wy+' ปี + '+g.ex+' วัน · หนังสือค้ำประกันต้องมีผลครอบคลุมช่วงนี้ หากเลื่อนวันลงนาม ระยะเวลาจะเปลี่ยนตาม</div></div>';}
 function doneView(b){var p=INFO.project,fixed=b.confirmed==='Y';var have={};(b.files||[]).forEach(function(f){have[f.docKey]=f;});
   var pend=p.docs.filter(function(d){return !have[d.key]&&(d.key!=='poa'||b.poa==='มอบอำนาจ')&&!(d.key==='sec'&&b.secType==='เงินสด');});
+  var miss=pend.filter(function(d){return d.required;});
   var h=doneHtml(b,fixed);
   h+='<div class="card"><h2>หลักประกันสัญญา</h2><div>'+esc(b.secType||'-')+(p.secAmount?' · จำนวน <b>'+esc(Number(p.secAmount).toLocaleString('th-TH'))+' บาท</b>':'')+'</div>'+periodHtml(b.date)+'</div>';
   h+='<div class="card"><h2>เอกสาร</h2>'+p.docs.filter(function(d){return have[d.key];}).map(function(d){return '<div class="st">✓ '+esc(d.label)+'</div>';}).join('')+
-    (pend.length?'<p class="hint" style="margin-top:10px">แนบเพิ่มภายหลังได้ที่นี่ (เช่น หนังสือค้ำประกันเมื่อได้รับจากธนาคาร)</p>'+pend.map(function(d){return '<div class="doc"><div class="n">'+esc(d.label)+(d.key==='sec'?' <span class="req">'+esc(secReq(b.secType))+'</span>':'')+'</div><input type="file" accept=".pdf,image/*" data-lk="'+esc(d.key)+'"></div>';}).join('')+'<div id="msg"></div><button class="btn" id="lgo">แนบเอกสารเพิ่ม</button>':'')+'</div>';
+    (miss.length?'<div class="msg err" style="margin:10px 0 0">ยังไม่ได้แนบเอกสาร '+miss.length+' รายการ กรุณาแนบก่อนวันลงนามสัญญา</div>':'')+(pend.length?'<p class="hint" style="margin-top:10px">แนบเพิ่มภายหลังได้ที่นี่ (เช่น หนังสือค้ำประกันเมื่อได้รับจากธนาคาร)</p>'+pend.map(function(d){return '<div class="doc'+(d.required?' miss':'')+'"><div class="n">'+esc(d.label)+(d.required?' <span class="req">ยังไม่ได้แนบ</span>':'')+'</div><input type="file" accept=".pdf,image/*" data-lk="'+esc(d.key)+'"></div>';}).join('')+'<div id="msg"></div><button class="btn" id="lgo">แนบเอกสารเพิ่ม</button>':'')+'</div>';
   if(!fixed)h+='<button class="btn" id="edit" style="background:#fff;color:var(--m);border:1px solid var(--m)">แก้ไขวัน เวลา หรือข้อมูลการจอง</button>';
   return h+infoCard(p);}
 function bindLater(){var e=$('edit');if(e)e.onclick=function(){EDIT=true;render();window.scrollTo(0,0);};
