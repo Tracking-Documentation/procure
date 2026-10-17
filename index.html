@@ -245,7 +245,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div>
+  <div class="foot no-print">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า" · เวอร์ชัน 17 ต.ค. 2569 (6)</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -987,7 +987,10 @@ $('#btnInstall').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();tr
    <div class="note warn">ถ้าไม่มีเมนูติดตั้ง แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้เปิดจากเว็บไซต์ที่อัปโหลดแพ็กเกจแอปไว้ (เช่น Netlify หรือ GitHub Pages) แล้วติดตั้งจากที่นั่น</div></div>`,'')};
 const setNet=()=>{$('#netChip').textContent=(navigator.onLine?'ใช้งานออฟไลน์ได้':'โหมดออฟไลน์')+' · ข้อมูลอยู่ในเครื่องนี้'};
 addEventListener('online',setNet);addEventListener('offline',setNet);setNet();
-if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
+  const hadCtl=!!navigator.serviceWorker.controller;let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(hadCtl&&!reloaded){reloaded=true;toast('อัปเดตแอปเป็นเวอร์ชันใหม่แล้ว');setTimeout(()=>location.reload(),600)}});
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{reg.update();document.addEventListener('visibilitychange',()=>{if(!document.hidden)reg.update()})}).catch(()=>{})}
 
 /* expose core for testing */
 window.__boq={compute,feasibleNear,totals,sampleProject,S:()=>S};
