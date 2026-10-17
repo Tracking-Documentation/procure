@@ -272,7 +272,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-report" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 20 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 23 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -883,7 +883,7 @@ function docExt(p){const e=evOf(p);const ch=chairOf(p);
    <p class="pi">${esc(e.extendReason)} จึงขอขยายเวลาการพิจารณาผลอีก ${esc(e.extendDays)} วันทำการ</p>
    <p class="pi">จึงเรียนมาเพื่อโปรดพิจารณา</p>
    <div class="sg1"><div style="height:18mm"></div>(${esc(ch.name)})<br>ประธานกรรมการพิจารณาผลฯ</div>`)}
-function relBlock(n,label,on){return `<div class="hg"><span>${n}.</span><div>${esc(label)} &nbsp;${ck(!on)} ไม่มี<br>${ck(on)} มี ได้แก่ ${[1,2,3].map(i=>`<div class="ind2">${i}. ระหว่าง..................................................กับ..................................................</div>`).join('')}</div></div>`}
+function relBlock(n,label,on){return `<div class="hg"><span>${n}.</span><div>${esc(label)} &nbsp;${ck(!on)} ไม่มี<br>${ck(on)} มี ได้แก่ ${[1,2,3].map(i=>`<div class="ind2">${i}. ระหว่าง..............................กับ..............................</div>`).join('')}</div></div>`}
 function docQual(p){const e=evOf(p);const st=S.settings;
   return evPaper(`${memoHead(`${esc(st.office||'')} &nbsp; โทร. ${esc(st.tel||'')} &nbsp; โทรสาร ${esc(st.fax||'')}`,'แจ้งผลการตรวจสอบคุณสมบัติของผู้เสนอราคา',st.toShort||'ผอ.ขท.กระบี่')}
    <p class="pi">คณะกรรมการพิจารณาผลประกวดราคา ขอแจ้งผลการตรวจสอบคุณสมบัติของผู้เสนอราคา ปรากฏผล ดังนี้.-</p>
@@ -1049,13 +1049,23 @@ class DocxBuilder{
       [...e.childNodes].forEach(n=>inline(n,c))};
     [...el.childNodes].forEach(n=>inline(n,cs));flush();
     return out.join('')}
+  txt(el){let t='';el.childNodes.forEach(n=>{if(n.nodeType===3)t+=n.nodeValue;else if(n.nodeType===1){const c=getComputedStyle(n);if(c.display==='inline-block'&&!n.textContent.trim())t+=' '.repeat(14);else if(n.tagName==='BR')t+=' ';else t+=this.txt(n)}});return t.replace(/[ \t\n]+(?=\S)/g,m=>m.length>3?m:' ')}
+  memoLine(e,f){ // "ส่วนราชการ ....." style rows: label + value on one paragraph with dotted underline
+    const parts=e.classList.contains('two')?[...e.children]:[e];const W=this.maxW||9000;
+    const runs=parts.map((pe,i)=>{const lb=pe.querySelector(':scope>b'),dl=pe.querySelector(':scope>.dl');
+      return (i?'<w:r><w:tab/></w:r>':'')+(lb?this.textRun(lb.textContent.trim()+'  ',getComputedStyle(lb),f):'')+(dl?this.textRun(this.txt(dl).trim()||' ',getComputedStyle(dl),f):'')}).join('');
+    return `<w:p><w:pPr><w:pBdr><w:bottom w:val="dotted" w:sz="6" w:space="1" w:color="000000"/></w:pBdr><w:tabs><w:tab w:val="left" w:pos="${Math.round(W/2)}"/></w:tabs><w:spacing w:before="40" w:after="0"/></w:pPr>${runs}</w:p>`}
+  memoTitle(e,f){const img=e.querySelector('img'),t=e.querySelector('.mt');const W=this.maxW||9000;const iw=img?DX.tw(img.getBoundingClientRect().width)+60:1000;
+    const cell=(w,inner,jc)=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/><w:tcBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/></w:tcBorders><w:vAlign w:val="bottom"/></w:tcPr><w:p><w:pPr><w:spacing w:before="0" w:after="0"/>${jc?`<w:jc w:val="${jc}"/>`:''}</w:pPr>${inner}</w:p></w:tc>`;
+    return `<w:tbl><w:tblPr><w:tblW w:w="${W}" w:type="dxa"/><w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid><w:gridCol w:w="${iw}"/><w:gridCol w:w="${W-2*iw}"/><w:gridCol w:w="${iw}"/></w:tblGrid><w:tr>${cell(iw,img?this.imgRun(img):'','')}${cell(W-2*iw,t?this.textRun(t.textContent.trim(),getComputedStyle(t),f):'','center')}${cell(iw,'','')}</w:tr></w:tbl>`}
   element(e,f,baseLeft){const c=getComputedStyle(e);if(c.display==='none')return '';
+    if(e.classList.contains('mh'))return this.memoTitle(e,f);if(e.classList.contains('ml')&&e.closest('.paper.ev'))return this.memoLine(e,f);
     if(e.tagName==='IMG'){const ctr=parseFloat(c.marginLeft)>0&&Math.abs(parseFloat(c.marginLeft)-parseFloat(c.marginRight))<3;return `<w:p><w:pPr><w:spacing w:before="0" w:after="0"/>${ctr?'<w:jc w:val="center"/>':''}</w:pPr>${this.imgRun(e)}</w:p>`}
     if(e.tagName==='TABLE')return this.table(e,f);
     const kids=[...e.childNodes].filter(n=>n.nodeType===1?getComputedStyle(n).display!=='none':n.nodeValue.trim());
     const rowFlex=c.display.includes('flex')&&!c.flexDirection.startsWith('column');
     if((c.display.includes('grid')||rowFlex)&&kids.length>1&&kids.every(n=>n.nodeType===1)){
-      const rows=[];kids.forEach(k=>{const r=k.getBoundingClientRect();const top=Math.round(r.top);let row=rows.find(x=>Math.abs(x.top-top)<4);if(!row){row={top,cells:[]};rows.push(row)}row.cells.push({el:k,r})});
+      const rows=[];kids.forEach(k=>{const r=k.getBoundingClientRect();const top=Math.round(r.top);let row=rows.find(x=>{const ov=Math.min(x.bot,r.bottom)-Math.max(x.top,r.top);return Math.abs(x.top-top)<4||ov>0.5*Math.min(x.bot-x.top,r.height)});if(!row){row={top,bot:r.bottom,cells:[]};rows.push(row)}else{row.top=Math.min(row.top,top);row.bot=Math.max(row.bot,r.bottom)}row.cells.push({el:k,r})});
       if(rows.every(r=>r.cells.length===1)){const pre=this.spacer(c);return pre+kids.map(k=>this.element(k,f,baseLeft)).join('')}
       rows.sort((a,b)=>a.top-b.top);rows.forEach(r=>r.cells.sort((a,b)=>a.r.left-b.r.left));
       return this.spacer(c)+this.gridTable(e,rows.map(r=>r.cells.map(x=>({el:x.el,r:x.r,contentEl:x.el,borders:getComputedStyle(x.el),shade:getComputedStyle(x.el)}))),f,false)}
@@ -1071,7 +1081,16 @@ class DocxBuilder{
     const edges=[];const add=x=>{if(!edges.some(e=>Math.abs(e-x)<2))edges.push(x)};rows.forEach(r=>r.forEach(c=>{add(c.r.left);add(c.r.right)}));edges.sort((a,b)=>a-b);
     const idx=x=>{let b=0,bd=1e9;edges.forEach((e,i)=>{const d=Math.abs(e-x);if(d<bd){bd=d;b=i}});return b};
     let cols=edges.slice(1).map((e,i)=>Math.max(1,DX.tw(e-edges[i])));const tot=cols.reduce((a,b)=>a+b,0);if(this.maxW&&tot>this.maxW){const k=this.maxW/tot;cols=cols.map(w=>Math.max(1,Math.floor(w*k)))}const n=cols.length;
-    if(!real&&n>1){const tot2=cols.reduce((a,b)=>a+b,0);cols=cols.map((w,i)=>i<n-1?Math.round(w*1.18):w);const over=cols.reduce((a,b)=>a+b,0)-tot2;cols[n-1]=Math.max(600,cols[n-1]-over)}
+    if(!real&&n>1){ // layout grids: size columns by their content so short cells (numbers, roles) never wrap
+      const total=cols.reduce((a,b)=>a+b,0);const need=new Array(n).fill(0);const rg=document.createRange();
+      rows.forEach(r=>r.forEach(c=>{const s0=idx(c.r.left),e0=idx(c.r.right);if(e0-s0!==1)return;rg.selectNodeContents(c.el);
+        const ws=c.el.style.whiteSpace;c.el.style.whiteSpace='nowrap';const nat=rg.getBoundingClientRect().width;c.el.style.whiteSpace=ws;
+        need[s0]=Math.max(need[s0],DX.tw(nat*1.12+6))}));
+      let w=need.map((x,k)=>Math.max(x,280));let sum=w.reduce((a,b)=>a+b,0);
+      if(sum<=total){const big=cols.indexOf(Math.max(...cols));w[big]+=total-sum}
+      else{const order=w.map((x,k)=>k).sort((a,b)=>w[b]-w[a]);for(const k of order){if(sum<=total)break;const floor=Math.min(w[k],Math.max(total*0.3,need[k]>total*0.5?total*0.3:need[k]*0.9));const cut=Math.min(sum-total,w[k]-floor);w[k]-=cut;sum-=cut}
+        if(sum>total){const k2=total/sum;w=w.map(x=>x*k2)}}
+      cols=w.map(x=>Math.max(1,Math.round(x)))}
     const pending=[];// active rowspans: {start,span,left,remain,cell}
     let xml=`<w:tbl><w:tblPr><w:tblW w:w="${cols.reduce((a,b)=>a+b,0)}" w:type="dxa"/>${real?'':'<w:tblBorders><w:top w:val="nil"/><w:left w:val="nil"/><w:bottom w:val="nil"/><w:right w:val="nil"/><w:insideH w:val="nil"/><w:insideV w:val="nil"/></w:tblBorders>'}<w:tblLayout w:type="fixed"/><w:tblCellMar><w:left w:w="${real?60:0}" w:type="dxa"/><w:right w:w="${real?60:40}" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${cols.map(w=>`<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>`;
     rows.forEach(row=>{const cells=row.map(c=>({c,s:idx(c.r.left),e:idx(c.r.right)}));
