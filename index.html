@@ -292,7 +292,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 45 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 46 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -358,7 +358,7 @@ const DEF_SETTINGS={warrantyYears:2,secExtraDays:30,gasUrl:'',gasKey:'',contract
   signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
   showSign:true,watermark:false,theme:'system'};
 let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
-let cur=null, tab='dash', reportSel='pack', deferredPrompt=null;
+let cur=null, tab='dash', reportSel='nego', deferredPrompt=null;
 function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.projects)){S=d;S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings||{})}}}catch(e){}
   if(S.settings.signDocs)S.settings.signDocs=String(S.settings.signDocs).replace('มอบอำนาจให้เซ็นสัญญาแทน','มอบอำนาจให้ลงนามในสัญญาแทน');
   if(!S.projects.length){S.projects.push(sampleProject())}
@@ -1220,11 +1220,11 @@ function papersToDocx(html){
   (B.media||[]).forEach(m=>{const bin=atob(m.src.split(',')[1]||'');const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);files.push(['word/media/'+m.name,u])});
   return zipStore(files)}
 function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
-  const L=[['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
-  L.push(['sign','หนังสือเรียกลงนามสัญญา',()=>repSign(p)]);
-  L.push(['certLetter','หนังสือนำส่งหนังสือรับรองผลงาน',()=>repCertLetter(p)],['cert','หนังสือรับรองผลงาน',()=>repCert(p)],['certDetail','รายละเอียดผลงานก่อสร้าง',()=>repCertDetail(p)]);
+  const L=[['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
   const map=EVMAP();
   evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
+  L.push(['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['sign','หนังสือเรียกลงนามในสัญญา',()=>repSign(p)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)]);
+  L.push(['certLetter','หนังสือนำส่งหนังสือรับรองผลงาน',()=>repCertLetter(p)],['cert','หนังสือรับรองผลงาน',()=>repCert(p)],['certDetail','รายละเอียดผลงานก่อสร้าง',()=>repCertDetail(p)]);
   return {L,err:r.errors.length?r.errors[0]:''}}
 function downloadWord(p,key){const {L}=wordDocsList(p);const d=L.find(x=>x[0]===key);if(!d)return;
   const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2]())}finally{S.settings.watermark=wmOld}
@@ -1370,7 +1370,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['eval','เอกสารพิจารณาผล'],['sign','หนังสือเรียกลงนามสัญญา'],['cert','หนังสือรับรองผลงาน'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const segs=[['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแนบท้ายสัญญา'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -1382,7 +1382,7 @@ function rReport(){
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   ${wordPanel(p)}
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
-    (reportSel==='sign'?repSign(p):'')+(reportSel==='cert'?repCertAll(p):'')+(reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
+    (['nego','all'].includes(reportSel)?repNego(p,r,b):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(reportSel==='pack'?repNego(p,r,b):'')+(['notice','all'].includes(reportSel)?repNotice(p):'')+(['eval','all'].includes(reportSel)?repEval(p):'')+(['mid','all'].includes(reportSel)?repMid(p,r,b):'')+(['sign','all'].includes(reportSel)?repSign(p):'')+(['contract','all'].includes(reportSel)?repContract(p,r,b):'')+(['cert','all'].includes(reportSel)?repCertAll(p):'')}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
   $$('[data-word]',el).forEach(x=>x.onclick=()=>downloadWord(p,x.dataset.word));
