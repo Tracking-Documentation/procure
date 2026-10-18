@@ -302,7 +302,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 48 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 49 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -574,7 +574,7 @@ function rDash(){
   </div>
   <div class="card">
     <div class="card-h"><h2>โครงการทั้งหมด</h2>
-      <input class="i" id="dashQ" placeholder="ค้นหาชื่อโครงการ / เลขที่โครงการ / ผู้รับจ้าง" value="${esc(el._q||'')}" style="max-width:340px">
+      <input class="i" id="dashQ" type="search" name="boq-project-search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="ค้นหาชื่อโครงการ / เลขที่โครงการ / ผู้รับจ้าง" value="${esc(el._q||'')}" style="max-width:340px">
       <button class="btn ghost-brand" data-act="sample" type="button">โหลดตัวอย่าง</button>
       <button class="btn pri" data-act="new" type="button">+ สร้างโครงการใหม่</button></div>
     <div class="tbl-wrap"><table class="t">
@@ -584,10 +584,11 @@ function rDash(){
         <td class="n">${fmt(p.budget)}</td><td class="n">${fS(t.sumM)}</td><td class="n">${fmt(p.offerPrice)}</td>
         <td class="n"><b>${fmt(fin)}</b><div class="muted" style="font-size:12px">${cp!==null?'ราคาที่ตกลง':'ต่อรองล่าสุด'}</div></td>
         <td class="n">${r.errors.length?'-':fmt(r.pct)}</td><td>${statusPill(p.status)}${meetingConflicts(p).length?' <span class="pill p-nego" title="เวลาประชุมชนกับโครงการอื่น">⚠ เวลาประชุมชน</span>':''}</td><td class="muted" style="white-space:nowrap">${esc(p.updatedAt||'')}</td>
-        <td class="n" style="white-space:nowrap"><button class="icon-btn" title="แก้ไข" data-edit="${p.id}" type="button">${ICON.pen}</button> <button class="icon-btn" title="รายงาน" data-print="${p.id}" type="button">${ICON.print}</button> <button class="icon-btn" title="ทำสำเนา" data-dup="${p.id}" type="button">${ICON.copy}</button> <button class="icon-btn del" title="ลบ" data-del="${p.id}" type="button">${ICON.trash}</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">ไม่พบโครงการ</td></tr>`}</tbody>
+        <td class="n" style="white-space:nowrap"><button class="icon-btn" title="แก้ไข" data-edit="${p.id}" type="button">${ICON.pen}</button> <button class="icon-btn" title="รายงาน" data-print="${p.id}" type="button">${ICON.print}</button> <button class="icon-btn" title="ทำสำเนา" data-dup="${p.id}" type="button">${ICON.copy}</button> <button class="icon-btn del" title="ลบ" data-del="${p.id}" type="button">${ICON.trash}</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">${q&&S.projects.length?`ไม่พบโครงการที่ตรงกับคำค้น “${esc(el._q)}” (มีทั้งหมด ${S.projects.length} โครงการ) <button class="btn sm" id="dashClear" type="button">ล้างคำค้นหา</button>`:'ยังไม่มีโครงการ'}</td></tr>`}</tbody>
     </table></div>
   </div>`;
-  const qi=$('#dashQ');qi.oninput=()=>{el._q=qi.value;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
+  {const dc=$('#dashClear');if(dc)dc.onclick=()=>{el._q='';rDash()}}
+  const qi=$('#dashQ');setTimeout(()=>{if(qi.value!==(el._q||'')){qi.value=el._q||''}},300);qi.oninput=()=>{el._q=qi.value;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
 }
 document.addEventListener('click',e=>{
   const bs=e.target.closest('[data-booksync]');if(bs){bs.disabled=true;fetchBookings(null).then(j=>{toast('ดึงข้อมูลการจองแล้ว '+(j.bookings||[]).filter(x=>x.status!=='ยกเลิก').length+' รายการ');render()}).catch(er=>{bs.disabled=false;alert(er.message)});return}
