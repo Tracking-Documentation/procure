@@ -289,9 +289,10 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-result" hidden></section>
   <section class="view" id="v-cal" hidden></section>
   <section class="view" id="v-report" hidden></section>
+  <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 42 · 17 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 45 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -332,6 +333,7 @@ function letterFont(){try{const c=document.createElement('canvas').getContext('2
   for(const f of ['TH SarabunIT๙','TH SarabunIT9','TH Sarabun New','TH SarabunNew','TH SarabunPSK']){if(w(`20px "${f}",monospace`)!==w('20px monospace'))return {lf:`"${f}","Sarabun",sans-serif`,ls:'16pt'}}}catch(e){}
   return {lf:'"Sarabun","Leelawadee UI",Tahoma,sans-serif',ls:'12pt'}}
 const ICON={
+  award:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg>',
   cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg>',
   users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.5 3.2-5.5 6.5-5.5s6 2 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.8.1 4.9 1.9 5.4 4.9"/></svg>',
@@ -530,11 +532,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){({cal:rCal,dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,report:rReport,legal:rLegal,set:rSet})[tab]()}
+function render(){({cal:rCal,dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -1220,6 +1222,7 @@ function papersToDocx(html){
 function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
   const L=[['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
   L.push(['sign','หนังสือเรียกลงนามสัญญา',()=>repSign(p)]);
+  L.push(['certLetter','หนังสือนำส่งหนังสือรับรองผลงาน',()=>repCertLetter(p)],['cert','หนังสือรับรองผลงาน',()=>repCert(p)],['certDetail','รายละเอียดผลงานก่อสร้าง',()=>repCertDetail(p)]);
   const map=EVMAP();
   evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
   return {L,err:r.errors.length?r.errors[0]:''}}
@@ -1367,7 +1370,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['eval','เอกสารพิจารณาผล'],['sign','หนังสือเรียกลงนามสัญญา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
+  const segs=[['eval','เอกสารพิจารณาผล'],['sign','หนังสือเรียกลงนามสัญญา'],['cert','หนังสือรับรองผลงาน'],['notice','แบบแจ้งผลผู้เสนอราคา'],['pack','หนังสือ + ใบขอต่อรอง'],['letter','หนังสือขอต่อรองราคา'],['nego','ใบขอต่อรองราคา'],['mid','แบบสรุปราคากลาง (ว 651)'],['contract','แบบแนบท้ายสัญญา'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -1379,7 +1382,7 @@ function rReport(){
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   ${wordPanel(p)}
   <div class="paper-wrap" id="printArea">${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
-    (reportSel==='sign'?repSign(p):'')+(reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
+    (reportSel==='sign'?repSign(p):'')+(reportSel==='cert'?repCertAll(p):'')+(reportSel==='eval'?repEval(p):'')+(reportSel==='notice'?repNotice(p):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(['nego','pack','all'].includes(reportSel)?repNego(p,r,b):'')+(reportSel==='mid'||reportSel==='all'?repMid(p,r,b):'')+(reportSel==='contract'||reportSel==='all'?repContract(p,r,b):'')}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
   $$('[data-word]',el).forEach(x=>x.onclick=()=>downloadWord(p,x.dataset.word));
@@ -1518,6 +1521,97 @@ function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textCo
       rerender()}catch(e){btn.disabled=false;msg('');alert(e.message)}})}
 let bookAuto=null;
 function bookAutoPush(p){const b=p.book;if(!bookOn()||!b||!b.pushed)return;clearTimeout(bookAuto);bookAuto=setTimeout(()=>{if(b.pushedDates===bookSig(p))return;pushBooking(p).then(()=>{const m=$('#bkMsg');if(m)m.textContent='อัปเดตช่วงวันจองแล้ว '+b.pushed}).catch(()=>{})},900)}
+/* ---------- หนังสือรับรองผลงาน (หลังส่งมอบ/ตรวจรับงานแล้ว · ส่งมอบได้หลายงวด) ---------- */
+const CERT_TYPES=['งานก่อสร้างทาง','งานก่อสร้างสะพาน','งานบำรุงทาง','งานไฟฟ้าแสงสว่างและไฟสัญญาณจราจร','งานอำนวยความปลอดภัย','งานก่อสร้างอาคาร'];
+function isoAdd(iso,n){if(!iso)return '';const d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function certOf(p){p.cert=p.cert||{};const c=p.cert;c.amends=c.amends||[];c.dels=c.dels||[{}];c.items=c.items||{};if(!c.workType)c.workType='งานก่อสร้างทาง';return c}
+function certDates(p){const c=certOf(p);const dur=num(evOf(p).duration);const start=c.startDate||isoAdd(p.contractDate,1);const end=c.endDate||(start&&dur?isoAdd(start,dur-1):'');return {start,end}}
+function certValue(p){return num(finalPrice(p))}
+function certDelTotal(p){return certOf(p).dels.reduce((a,d)=>a+num(d.amount),0)}
+function certAmount(p){const c=certOf(p);if(String(c.certAmount||'').trim())return num(c.certAmount);const t=certDelTotal(p);return t>0?t:certValue(p)}
+/* รายการแนบ: ตั้งต้นจากแบบแนบท้ายสัญญา แก้ปริมาณ/จำนวนเงินที่ทำได้จริงได้ */
+function certRows(p){const b=basisOf(p);const r=compute(p,b.price);const ov=certOf(p).items;let i=0;
+  return rowsWithHeads(p,r).map(x=>{if(x.head)return {head:x.head};const k=i++;const o=ov[k]||{};
+    return {k,name:x.it.name,unit:x.it.unit,q:String(o.q??'').trim()!==''?num(o.q):x.q,amt:String(o.amt??'').trim()!==''?num(o.amt):x.line/100,defQ:x.q,defAmt:x.line/100,off:!!o.off}})}
+function certRowsTotal(p){return certRows(p).filter(x=>!x.head&&!x.off).reduce((a,x)=>a+x.amt,0)}
+function bahtWords(n){const t=bahtText(n);return /^เงิน/.test(t)?t:'เงิน'+t}
+function certContractText(p){const c=certOf(p),{start,end}=certDates(p);const am=c.amends.filter(a=>a.date||a.end);
+  return `${esc(p.name)} สัญญาที่ ${esc(p.contractNo||'....................')} ลงวันที่ ${D(p.contractDate)} วันเริ่มต้นสัญญาวันที่ ${D(start)} สิ้นสุดสัญญา${am.length?'(เดิม)':''} วันที่ ${D(end)}`+
+    am.map((a,i)=>` และบันทึกเพิ่มเติมแนบท้ายสัญญาจ้าง (ฉบับที่ ${i+1}) ลงวันที่ ${D(a.date)} สิ้นสุดสัญญา(ใหม่) วันที่ ${D(a.end)}`).join('')}
+function certDelText(p){const ds=certOf(p).dels.filter(d=>d.deliver||d.inspect||num(d.amount));const last=ds[ds.length-1]||{};
+  return (ds.length>1?`ส่งมอบงานรวม ${ds.length} งวด `:'')+`ส่งมอบงานงวดสุดท้ายเมื่อวันที่ ${D(last.deliver)} และมีการตรวจรับงานงวดสุดท้ายแล้ว เมื่อวันที่ ${D(last.inspect)}`}
+function thDig(out){return S.settings.thaiDigits===false?out:out.replace(/>([^<]*)</g,(m,t)=>'>'+toTH(t)+'<')}
+function certHead(st,no,showDate,dateIso,copy){const F=letterFont();const dp=thDateParts(dateIso),today=thDateParts(todayISO());
+  const dateTxt=dp?`${dp.d} ${dp.m} ${dp.y}`:`<span style="display:inline-block;width:14mm"></span>${today.m} ${today.y}`;
+  return `${copy?'<div style="text-align:center;margin-bottom:6mm">- สำเนาคู่ฉบับ -</div>':`<img class="garuda" src="${GARUDA}" alt="ตราครุฑ">`}
+   <div class="top"><div>ที่ ${esc(st.docPrefix||'')}${no?esc(no):'<span style="display:inline-block;width:16mm"></span>'}</div><div>${esc(st.addr1||'')}<br>${esc(st.addr2||'')}<br>${esc(st.addr3||'')}</div></div>${showDate?`<div class="date">${dateTxt}</div>`:'<div class="gap"></div>'}`}
+function certSign(st){return `<div class="close">ขอแสดงความนับถือ<div style="height:20mm"></div>(${esc(st.director||'..............................')})<br>${esc(st.directorFull||st.directorPos||'')}</div>`}
+function repCertLetter(p){const st=S.settings,F=letterFont(),c=certOf(p);const firm=p.contractor||'..............................';
+  const body=copy=>`<div class="paper letter${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">${certHead(st,c.letterNo,true,c.letterDate,copy)}
+   <div class="hd"><span>เรื่อง</span><span>หนังสือรับรองผลงาน</span><span>เรียน</span><span>${esc(firmTitle(firm)+' '+firm)}</span>${c.reqNo||c.reqDate?`<span>อ้างถึง</span><span>หนังสือ${firmShort(firm)} ที่ ${esc(c.reqNo||'..........')} ลงวันที่ ${D(c.reqDate)}</span>`:''}<span>สิ่งที่ส่งมาด้วย</span><span>หนังสือรับรองผลงาน จำนวน 1 ฉบับ</span></div>
+   <div class="gap"></div><p>${c.reqNo||c.reqDate?'ตามหนังสือที่อ้างถึง ':'ตามที่'}${esc(firm)} ได้ขอให้${esc(st.office||'')} ออกหนังสือรับรองผลงาน ${certContractText(p)} นั้น</p>
+   <p>บัดนี้ ${esc(st.office||'')}ได้ออกหนังสือรับรองผลงานของงานตามสัญญาดังกล่าวแล้ว และได้จัดส่งมาพร้อมนี้</p>
+   <p>จึงเรียนมาเพื่อโปรดทราบ</p>
+   <div class="gap"></div>${certSign(st)}
+   <div class="foot-l">${esc(st.unit||'')}<br>โทร. ${esc(st.tel||'')}<br>โทรสาร ${esc(st.fax||'')}${copy&&st.signDraft?`<div style="text-align:right;margin-top:-18mm">${String(st.signDraft).split('\n').map(esc).join('<br>')}</div>`:''}</div></div>`;
+  return thDig(body(false)+(st.signCopy!==false?body(true):''))}
+function repCert(p){const st=S.settings,F=letterFont(),c=certOf(p);const firm=p.contractor||'..............................';const v=certValue(p),amt=certAmount(p);
+  const dp=thDateParts(c.certDate),t=thDateParts(todayISO());
+  const given=dp?`ให้ไว้ ณ วันที่ ${dp.d} เดือน ${dp.m} พ.ศ. ${dp.y}`:`ให้ไว้ ณ วันที่ <span style="display:inline-block;width:12mm"></span> เดือน ${t.m} พ.ศ. ${t.y}`;
+  const body=copy=>`<div class="paper letter${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">${certHead(st,c.certNo,false,'',copy)}
+   <div class="gap"></div><p>หนังสือฉบับนี้ให้ไว้เพื่อรับรองว่า ${esc(firm)}${c.taxId?` เลขประจำตัวผู้เสียภาษี ${esc(c.taxId)}`:''} ได้รับจ้างก่อสร้าง ${certContractText(p)} มูลค่าตามสัญญา ${fmt(v)} บาท (${bahtWords(v)}) ${certDelText(p)} ซึ่ง${esc(firm)} ได้ทำงานแล้วเสร็จ เป็นไปตามแบบรูปรายการงานก่อสร้างและสัญญาจ้างทุกประการ จึงออกหนังสือรับรองให้ไว้เป็นหลักฐาน</p>
+   <p>โดยมีประเภทผลงานก่อสร้าง ${esc(c.workType)} วงเงินที่รับรองผลงาน ${fmt(amt)} บาท (${bahtWords(amt)})</p>
+   <p>รายละเอียดประเภทผลงานก่อสร้างตามเอกสารแนบ</p>
+   <div class="gap"></div><div class="close">${given}<div style="height:20mm"></div>(${esc(st.director||'..............................')})<br>${esc(st.directorFull||st.directorPos||'')}</div></div>`;
+  return thDig(body(false)+(st.signCopy!==false?body(true):''))}
+function repCertDetail(p){const st=S.settings,c=certOf(p);const rows=certRows(p);let n=0;const tot=rows.filter(x=>!x.head&&!x.off).reduce((a,x)=>a+x.amt,0);
+  const ds=c.dels.filter(d=>d.deliver||d.inspect||num(d.amount));
+  return `<div class="paper${wm()}"><h2 style="font-size:16pt">รายละเอียดผลงานก่อสร้าง</h2><div class="c" style="margin-bottom:2mm">${esc(p.name)}</div><div class="c">สัญญาที่ ${esc(p.contractNo||'....................')} ลงวันที่ ${D(p.contractDate)}</div>
+  <table class="pt" style="margin-top:10px"><thead><tr><th style="width:50px">ลำดับที่</th><th class="desc" style="width:auto">รายการ</th><th style="width:90px">ปริมาณงาน</th><th style="width:70px">หน่วย</th><th style="width:150px">รวมเป็นเงิน (บาท)</th></tr></thead><tbody>
+   ${rows.map(x=>x.head?`<tr class="hd"><td></td><td colspan="4">${esc(x.head)}</td></tr>`:x.off?'':`<tr><td class="ct">${++n}</td><td>${escBr(x.name)}</td><td class="n">${fQ(x.q)}</td><td class="ct">${esc(x.unit)}</td><td class="n">${fmt(x.amt)}</td></tr>`).join('')}
+   <tr class="tot"><td colspan="4" class="n">รวมเป็นเงินที่ต้องจ่ายจริงทั้งสิ้น</td><td class="n">${fmt(tot)}</td></tr></tbody></table>
+  ${ds.length>1?`<div style="margin-top:6mm;font-weight:600">การส่งมอบและตรวจรับงาน</div><table class="pt" style="margin-top:4px"><thead><tr><th style="width:60px">งวดที่</th><th>วันที่ส่งมอบงาน</th><th>วันที่ตรวจรับงาน</th><th style="width:150px">จำนวนเงิน (บาท)</th></tr></thead><tbody>${ds.map((d,i)=>`<tr><td class="ct">${i+1}${i===ds.length-1?' (สุดท้าย)':''}</td><td class="ct">${D(d.deliver)}</td><td class="ct">${D(d.inspect)}</td><td class="n">${fmt(num(d.amount))}</td></tr>`).join('')}<tr class="tot"><td colspan="3" class="n">รวม</td><td class="n">${fmt(certDelTotal(p))}</td></tr></tbody></table>`:''}
+  <div style="margin:16mm 0 0 50%;text-align:center">(${esc(st.director||'..............................')})<br>${esc(st.directorFull||st.directorPos||'')}</div></div>`}
+function repCertAll(p){return repCertLetter(p)+repCert(p)+repCertDetail(p)}
+function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
+  const c=certOf(p),{start,end}=certDates(p);const v=certValue(p),dt=certDelTotal(p),amt=certAmount(p),rt=certRowsTotal(p);const rows=certRows(p);
+  const F=(k,l,type='text',cls='s3',ph='')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-ct="${k}" value="${esc(c[k]||'')}" placeholder="${esc(ph)}"></label>`;
+  const warn=[];if(!p.contractNo||!p.contractDate)warn.push('ยังไม่มีเลขที่สัญญาหรือวันที่ลงนามสัญญา — กรอกที่หน้าข้อมูลโครงการ');
+  if(!num(evOf(p).duration)&&!c.endDate)warn.push('ยังไม่มีระยะเวลาดำเนินการ — กรอกที่หน้าพิจารณาผล หรือกรอกวันสิ้นสุดสัญญาเอง');
+  if(dt>0&&Math.abs(rt-amt)>0.005)warn.push(`ยอดรวมรายละเอียดผลงาน ${fmt(rt)} บาท ไม่เท่ากับวงเงินที่รับรอง ${fmt(amt)} บาท — แก้ปริมาณ/จำนวนเงินในตารางรายการให้ตรงกับที่ตรวจรับจริง`);
+  el.innerHTML=`<div class="grid" style="gap:18px">
+  <div class="card"><div class="card-h"><h2><span class="step">1</span>หนังสือรับรองผลงาน</h2><span class="sp"></span><button class="btn blue sm" id="certPrint" type="button">${ICON.print} พิมพ์ / ดาวน์โหลด Word</button></div><div class="card-b grid g12">
+   <div class="s12 muted" style="font-size:13px">${esc(p.name)} · ${esc(p.contractor||'-')} · สัญญาที่ ${esc(p.contractNo||'-')} ลงวันที่ ${D(p.contractDate)} · มูลค่าตามสัญญา <b>${fmt(v)}</b> บาท</div>
+   ${warn.length?`<div class="s12 note warn">${warn.map(esc).join('<br>')}</div>`:''}
+   ${F('reqNo','หนังสือขอของผู้รับจ้าง ที่','text','s3','สศ.191/2569')}${F('reqDate','ลงวันที่','date')}${F('letterNo','หนังสือนำส่ง: เลขที่ (ต่อท้ายรหัส)')}${F('letterDate','หนังสือนำส่ง: ลงวันที่','date')}
+   ${F('certNo','หนังสือรับรอง: เลขที่ (ถ้ามี)')}${F('certDate','ให้ไว้ ณ วันที่','date')}${F('taxId','เลขประจำตัวผู้เสียภาษีผู้รับจ้าง','text','s3','0803550000718')}
+   <label class="f s3"><span>ประเภทผลงานก่อสร้าง</span><input class="i" data-ct="workType" list="certTypes" value="${esc(c.workType)}"><datalist id="certTypes">${CERT_TYPES.map(t=>`<option value="${esc(t)}">`).join('')}</datalist></label>
+  </div></div>
+  <div class="card"><div class="card-h"><h2><span class="step">2</span>ระยะเวลาสัญญา</h2></div><div class="card-b grid g12">
+   ${F('startDate','วันเริ่มต้นสัญญา','date','s3')}${F('endDate','สิ้นสุดสัญญา (เดิม)','date','s3')}<div class="s6 muted" style="font-size:13px;align-self:end">ว่างไว้ = คำนวณให้: เริ่ม ${D(start)} (ถัดจากวันลงนาม) · สิ้นสุด ${D(end)} (${num(evOf(p).duration)||'-'} วัน)</div>
+   <div class="s12"><b>บันทึกเพิ่มเติมแนบท้ายสัญญา (ขยายเวลา)</b>${c.amends.map((a,i)=>`<div class="row" style="gap:10px;margin-top:8px;align-items:end"><span style="min-width:60px">ฉบับที่ ${i+1}</span><label class="f" style="margin:0"><span>ลงวันที่</span><input class="i" type="date" data-am="${i}" data-k="date" value="${esc(a.date||'')}"></label><label class="f" style="margin:0"><span>สิ้นสุดสัญญา (ใหม่)</span><input class="i" type="date" data-am="${i}" data-k="end" value="${esc(a.end||'')}"></label><button class="icon-btn" data-amdel="${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')||'<div class="muted" style="font-size:13px;margin-top:6px">ไม่มี</div>'}<button class="btn sm" id="amAdd" type="button" style="margin-top:8px">+ เพิ่มบันทึกแนบท้ายสัญญา</button></div>
+  </div></div>
+  <div class="card"><div class="card-h"><h2><span class="step">3</span>การส่งมอบงาน</h2><span class="muted" style="font-size:13px">ส่งมอบหลายงวดได้ · ใส่ยอดเงินที่ตรวจรับแต่ละงวด</span></div>
+   <div class="tbl-wrap"><table class="t"><thead><tr><th class="n">งวดที่</th><th>วันที่ส่งมอบงาน</th><th>วันที่ตรวจรับงาน</th><th class="n">ยอดเงินที่ตรวจรับ (บาท)</th><th>หมายเหตุ</th><th></th></tr></thead><tbody>
+   ${c.dels.map((d,i)=>`<tr><td class="n">${i+1}${i===c.dels.length-1?' (สุดท้าย)':''}</td><td><input class="i" type="date" data-dl="${i}" data-k="deliver" value="${esc(d.deliver||'')}"></td><td><input class="i" type="date" data-dl="${i}" data-k="inspect" value="${esc(d.inspect||'')}"></td><td><input class="i r" data-dl="${i}" data-k="amount" value="${num(d.amount)?fmt(d.amount):''}" inputmode="decimal" style="width:160px"></td><td><input class="i" data-dl="${i}" data-k="note" value="${esc(d.note||'')}"></td><td>${c.dels.length>1?`<button class="icon-btn" data-dldel="${i}" type="button" title="ลบ">${ICON.trash}</button>`:''}</td></tr>`).join('')}
+   <tr class="adj"><td colspan="3" class="n"><b>รวมยอดที่ตรวจรับ</b></td><td class="n"><b>${fmt(dt)}</b></td><td colspan="2" class="muted" style="font-size:13px">${dt&&Math.abs(dt-v)>0.005?`ต่างจากมูลค่าตามสัญญา ${fmt(dt-v)} บาท`:dt?'เท่ากับมูลค่าตามสัญญา':''}</td></tr></tbody></table></div>
+   <div class="card-b row" style="gap:12px;flex-wrap:wrap;align-items:end"><button class="btn sm" id="dlAdd" type="button">+ เพิ่มงวดส่งมอบ</button><label class="f" style="margin:0"><span>วงเงินที่รับรองผลงาน (บาท) · ว่าง = รวมยอดที่ตรวจรับ</span><input class="i r" data-ct="certAmount" value="${esc(c.certAmount||'')}" placeholder="${fmt(amt)}" inputmode="decimal" style="width:200px"></label><span>วงเงินที่รับรอง <b>${fmt(amt)}</b> บาท</span></div></div>
+  <div class="card"><div class="card-h"><h2><span class="step">4</span>รายละเอียดผลงาน (เอกสารแนบ)</h2><span class="sp"></span><button class="btn sm" id="ciReset" type="button">คืนค่าตามสัญญา</button></div>
+   <div class="card-b muted" style="font-size:13px;padding-bottom:0">ตั้งต้นจากแบบแนบท้ายสัญญา · แก้ปริมาณ/จำนวนเงินตามที่ทำได้จริง (ช่องว่าง = ค่าตามสัญญา) · ติ๊กออกรายการที่ไม่ได้ทำ</div><div class="tbl-wrap"><table class="t boq"><thead><tr><th class="n">ลำดับ</th><th>รายการ</th><th class="n">ปริมาณงาน</th><th>หน่วย</th><th class="n">รวมเป็นเงิน (บาท)</th><th>แสดง</th></tr></thead><tbody>
+   ${(()=>{let n=0;return rows.map(x=>x.head?`<tr class="hd"><td></td><td colspan="5"><b>${esc(x.head)}</b></td></tr>`:`<tr${x.off?' style="opacity:.45"':''}><td class="n">${x.off?'':++n}</td><td style="min-width:260px">${escBr(x.name)}</td><td><input class="i r" data-ci="${x.k}" data-k="q" value="${esc(String(c.items[x.k]?.q??''))}" placeholder="${fQ(x.defQ)}" style="width:110px" inputmode="decimal"></td><td>${esc(x.unit)}</td><td><input class="i r" data-ci="${x.k}" data-k="amt" value="${esc(String(c.items[x.k]?.amt??''))}" placeholder="${fmt(x.defAmt)}" style="width:150px" inputmode="decimal"></td><td><input type="checkbox" data-cioff="${x.k}" ${x.off?'':'checked'}></td></tr>`).join('')})()}
+   <tr class="adj"><td colspan="4" class="n"><b>รวมเป็นเงินที่ต้องจ่ายจริงทั้งสิ้น</b></td><td class="n"><b>${fmt(rt)}</b></td><td></td></tr></tbody></table></div></div>
+  </div>`;
+  const re=()=>{touch(p);rCert()};
+  $$('[data-ct]',el).forEach(i=>{i.oninput=()=>{c[i.dataset.ct]=i.value;touch(p)};i.onchange=re});
+  $$('[data-am]',el).forEach(i=>{i.oninput=()=>{c.amends[+i.dataset.am][i.dataset.k]=i.value;touch(p)};i.onchange=re});
+  $$('[data-dl]',el).forEach(i=>{i.oninput=()=>{c.dels[+i.dataset.dl][i.dataset.k]=i.dataset.k==='amount'?String(num(i.value)||''):i.value;touch(p)};i.onchange=re});
+  $$('[data-ci]',el).forEach(i=>{i.oninput=()=>{const o=c.items[i.dataset.ci]=c.items[i.dataset.ci]||{};o[i.dataset.k]=i.value.trim()===''?'':String(num(i.value));touch(p)};i.onchange=re});
+  $$('[data-cioff]',el).forEach(i=>i.onchange=()=>{const o=c.items[i.dataset.cioff]=c.items[i.dataset.cioff]||{};o.off=!i.checked;re()});
+  $$('[data-amdel]',el).forEach(b=>b.onclick=()=>{c.amends.splice(+b.dataset.amdel,1);re()});
+  $$('[data-dldel]',el).forEach(b=>b.onclick=()=>{c.dels.splice(+b.dataset.dldel,1);re()});
+  $('#amAdd').onclick=()=>{c.amends.push({});re()};$('#dlAdd').onclick=()=>{c.dels.push({});re()};
+  $('#ciReset').onclick=()=>confirmBox('คืนค่าปริมาณและจำนวนเงินทุกรายการตามแบบแนบท้ายสัญญา?','คืนค่า',()=>{c.items={};re()});
+  $('#certPrint').onclick=()=>{reportSel='cert';go('report')}}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
   return `<div class="sig">${s.map((x,i)=>{const d=sigDuty(x,i);return `<div>ลงชื่อ ......................................................${d?' '+esc(d):''}<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`}).join('')}</div>`}
 const SIG_DUTY=['ผู้ปรับลด','ผู้ตรวจสอบ'];
