@@ -1959,7 +1959,9 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
     try{const prev=me()?.username;const j=await srvCall({action:'auth.login',username:g.querySelector('#gUser').value,password:g.querySelector('#gPw').value});saveAuth(j);
       g.remove();document.body.classList.remove('gated');lockUI();toast('ยินดีต้อนรับ '+(j.user.name||j.user.username));afterLogin(prev&&prev!==j.user.username)}
     catch(x){err(x.message);b.disabled=false}}}
-function afterLogin(){const sm=syncMeta();const locals=S.projects.filter(p=>!sm.revs[p.id]);
+function afterLogin(){const sm=syncMeta();const isSample=p=>/\(ตัวอย่าง\)\s*$/.test(p.name||'');
+  if(!sm.adopted&&S.projects.some(p=>!sm.revs[p.id]&&isSample(p))){S.projects=S.projects.filter(p=>sm.revs[p.id]||!isSample(p));if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
+  const locals=S.projects.filter(p=>!sm.revs[p.id]);
   if(sm.adopted||!locals.length){sm.adopted=true;putSyncMeta(sm);return syncNow()}
   const up=canEdit();
   const m=modal('โครงการที่อยู่ในเครื่องนี้',`<p style="margin:0 0 8px">พบ <b>${locals.length}</b> โครงการที่เก็บไว้ในเครื่องนี้ แต่ยังไม่อยู่ในระบบกลาง</p><ul style="margin:0 0 8px;padding-left:20px;max-height:180px;overflow:auto">${locals.map(p=>`<li>${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</li>`).join('')}</ul>
