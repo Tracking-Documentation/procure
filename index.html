@@ -289,10 +289,11 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-result" hidden></section>
   <section class="view" id="v-cal" hidden></section>
   <section class="view" id="v-report" hidden></section>
+  <section class="view" id="v-sign" hidden></section>
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 46 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 47 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -333,6 +334,7 @@ function letterFont(){try{const c=document.createElement('canvas').getContext('2
   for(const f of ['TH SarabunIT๙','TH SarabunIT9','TH Sarabun New','TH SarabunNew','TH SarabunPSK']){if(w(`20px "${f}",monospace`)!==w('20px monospace'))return {lf:`"${f}","Sarabun",sans-serif`,ls:'16pt'}}}catch(e){}
   return {lf:'"Sarabun","Leelawadee UI",Tahoma,sans-serif',ls:'12pt'}}
 const ICON={
+  sign:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h16"/><path d="M14.5 4.5l3 3L8 17H5v-3z"/></svg>',
   award:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg>',
   cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 12l3 3 5-6"/></svg>',
@@ -532,11 +534,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){({cal:rCal,dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]()}
+function render(){({cal:rCal,dash:rDash,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -926,10 +928,7 @@ function rEval(){
        ${F2('hearStart','เผยแพร่ร่างประกาศ (วิจารณ์) ตั้งแต่','date')}${F2('hearEnd','ถึงวันที่','date')}${F2('hearDays','รวม (วันทำการ)','text')}
        ${F2('hearCount','จำนวนผู้เสนอแนะ/วิจารณ์ (ราย) — 0 = ไม่มี','text')}${F2('hearDecide','วันที่พิจารณาข้อวิจารณ์','date')}${F2('hearApprove','วันที่ ผอ. เห็นชอบ','date')}
        ${F2('hearResult','ผลการพิจารณาข้อวิจารณ์','text','s12')}</div>`:''}</div>
-   ${signCard(p)}
   </div>`;
-  $$('[data-sg]',el).forEach(i=>{i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)};if(['received','date','days','warranty'].includes(i.dataset.sg))i.onchange=()=>{bookAutoPush(p);rEval()}});
-  bindBook(el,p,rEval);
   const setPath=(path,v)=>{const ks=path.split('.');let o=e;for(let i=0;i<ks.length-1;i++)o=o[ks[i]];o[ks[ks.length-1]]=v};
   $$('[data-ev]',el).forEach(i=>{i.oninput=()=>{setPath(i.dataset.ev,i.value);touch(p);if(i.dataset.ev==='duration'||i.dataset.ev==='warranty'){bookAutoPush(p);const g=$('#gpLine');const x=periodLine(p,(p.book&&p.book.booking&&p.book.booking.date)||p.contractDate||'');if(g&&x)g.innerHTML=x}if(/^m[12]\./.test(i.dataset.ev)){const w=$('#mtgWarn');if(w)w.innerHTML=conflictHtml(p)}};i.onchange=()=>{if(/Date|date/.test(i.dataset.ev))rEval()}});
   $$('[data-evb]',el).forEach(i=>i.onchange=()=>{setPath(i.dataset.evb,i.checked);touch(p)});
@@ -1446,7 +1445,7 @@ function repSign(p){const st=S.settings,F=letterFont(),e=evOf(p),sg=p.sign||{};c
   return st.thaiDigits===false?out:out.replace(/>([^<]*)</g,(m,t)=>'>'+toTH(t)+'<')}
 function signCard(p){const i=signInfo(p)||(p.announceDate?{appealEnd:addWorkdays(p.announceDate,7),signFrom:addWorkdays(p.announceDate,8)}:null);const a=signAmounts(p);const sg=p.sign||{};
   const f=(k,l,ph,type='text',cls='s3')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-sg="${k}" value="${esc(sg[k]||'')}" placeholder="${esc(ph)}"></label>`;
-  return `<div class="card"><div class="card-h"><h2><span class="step">7</span>เรียกลงนามสัญญา</h2><button class="btn blue sm" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกลงนามสัญญา</button></div><div class="card-b grid g12">
+  return `<div class="card"><div class="card-h"><h2><span class="step">1</span>เรียกลงนามสัญญา</h2><button class="btn blue sm" data-signprint="${p.id}" type="button">${ICON.print} หนังสือเรียกลงนามสัญญา</button></div><div class="card-b grid g12">
    <div class="s12 note ${!p.announceDate?'warn':i&&i.ready?'ok':'warn'}">${!p.announceDate?'<b>ยังไม่ได้กรอกวันที่ประกาศผลผู้ชนะ</b> — กรอกที่หน้าข้อมูลโครงการ ระบบจะคำนวณวันพ้นระยะอุทธรณ์ให้':`ประกาศผู้ชนะ ${D(p.announceDate)} · ครบระยะอุทธรณ์ 7 วันทำการ ${D(i.appealEnd)} · <b>เรียกลงนามได้ตั้งแต่ ${D(i.signFrom)}</b>`}</div>
    ${f('no','เลขที่หนังสือ (ต่อท้ายรหัส)','')}${f('date','ลงวันที่','','date')}${f('days','ให้มาลงนามภายใน (วันทำการ)','7')}${f('received','วันที่บริษัทได้รับหนังสือ','','date')}
    ${f('sec','หลักประกันสัญญา (บาท)',fmt(a.sec,0)+' (5% ปัดขึ้น)')}${f('stamp','ค่าอากรแสตมป์ (บาท)',fmt(a.stamp,0)+' (ราคาไม่รวม VAT ÷ 1,000 ปัดขึ้น)','text','s5')}
@@ -1612,6 +1611,10 @@ function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div cla
   $('#amAdd').onclick=()=>{c.amends.push({});re()};$('#dlAdd').onclick=()=>{c.dels.push({});re()};
   $('#ciReset').onclick=()=>confirmBox('คืนค่าปริมาณและจำนวนเงินทุกรายการตามแบบแนบท้ายสัญญา?','คืนค่า',()=>{c.items={};re()});
   $('#certPrint').onclick=()=>{reportSel='cert';go('report')}}
+function rSignTab(){const el=$('#v-sign');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
+  el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}`;
+  $$('[data-sg]',el).forEach(i=>{i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)};if(['received','date','days','warranty'].includes(i.dataset.sg))i.onchange=()=>{bookAutoPush(p);rSignTab()}});
+  bindBook(el,p,rSignTab)}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
   return `<div class="sig">${s.map((x,i)=>{const d=sigDuty(x,i);return `<div>ลงชื่อ ......................................................${d?' '+esc(d):''}<br>${esc(x.name||'(......................................................)')}<br>${esc(x.position||'')}${x.role&&x.role!==x.position?'<br>'+esc(x.role):''}</div>`}).join('')}</div>`}
 const SIG_DUTY=['ผู้ปรับลด','ผู้ตรวจสอบ'];
@@ -1771,7 +1774,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
     <li>ใน Code.gs แก้บรรทัด <code>const ADMIN_KEY = '…'</code> เป็นรหัสลับของหน่วยงาน แล้วกดบันทึก</li>
     <li>เลือกฟังก์ชัน <b>setup</b> แล้วกด <b>Run</b> · อนุญาตสิทธิ์ (Sheets และ Drive) · ระบบจะสร้างชีต projects / bookings / settings และโฟลเดอร์เก็บเอกสารใน Drive</li>
     <li><b>Deploy › New deployment › Web app</b> · Execute as: <b>Me</b> · Who has access: <b>Anyone</b> · กด Deploy แล้วคัดลอก URL ที่ลงท้ายด้วย /exec มาใส่ด้านบน พร้อมรหัสเจ้าหน้าที่</li>
-    <li>กด “ทดสอบการเชื่อมต่อ” และ “ส่งรูปแบบเลขที่สัญญา” · จากนั้นในหน้า “พิจารณาผล” การ์ดเรียกลงนามสัญญา กด “เปิดรับจอง” ก่อนพิมพ์หนังสือ</li>
+    <li>กด “ทดสอบการเชื่อมต่อ” และ “ส่งรูปแบบเลขที่สัญญา” · จากนั้นในแท็บ “เรียกลงนามสัญญา” กด “เปิดรับจอง” ก่อนพิมพ์หนังสือ</li>
     <li>ถ้าแก้โค้ดภายหลัง ต้อง Deploy › Manage deployments › แก้ไข › Version: New version (URL เดิมใช้ต่อได้)</li></ol></details>
   </div></div>
   <div class="card"><div class="card-h"><h2>รหัสผ่าน</h2></div><div class="card-b row" style="gap:10px;flex-wrap:wrap"><span>${pwRec()?'ตั้งรหัสผ่านแล้ว — ต้องใส่รหัสเมื่อติดตั้งแอปและเมื่อแก้ไขข้อมูล':'ยังไม่ได้ตั้งรหัสผ่าน — ใครเปิดเครื่องนี้ก็แก้ไขได้'}</span><button class="btn pri" id="pwSetBtn" type="button">${pwRec()?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่าน'}</button></div></div>
