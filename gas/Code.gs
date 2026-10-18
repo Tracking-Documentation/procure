@@ -3,7 +3,10 @@
  * วิธีติดตั้ง: ดูไฟล์ README ในโฟลเดอร์ gas หรือคู่มือในแอป หน้าตั้งค่า
  *
  * ขั้นตอนเดียวที่ต้องแก้ในไฟล์นี้: เปลี่ยน ADMIN_KEY ด้านล่างเป็นรหัสลับของหน่วยงาน
- * (ต้องตรงกับช่อง "รหัสเจ้าหน้าที่" ในหน้าตั้งค่าของแอป)
+ * (ต้องตรงกับช่อง "รหัสเจ้าหน้าที่" ในหน้าตั้งค่าของแอป · ใช้ตอนสร้างบัญชีผู้ดูแลระบบครั้งแรกด้วย)
+ *
+ * ไฟล์นี้ยังเป็นเซิร์ฟเวอร์บัญชีผู้ใช้และข้อมูลกลาง: ชีต users (รหัสผ่านเก็บแบบแฮช อ่านย้อนกลับไม่ได้)
+ * และชีต store (ข้อมูลโครงการที่ทุกคนใช้ร่วมกัน) · ห้ามแชร์ Google Sheet นี้ให้คนที่ไม่ใช่ผู้ดูแล
  */
 const ADMIN_KEY = 'เปลี่ยนเป็นรหัสลับของหน่วยงาน';
 
@@ -17,7 +20,9 @@ const SEC_TYPES = ['เงินสด', 'เช็คหรือดราฟ�
 const COLS = {
   projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt', 'secAmount', 'stamp', 'duration', 'warrantyYears', 'extraDays', 'beneficiary'],
   bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType'],
-  settings: ['key', 'value']
+  settings: ['key', 'value'],
+  users: ['username', 'name', 'role', 'active', 'salt', 'hash', 'ver', 'createdAt', 'lastLogin'],
+  store: ['id', 'rev', 'deleted', 'updatedAt', 'updatedBy', 'name', 'parts']
 };
 
 /* ---------------- sheets ---------------- */
@@ -129,12 +134,157 @@ function renumber_() {
   });
 }
 
+/* ---------------- บัญชีผู้ใช้ (ผู้ดูแลสร้างให้) ---------------- */
+const SESSION_DAYS = 30;
+const ROLES = ['admin', 'editor', 'viewer'];
+function secret_() {
+  const props = PropertiesService.getScriptProperties();
+  let s = props.getProperty('AUTH_SECRET');
+  if (!s) { s = Utilities.getUuid() + Utilities.getUuid(); props.setProperty('AUTH_SECRET', s); }
+  return s;
+}
+function b64_(bytes) { return Utilities.base64EncodeWebSafe(bytes).replace(/=+$/, ''); }
+function hashPw_(pw, salt) {
+  let h = Utilities.computeHmacSha256Signature(String(pw), salt + '|' + secret_());
+  for (let i = 0; i < 300; i++) h = Utilities.computeHmacSha256Signature(h, Utilities.newBlob(salt).getBytes());
+  return 'h' + b64_(h);
+}
+function normUser_(u) { return String(u || '').trim().toLowerCase(); }
+function users_() { return rows_('users'); }
+function findUser_(u) { u = normUser_(u); return users_().find(x => normUser_(x.username) === u); }
+function setPw_(user, pw) {
+  if (String(pw || '').length < 6) throw new Error('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+  user.salt = 's' + Utilities.getUuid().replace(/-/g, '');
+  user.hash = hashPw_(pw, user.salt);
+  user.ver = String((+user.ver || 0) + 1);
+}
+function makeToken_(u) {
+  const payload = [normUser_(u.username), u.ver, Date.now() + SESSION_DAYS * 864e5].join('|');
+  const p64 = b64_(Utilities.newBlob(payload).getBytes());
+  return p64 + '.' + b64_(Utilities.computeHmacSha256Signature(p64, secret_()));
+}
+function auth_(token) {
+  const bad = () => { const e = new Error('กรุณาเข้าสู่ระบบใหม่'); e.relogin = true; return e; };
+  const t = String(token || '').split('.');
+  if (t.length !== 2 || b64_(Utilities.computeHmacSha256Signature(t[0], secret_())) !== t[1]) throw bad();
+  const parts = Utilities.newBlob(Utilities.base64DecodeWebSafe(t[0] + '==='.slice((t[0].length + 3) % 4))).getDataAsString().split('|');
+  if (+parts[2] < Date.now()) throw bad();
+  const u = findUser_(parts[0]);
+  if (!u || u.active !== 'Y' || String(u.ver) !== parts[1]) throw bad();
+  return u;
+}
+function pubUser_(u) { return { username: u.username, name: u.name, role: u.role, active: u.active === 'Y', lastLogin: u.lastLogin, createdAt: u.createdAt }; }
+function needAdmin_(u) { if (u.role !== 'admin') throw new Error('เฉพาะผู้ดูแลระบบ'); }
+function needEdit_(u) { if (u.role === 'viewer') throw new Error('บัญชีนี้ดูได้อย่างเดียว ไม่มีสิทธิ์แก้ไข'); }
+
+/* ---------------- ข้อมูลกลาง (โครงการ + ค่าตั้งค่าที่ใช้ร่วมกัน) ---------------- */
+const CHUNK = 45000;
+function storeSheet_() { return sheet_('store'); }
+function storeRows_() {
+  const sh = storeSheet_(); const v = sh.getDataRange().getValues(); v.shift();
+  return v.map((r, i) => ({ _row: i + 2, id: String(r[0]), rev: +r[1] || 0, deleted: r[2] === 'Y', updatedAt: norm_(r[3]), updatedBy: String(r[4]), name: String(r[5]), parts: +r[6] || 0, raw: r })).filter(x => x.id);
+}
+function storeData_(x) { let s = ''; for (let i = 0; i < x.parts; i++) s += String(x.raw[7 + i]).slice(1); return s ? JSON.parse(s) : null; }
+function nextRev_() { const p = PropertiesService.getScriptProperties(); const n = (+p.getProperty('DATA_REV') || 0) + 1; p.setProperty('DATA_REV', String(n)); return n; }
+function storeWrite_(old, id, data, deleted, user) {
+  const sh = storeSheet_();
+  const json = deleted ? '' : JSON.stringify(data);
+  const chunks = []; for (let i = 0; i < json.length; i += CHUNK) chunks.push('~' + json.slice(i, i + CHUNK));
+  const rev = nextRev_();
+  const row = [id, rev, deleted ? 'Y' : '', now_(), user.username, deleted ? '' : String((data && data.name) || '').slice(0, 200), chunks.length].concat(chunks);
+  const r = old ? old._row : sh.getLastRow() + 1;
+  const width = Math.max(row.length, old ? 7 + old.parts : 0);
+  if (sh.getMaxColumns() < width) sh.insertColumnsAfter(sh.getMaxColumns(), width - sh.getMaxColumns());
+  while (row.length < width) row.push('');
+  sh.getRange(r, 1, 1, width).setNumberFormat('@').setValues([row.map(String)]);
+  return rev;
+}
+function handleAuth_(d) {
+  const a = d.action;
+  if (a === 'auth.init') {
+    if (d.key !== ADMIN_KEY) throw new Error('รหัสเจ้าหน้าที่ (ADMIN_KEY) ไม่ถูกต้อง');
+    if (users_().some(u => u.role === 'admin' && u.active === 'Y')) throw new Error('มีบัญชีผู้ดูแลระบบอยู่แล้ว ให้เข้าสู่ระบบด้วยบัญชีนั้น');
+    const username = normUser_(d.username);
+    if (!/^[a-z0-9._-]{3,32}$/.test(username)) throw new Error('ชื่อผู้ใช้ใช้ a-z 0-9 . _ - ยาว 3-32 ตัว');
+    const u = Object.assign(findUser_(username) || {}, { username: username, name: d.name || username, role: 'admin', active: 'Y', createdAt: now_() });
+    setPw_(u, d.password); write_('users', u);
+    return { ok: true };
+  }
+  if (a === 'auth.login') {
+    const username = normUser_(d.username), cache = CacheService.getScriptCache(), ck = 'fail:' + username;
+    const fails = +cache.get(ck) || 0;
+    if (fails >= 5) throw new Error('กรอกรหัสผิดหลายครั้ง กรุณารอ 10 นาทีแล้วลองใหม่');
+    const u = findUser_(username);
+    if (!u || u.active !== 'Y' || hashPw_(d.password, u.salt) !== u.hash) { cache.put(ck, String(fails + 1), 600); throw new Error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'); }
+    cache.remove(ck); u.lastLogin = now_(); write_('users', u);
+    return { ok: true, token: makeToken_(u), user: pubUser_(u), days: SESSION_DAYS };
+  }
+  const me = auth_(d.token);
+  if (a === 'auth.me') return { ok: true, user: pubUser_(me) };
+  if (a === 'auth.changePw') {
+    if (hashPw_(d.old, me.salt) !== me.hash) throw new Error('รหัสผ่านเดิมไม่ถูกต้อง');
+    setPw_(me, d.password); write_('users', me);
+    return { ok: true, token: makeToken_(me) };
+  }
+  if (a === 'users.list') { needAdmin_(me); return { ok: true, users: users_().map(pubUser_) }; }
+  if (a === 'users.save') {
+    needAdmin_(me);
+    const username = normUser_(d.username);
+    if (!/^[a-z0-9._-]{3,32}$/.test(username)) throw new Error('ชื่อผู้ใช้ใช้ a-z 0-9 . _ - ยาว 3-32 ตัว');
+    if (ROLES.indexOf(d.role) < 0) throw new Error('สิทธิ์ไม่ถูกต้อง');
+    let u = findUser_(username);
+    if (!u) { if (!d.password) throw new Error('กรุณาตั้งรหัสผ่านเริ่มต้น'); u = { username: username, createdAt: now_(), ver: '0' }; }
+    if (normUser_(u.username) === normUser_(me.username) && (d.role !== 'admin' || d.active === false)) throw new Error('ลดสิทธิ์หรือปิดบัญชีของตัวเองไม่ได้');
+    const wasActive = u.active;
+    u.name = d.name || username; u.role = d.role; u.active = d.active === false ? '' : 'Y';
+    if (d.password) setPw_(u, d.password); else if (wasActive === 'Y' && u.active !== 'Y') u.ver = String((+u.ver || 0) + 1);
+    write_('users', u);
+    return { ok: true, users: users_().map(pubUser_) };
+  }
+  if (a === 'users.delete') {
+    needAdmin_(me);
+    const u = findUser_(d.username); if (!u) throw new Error('ไม่พบผู้ใช้');
+    if (normUser_(u.username) === normUser_(me.username)) throw new Error('ลบบัญชีของตัวเองไม่ได้');
+    sheet_('users').deleteRow(u._row);
+    return { ok: true, users: users_().map(pubUser_) };
+  }
+  if (a === 'data.pull') {
+    const since = +d.since || 0;
+    const items = storeRows_().filter(x => x.rev > since).map(x => ({ id: x.id, rev: x.rev, deleted: x.deleted, updatedAt: x.updatedAt, updatedBy: x.updatedBy, data: x.deleted ? null : storeData_(x) }));
+    return { ok: true, rev: +PropertiesService.getScriptProperties().getProperty('DATA_REV') || 0, items: items, user: pubUser_(me) };
+  }
+  if (a === 'data.push') {
+    needEdit_(me);
+    const all = storeRows_(), out = [];
+    (d.items || []).forEach(it => {
+      const id = String(it.id || ''); if (!id) return;
+      const old = all.find(x => x.id === id);
+      const cur = old ? old.rev : 0;
+      if (cur !== (+it.baseRev || 0) && !(old && old.deleted && it.deleted)) {
+        out.push({ id: id, conflict: true, rev: cur, deleted: old ? old.deleted : true, updatedBy: old ? old.updatedBy : '', data: old && !old.deleted ? storeData_(old) : null });
+        return;
+      }
+      if (!old && it.deleted) { out.push({ id: id, rev: 0, deleted: true }); return; }
+      out.push({ id: id, rev: storeWrite_(old, id, it.data, !!it.deleted, me), deleted: !!it.deleted });
+    });
+    return { ok: true, results: out };
+  }
+  throw new Error('ไม่รู้จักคำสั่ง');
+}
+/* เจ้าหน้าที่ที่เข้าสู่ระบบแล้ว ใช้คำสั่งจองลงนามสัญญาได้โดยไม่ต้องรู้ ADMIN_KEY */
+function staffOk_(key, token) {
+  if (key === ADMIN_KEY) return;
+  if (token) { needEdit_(auth_(token)); return; }
+  throw new Error('รหัสเจ้าหน้าที่ไม่ถูกต้อง');
+}
+
 /* ---------------- web endpoints ---------------- */
 function doGet(e) {
   const q = e.parameter || {};
   if (q.action) {
     try {
-      if (q.key !== ADMIN_KEY) throw new Error('รหัสเจ้าหน้าที่ไม่ถูกต้อง');
+      if (q.action === 'ping' && q.token) { auth_(q.token); return json_({ ok: true, settings: settings_() }, q.callback); }
+      staffOk_(q.key, q.token);
       if (q.action === 'list') {
         const b = rows_('bookings').filter(x => !q.p || x.projectId === q.p).map(x => { delete x._row; x.files = x.files ? JSON.parse(x.files) : []; return x; });
         return json_({ ok: true, bookings: b, settings: settings_() }, q.callback);
@@ -154,7 +304,14 @@ function doGet(e) {
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents || '{}');
-    if (d.key !== ADMIN_KEY) throw new Error('รหัสเจ้าหน้าที่ไม่ถูกต้อง');
+    if (/^(auth|users|data)\./.test(d.action || '')) {
+      const write = !/^(auth\.login|auth\.me|users\.list|data\.pull)$/.test(d.action);
+      const lk = write ? LockService.getScriptLock() : null; if (lk) lk.waitLock(25000);
+      try { return json_(handleAuth_(d)); }
+      catch (err) { return json_({ ok: false, error: String(err.message || err), relogin: !!err.relogin }); }
+      finally { if (lk) lk.releaseLock(); }
+    }
+    staffOk_(d.key, d.token);
     const lock = LockService.getScriptLock(); lock.waitLock(20000);
     try {
       if (d.action === 'upsertProject') {
@@ -300,7 +457,7 @@ function attachFiles(projectId, token, newFiles) {
 
 /* Run ครั้งแรกจากหน้า Apps Script เพื่อสร้างชีตและอนุญาตสิทธิ์ */
 function setup() {
-  sheet_('projects'); sheet_('bookings'); sheet_('settings');
+  sheet_('projects'); sheet_('bookings'); sheet_('settings'); sheet_('users'); sheet_('store'); secret_();
   Logger.log('โควตาอีเมลวันนี้: ' + MailApp.getRemainingDailyQuota());
   const it = DriveApp.getFoldersByName(ROOT_FOLDER); if (!it.hasNext()) DriveApp.createFolder(ROOT_FOLDER);
   Logger.log('พร้อมใช้งาน · ขั้นต่อไป: Deploy > New deployment > Web app');

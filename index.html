@@ -257,6 +257,14 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   .paper+.paper{break-before:page}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+body.gated>*:not(#gate):not(#toast){display:none!important}
+#gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
+.gate-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.gate-hd{display:flex;gap:12px;align-items:center}.gate-hd b{display:block;font-family:var(--f-head);font-size:20px}.gate-hd span{font-size:13px;color:var(--muted)}
+.gate-err{color:var(--danger);font-size:13px;min-height:1em}.gate-note{font-size:12.5px;margin:0}.gate-srv summary{cursor:pointer;font-size:13px;color:var(--muted)}.gate-srv .i{margin-top:6px;width:100%}
+.ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
+.urow{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.3fr 1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
+@media (max-width:760px){.urow{grid-template-columns:1fr 1fr}.urow .uname{grid-column:1/-1}}
 </style>
 
 </head>
@@ -357,6 +365,12 @@ const ICON={
 
 /* ================= state ================= */
 const LS='boqNego.v1';
+let syncing=false,syncAgain=false,syncT=null,syncErr='';
+/* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
+const SRV_BAKED='';
+const SRVK=LS+'.server',AUTHK=LS+'.auth',SYNK=LS+'.sync',LOCAL_SET=['gasKey','gasUrl','theme'];
+const ROLE_TH={admin:'ผู้ดูแลระบบ',editor:'แก้ไขได้',viewer:'ดูได้อย่างเดียว'};
+try{const q=new URLSearchParams(location.search).get('server');if(q&&/^https:\/\/script\.google\.com\/\S+\/exec$/.test(q)){localStorage.setItem(SRVK,q);history.replaceState(null,'',location.pathname)}}catch(e){}
 const DEF_SETTINGS={warrantyYears:2,secExtraDays:30,gasUrl:'',gasKey:'',contractFormat:'{n}/{yyyy}',contractStart:'1',contractFY:'',slotStart:'09:00',slotEnd:'15:30',slotMinutes:30,bookDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคล (ออกให้ไม่เกิน 6 เดือน)\nหนังสือมอบอำนาจ (กรณีมอบอำนาจให้ลงนามในสัญญาแทน)\nสำเนาบัตรประจำตัวประชาชนของผู้ลงนามในสัญญา / ผู้รับมอบอำนาจ\nหลักประกันสัญญา (สำเนาหนังสือค้ำประกัน / เช็คหรือดราฟท์ / พันธบัตร · เงินสดไม่ต้องแนบ · หนังสือค้ำประกันแนบภายหลังได้)\nสำเนาหน้าสมุดบัญชีธนาคาร\nเอกสารอื่น ๆ (ถ้ามี)',bookNote:'วันลงนาม กรุณานำหลักประกันสัญญาฉบับจริง ค่าอากรแสตมป์ และตรายางบริษัท (ถ้ามี) มาด้วย',agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,orderPrefix:'สทล.17 ขท.กระบี่.1/',toShort:'ผอ.ขท.กระบี่',regionTo:'ผส.ทล.17',regionPrefix:'สทล.17 ขท.กระบี่.1(พ)/',approveLinesBig:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- ขออนุมัติรับราคาและขออนุมัติสั่งจ้างจาก ผส.ทล.17 ต่อไป',regionLaws:'พระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560\nระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560 กฎกระทรวงอื่นๆ ที่เกี่ยวข้อง ในการดำเนินการสั่งการ ทุกวิธี ทุกขั้นตอน เต็มวงเงินที่ได้รับการอนุมัติ\nอำนาจอนุมัติเป็นของ ผส.ทล.17 ตามนัยคำสั่งกรมทางหลวง ที่ บ.1/115/2560 ลงวันที่ 29 สิงหาคม 2560 เรื่อง มอบอำนาจการสั่งซื้อสั่งจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',regionAtts:'ประกาศประกวดราคาจำนวน 1 ชุด\nราคากลางจำนวน 1 ชุด\nเอกสารเสนอราคาจากระบบอิเล็กทรอนิกส์จำนวน 1 ชุด\nรายงานสรุปผลการตรวจสอบเอกสารจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาจำนวน 1 ชุด\nหนังสือปรับลดราคาบริษัทและบัญชีเปรียบเทียบราคาจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาของคณะกรรมการจำนวน 1 ชุด',directorFull:'ผู้อำนวยการแขวงทางหลวงกระบี่',signCopy:true,signDraft:'ณรมา/ร่าง/ทาน\nณัฐภูมินทร์/พิมพ์\n........../ตรวจ',signDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคลฉบับปัจจุบันหรือออกให้ไม่เกิน 6 เดือน\nหนังสือมอบอำนาจ ในกรณีมอบอำนาจให้ลงนามในสัญญาแทน\nสำเนาหน้าสมุดบัญชีธนาคาร',draftLine:'ณรมา/ร่าง/ทาน\nปริฉัตร/พิมพ์\n........../ตรวจ',regionCopy:true,toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'นายทรงฤทธิ์ ชยานันท์',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
   signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
   showSign:true,watermark:false,theme:'system'};
@@ -364,11 +378,11 @@ let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
 let cur=null, tab='dash', reportSel='nego', deferredPrompt=null;
 function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.projects)){S=d;S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings||{})}}}catch(e){}
   if(S.settings.signDocs)S.settings.signDocs=String(S.settings.signDocs).replace('มอบอำนาจให้เซ็นสัญญาแทน','มอบอำนาจให้ลงนามในสัญญาแทน');
-  if(!S.projects.length){S.projects.push(sampleProject())}
+  if(!S.projects.length&&!central()){S.projects.push(sampleProject())}
   try{cur=localStorage.getItem(LS+'.cur')}catch(e){}
   if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}},250)}
+function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}if(typeof syncSoon==='function')syncSoon()},250)}
 function P(){const p=S.projects.find(p=>p.id===cur);if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
 function touch(p){p.updatedAt=nowStr();save()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
@@ -1462,8 +1476,8 @@ function signAlertCard(){const L=S.projects.map(p=>({p,i:signInfo(p)})).filter(x
 function fyNow(){const t=todayISO();return +t.slice(0,4)+543+(+t.slice(5,7)>=10?1:0)}
 function fmtContractNo(f,n,fy){return String(f||'{n}/{yyyy}').replace(/\{(n+)\}/g,(m,k)=>String(n).padStart(k.length,'0')).replace(/\{yyyy\}/g,fy).replace(/\{yy\}/g,String(fy).slice(-2))}
 function bookOf(p){p.book=p.book||{};if(!p.book.token){const a=new Uint8Array(12);crypto.getRandomValues(a);p.book.token=[...a].map(x=>x.toString(36).padStart(2,'0')).join('').slice(0,18);save()}return p.book}
-function bookOn(){return !!String(S.settings.gasUrl||'').trim()}
-function bookUrl(p){return String(S.settings.gasUrl||'').trim()+'?p='+encodeURIComponent(p.id)+'&t='+bookOf(p).token}
+function bookOn(){return !!gasBase()}
+function bookUrl(p){return gasBase()+'?p='+encodeURIComponent(p.id)+'&t='+bookOf(p).token}
 function qrImg(text,cell){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createDataURL(cell||4,2)}catch(e){return ''}}
 /* ช่วงวันที่จองได้: นับตั้งแต่วันที่บริษัทได้รับหนังสือ (นับวันที่ได้รับเป็นวันแรกถ้าเป็นวันทำการ) และต้องพ้นระยะอุทธรณ์แล้ว */
 function bookWindow(p){const sg=p.sign||{};const days=Math.max(1,num(sg.days)||7);const base=sg.received||sg.date||todayISO();const H=holidaySet();
@@ -1472,8 +1486,9 @@ function bookWindow(p){const sg=p.sign||{};const days=Math.max(1,num(sg.days)||7
   const dates=[];let d=base;if(wd(d))dates.push(d);while(d<end){d=addWorkdays(d,1);dates.push(d)}
   const ok=dates.filter(x=>!sf||x>=sf);return {base,days,end,sf,dates:ok,assumed:!sg.received}}
 function bookDocsList(){return String(S.settings.bookDocs||'').split('\n').map(x=>x.trim()).filter(Boolean).map((l,i)=>{const opt=/\(ถ้ามี\)/.test(l);const poa=/^หนังสือมอบอำนาจ/.test(l),sec=/^หลักประกันสัญญา/.test(l);return {key:poa?'poa':sec?'sec':'d'+(i+1),label:l,required:!opt}})}
-async function gasCall(params,post){const st=S.settings;const url=String(st.gasUrl||'').trim();if(!url)throw new Error('ยังไม่ได้ใส่ URL ของ Google Apps Script ในหน้าตั้งค่า');
-  let r;try{r=post?await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...params,key:String(st.gasKey||'').trim()})}):await fetch(url+'?'+new URLSearchParams({...params,key:String(st.gasKey||'').trim()}))}
+async function gasCall(params,post){const st=S.settings;const url=gasBase();if(!url)throw new Error('ยังไม่ได้ใส่ URL ของ Google Apps Script ในหน้าตั้งค่า');
+  const auth={key:String(st.gasKey||'').trim()};if(central()&&authOk())auth.token=authRec().token;
+  let r;try{r=post?await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...params,...auth})}):await fetch(url+'?'+new URLSearchParams({...params,...auth}))}
   catch(e){throw new Error('เชื่อมต่อ Google Apps Script ไม่ได้ — ตรวจ URL และการ Deploy (Who has access: Anyone)')}
   let j;try{j=await r.json()}catch(e){throw new Error('Google Apps Script ตอบกลับไม่ถูกต้อง — ตรวจว่าใช้ URL ที่ลงท้ายด้วย /exec')}
   if(!j.ok)throw new Error(j.error||'เกิดข้อผิดพลาด');return j}
@@ -1782,18 +1797,19 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
     <li>กด “ทดสอบการเชื่อมต่อ” และ “ส่งรูปแบบเลขที่สัญญา” · จากนั้นในแท็บ “เรียกลงนามสัญญา” กด “เปิดรับจอง” ก่อนพิมพ์หนังสือ</li>
     <li>ถ้าแก้โค้ดภายหลัง ต้อง Deploy › Manage deployments › แก้ไข › Version: New version (URL เดิมใช้ต่อได้)</li></ol></details>
   </div></div>
-  <div class="card"><div class="card-h"><h2>รหัสผ่าน</h2></div><div class="card-b row" style="gap:10px;flex-wrap:wrap"><span>${pwRec()?'ตั้งรหัสผ่านแล้ว — ต้องใส่รหัสเมื่อติดตั้งแอปและเมื่อแก้ไขข้อมูล':'ยังไม่ได้ตั้งรหัสผ่าน — ใครเปิดเครื่องนี้ก็แก้ไขได้'}</span><button class="btn pri" id="pwSetBtn" type="button">${pwRec()?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่าน'}</button></div></div>
+  ${centralCard()}
+  ${central()?'':`<div class="card"><div class="card-h"><h2>รหัสผ่าน</h2></div><div class="card-b row" style="gap:10px;flex-wrap:wrap"><span>${pwRec()?'ตั้งรหัสผ่านแล้ว — ต้องใส่รหัสเมื่อติดตั้งแอปและเมื่อแก้ไขข้อมูล':'ยังไม่ได้ตั้งรหัสผ่าน — ใครเปิดเครื่องนี้ก็แก้ไขได้'}</span><button class="btn pri" id="pwSetBtn" type="button">${pwRec()?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่าน'}</button></div></div>`}
   <div class="card"><div class="card-h"><h2>การปัดเศษราคาที่ปรับลด</h2></div><div class="card-b"><div class="seg">${[['total','ยอดรวมเป็นจำนวนเต็ม (ค่าเริ่มต้น)'],['unit','ราคาต่อหน่วยเป็นจำนวนเต็มบาท']].map(([k,l])=>`<button class="${(st.roundMode||'total')===k?'on':''}" data-rm2="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>การแสดงผล</h2></div><div class="card-b row"><span>ธีม</span><div class="seg">${[['system','ตามเครื่อง'],['light','สว่าง'],['dark','มืด']].map(([k,l])=>`<button class="${st.theme===k?'on':''}" data-th="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>สำรองและกู้คืนข้อมูล</h2></div><div class="card-b grid">
-   <p class="muted" style="margin:0">ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหาย ควรสำรองเป็นไฟล์ไว้</p>
+   <p class="muted" style="margin:0">${central()?'ข้อมูลโครงการเก็บในระบบกลาง (Google Sheet) · ไฟล์สำรองยังมีประโยชน์ไว้เก็บเป็นหลักฐาน · นำเข้าในโหมดนี้จะเพิ่มเป็นโครงการใหม่เสมอ ไม่ลบของเดิม':'ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหาย ควรสำรองเป็นไฟล์ไว้'}</p>
    <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
   </div></div></div>`;
   $('#sAgency').oninput=e=>{st.agency=e.target.value;save()};
   $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
   {const sc=$('#signCopyCk');if(sc)sc.onchange=()=>{st.signCopy=sc.checked;save()}}
   {const rc=$('#regCopy');if(rc)rc.onchange=()=>{st.regionCopy=rc.checked;save()}}
-  $('#pwSetBtn').onclick=()=>setPwDialog();
+  {const b=$('#pwSetBtn');if(b)b.onclick=()=>setPwDialog()}bindCentralCard();
   $$('[data-sl]').forEach(i=>i.oninput=()=>{st[i.dataset.sl]=i.dataset.sl==='explainPct'?num(i.value):i.value;save()});
   {const m=t=>{$('#gasMsg').textContent=t};
    $('#gasPing').onclick=async()=>{m('กำลังทดสอบ…');try{const j=await gasCall({action:'ping'});m('เชื่อมต่อสำเร็จ · รูปแบบเลขในชีต: '+(j.settings.contractFormat||'-')+' เริ่ม '+(j.settings.contractStart||'1')+' ปีงบ '+(j.settings.contractFY||''))}catch(e){m(e.message)}};
@@ -1807,7 +1823,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   $('#bPasteImp').onclick=()=>{const m=modal('วางข้อมูลสำรอง',`<textarea class="i" id="impTxt" rows="10" placeholder="วางข้อความ JSON ที่สำรองไว้"></textarea><label class="switch"><input type="checkbox" id="impMerge" checked> รวมกับโครงการที่มีอยู่ (ไม่ลบของเดิม)</label>`,`<button class="btn pri" id="impGo" type="button">นำเข้า</button>`);$('#impGo').onclick=()=>{importData($('#impTxt').value,$('#impMerge').checked);m.close()}};
 }
 $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>importData(rd.result,true);rd.readAsText(f);e.target.value=''};
-function importData(txt,merge){try{const d=JSON.parse(txt);const list=Array.isArray(d)?d:d.projects;if(!Array.isArray(list))throw 0;
+function importData(txt,merge){if(central())merge=true;try{const d=JSON.parse(txt);const list=Array.isArray(d)?d:d.projects;if(!Array.isArray(list))throw 0;
   if(merge){const ids=new Set(S.projects.map(p=>p.id));list.forEach(p=>{if(ids.has(p.id))p.id=uid();S.projects.push(p)})}else{S.projects=list;if(d.settings)S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings)}
   cur=S.projects[0]?.id||null;save();toast(`นำเข้า ${list.length} โครงการแล้ว`);go('dash')}catch(e){toast('อ่านข้อมูลไม่ได้ ตรวจว่าเป็นไฟล์สำรองจากระบบนี้')}}
 function applyTheme(){const t=S.settings.theme;if(t==='system')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t)}
@@ -1819,10 +1835,10 @@ async function pwHash(pw,salt){const b=await crypto.subtle.digest('SHA-256',new 
 async function pwCheck(pw){const r=pwRec();return !!r&&(await pwHash(pw,r.salt))===r.hash}
 async function pwSet(pw){const a=new Uint8Array(8);crypto.getRandomValues(a);const salt=[...a].map(x=>x.toString(16).padStart(2,'0')).join('');localStorage.setItem(PWK,JSON.stringify({salt,hash:await pwHash(pw,salt)}))}
 let unlockedUntil=0;try{unlockedUntil=+sessionStorage.getItem(UNK)||0}catch(e){}
-function isLocked(){return !!pwRec()&&Date.now()>unlockedUntil}
+function isLocked(){if(central())return !canEdit();return !!pwRec()&&Date.now()>unlockedUntil}
 function setUnlocked(on){unlockedUntil=on?Date.now()+LOCK_MIN*60000:0;try{sessionStorage.setItem(UNK,String(unlockedUntil))}catch(e){}lockUI()}
 function touchUnlock(){if(pwRec()&&Date.now()<=unlockedUntil){unlockedUntil=Date.now()+LOCK_MIN*60000;try{sessionStorage.setItem(UNK,String(unlockedUntil))}catch(e){}}}
-function lockUI(){const b=$('#btnLock');const has=!!pwRec(),lk=isLocked();if(b){b.textContent=!has?'🔑 ตั้งรหัสผ่าน':lk?'🔒 ปลดล็อกเพื่อแก้ไข':'🔓 ล็อก';b.title=!has?'ตั้งรหัสผ่านสำหรับติดตั้งและแก้ไข':lk?'ตอนนี้ดูและพิมพ์ได้อย่างเดียว':'ปลดล็อกอยู่ · กดเพื่อล็อกทันที';b.classList.toggle('on',has&&!lk)}document.body.classList.toggle('locked',lk)}
+function lockUI(){if(central()){const b=$('#btnLock'),u=me();if(b){b.textContent='👤 '+(u?(u.name||u.username):'เข้าสู่ระบบ');b.title=u?'บัญชี: '+u.username+' · '+(ROLE_TH[u.role]||''):'';b.classList.remove('on')}document.body.classList.toggle('locked',isLocked());return}const b=$('#btnLock');const has=!!pwRec(),lk=isLocked();if(b){b.textContent=!has?'🔑 ตั้งรหัสผ่าน':lk?'🔒 ปลดล็อกเพื่อแก้ไข':'🔓 ล็อก';b.title=!has?'ตั้งรหัสผ่านสำหรับติดตั้งและแก้ไข':lk?'ตอนนี้ดูและพิมพ์ได้อย่างเดียว':'ปลดล็อกอยู่ · กดเพื่อล็อกทันที';b.classList.toggle('on',has&&!lk)}document.body.classList.toggle('locked',lk)}
 function askPw(title,msg,cb){const m=modal(title,`<p style="margin:0 0 10px">${esc(msg)}</p><input class="i" type="password" id="pwIn" autocomplete="current-password" style="width:100%"><div id="pwErr" style="color:var(--danger);font-size:13px;margin-top:6px"></div>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">ตกลง</button>`);
   const q=s=>m.root.querySelector(s),i=q('#pwIn');setTimeout(()=>i.focus(),50);
   const go=async()=>{if(await pwCheck(i.value)){m.close();cb()}else{q('#pwErr').textContent='รหัสผ่านไม่ถูกต้อง';i.select()}};
@@ -1833,9 +1849,9 @@ function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ย
   const q=s=>m.root.querySelector(s),err=t=>q('#pwErr').textContent=t;q('[data-mc]').onclick=m.close;setTimeout(()=>q(has?'#pw0':'#pw1').focus(),50);
   q('[data-mo]').onclick=async()=>{if(has&&!(await pwCheck(q('#pw0').value)))return err('รหัสผ่านเดิมไม่ถูกต้อง');const a=q('#pw1').value;if(a.length<4)return err('รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร');if(a!==q('#pw2').value)return err('ยืนยันรหัสผ่านไม่ตรงกัน');await pwSet(a);m.close();setUnlocked(true);toast('ตั้งรหัสผ่านแล้ว · ปลดล็อกไว้ให้แก้ไขต่อได้')};
   const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
-function unlockThen(cb){askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
+function unlockThen(cb){if(central()){toast('บัญชีนี้ดูได้อย่างเดียว · ขอสิทธิ์แก้ไขจากผู้ดูแลระบบ');return}askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
 /* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
-const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],#modalRoot';
+const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],#modalRoot,#gate';
 function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
@@ -1851,7 +1867,7 @@ $('#btnInstall').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();tr
    <div><b>Android (Chrome):</b> เมนู ⋮ → “เพิ่มลงในหน้าจอหลัก” / “ติดตั้งแอป”</div>
    <div><b>iPhone / iPad (Safari):</b> ปุ่มแชร์ → “เพิ่มไปยังหน้าจอโฮม”</div>
    <div class="note warn">ถ้าไม่มีเมนูติดตั้ง แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้เปิดจากเว็บไซต์ที่อัปโหลดแพ็กเกจแอปไว้ (เช่น Netlify หรือ GitHub Pages) แล้วติดตั้งจากที่นั่น</div></div>`,'')};
-const setNet=()=>{$('#netChip').textContent=(navigator.onLine?'ใช้งานออฟไลน์ได้':'โหมดออฟไลน์')+' · ข้อมูลอยู่ในเครื่องนี้'};
+const setNet=()=>syncChip();
 addEventListener('online',setNet);addEventListener('offline',setNet);setNet();
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
   const hadCtl=!!navigator.serviceWorker.controller;let reloaded=false;
@@ -1864,13 +1880,178 @@ function fitPrint(){const mm=96/25.4;$$('#printArea .paper.nego').forEach(el=>{e
   const h=el.scrollHeight/mm;el.style.width=ow;el.style.padding=op;if(h>H&&H/h>=0.8)el.style.zoom=(H/h).toFixed(3)})}
 function unfitPrint(){$$('#printArea .paper.nego').forEach(el=>el.style.zoom='')}
 addEventListener('beforeprint',fitPrint);addEventListener('afterprint',unfitPrint);
+/* ================= บัญชีผู้ใช้ + ข้อมูลกลาง (Google Apps Script) ================= */
+function srvUrl(){let v='';try{v=localStorage.getItem(SRVK)||''}catch(e){}return String(v||SRV_BAKED||'').trim()}
+function central(){return !!srvUrl()}
+function gasBase(){return String(S.settings.gasUrl||'').trim()||srvUrl()}
+function authRec(){try{return JSON.parse(localStorage.getItem(AUTHK)||'null')}catch(e){return null}}
+function authOk(){const a=authRec();return !!(a&&a.token&&a.exp>Date.now())}
+function me(){return (authRec()||{}).user||null}
+function canEdit(){return !central()||(me()&&me().role!=='viewer')}
+function hashOf(str){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (h2>>>0).toString(36)+(h1>>>0).toString(36)}
+function syncMeta(){let d={};try{d=JSON.parse(localStorage.getItem(SYNK)||'{}')||{}}catch(e){}return Object.assign({since:0,revs:{},hash:{},adopted:false,last:''},d)}
+function putSyncMeta(m){try{localStorage.setItem(SYNK,JSON.stringify(m))}catch(e){}}
+function sharedSettings(){const o=Object.assign({},S.settings);LOCAL_SET.forEach(k=>delete o[k]);return o}
+async function srvCall(body,url){url=url||srvUrl();if(!url)throw new Error('ยังไม่ได้ตั้งค่าเซิร์ฟเวอร์');
+  const a=authRec();if(a&&a.token&&!body.token&&!/^auth\.(login|init)$/.test(body.action))body.token=a.token;
+  let r;try{r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(body)})}catch(e){throw new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ตรวจอินเทอร์เน็ต')}
+  let j;try{j=await r.json()}catch(e){throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง — ตรวจว่า Deploy โค้ด Code.gs เวอร์ชันล่าสุดแล้ว')}
+  if(!j.ok){if(j.relogin){try{localStorage.removeItem(AUTHK)}catch(e){}showGate('เซสชันหมดอายุหรือบัญชีถูกเปลี่ยนแปลง กรุณาเข้าสู่ระบบใหม่')}throw new Error(j.error||'เกิดข้อผิดพลาด')}
+  return j}
+function saveAuth(j){try{localStorage.setItem(LS+'.lastUser',j.user.username);localStorage.setItem(AUTHK,JSON.stringify({token:j.token,user:j.user,exp:Date.now()+(j.days||30)*864e5-36e5}))}catch(e){}}
+
+/* ---------- ซิงก์ ---------- */
+function pendingItems(sm){const out=[],L=new Map();S.projects.forEach(p=>L.set(p.id,p));L.set('__settings',sharedSettings());
+  L.forEach((d,id)=>{const h=hashOf(JSON.stringify(d));if(sm.hash[id]!==h)out.push({id,baseRev:sm.revs[id]||0,data:d,_h:h})});
+  Object.keys(sm.revs).forEach(id=>{if(!L.has(id))out.push({id,baseRev:sm.revs[id],deleted:true})});return out}
+function applyRemote(it,sm,chg){const id=it.id;
+  if(id==='__settings'){if(it.data){const keep={};LOCAL_SET.forEach(k=>keep[k]=S.settings[k]);S.settings=Object.assign(structuredClone(DEF_SETTINGS),it.data,keep);applyTheme()}
+    sm.revs[id]=it.rev;sm.hash[id]=hashOf(JSON.stringify(sharedSettings()));chg.add(id);return}
+  const i=S.projects.findIndex(p=>p.id===id),loc=i>=0?S.projects[i]:null;
+  const dirty=!!loc&&sm.hash[id]!==hashOf(JSON.stringify(loc));
+  if(dirty){const c=structuredClone(loc);c.id=uid();c.name=(loc.name||'')+' (ฉบับในเครื่อง — แก้ไขชนกัน)';S.projects.splice(i,0,c);chg.add('conflict');if(cur===id)cur=c.id}
+  const j=S.projects.findIndex(p=>p.id===id);
+  if(it.deleted){if(j>=0)S.projects.splice(j,1);delete sm.revs[id];delete sm.hash[id];if(cur===id)cur=S.projects[0]?.id||null}
+  else{if(j>=0)S.projects[j]=it.data;else S.projects.push(it.data);sm.revs[id]=it.rev;sm.hash[id]=hashOf(JSON.stringify(it.data))}
+  chg.add(id)}
+async function syncNow({pull=true}={}){if(!central()||!authOk()||!navigator.onLine)return syncChip();
+  if(syncing){syncAgain=true;return}syncing=true;const chg=new Set();
+  try{let sm=syncMeta();
+    if(pull){const r=await srvCall({action:'data.pull',since:sm.since});sm=syncMeta();
+      r.items.forEach(it=>{if(!it.deleted&&sm.revs[it.id]===it.rev)return;applyRemote(it,sm,chg)});sm.since=Math.max(sm.since,r.rev);
+      if(r.user){const a=authRec();if(a){a.user=r.user;try{localStorage.setItem(AUTHK,JSON.stringify(a))}catch(e){}}}putSyncMeta(sm)}
+    if(sm.adopted&&canEdit()){const items=pendingItems(sm);
+      if(items.length){const r=await srvCall({action:'data.push',items:items.map(({_h,...x})=>x)});sm=syncMeta();
+        r.results.forEach(x=>{const it=items.find(y=>y.id===x.id);
+          if(x.conflict){applyRemote({id:x.id,rev:x.rev,deleted:x.deleted,data:x.data},sm,chg);toast('มีผู้อื่นแก้ไขโครงการเดียวกัน · เก็บฉบับของคุณเป็นสำเนาไว้แล้ว')}
+          else if(x.deleted){delete sm.revs[x.id];delete sm.hash[x.id]}
+          else{sm.revs[x.id]=x.rev;sm.hash[x.id]=it._h}});putSyncMeta(sm)}}
+    sm.last=nowStr();putSyncMeta(sm);syncErr='';
+    if(chg.size){try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}
+      if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null;
+      if(chg.has(cur)||chg.has('conflict')||chg.has('__settings')||tab==='dash'||!cur)render();syncSoon()}}
+  catch(e){syncErr=e.message}
+  finally{syncing=false;syncChip();if(syncAgain){syncAgain=false;setTimeout(()=>syncNow({pull:false}),300)}}}
+function syncSoon(){if(!central()||!authOk())return;clearTimeout(syncT);syncT=setTimeout(()=>syncNow({pull:false}),1800)}
+function syncChip(){const c=$('#netChip');if(!c)return;if(!central()){c.textContent=(navigator.onLine?'ใช้งานออฟไลน์ได้':'โหมดออฟไลน์')+' · ข้อมูลอยู่ในเครื่องนี้';c.title='';return}
+  const sm=syncMeta();const n=authOk()&&sm.adopted?pendingItems(sm).length:0;
+  c.textContent=!navigator.onLine?`ออฟไลน์ · รอส่ง ${n} รายการ`:syncErr?'ซิงก์ไม่สำเร็จ · จะลองใหม่':syncing?'กำลังซิงก์…':n?`รอส่ง ${n} รายการ`:'ข้อมูลกลาง · ซิงก์แล้ว '+(sm.last?String(sm.last).slice(-5):'');
+  c.title=syncErr||'ข้อมูลโครงการใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ'}
+
+/* ---------- หน้าจอเข้าสู่ระบบ ---------- */
+function showGate(msg){if(!central())return;let g=$('#gate');document.body.classList.add('gated');
+  if(!g){g=document.createElement('div');g.id='gate';document.body.appendChild(g)}
+  let last='';try{last=localStorage.getItem(LS+'.lastUser')||''}catch(e){}
+  g.innerHTML=`<form class="gate-card" autocomplete="on">
+   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา</span></div></div>
+   <label class="f"><span>ชื่อผู้ใช้</span><input class="i" id="gUser" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(last)}" required></label>
+   <label class="f"><span>รหัสผ่าน</span><input class="i" id="gPw" type="password" autocomplete="current-password" required></label>
+   <div id="gErr" class="gate-err">${esc(msg||'')}</div>
+   <button class="btn pri" id="gGo" type="submit" style="width:100%">เข้าสู่ระบบ</button>
+   <p class="muted gate-note">ข้อมูลโครงการใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ยังไม่มีบัญชีหรือลืมรหัสผ่าน ติดต่อผู้ดูแลระบบ</p>
+   ${SRV_BAKED?'':`<details class="gate-srv"><summary>เซิร์ฟเวอร์</summary><input class="i" id="gSrv" value="${esc(srvUrl())}" placeholder="https://script.google.com/macros/s/…/exec"></details>`}
+  </form>`;
+  const f=g.querySelector('form'),err=t=>g.querySelector('#gErr').textContent=t;setTimeout(()=>g.querySelector(last?'#gPw':'#gUser').focus(),60);
+  f.onsubmit=async e=>{e.preventDefault();const b=g.querySelector('#gGo');const sv=g.querySelector('#gSrv');
+    if(sv){const v=sv.value.trim();if(!/^https:\/\/script\.google\.com\/\S+\/exec$/.test(v))return err('URL เซิร์ฟเวอร์ต้องลงท้ายด้วย /exec');try{localStorage.setItem(SRVK,v)}catch(x){}}
+    b.disabled=true;err('กำลังตรวจสอบ…');
+    try{const prev=me()?.username;const j=await srvCall({action:'auth.login',username:g.querySelector('#gUser').value,password:g.querySelector('#gPw').value});saveAuth(j);
+      g.remove();document.body.classList.remove('gated');lockUI();toast('ยินดีต้อนรับ '+(j.user.name||j.user.username));afterLogin(prev&&prev!==j.user.username)}
+    catch(x){err(x.message);b.disabled=false}}}
+function afterLogin(){const sm=syncMeta();const locals=S.projects.filter(p=>!sm.revs[p.id]);
+  if(sm.adopted||!locals.length){sm.adopted=true;putSyncMeta(sm);return syncNow()}
+  const up=canEdit();
+  const m=modal('โครงการที่อยู่ในเครื่องนี้',`<p style="margin:0 0 8px">พบ <b>${locals.length}</b> โครงการที่เก็บไว้ในเครื่องนี้ แต่ยังไม่อยู่ในระบบกลาง</p><ul style="margin:0 0 8px;padding-left:20px;max-height:180px;overflow:auto">${locals.map(p=>`<li>${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</li>`).join('')}</ul>
+    <p class="muted" style="font-size:13px;margin:0">${up?'อัปโหลด = ทุกคนที่เข้าสู่ระบบจะเห็นและแก้ไขได้ · ไม่อัปโหลด = ดาวน์โหลดเป็นไฟล์สำรองแล้วเอาออกจากเครื่อง':'บัญชีนี้ดูได้อย่างเดียว จึงอัปโหลดไม่ได้ ระบบจะดาวน์โหลดเป็นไฟล์สำรองแล้วเอาออกจากเครื่อง'}</p>`,
+    `<button class="btn" data-mc type="button">ไม่อัปโหลด</button>${up?'<button class="btn pri" data-mo type="button">อัปโหลดขึ้นระบบกลาง</button>':''}`);
+  m.root.querySelector('[data-mclose]').hidden=true;m.root.querySelector('.modal-bg').onclick=null;
+  const done=()=>{m.close();const s2=syncMeta();s2.adopted=true;putSyncMeta(s2);syncNow()};
+  m.root.querySelector('[data-mc]').onclick=()=>{const ids=new Set(locals.map(p=>p.id));const blob=new Blob([JSON.stringify({projects:locals},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`boq-nego-local-${todayISO()}.json`;document.body.appendChild(a);a.click();a.remove();
+    S.projects=S.projects.filter(p=>!ids.has(p.id));if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null;save();render();done()};
+  const ok=m.root.querySelector('[data-mo]');if(ok)ok.onclick=()=>{done();toast('กำลังอัปโหลด '+locals.length+' โครงการ')}}
+async function logout(){const sm=syncMeta();let n=sm.adopted?pendingItems(sm).length:0;
+  if(n&&navigator.onLine){try{await syncNow({pull:false})}catch(e){}n=pendingItems(syncMeta()).length}
+  const go_=()=>{try{localStorage.removeItem(AUTHK);localStorage.removeItem(SYNK)}catch(e){}S.projects=[];cur=null;try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur','')}catch(e){}
+    $('#modalRoot').innerHTML='';go('dash');showGate('ออกจากระบบแล้ว')};
+  if(n)confirmBox(`ยังมี ${n} รายการที่ส่งขึ้นระบบกลางไม่สำเร็จ ถ้าออกจากระบบตอนนี้ การแก้ไขเหล่านั้นจะหาย`,'ออกจากระบบ',go_);else go_()}
+
+/* ---------- เมนูบัญชี ---------- */
+function accountDialog(){const u=me()||{},sm=syncMeta(),n=sm.adopted?pendingItems(sm).length:0;
+  const m=modal('บัญชีผู้ใช้',`<div class="grid" style="gap:6px">
+    <div><b style="font-size:17px">${esc(u.name||u.username)}</b> <span class="muted">(${esc(u.username)})</span></div><div>สิทธิ์: <b>${esc(ROLE_TH[u.role]||u.role)}</b></div>
+    <div class="muted" style="font-size:13px">ซิงก์ล่าสุด ${esc(sm.last||'-')} · รอส่ง ${n} รายการ${syncErr?' · '+esc(syncErr):''}</div></div>`,
+   `<button class="btn" data-a="sync" type="button">ซิงก์เดี๋ยวนี้</button><button class="btn" data-a="pw" type="button">เปลี่ยนรหัสผ่าน</button>${u.role==='admin'?'<button class="btn" data-a="users" type="button">จัดการผู้ใช้</button>':''}<button class="btn danger" data-a="out" type="button">ออกจากระบบ</button>`);
+  m.root.querySelector('.row').style.flexWrap='wrap';
+  m.root.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;
+    if(a==='sync'){m.close();toast('กำลังซิงก์…');syncNow().then(()=>toast(syncErr||'ซิงก์แล้ว'))}
+    if(a==='pw')changePwDialog();if(a==='users')usersDialog();if(a==='out')logout()})}
+function changePwDialog(){const m=modal('เปลี่ยนรหัสผ่าน',`<div class="grid"><label class="f"><span>รหัสผ่านเดิม</span><input class="i" type="password" id="cp0" autocomplete="current-password"></label><label class="f"><span>รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)</span><input class="i" type="password" id="cp1" autocomplete="new-password"></label><label class="f"><span>ยืนยันรหัสผ่านใหม่</span><input class="i" type="password" id="cp2" autocomplete="new-password"></label></div><div id="cpErr" class="gate-err"></div>`,
+  `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">บันทึก</button>`);
+  const q=s=>m.root.querySelector(s),err=t=>q('#cpErr').textContent=t;q('[data-mc]').onclick=m.close;
+  q('[data-mo]').onclick=async()=>{const a=q('#cp1').value;if(a.length<6)return err('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');if(a!==q('#cp2').value)return err('ยืนยันรหัสผ่านไม่ตรงกัน');
+    err('กำลังบันทึก…');try{const j=await srvCall({action:'auth.changePw',old:q('#cp0').value,password:a});const r=authRec();r.token=j.token;r.exp=Date.now()+29*864e5;localStorage.setItem(AUTHK,JSON.stringify(r));m.close();toast('เปลี่ยนรหัสผ่านแล้ว · เครื่องอื่นต้องเข้าสู่ระบบใหม่')}catch(e){err(e.message)}}}
+function usersDialog(list){
+  if(!list){const m=modal('จัดการผู้ใช้','<p class="muted">กำลังโหลด…</p>','');srvCall({action:'users.list'}).then(j=>usersDialog(j.users)).catch(e=>{m.root.querySelector('.card-b p').textContent=e.message});return}
+  const roleSel=(v,attr)=>`<select class="i" ${attr}>${Object.entries(ROLE_TH).map(([k,l])=>`<option value="${k}" ${k===v?'selected':''}>${l}</option>`).join('')}</select>`;
+  const mine=me()?.username;
+  const m=modal('จัดการผู้ใช้',`<div class="ulist">${list.map(u=>`<div class="urow" data-u="${esc(u.username)}">
+     <div class="uname"><b>${esc(u.username)}</b>${u.username===mine?' <span class="muted">(คุณ)</span>':''}<div class="muted" style="font-size:12px">${u.lastLogin?'เข้าล่าสุด '+esc(u.lastLogin.replace('T',' ').slice(0,16)):'ยังไม่เคยเข้า'}</div></div>
+     <input class="i" data-k="name" value="${esc(u.name||'')}" placeholder="ชื่อ-สกุล">${roleSel(u.role,'data-k="role"')}
+     <label class="switch"><input type="checkbox" data-k="active" ${u.active?'checked':''}> ใช้งาน</label>
+     <div class="row" style="gap:6px;margin:0"><button class="btn" data-ua="save" type="button">บันทึก</button><button class="btn" data-ua="pw" type="button">ตั้งรหัสใหม่</button>${u.username===mine?'':'<button class="btn danger" data-ua="del" type="button">ลบ</button>'}</div></div>`).join('')}</div>
+   <h3 style="margin:16px 0 8px;font-size:16px">เพิ่มผู้ใช้</h3>
+   <div class="grid g12"><label class="f s3"><span>ชื่อผู้ใช้ (a-z 0-9 . _ -)</span><input class="i" id="nuU" autocapitalize="none" spellcheck="false"></label><label class="f s3"><span>ชื่อ-สกุล</span><input class="i" id="nuN"></label><label class="f s3"><span>สิทธิ์</span>${roleSel('editor','id="nuR"')}</label><label class="f s3"><span>รหัสผ่านเริ่มต้น</span><input class="i" id="nuP" autocomplete="new-password"></label></div>
+   <p class="muted" style="font-size:13px;margin:6px 0 0">แก้ไขได้ = สร้าง/แก้/ลบโครงการ และใช้ระบบจองลงนามได้ · ดูได้อย่างเดียว = ดู พิมพ์ และดาวน์โหลดเอกสาร · ตั้งรหัสใหม่หรือปิดบัญชีแล้ว เครื่องที่เข้าอยู่จะถูกออกจากระบบ</p><div id="uErr" class="gate-err"></div>`,
+   `<button class="btn" data-mc type="button">ปิด</button><button class="btn pri" id="nuGo" type="button">เพิ่มผู้ใช้</button>`);
+  const q=s=>m.root.querySelector(s),err=t=>q('#uErr').textContent=t;q('[data-mc]').onclick=m.close;m.root.querySelector('.modal').style.maxWidth='900px';
+  const run=async(body,msg)=>{err('กำลังบันทึก…');try{const j=await srvCall(body);usersDialog(j.users);toast(msg)}catch(e){err(e.message)}};
+  q('#nuGo').onclick=()=>{const p=q('#nuP').value;if(p.length<6)return err('รหัสผ่านเริ่มต้นต้องมีอย่างน้อย 6 ตัวอักษร');if(list.some(u=>u.username===q('#nuU').value.trim().toLowerCase()))return err('มีชื่อผู้ใช้นี้แล้ว');
+    run({action:'users.save',username:q('#nuU').value,name:q('#nuN').value,role:q('#nuR').value,password:p,active:true},'เพิ่มผู้ใช้แล้ว · แจ้งชื่อผู้ใช้และรหัสผ่านให้เจ้าของบัญชี')};
+  m.root.querySelectorAll('[data-ua]').forEach(b=>b.onclick=()=>{const row=b.closest('.urow'),u=row.dataset.u,v=k=>row.querySelector(`[data-k="${k}"]`);
+    if(b.dataset.ua==='save')run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked},'บันทึกแล้ว');
+    if(b.dataset.ua==='pw'){const p=prompt('รหัสผ่านใหม่ของ '+u+' (อย่างน้อย 6 ตัวอักษร)');if(p===null)return;if(p.length<6)return err('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked,password:p},'ตั้งรหัสใหม่แล้ว')}
+    if(b.dataset.ua==='del'&&confirm('ลบผู้ใช้ '+u+' ?'))run({action:'users.delete',username:u},'ลบแล้ว')})}
+
+/* ---------- เปิดใช้ (หน้าตั้งค่า) ---------- */
+function centralCard(){const u=me();
+  if(central())return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2></div><div class="card-b grid" style="gap:10px">
+    <div>เข้าสู่ระบบเป็น <b>${esc(u?.name||u?.username||'-')}</b> · สิทธิ์ ${esc(ROLE_TH[u?.role]||'-')} · ข้อมูลโครงการและค่าตั้งค่าในหน้านี้ใช้ร่วมกันทุกเครื่อง (ยกเว้นธีม URL และรหัสเจ้าหน้าที่ ซึ่งเป็นของแต่ละเครื่อง)</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button>':''}</div>
+    ${u?.role==='admin'?`<p class="muted" style="font-size:13px;margin:0">ส่งลิงก์ติดตั้งให้ผู้ใช้เปิดครั้งแรก แอปจะรู้จักเซิร์ฟเวอร์และขึ้นหน้าเข้าสู่ระบบเอง · ผู้ใช้กดติดตั้งแอปได้หลังเข้าสู่ระบบ</p>`:''}</div></div>`;
+  return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2><span class="muted" style="font-size:13px">ยังไม่เปิดใช้ · ตอนนี้ข้อมูลอยู่ในเครื่องนี้เท่านั้น</span></div><div class="card-b grid g12">
+    <p class="s12" style="margin:0">เปิดใช้แล้ว ทุกเครื่องต้องเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ทั้งก่อนใช้งานและก่อนติดตั้งแอป และเห็นข้อมูลโครงการชุดเดียวกัน (เก็บใน Google Sheet เดียวกับระบบจองลงนาม ชีต users และ store)</p>
+    <div class="s12 note warn" style="margin:0">ก่อนเปิดใช้: วางโค้ด <a href="https://github.com/krabiprocure-hash/boq-nego/blob/main/gas/Code.gs" target="_blank" rel="noopener">Code.gs</a> เวอร์ชันล่าสุด → Run ฟังก์ชัน setup → Deploy › Manage deployments › แก้ไข › Version: New version · และใส่ URL กับรหัสเจ้าหน้าที่ในการ์ด “QR จองวันลงนามสัญญาออนไลน์” ด้านบนแล้ว</div>
+    <label class="f s3"><span>ชื่อผู้ใช้ผู้ดูแลระบบ</span><input class="i" id="caU" autocapitalize="none" spellcheck="false" placeholder="เช่น narama"></label>
+    <label class="f s3"><span>ชื่อ-สกุล</span><input class="i" id="caN"></label>
+    <label class="f s3"><span>รหัสผ่าน (อย่างน้อย 6 ตัว)</span><input class="i" type="password" id="caP" autocomplete="new-password"></label>
+    <label class="f s3"><span>ยืนยันรหัสผ่าน</span><input class="i" type="password" id="caP2" autocomplete="new-password"></label>
+    <div class="s12 row" style="gap:8px;margin:0"><button class="btn pri" id="caGo" type="button">เปิดใช้และสร้างบัญชีผู้ดูแล</button><span id="caMsg" class="muted" style="font-size:13px"></span></div>
+    <p class="s12 muted" style="font-size:13px;margin:0">โครงการที่อยู่ในเครื่องนี้ ระบบจะถามก่อนอัปโหลดขึ้นระบบกลาง · ถ้ามีบัญชีผู้ดูแลอยู่แล้ว ให้กรอกบัญชีนั้นเพื่อเข้าสู่ระบบ</p></div></div>`}
+function bindCentralCard(){const q=s=>$(s);
+  if(central()){q('#cAcc')&&(q('#cAcc').onclick=accountDialog);q('#cUsers')&&(q('#cUsers').onclick=()=>usersDialog());
+    q('#cLink')&&(q('#cLink').onclick=()=>{const l=location.origin+location.pathname+'?server='+encodeURIComponent(srvUrl());navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์แล้ว'),()=>prompt('คัดลอกลิงก์นี้',l))});return}
+  const go_=q('#caGo');if(!go_)return;const msg=t=>q('#caMsg').textContent=t;
+  go_.onclick=async()=>{const url=String(S.settings.gasUrl||'').trim(),key=String(S.settings.gasKey||'').trim();
+    if(!/^https:\/\/script\.google\.com\/\S+\/exec$/.test(url))return msg('ใส่ URL ของ Google Apps Script (ลงท้าย /exec) ในการ์ดด้านบนก่อน');
+    const u=q('#caU').value.trim(),p=q('#caP').value;if(p.length<6)return msg('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');if(p!==q('#caP2').value)return msg('ยืนยันรหัสผ่านไม่ตรงกัน');
+    go_.disabled=true;msg('กำลังสร้างบัญชี…');
+    try{try{await srvCall({action:'auth.init',key,username:u,name:q('#caN').value,password:p},url)}catch(e){if(!/มีบัญชีผู้ดูแลระบบอยู่แล้ว/.test(e.message))throw e}
+      const j=await srvCall({action:'auth.login',username:u,password:p},url);localStorage.setItem(SRVK,url);saveAuth(j);
+      toast('เปิดใช้ระบบเข้าสู่ระบบแล้ว');lockUI();rSet();afterLogin()}
+    catch(e){msg(e.message);go_.disabled=false}}}
+function authBoot(){syncChip();
+  setInterval(()=>{if(!document.hidden)syncNow()},60000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncNow()});addEventListener('online',()=>syncNow());
+  if(!central())return;if(!authOk())return showGate();afterLogin()}
+
 /* expose core for testing */
-window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S};
+window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
 load();applyTheme();renderTabs();go(cur?'dash':'dash');
-{const inst=$('#btnInstall').onclick;$('#btnInstall').onclick=()=>{if(!pwRec()){toast('ตั้งรหัสผ่านก่อนติดตั้งแอป');setPwDialog();return}askPw('ติดตั้งแอป','กรอกรหัสผ่านเพื่อติดตั้งแอป',()=>inst())}}
-$('#btnLock').onclick=()=>{if(!pwRec())return setPwDialog();if(isLocked())return unlockThen();setUnlocked(false);toast('ล็อกแล้ว · ดูและพิมพ์ได้ แก้ไขต้องใส่รหัสผ่าน')};
-lockUI();
+{const inst=$('#btnInstall').onclick;$('#btnInstall').onclick=()=>{if(central())return authOk()?inst():showGate();if(!pwRec()){toast('ตั้งรหัสผ่านก่อนติดตั้งแอป');setPwDialog();return}askPw('ติดตั้งแอป','กรอกรหัสผ่านเพื่อติดตั้งแอป',()=>inst())}}
+$('#btnLock').onclick=()=>{if(central())return authOk()?accountDialog():showGate();if(!pwRec())return setPwDialog();if(isLocked())return unlockThen();setUnlocked(false);toast('ล็อกแล้ว · ดูและพิมพ์ได้ แก้ไขต้องใส่รหัสผ่าน')};
+lockUI();authBoot();
 })();
 </script>
 
