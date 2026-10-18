@@ -367,7 +367,7 @@ const ICON={
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
-const SRV_BAKED='';
+const SRV_BAKED='https://script.google.com/macros/s/AKfycbz2w8so4_kfOWz0EPjzWhB3_-3iuhJDbJM4Z6q0U5swFAT_AVF4XezAkNsVH4MBsSCz/exec';
 const SRVK=LS+'.server',AUTHK=LS+'.auth',SYNK=LS+'.sync',LOCAL_SET=['gasKey','gasUrl','theme'];
 const ROLE_TH={admin:'ผู้ดูแลระบบ',editor:'แก้ไขได้',viewer:'ดูได้อย่างเดียว'};
 try{const q=new URLSearchParams(location.search).get('server');if(q&&/^https:\/\/script\.google\.com\/\S+\/exec$/.test(q)){localStorage.setItem(SRVK,q);history.replaceState(null,'',location.pathname)}}catch(e){}
@@ -1950,13 +1950,16 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
    <div id="gErr" class="gate-err">${esc(msg||'')}</div>
    <button class="btn pri" id="gGo" type="submit" style="width:100%">เข้าสู่ระบบ</button>
    <p class="muted gate-note">ข้อมูลโครงการใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ยังไม่มีบัญชีหรือลืมรหัสผ่าน ติดต่อผู้ดูแลระบบ</p>
+   <details class="gate-srv" id="gInit"><summary>ตั้งค่าครั้งแรก: สร้างบัญชีผู้ดูแลระบบ</summary><p class="muted" style="font-size:12.5px;margin:6px 0">ใช้ครั้งเดียวตอนเริ่มระบบ · กรอกชื่อผู้ใช้และรหัสผ่านที่ต้องการด้านบน (อย่างน้อย 6 ตัว) แล้วใส่รหัสเจ้าหน้าที่ (ADMIN_KEY ใน Code.gs) และชื่อ-สกุล</p><input class="i" id="gKey" type="password" placeholder="ADMIN_KEY" autocomplete="off"><input class="i" id="gName" placeholder="ชื่อ-สกุล"></details>
    ${SRV_BAKED?'':`<details class="gate-srv"><summary>เซิร์ฟเวอร์</summary><input class="i" id="gSrv" value="${esc(srvUrl())}" placeholder="https://script.google.com/macros/s/…/exec"></details>`}
   </form>`;
   const f=g.querySelector('form'),err=t=>g.querySelector('#gErr').textContent=t;setTimeout(()=>g.querySelector(last?'#gPw':'#gUser').focus(),60);
   f.onsubmit=async e=>{e.preventDefault();const b=g.querySelector('#gGo');const sv=g.querySelector('#gSrv');
     if(sv){const v=sv.value.trim();if(!/^https:\/\/script\.google\.com\/\S+\/exec$/.test(v))return err('URL เซิร์ฟเวอร์ต้องลงท้ายด้วย /exec');try{localStorage.setItem(SRVK,v)}catch(x){}}
     b.disabled=true;err('กำลังตรวจสอบ…');
-    try{const prev=me()?.username;const j=await srvCall({action:'auth.login',username:g.querySelector('#gUser').value,password:g.querySelector('#gPw').value});saveAuth(j);
+    try{const k=g.querySelector('#gKey').value.trim();
+      if(k){err('กำลังสร้างบัญชีผู้ดูแล…');await srvCall({action:'auth.init',key:k,username:g.querySelector('#gUser').value,name:g.querySelector('#gName').value,password:g.querySelector('#gPw').value});try{S.settings.gasKey=S.settings.gasKey||k;if(!S.settings.gasUrl)S.settings.gasUrl=srvUrl()}catch(x){}}
+      const prev=me()?.username;const j=await srvCall({action:'auth.login',username:g.querySelector('#gUser').value,password:g.querySelector('#gPw').value});saveAuth(j);
       g.remove();document.body.classList.remove('gated');lockUI();toast('ยินดีต้อนรับ '+(j.user.name||j.user.username));afterLogin(prev&&prev!==j.user.username)}
     catch(x){err(x.message);b.disabled=false}}}
 function afterLogin(){const sm=syncMeta();const isSample=p=>/\(ตัวอย่าง\)\s*$/.test(p.name||'');
@@ -2050,7 +2053,7 @@ function authBoot(){syncChip();
 /* expose core for testing */
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
-load();applyTheme();renderTabs();go(cur?'dash':'dash');
+load();applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}
 {const inst=$('#btnInstall').onclick;$('#btnInstall').onclick=()=>{if(central())return authOk()?inst():showGate();if(!pwRec()){toast('ตั้งรหัสผ่านก่อนติดตั้งแอป');setPwDialog();return}askPw('ติดตั้งแอป','กรอกรหัสผ่านเพื่อติดตั้งแอป',()=>inst())}}
 $('#btnLock').onclick=()=>{if(central())return authOk()?accountDialog():showGate();if(!pwRec())return setPwDialog();if(isLocked())return unlockThen();setUnlocked(false);toast('ล็อกแล้ว · ดูและพิมพ์ได้ แก้ไขต้องใส่รหัสผ่าน')};
 lockUI();authBoot();
