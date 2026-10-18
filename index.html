@@ -48,6 +48,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .ttl p{margin:2px 0 0;font-size:13px;opacity:.85}
 .hdr-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .btn-install{background:var(--accent);color:var(--accent-ink);border:0;border-radius:8px;padding:7px 14px;font-family:var(--f-head);font-weight:500;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
 .btn-lock{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:6px 12px;font-family:var(--f-head);cursor:pointer;white-space:nowrap}.btn-lock.on{background:#fff;color:var(--brand)}
 .chip-off{background:rgba(255,255,255,.14);border-radius:999px;padding:6px 12px;font-size:13px}
 .tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-top:8px}
@@ -293,7 +294,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 47 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr.Tharatep Thongbao for the original creation · Developed by Miss Narama Woraklan (Version 48 · 18 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลทั้งหมดเก็บไว้ในเบราว์เซอร์ของเครื่องนี้ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1492,13 +1493,16 @@ function guaranteePeriod(p,sign){const dur=num(evOf(p).duration);if(!sign||!dur)
   const wy=warrantyOf(p),ex=num(S.settings.secExtraDays??30);const end=ad(sign,dur);return {sign,end,wy,ex,dur,to:ad(ay(end,wy),ex)}}
 function periodLine(p,sign){const g=guaranteePeriod(p,sign);return g?`ค้ำประกันสัญญา ${D(g.sign)} – <b>${D(g.to)}</b> <span class="muted" style="font-size:12px">(สิ้นสุดสัญญา ${D(g.end)} + ${g.wy} ปี + ${g.ex} วัน)</span>`:(num(evOf(p).duration)?'':'<span class="muted" style="font-size:12px">กรอก “ระยะเวลาดำเนินการ (วัน)” ในหน้าพิจารณาผล เพื่อคำนวณระยะค้ำประกัน</span>')}
 function bookMissing(x){if(!x)return [];const have=new Set((x.files||[]).map(f=>f.docKey));return bookDocsList().filter(d=>d.required&&!have.has(d.key)&&(d.key!=='poa'||x.poa==='มอบอำนาจ')&&!(d.key==='sec'&&x.secType==='เงินสด'))}
+function bookDocRows(x){const have={};(x.files||[]).forEach(f=>have[f.docKey]=f);const miss=new Set(bookMissing(x).map(d=>d.key));
+  const docs=bookDocsList().filter(d=>have[d.key]||miss.has(d.key));const extra=(x.files||[]).filter(f=>!bookDocsList().some(d=>d.key===f.docKey));
+  return `<ol style="margin:4px 0 0;padding-left:20px;display:grid;gap:3px">${docs.map(d=>{const f=have[d.key];return `<li>${f?`<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(d.label)}</a> <span class="muted" style="font-size:12px">· ${esc(f.name||'')}</span>`:`<span style="color:var(--danger);font-weight:600">${esc(d.label)} — ยังไม่ได้แนบ</span>`}</li>`}).join('')}${extra.map(f=>`<li><a href="${esc(f.url)}" target="_blank" rel="noopener">${esc(f.name||f.docKey)}</a></li>`).join('')}</ol>`}
 function bookTH(t){return t?String(t).replace(':','.')+' น.':''}
 function bookingBox(p){const b=p.book||{},x=b.booking;if(!x)return `<div class="muted" style="font-size:14px">${b.fetched?'ยังไม่มีการจอง (ตรวจล่าสุด '+esc(b.fetched)+')':'ยังไม่ได้ดึงข้อมูลการจอง'}</div>`;
   const fix=x.confirmed==='Y';const signer=x.poa==='มอบอำนาจ'?'มอบอำนาจให้ผู้อื่นลงนามแทน (ดูหนังสือมอบอำนาจ)':`${esc(x.signerName)} ${esc(x.signerSurname)} · ตำแหน่ง ${esc(x.signerPosition)}`;
   return `<div class="note ${fix?'ok':'warn'}" style="margin:0"><b>นัดลงนาม ${D(x.date)} เวลา ${esc(bookTH(x.time))}</b> · เลขที่สัญญา <b>${esc(x.contractNo||'-')}</b> ${fix?'<span class="pill p-ok">ยืนยันแล้ว</span>':'<span class="pill p-draft">รอเจ้าหน้าที่ยืนยัน (เลขอาจเลื่อนตามลำดับเวลานัด)</span>'}
    <div style="margin-top:6px;font-size:14px">ผู้ติดต่อ ${esc(x.contactName)} · โทร ${esc(x.phone)}${x.email?' · '+esc(x.email):''}<br>ผู้ลงนามในสัญญา: ${x.poa==='มอบอำนาจ'?'':'ไม่มอบอำนาจ — '}${signer}${x.secType?`<br>หลักประกันสัญญา: ${esc(x.secType)}`:''}<br>${periodLine(p,x.date)}</div>${(m=>m.length?`<div style="margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--bad-bg);color:var(--bad-ink);font-size:14px;border:1px solid var(--danger)"><b>ยังไม่ได้แนบ ${m.length} รายการ — ทวงถามบริษัท:</b> ${m.map(d=>esc(d.label.replace(/\s*\(.*$/,''))).join(' · ')}</div>`:'')(bookMissing(x))}
-   <div style="margin-top:6px;font-size:14px">เอกสารแนบ: ${(x.files||[]).map(f=>`<a href="${esc(f.url)}" target="_blank" rel="noopener">${esc((bookDocsList().find(d=>d.key===f.docKey)||{label:f.docKey}).label.slice(0,40))}</a>`).join(' · ')||'-'}</div>
-   <div class="row" style="margin-top:8px;gap:8px">${fix?`<button class="btn sm" data-bk="unconfirm" type="button">ยกเลิกการยืนยัน</button>`:`<label class="f" style="margin:0"><span style="font-size:12px">เลขที่สัญญา (แก้ได้ก่อนยืนยัน)</span><input class="i" id="bkNo" value="${esc(x.contractNo||'')}" style="width:200px"></label><button class="btn pri sm" data-bk="confirm" type="button">ยืนยันนัดและเลขที่สัญญา</button>`}<button class="btn sm" data-bk="cancel" type="button">ยกเลิกการจองนี้</button></div></div>`}
+   <div style="margin-top:8px;font-size:14px"><b>เอกสารแนบ</b> <span class="muted" style="font-size:12px">(กดชื่อเพื่อเปิดไฟล์ตรวจ)</span>${bookDocRows(x)}</div>
+   <div class="row" style="margin-top:8px;gap:8px">${fix?`<button class="btn sm" data-bk="unconfirm" type="button">ยกเลิกการยืนยัน</button>`:`<div style="flex-basis:100%;padding:8px 10px;border-radius:8px;background:var(--warn-bg);color:var(--warn-ink);font-size:13.5px"><b>ก่อนกดยืนยัน กรุณาตรวจสอบเอกสารทุกฉบับ</b> — เปิดไฟล์ดูว่าถูกต้องครบถ้วน ชื่อผู้ลงนามและตำแหน่งตรงกับหนังสือรับรองนิติบุคคล หนังสือมอบอำนาจ (ถ้ามี) และประเภท/จำนวนเงิน/ระยะเวลาหลักประกันถูกต้อง · หลังยืนยันแล้ว บริษัทแก้ไขไฟล์ที่แนบไม่ได้<label style="display:flex;gap:6px;align-items:center;margin-top:6px;color:var(--ink);font-weight:600"><input type="checkbox" id="bkChecked"> ตรวจสอบเอกสารแนบทุกรายการแล้ว</label></div><label class="f" style="margin:0"><span style="font-size:12px">เลขที่สัญญา (แก้ได้ก่อนยืนยัน)</span><input class="i" id="bkNo" value="${esc(x.contractNo||'')}" style="width:200px"></label><button class="btn pri sm" data-bk="confirm" type="button" disabled>ยืนยันนัดและเลขที่สัญญา</button>`}<button class="btn sm" data-bk="cancel" type="button">ยกเลิกการจองนี้</button></div></div>`}
 function bookCardHtml(p){if(!bookOn())return `<div class="s12 muted" style="font-size:13px">QR จองวันลงนามสัญญาออนไลน์: ใส่ URL ของ Google Apps Script ที่หน้า “ตั้งค่า” เพื่อเปิดใช้</div>`;
   const b=bookOf(p),w=bookWindow(p);const url=bookUrl(p);const stale=b.pushed&&b.pushedDates!==bookSig(p);
   return `<div class="s12" style="border-top:1px dashed var(--line);padding-top:12px"><div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
@@ -1509,10 +1513,11 @@ function bookCardHtml(p){if(!bookOn())return `<div class="s12 muted" style="font
      <div class="row" style="gap:8px"><button class="btn pri sm" data-bk="push" type="button">${b.pushed?'อัปเดตลิงก์จอง':'เปิดรับจอง (ส่งข้อมูลไป Google Sheet)'}</button><button class="btn sm" data-bk="fetch" type="button">ดึงข้อมูลการจอง</button><button class="btn sm" data-bk="copy" type="button">คัดลอกลิงก์</button><a class="btn sm" href="${esc(url)}" target="_blank" rel="noopener">เปิดหน้าจอง</a><span id="bkMsg" class="muted" style="font-size:13px">${!b.pushed?'<span style="color:var(--danger)">ยังไม่ได้เปิดรับจอง — กดปุ่มก่อนส่งหนังสือ</span>':stale?'<span style="color:var(--danger)">ข้อมูลเปลี่ยน — กด “อัปเดตลิงก์จอง”</span>':'ส่งข้อมูลล่าสุด '+esc(b.pushed)}</span></div>
      ${num(evOf(p).duration)?'':'<div style="color:var(--danger);font-size:13px">ยังไม่กรอก “ระยะเวลาดำเนินการ (วัน)” (การ์ดที่ 1) — บริษัทจะไม่เห็นระยะเวลาค้ำประกันสัญญา</div>'}
      ${bookingBox(p)}</div></div></div>`}
-function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textContent=t};
+function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textContent=t};{const ck=$('#bkChecked'),cb=$('[data-bk="confirm"]',el);if(ck&&cb)ck.onchange=()=>{cb.disabled=!ck.checked}}
   $$('[data-bk]',el).forEach(btn=>btn.onclick=async()=>{const a=btn.dataset.bk;const b=bookOf(p);
     if(a==='copy'){try{await navigator.clipboard.writeText(bookUrl(p));msg('คัดลอกลิงก์แล้ว')}catch(e){prompt('คัดลอกลิงก์',bookUrl(p))}return}
     if(a==='cancel'&&!confirm('ยกเลิกการจองนี้? บริษัทจะต้องจองใหม่'))return;
+    if(a==='confirm'){const m=bookMissing(b.booking);if(m.length&&!confirm('ยังไม่ได้แนบเอกสาร '+m.length+' รายการ:\n- '+m.map(d=>d.label).join('\n- ')+'\n\nยืนยันนัดต่อหรือไม่? (บริษัทยังแนบเอกสารที่ขาดได้ภายหลัง)'))return}
     btn.disabled=true;msg('กำลังเชื่อมต่อ…');
     try{if(a==='push'){await pushBooking(p)}
       else if(a==='fetch'){await fetchBookings(p)}
