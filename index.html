@@ -240,7 +240,8 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .notice .sg{margin:14mm 0 0 auto;width:95mm;text-align:center;line-height:1.7}
 .notice .cb{display:inline-block;margin-right:5mm;white-space:nowrap}
 .paper .nrem{font-size:11px;line-height:1.4;display:grid;grid-template-columns:auto 1fr;column-gap:6px}.paper .nrem ol{margin:0;padding-left:16px}
-.paper.rq{font-size:13.5px;line-height:1.5;padding:12mm 12mm}.rq p{margin:0}.rq .ind{text-indent:12mm}.rq .rqh{display:flex;justify-content:space-between}
+.paper.rq{font-family:var(--lf);font-size:var(--ls);line-height:1.35;padding:12mm 12mm 12mm 15mm;box-sizing:border-box}.rq table.rqt,.rq table.rqa{font-size:.875em}.rq p{margin:0}.rq .ind{text-indent:12mm}.rq .rqh{display:flex;justify-content:space-between}
+.rq .rqtop{position:relative;min-height:22mm;margin-bottom:2mm}.rq .rqdoh{text-align:center;font-size:1.25em;font-weight:700;line-height:1.3;padding-top:5mm}.rq .rqform{position:absolute;right:0;top:0;font-size:.875em;line-height:1.3;text-align:left}
 .rq table.rqt td{padding:1px 4px}.rq table.rqt td:nth-child(4){overflow-wrap:anywhere}.rq table.rqa{margin-top:4mm}.rq table.rqa td,.rq table.rqa th{border:1px solid var(--paper-line)}
 .rq .rqs{display:grid;grid-template-columns:1fr 1fr;gap:8mm;text-align:center;margin-top:6mm;break-inside:avoid;line-height:1.7}
 .paper.nego table.pt td{padding:1px 5px}.paper.nego .sig{margin-top:16mm}.paper.nego .rem{margin-top:6px}
@@ -316,7 +317,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 56 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 57 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1240,7 +1241,7 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
 function papersToDocx(html){
   const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
-  const F=letterFont();const official=p=>/\b(letter|notice|ev)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
+  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
   const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
     return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
@@ -2122,7 +2123,9 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
 }
 function repReq(p){const c=reqCalc(p),R=c.R;const title=String(R.title||p.name||'').split('\n').filter(Boolean);const ck=b=>b?'☑':'☐';
   const dots=(v,n=6)=>'.'.repeat(n)+esc(v||'')+'.'.repeat(n);
-  return `<div class="paper rq${wm()}">
+  const F=letterFont();
+  return `<div class="paper rq${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="rqtop"><div class="rqdoh">กรมทางหลวง</div><div class="rqform">พ.1-01<br>กรมทางหลวง<br>เริ่มใช้ 19 ธค.2545</div></div>
    <div class="rqh"><div>เลขที่&nbsp;&nbsp;&nbsp;${esc(R.no)}</div><div>${R.date?'วันที่ '+esc(thDate(R.date)):''}</div></div>
    <div>เรื่อง&nbsp;&nbsp;&nbsp;${esc(R.subject)}</div><div>เรียน&nbsp;&nbsp;&nbsp;${esc(R.to)}</div>
    <p class="ind">เหตุที่ขออนุมัติซื้อ/จ้าง....${escBr(R.reason)}</p>
