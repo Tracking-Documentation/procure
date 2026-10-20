@@ -39,7 +39,7 @@
 html,body{background:var(--bg);color:var(--ink)}
 body{font-family:var(--f-body);font-size:15px;line-height:1.5}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
-.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1480px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--f-head);font-weight:600;text-wrap:balance;margin:0}
 button,input,select,textarea{font:inherit;color:inherit}
 .num,td.n,.tab-n{font-variant-numeric:tabular-nums}
@@ -154,6 +154,10 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .calc3 .tot{font-weight:700;border-top:1px solid var(--ink);border-bottom:3px double var(--ink)}
 .checks{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .checks li{display:flex;gap:9px;align-items:flex-start;font-size:14px}
+@media (min-width:1000px){.checks.two{grid-template-columns:1fr 1fr;column-gap:28px}}
+.ctl4 .i{text-overflow:ellipsis;width:100%!important;max-width:none!important}
+@media (min-width:761px) and (max-width:1100px){.ctl4>*{grid-column:span 6!important}}
+.kpis.tight{gap:12px;margin-bottom:14px}.kpis.tight .kpi{padding:11px 16px}.kpis.tight .kpi .v{font-size:23px;line-height:1.25}
 .ck{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;margin-top:2px}
 .ck.y{background:#20a160}.ck.n{background:var(--danger)}.ck.w{background:#d29a00}
 .quick{display:flex;flex-wrap:wrap;gap:6px}
@@ -306,7 +310,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 53 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 54 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1341,11 +1345,11 @@ function rResult(){
   const el=$('#v-result');if(needProject(el))return;const p=P();const b=basisOf(p);const r=compute(p,b.price);
   const adjOpts=r.rows.filter(x=>!x.fixed).map(x=>`<option value="${x.it.id}" ${p.adjustPref===x.it.id?'selected':''}>รายการที่ ${x.no}: ${esc(String(x.it.name).split('\n')[0].slice(0,60))}</option>`).join('');
   el.innerHTML=`${curBar('ผลการปรับลดราคา',`<button class="btn" data-goto="edit" type="button">${ICON.pen} แก้ข้อมูล</button><button class="btn blue" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
-  <div class="card" style="margin-bottom:16px"><div class="card-b grid g12">
-    <label class="f s5"><span>ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel')}</label>
-    <label class="f s4"><span>การปัดเศษ</span><select class="i" id="rndSel"><option value="total" ${S.settings.roundMode!=='unit'?'selected':''}>ยอดรวมเป็นจำนวนเต็ม (ราคาต่อหน่วยทศนิยม 2 ตำแหน่ง)</option><option value="unit" ${S.settings.roundMode==='unit'?'selected':''}>ราคาต่อหน่วยเป็นจำนวนเต็มบาท</option></select></label>
-    <label class="f s5"><span>รายการที่รับส่วนต่างจากการปัดเศษ (*)</span><select class="i" id="adjSel"><option value="auto">อัตโนมัติ — รายการที่มีราคากลางสูงสุด</option>${adjOpts}</select></label>
-    <label class="f s4"><span>อัตราร้อยละ</span><select class="i" id="pctSel"><option value="trunc2" ${S.settings.pctMode==='trunc2'?'selected':''}>ทศนิยม 2 ตำแหน่ง ตัดเศษ (ตามตัวอย่าง ว 651)</option><option value="exact" ${S.settings.pctMode==='exact'?'selected':''}>ใช้ค่าเต็ม ไม่ตัดเศษ</option></select></label>
+  <div class="card" style="margin-bottom:14px"><div class="card-b grid g12 ctl4">
+    <label class="f s3"><span>ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel')}</label>
+    <label class="f s3"><span>การปัดเศษ</span><select class="i" id="rndSel"><option value="total" ${S.settings.roundMode!=='unit'?'selected':''}>ยอดรวมเป็นจำนวนเต็ม (ราคาต่อหน่วยทศนิยม 2 ตำแหน่ง)</option><option value="unit" ${S.settings.roundMode==='unit'?'selected':''}>ราคาต่อหน่วยเป็นจำนวนเต็มบาท</option></select></label>
+    <label class="f s3"><span>รายการที่รับส่วนต่างจากการปัดเศษ (*)</span><select class="i" id="adjSel"><option value="auto">อัตโนมัติ — รายการที่มีราคากลางสูงสุด</option>${adjOpts}</select></label>
+    <label class="f s3"><span>อัตราร้อยละ</span><select class="i" id="pctSel"><option value="trunc2" ${S.settings.pctMode==='trunc2'?'selected':''}>ทศนิยม 2 ตำแหน่ง ตัดเศษ (ตามตัวอย่าง ว 651)</option><option value="exact" ${S.settings.pctMode==='exact'?'selected':''}>ใช้ค่าเต็ม ไม่ตัดเศษ</option></select></label>
   </div></div>
   ${r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:resultBody(p,r,b)}`;
   $('#basisSel').onchange=e=>{p.basis=e.target.value;touch(p);rResult()};
@@ -1359,17 +1363,17 @@ function rResult(){
 function resultBody(p,r,b){
   const okSum=r.total===r.T;const fixedOk=r.rows.filter(x=>x.fixed).every(x=>x.line===x.m);const noNeg=r.rows.every(x=>x.line>=0);
   const adjTxt=r.adjusted.map(x=>`รายการที่ ${x.no} (${x.frac?'ใส่เศษสตางค์':(x.dB>0?'+':'')+fmt(x.dB)+' บาท/หน่วย'})`).join(', ');
-  return `<div class="kpis">
+  return `<div class="kpis tight">
     <div class="kpi"><div class="l">ราคากลาง</div><div class="v">${fS(r.sumM)}</div></div>
     <div class="kpi"><div class="l">${esc(b.label)}</div><div class="v">${fS(r.T)}</div></div>
     <div class="kpi"><div class="l">ผลต่าง (3)</div><div class="v">${fS(r.d3)}</div></div>
     <div class="kpi hl"><div class="l">อัตราร้อยละที่ปรับลด</div><div class="v">${fmt(r.pct)}</div><div class="s">ตัวคูณ = ${(1-r.pct/100).toFixed(4)}</div></div></div>
-  <div class="card card-b calc3" style="margin-bottom:16px">
+  <div class="card card-b calc3" style="margin-bottom:14px">
     <div><h3>ราคากลางหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>${r.sumOtherFixed?`<div class="sumrow"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}<div class="sumrow tot"><span>(1)</span><b>${fS(r.d1)}</b></div></div>
     <div><h3>ราคาที่ใช้คำนวณหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>${esc(b.label)}</span><b>${fS(r.T)}</b></div><div class="sumrow"><span><u>หัก</u> รายการที่ไม่ปรับลด</span><b>${fS(r.sumF)}</b></div><div class="sumrow tot"><span>(2)</span><b>${fS(r.d2)}</b></div></div>
     <div><h3>ผลต่างและอัตราร้อยละ</h3><div class="sumrow"><span>(1)</span><b>${fS(r.d1)}</b></div><div class="sumrow"><span><u>หัก</u> (2)</span><b>${fS(r.d2)}</b></div><div class="sumrow tot"><span>(3)</span><b>${fS(r.d3)}</b></div><div class="muted" style="font-size:13px;margin-top:8px">(3) ÷ (1) × 100 = ${r.pctRaw.toFixed(6)} → ใช้ ${fmt(r.pct)}</div></div>
   </div>
-  <div class="card" style="margin-bottom:16px"><div class="card-h"><h2>ตรวจสอบความถูกต้อง</h2></div><div class="card-b"><ul class="checks">
+  <div class="card" style="margin-bottom:14px"><div class="card-h"><h2>ตรวจสอบความถูกต้อง</h2></div><div class="card-b"><ul class="checks two">
     <li><span class="ck ${okSum?'y':'n'}">${okSum?'✓':'✕'}</span><span>ผลรวมราคาที่ปรับลด ${fS(r.total)} ${okSum?'= ':'≠ '}${esc(b.label)} ${fS(r.T)}</span></li>
     <li><span class="ck ${fixedOk?'y':'n'}">${fixedOk?'✓':'✕'}</span><span>ค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์ไม่ถูกปรับลด (คงราคากลาง ${fS(r.sumF)})</span></li>
     <li><span class="ck ${r.allInt?'y':'w'}">${r.allInt?'✓':'!'}</span><span>${r.step===100?(r.allInt?'ราคาต่อหน่วยของรายการที่ปรับลดเป็นจำนวนเต็มบาททุกรายการ':'มีรายการที่ราคาต่อหน่วยไม่เป็นจำนวนเต็ม'):(r.allInt?'ยอดรวมเป็นจำนวนเต็มบาท และราคาต่อหน่วย × จำนวน = จำนวนเงินพอดีทุกรายการ':'ยอดรวมมีเศษสตางค์ หรือมีรายการที่ราคาต่อหน่วย × จำนวน ไม่ตรงพอดี')}</span></li>
