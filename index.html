@@ -1276,15 +1276,6 @@ function rNego(){
        <button class="btn sm" data-q="mid" type="button">= ราคากลาง</button><button class="btn sm" data-q="bud" type="button">= วงเงินงบประมาณ</button></div>
      <div id="tryOut"></div>
    </div></div>
-   <div class="card"><div class="card-h"><h2>บันทึกการต่อรองราคา</h2></div>
-     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ครั้งที่</th><th>วันที่</th><th class="n">ราคาที่ขอต่อรอง</th><th>ผลการตอบกลับ</th><th class="n">ราคาที่ผู้เสนอยืนยัน</th><th>หมายเหตุ</th><th></th></tr></thead>
-     <tbody id="rdBody">${p.rounds.length?p.rounds.map((r,i)=>`<tr data-rid="${r.id}"><td class="n">${i+1}</td><td><input class="i" type="date" data-r="date" value="${esc(r.date)}" style="width:150px"></td>
-       <td><input class="i r" data-r="requested" value="${fmt(r.requested)}" style="width:150px" inputmode="decimal"></td>
-       <td><select class="i" data-r="result" style="width:190px">${[['pending','รอผล'],['accept','ยินดีตามที่ขอ'],['better','ยินดีลดมากกว่าที่ขอ'],['reject','ไม่ยินดี (ยืนราคาอื่น)']].map(([k,l])=>`<option value="${k}" ${r.result===k?'selected':''}>${l}</option>`).join('')}</select></td>
-       <td><input class="i r" data-r="replyPrice" value="${r.replyPrice?fmt(r.replyPrice):''}" style="width:150px" ${r.result==='better'||r.result==='reject'?'':'disabled'} inputmode="decimal"></td>
-       <td><input class="i" data-r="note" value="${esc(r.note)}" style="min-width:160px"></td>
-       <td class="act"><button class="btn sm" data-use="${r.id}" type="button">ใช้คำนวณ</button> <button class="icon-btn del" data-rdel type="button" title="ลบ">${ICON.x}</button></td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีการต่อรอง · ตั้งราคาด้านบนแล้วกด “บันทึกเป็นการต่อรองครั้งใหม่”</td></tr>`}</tbody></table></div>
-     <div class="card-b muted" style="font-size:13px">เมื่อผู้เสนอตอบรับ ให้เลือกผล “ยินดีตามที่ขอ” หรือ “ยินดีลดมากกว่าที่ขอ” (กรอกราคาที่ยืนยัน) ระบบจะใช้ราคานั้นเป็นวงเงินตามสัญญาโดยอัตโนมัติ</div></div>
    <div class="card"><div class="card-h"><h2>หนังสือขอต่อรองราคา</h2><button class="btn blue sm" id="btnLetter" type="button">${ICON.print} พิมพ์หนังสือ + ใบขอต่อรอง</button></div><div class="card-b grid g12">
      <label class="f s4"><span>เลขที่หนังสือ (${esc(S.settings.docPrefix)}...)</span><input class="i" data-l="no" value="${esc(p.letter.no)}"></label>
      <label class="f s4"><span>ลงวันที่</span><input class="i" type="date" data-l="date" value="${esc(p.letter.date)}"></label>
@@ -1294,6 +1285,15 @@ function rNego(){
      <label class="f s12"><span>เรียน</span><input class="i" data-l="to" value="${esc(p.letter.to)}" placeholder="${esc(firmTitle(p.contractor)+' '+(p.contractor||''))}"></label>
      <div class="s12 note ${needExplain(p)?'warn':'ok'}" id="explainNote">${explainMsg(p)}</div>
    </div></div>
+   <div class="card"><div class="card-h"><h2>บันทึกการต่อรองราคา</h2></div>
+     <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ครั้งที่</th><th>วันที่</th><th class="n">ราคาที่ขอต่อรอง</th><th>ผลการตอบกลับ</th><th class="n">ราคาที่ผู้เสนอยืนยัน</th><th>หมายเหตุ</th><th></th></tr></thead>
+     <tbody id="rdBody">${p.rounds.length?p.rounds.map((r,i)=>`<tr data-rid="${r.id}"><td class="n">${i+1}</td><td><input class="i" type="date" data-r="date" value="${esc(r.date)}" style="width:150px"></td>
+       <td><input class="i r" data-r="requested" value="${fmt(r.requested)}" style="width:150px" inputmode="decimal"></td>
+       <td><select class="i" data-r="result" style="width:190px">${[['pending','รอผล'],['accept','ยินดีตามที่ขอ'],['better','ยินดีลดมากกว่าที่ขอ'],['reject','ไม่ยินดี (ยืนราคาอื่น)']].map(([k,l])=>`<option value="${k}" ${r.result===k?'selected':''}>${l}</option>`).join('')}</select></td>
+       <td><input class="i r" data-r="replyPrice" value="${r.replyPrice?fmt(r.replyPrice):''}" style="width:150px" ${r.result==='better'||r.result==='reject'?'':'disabled'} inputmode="decimal"></td>
+       <td><input class="i" data-r="note" value="${esc(r.note)}" style="min-width:160px"></td>
+       <td class="act"><button class="btn sm" data-use="${r.id}" type="button">ใช้คำนวณ</button> <button class="icon-btn del" data-rdel type="button" title="ลบ">${ICON.x}</button></td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีการต่อรอง · ตั้งราคาด้านบนแล้วกด “บันทึกเป็นการต่อรองครั้งใหม่”</td></tr>`}</tbody></table></div>
+     <div class="card-b muted" style="font-size:13px">เมื่อผู้เสนอตอบรับ ให้เลือกผล “ยินดีตามที่ขอ” หรือ “ยินดีลดมากกว่าที่ขอ” (กรอกราคาที่ยืนยัน) ระบบจะใช้ราคานั้นเป็นวงเงินตามสัญญาโดยอัตโนมัติ</div></div>
   </div>
   <aside class="card side"><div class="card-h"><h2>ขั้นตอนการต่อรอง</h2></div><div class="card-b flow" style="font-size:14px">
     <div>1. ตั้งราคาที่จะขอต่อรอง ระบบบอกทันทีว่าราคานี้ลงตัวหรือไม่</div>
