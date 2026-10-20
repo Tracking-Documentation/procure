@@ -318,7 +318,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 58 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 59 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -2108,13 +2108,14 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
   <div class="card"><div class="card-h"><h2>ผู้ลงนามและรหัสบัญชี</h2></div><div class="card-b grid g12">
     ${T('reqName','ผู้ขออนุมัติ (ชื่อ)','s6',{ph:'นายทรงฤทธิ์  ชยานันท์'})}${T('reqPos','ตำแหน่ง','s6',{ph:'ผู้อำนวยการแขวงทางหลวงกระบี่'})}
     ${A('plan','แผนงาน')}${A('proj','งาน/โครงการ')}${A('cc','ศูนย์ต้นทุน')}${A('fund','แหล่งของเงิน')}${A('act','กิจกรรมหลัก')}${A('budget','งบประมาณ')}
-    <label class="f s4"><span>สถานะงบประมาณ</span><select class="i" data-rq="budgetStatus"><option value="have" ${R.budgetStatus==='have'?'selected':''}>มีงบประมาณ</option><option value="await" ${R.budgetStatus==='await'?'selected':''}>รอเงินงบประมาณ</option></select></label>
+    <div class="f s4"><span>สถานะงบประมาณ (ติ๊กได้ 1 ช่อง)</span><div class="row" style="gap:18px;margin:6px 0 0"><label class="switch"><input type="checkbox" data-bs="have" ${R.budgetStatus==='have'?'checked':''}> มีงบประมาณ</label><label class="switch"><input type="checkbox" data-bs="await" ${R.budgetStatus==='await'?'checked':''}> รอเงินงบประมาณ</label></div></div>
     ${T('ctlName','ผู้ควบคุมงบประมาณ (ชื่อ)','s4')}${T('ctlPos','ตำแหน่ง','s4')}
     ${T('chkName','ผู้ตรวจสอบ “เห็นควรดำเนินการต่อไป” (ชื่อ)','s6')}${T('chkPos','ตำแหน่ง','s6')}
     ${T('aprName','ผู้อนุมัติ (ชื่อ · ว่างได้)','s6')}${T('aprPos','ตำแหน่ง','s6')}
   </div></div></div>`;
   $$('[data-rq]',el).forEach(i=>i.addEventListener(i.tagName==='SELECT'||i.type==='date'?'change':'input',()=>{R[i.dataset.rq]=i.dataset.rq==='evalDays'?num(i.value):i.value;touch(p)}));
   $$('[data-ra]',el).forEach(i=>i.oninput=()=>{R.acct[i.dataset.ra]=i.value;touch(p)});
+  $$('[data-bs]',el).forEach(i=>i.onchange=()=>{R.budgetStatus=i.checked?i.dataset.bs:'';$$('[data-bs]',el).forEach(o=>{if(o!==i)o.checked=false});touch(p)});
   $$('[data-est]',el).forEach(i=>i.onchange=()=>{const it=p.items.find(x=>x.id===i.dataset.est);it.est=i.value.trim()===''?'':num(i.value);touch(p);rReq()});
   $('#rqRound').onchange=e=>{R.roundTo=e.target.checked?'budget':'none';touch(p);rReq()};
   $('#rqUseMid').onclick=()=>{const rows=c.rows.filter(x=>x.mid);if(!rows.length)return toast('ยังไม่มีราคากลาง (กรอกค่างานต้นทุนใน BOQ ก่อน)');
