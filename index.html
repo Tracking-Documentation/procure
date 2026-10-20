@@ -39,7 +39,7 @@
 html,body{background:var(--bg);color:var(--ink)}
 body{font-family:var(--f-body);font-size:15px;line-height:1.5}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
-.wrap{max-width:1480px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1,h2,h3{font-family:var(--f-head);font-weight:600;text-wrap:balance;margin:0}
 button,input,select,textarea{font:inherit;color:inherit}
 .num,td.n,.tab-n{font-variant-numeric:tabular-nums}
@@ -122,6 +122,8 @@ table.t{width:100%;border-collapse:collapse;font-size:14px}
 table.t th{font-family:var(--f-head);font-weight:500;text-align:left;padding:9px 10px;background:var(--soft);border-bottom:1px solid var(--line);white-space:nowrap;font-size:13.5px}
 table.t td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 table.t td.n,table.t th.n{text-align:right;white-space:nowrap}
+table.t.dash{font-size:15.5px}table.t.dash th{font-size:14.5px;padding:11px 12px}table.t.dash td{padding:12px}table.t.dash td .muted{font-size:14px!important}
+.pager{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--line);font-size:14.5px}.pg-btns{display:flex;gap:6px;flex-wrap:wrap}.pg-btns .btn{min-width:38px}
 table.t tr.hd td{background:var(--soft);font-weight:600}
 table.t tr.adj td{background:var(--warn-bg)}
 table.t tr.fx td{color:var(--muted)}
@@ -310,7 +312,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 54 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 55 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -397,7 +399,7 @@ function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clea
 
 function newProject(){
   const c1=uid(),c2=uid(),c3=uid();
-  return {id:uid(),name:'',type:'ทาง',projectNo:'',agency:S.settings.agency,budget:0,midDeclared:0,offerPrice:0,contractor:'',
+  return {id:uid(),createdAt:nowStr(),name:'',type:'ทาง',projectNo:'',agency:S.settings.agency,budget:0,midDeclared:0,offerPrice:0,contractor:'',
     announceDate:'',contractNo:'',contractDate:'',status:'ร่าง',note:'',
     categories:[{id:c1,name:'งานก่อสร้าง',kind:'construction',factor:1},{id:c2,name:'งานครุภัณฑ์จัดซื้อ',kind:'equipment',factor:1.07},{id:c3,name:'ค่าใช้จ่ายพิเศษตามข้อกำหนด',kind:'special',factor:1}],
     items:[],rounds:[],basis:'auto',adjustPref:'auto',
@@ -568,15 +570,19 @@ function curBar(title,extra=''){const p=P();return `<div class="row" style="marg
 /* ================= dashboard ================= */
 function statusPill(s){const m={'ร่าง':'p-draft','กำลังต่อรอง':'p-nego','ตกลงราคาแล้ว':'p-ok','ลงนามสัญญาแล้ว':'p-sign'};return `<span class="pill ${m[s]||'p-draft'}">${esc(s||'ร่าง')}</span>`}
 function rDash(){
-  const el=$('#v-dash');let tm=0,tc=0,cnt=0;
+  const el=$('#v-dash');let tm=0,tc=0,cnt=0,skip=0;
   const q=(el._q||'').toLowerCase();
-  const rows=S.projects.map(p=>{const t=totals(p);const b=basisOf(p);const cp=contractPrice(p);tm+=t.sumM;const fin=cp??b.price;tc+=toS(fin);if(cp!==null)cnt++;
-    const r=compute(p,fin);return {p,t,b,fin,r,cp}});
-  const shown=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor].join(' ').toLowerCase().includes(q));
+  const rows=S.projects.map((p,ix)=>{const t=totals(p);const b=basisOf(p);const cp=contractPrice(p);const fin=cp??b.price;if(t.sumM>0&&fin>0){tm+=t.sumM;tc+=toS(fin)}else skip++;if(cp!==null)cnt++;
+    const r=compute(p,fin);return {p,t,b,fin,r,cp,ix}});
+  const key=x=>String(x.p.createdAt||x.p.updatedAt||'');
+  const found=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor].join(' ').toLowerCase().includes(q)).sort((a,b)=>key(b).localeCompare(key(a))||a.ix-b.ix);
+  const PER=5,pages=Math.max(1,Math.ceil(found.length/PER));el._pg=Math.min(Math.max(1,el._pg||1),pages);
+  const shown=found.slice((el._pg-1)*PER,el._pg*PER);
+  const pager=pages>1?`<div class="pager"><span class="muted">แสดง ${(el._pg-1)*PER+1}–${(el._pg-1)*PER+shown.length} จาก ${found.length} โครงการ</span><div class="pg-btns"><button class="btn sm" data-pg="${el._pg-1}" ${el._pg<=1?'disabled':''} type="button">‹ ก่อนหน้า</button>${Array.from({length:pages},(_,i)=>`<button class="btn sm ${i+1===el._pg?'pri':''}" data-pg="${i+1}" type="button">${i+1}</button>`).join('')}<button class="btn sm" data-pg="${el._pg+1}" ${el._pg>=pages?'disabled':''} type="button">ถัดไป ›</button></div></div>`:'';
   el.innerHTML=`${signAlertCard()}
   <div class="kpis">
     <div class="kpi hl"><div class="l">จำนวนโครงการ</div><div class="v">${S.projects.length}</div><div class="s">ได้ราคาที่ตกลงแล้ว ${cnt} โครงการ</div></div>
-    <div class="kpi"><div class="l">ราคากลางรวม (บาท)</div><div class="v">${fS(tm)}</div><div class="s">รวมค่าใช้จ่ายพิเศษและครุภัณฑ์</div></div>
+    <div class="kpi"><div class="l">ราคากลางรวม (บาท)</div><div class="v">${fS(tm)}</div><div class="s">รวมค่าใช้จ่ายพิเศษและครุภัณฑ์${skip?` · ไม่นับ ${skip} โครงการที่ยังไม่มีราคากลาง`:''}</div></div>
     <div class="kpi"><div class="l">ราคาตกลง / ราคาต่อรองล่าสุด (บาท)</div><div class="v">${fS(tc)}</div><div class="s">ใช้ราคาที่ตกลงก่อน ถ้ายังไม่มีใช้ราคาต่อรองล่าสุด</div></div>
     <div class="kpi"><div class="l">ต่ำกว่าราคากลาง (บาท)</div><div class="v">${fS(tm-tc)}</div><div class="s">คิดเป็น ${tm?fmt((tm-tc)/tm*100):'0.00'}% ของราคากลาง</div></div>
   </div>
@@ -585,7 +591,7 @@ function rDash(){
       <input class="i" id="dashQ" type="search" name="boq-project-search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="ค้นหาชื่อโครงการ / เลขที่โครงการ / ผู้รับจ้าง" value="${esc(el._q||'')}" style="max-width:340px">
       <button class="btn ghost-brand" data-act="sample" type="button">โหลดตัวอย่าง</button>
       <button class="btn pri" data-act="new" type="button">+ สร้างโครงการใหม่</button></div>
-    <div class="tbl-wrap"><table class="t">
+    <div class="tbl-wrap"><table class="t dash">
       <thead><tr><th>โครงการ</th><th class="n">วงเงินงบประมาณ</th><th class="n">ราคากลาง</th><th class="n">ราคาเสนอ</th><th class="n">ราคาตกลง/ต่อรอง</th><th class="n">% ปรับลด</th><th>สถานะ</th><th>ปรับปรุงล่าสุด</th><th class="n">จัดการ</th></tr></thead>
       <tbody>${shown.length?shown.map(({p,t,fin,r,cp})=>`<tr>
         <td style="min-width:280px"><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')} · ${esc(p.contractor||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div></td>
@@ -593,10 +599,11 @@ function rDash(){
         <td class="n"><b>${fmt(fin)}</b><div class="muted" style="font-size:12px">${cp!==null?'ราคาที่ตกลง':'ต่อรองล่าสุด'}</div></td>
         <td class="n">${r.errors.length?'-':fmt(r.pct)}</td><td>${statusPill(p.status)}${meetingConflicts(p).length?' <span class="pill p-nego" title="เวลาประชุมชนกับโครงการอื่น">⚠ เวลาประชุมชน</span>':''}</td><td class="muted" style="white-space:nowrap">${esc(p.updatedAt||'')}</td>
         <td class="n" style="white-space:nowrap"><button class="icon-btn" title="แก้ไข" data-edit="${p.id}" type="button">${ICON.pen}</button> <button class="icon-btn" title="รายงาน" data-print="${p.id}" type="button">${ICON.print}</button> <button class="icon-btn" title="ทำสำเนา" data-dup="${p.id}" type="button">${ICON.copy}</button> <button class="icon-btn del" title="ลบ" data-del="${p.id}" type="button">${ICON.trash}</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">${q&&S.projects.length?`ไม่พบโครงการที่ตรงกับคำค้น “${esc(el._q)}” (มีทั้งหมด ${S.projects.length} โครงการ) <button class="btn sm" id="dashClear" type="button">ล้างคำค้นหา</button>`:'ยังไม่มีโครงการ'}</td></tr>`}</tbody>
-    </table></div>
+    </table></div>${pager}
   </div>`;
-  {const dc=$('#dashClear');if(dc)dc.onclick=()=>{el._q='';rDash()}}
-  const qi=$('#dashQ');setTimeout(()=>{if(qi.value!==(el._q||'')){qi.value=el._q||''}},300);qi.oninput=()=>{el._q=qi.value;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
+  {const dc=$('#dashClear');if(dc)dc.onclick=()=>{el._q='';el._pg=1;rDash()}}
+  $$('[data-pg]',el).forEach(b=>b.onclick=()=>{el._pg=+b.dataset.pg;rDash();el.querySelector('.card:has(.t.dash)')?.scrollIntoView({block:'start',behavior:'smooth'})});
+  const qi=$('#dashQ');setTimeout(()=>{if(qi.value!==(el._q||'')){qi.value=el._q||''}},300);qi.oninput=()=>{el._q=qi.value;el._pg=1;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
 }
 document.addEventListener('click',e=>{
   const bs=e.target.closest('[data-booksync]');if(bs){bs.disabled=true;fetchBookings(null).then(j=>{toast('ดึงข้อมูลการจองแล้ว '+(j.bookings||[]).filter(x=>x.status!=='ยกเลิก').length+' รายการ');render()}).catch(er=>{bs.disabled=false;alert(er.message)});return}
@@ -604,7 +611,7 @@ document.addEventListener('click',e=>{
   const t=e.target.closest('[data-act],[data-open],[data-edit],[data-print],[data-dup],[data-del]');if(!t)return;
   if(t.dataset.open||t.dataset.edit){e.preventDefault();cur=t.dataset.open||t.dataset.edit;save();go('edit')}
   else if(t.dataset.print){cur=t.dataset.print;save();go('report')}
-  else if(t.dataset.dup){const s=S.projects.find(p=>p.id===t.dataset.dup);const c=structuredClone(s);c.id=uid();c.name=s.name+' (สำเนา)';c.updatedAt=nowStr();S.projects.unshift(c);save();rDash();toast('ทำสำเนาแล้ว')}
+  else if(t.dataset.dup){const s=S.projects.find(p=>p.id===t.dataset.dup);const c=structuredClone(s);c.id=uid();c.name=s.name+' (สำเนา)';c.updatedAt=nowStr();c.createdAt=nowStr();S.projects.unshift(c);save();rDash();toast('ทำสำเนาแล้ว')}
   else if(t.dataset.del){const s=S.projects.find(p=>p.id===t.dataset.del);confirmBox(`ลบโครงการ “${s.name||'(ยังไม่ตั้งชื่อ)'}” ? ลบแล้วกู้คืนไม่ได้ (ยกเว้นมีไฟล์สำรอง)`,'ลบโครงการ',()=>{S.projects=S.projects.filter(p=>p.id!==s.id);if(cur===s.id)cur=S.projects[0]?.id||null;save();rDash();toast('ลบแล้ว')})}
   else if(t.dataset.act==='new'){const p=newProject();S.projects.unshift(p);cur=p.id;save();go('edit')}
   else if(t.dataset.act==='sample'){const p=sampleProject();S.projects.unshift(p);cur=p.id;save();go('edit');toast('โหลดตัวอย่างแล้ว')}
