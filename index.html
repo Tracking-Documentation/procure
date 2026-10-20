@@ -215,6 +215,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
+@page{size:A4;margin:0}
 @page land{size:A4 landscape;margin:0}
 .paper.ev{width:210mm;min-height:297mm;padding:15mm 20mm 15mm 30mm;font-family:var(--lf);font-size:var(--ls);line-height:1.38;box-sizing:border-box}
 .ev p{margin:0}.ev .pi{text-indent:25mm;text-align:justify}
@@ -317,7 +318,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 57 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 58 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1416,7 +1417,7 @@ function rReport(){
      <span class="sp"></span><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div>
      <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>${reportSel==='eval'?evalPicker(p):''}
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
-     <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
+     <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากระดาษมีวันที่/ชื่อเว็บที่หัวหรือท้ายหน้า: ในหน้าต่างพิมพ์ กด “การตั้งค่าเพิ่มเติม” แล้วเอาเครื่องหมายออกจาก “ส่วนหัวและส่วนท้าย” และตั้ง “ระยะขอบ” เป็น “ค่าเริ่มต้น” (ตั้งครั้งเดียว Chrome จะจำไว้) · ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   ${wordPanel(p)}
   <div class="paper-wrap" id="printArea">${reportSel==='req'?repReq(p):(reportSel==='all'?repReq(p):'')+(r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
     (['nego','all'].includes(reportSel)?repNego(p,r,b):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(reportSel==='pack'?repNego(p,r,b):'')+(['notice','all'].includes(reportSel)?repNotice(p):'')+(['eval','all'].includes(reportSel)?repEval(p):'')+(['mid','all'].includes(reportSel)?repMid(p,r,b):'')+(['sign','all'].includes(reportSel)?repSign(p):'')+(['contract','all'].includes(reportSel)?repContract(p,r,b):'')+(['cert','all'].includes(reportSel)?repCertAll(p):''))}</div>`;
@@ -1902,7 +1903,7 @@ function fitPrint(){const mm=96/25.4;$$('#printArea .paper.nego').forEach(el=>{e
   const W=190,H=297-20-8;const ow=el.style.width,op=el.style.padding;el.style.width=W+'mm';el.style.padding='0';
   const h=el.scrollHeight/mm;el.style.width=ow;el.style.padding=op;if(h>H&&H/h>=0.8)el.style.zoom=(H/h).toFixed(3)})}
 function unfitPrint(){$$('#printArea .paper.nego').forEach(el=>el.style.zoom='')}
-addEventListener('beforeprint',fitPrint);addEventListener('afterprint',unfitPrint);
+let _docTitle='';addEventListener('beforeprint',()=>{_docTitle=document.title;document.title=' ';fitPrint()});addEventListener('afterprint',()=>{if(_docTitle)document.title=_docTitle;unfitPrint()});
 /* ================= บัญชีผู้ใช้ + ข้อมูลกลาง (Google Apps Script) ================= */
 function srvUrl(){let v='';try{v=localStorage.getItem(SRVK)||''}catch(e){}return String(v||SRV_BAKED||'').trim()}
 function central(){return !!srvUrl()}
