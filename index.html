@@ -244,6 +244,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper.rq{font-family:var(--lf);font-size:var(--ls);line-height:1.35;padding:12mm 12mm 12mm 15mm;box-sizing:border-box}.rq table.rqt,.rq table.rqa{font-size:.875em}.rq p{margin:0}.rq .ind{text-indent:12mm}.rq .rqh{display:flex;justify-content:space-between}
 .rq .rqtop{position:relative;min-height:22mm;margin-bottom:2mm}.rq .rqdoh{text-align:center;font-size:1.25em;font-weight:700;line-height:1.3;padding-top:5mm}.rq .rqform{position:absolute;right:0;top:0;font-size:.875em;line-height:1.3;text-align:left}
 .rq table.rqt td{padding:1px 4px}.rq table.rqt td:nth-child(4){overflow-wrap:anywhere}.rq table.rqa{margin-top:4mm}.rq table.rqa td,.rq table.rqa th{border:1px solid var(--paper-line)}
+.rq .rqsg{display:inline-block;text-align:left;white-space:nowrap}.rq .rqsg .c{text-align:center}
 .rq .rqs{display:grid;grid-template-columns:1fr 1fr;gap:8mm;text-align:center;margin-top:6mm;break-inside:avoid;line-height:1.7}
 .paper.nego table.pt td{padding:1px 5px}.paper.nego .sig{margin-top:16mm}.paper.nego .rem{margin-top:6px}
 /* official letter (หนังสือภายนอก) — positions measured from the paper's left edge */
@@ -318,7 +319,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 59 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 60 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -2125,6 +2126,7 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
 }
 function repReq(p){const c=reqCalc(p),R=c.R;const title=String(R.title||p.name||'').split('\n').filter(Boolean);const ck=b=>b?'☑':'☐';
   const dots=(v,n=6)=>'.'.repeat(n)+esc(v||'')+'.'.repeat(n);
+  const sg=(name,pos,extra='')=>`<div class="rqsg"><div>(ลงนาม).............................................</div><div class="c">(${esc(name)||'..............................................'})</div><div>ตำแหน่ง&nbsp;&nbsp; ${esc(pos)||'..............................................'}</div>${extra}</div>`;
   const F=letterFont();
   return `<div class="paper rq${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
    <div class="rqtop"><div class="rqdoh">กรมทางหลวง</div><div class="rqform">พ.1-01<br>กรมทางหลวง<br>เริ่มใช้ 19 ธค.2545</div></div>
@@ -2143,12 +2145,12 @@ function repReq(p){const c=reqCalc(p),R=c.R;const title=String(R.title||p.name||
     ${R.roundTo==='budget'?`<tr><td></td><td></td><td></td><td>ปรับยอด</td><td></td><td></td><td></td><td class="n">${fmt(c.adj)}</td></tr><tr class="tot"><td></td><td></td><td></td><td>รวมเป็นเงินทั้งสิ้น</td><td></td><td></td><td></td><td class="n">${fmt(c.grand)}</td></tr>`:''}
    </tbody></table>
    <p>รวม.........................-${c.rows.length}-...........................รายการ&nbsp;&nbsp;&nbsp;&nbsp; เป็นเงิน................${fmt(c.grand)}............บาท</p>
-   <div class="rqs"><div>(ลงนาม)...............................................................<br>(${esc(R.reqName||'...............................................')})<br>ตำแหน่ง&nbsp;&nbsp; ${esc(R.reqPos)}</div><div></div></div>
+   <div class="rqs"><div>${sg(R.reqName,R.reqPos)}</div><div></div></div>
    <table class="pt rqa"><tbody><tr><td colspan="6" style="border-bottom:0">รหัสบัญชี</td></tr><tr><th>แผนงาน</th><th>งาน/โครงการ</th><th>ศูนย์ต้นทุน</th><th>แหล่งของเงิน</th><th>กิจกรรมหลัก</th><th>งบประมาณ</th></tr>
     <tr>${['plan','proj','cc','fund','act','budget'].map(k=>`<td class="ct" style="height:9mm">${esc(R.acct[k])}</td>`).join('')}</tr></tbody></table>
    <div class="rqs"><div style="text-align:left;padding-left:6mm">${ck(R.budgetStatus==='have')} มีงบประมาณ&nbsp;&nbsp;&nbsp;&nbsp; ${ck(R.budgetStatus==='await')} รอเงินงบประมาณ</div><div>ตรวจสอบ&nbsp;&nbsp; เห็นควรดำเนินการต่อไป</div></div>
-   <div class="rqs"><div>(ลงนาม).............................................<br>(${esc(R.ctlName||'.............................................')})<br>ตำแหน่ง&nbsp;&nbsp; ${esc(R.ctlPos)}<br>${esc(R.ctlRole)}</div><div>(ลงนาม).............................................<br>(${esc(R.chkName||'.............................................')})<br>ตำแหน่ง&nbsp;&nbsp; ${esc(R.chkPos)}</div></div>
-   <div class="rqs"><div>อนุมัติให้ดำเนินการได้<br><br>(ลงนาม).............................................<br>${R.aprName?'('+esc(R.aprName)+')<br>':''}${R.aprPos?'ตำแหน่ง&nbsp;&nbsp; '+esc(R.aprPos):''}</div><div></div></div>
+   <div class="rqs"><div>${sg(R.ctlName,R.ctlPos,R.ctlRole?`<div class="c">${esc(R.ctlRole)}</div>`:'')}</div><div>${sg(R.chkName,R.chkPos)}</div></div>
+   <div class="rqs"><div><div class="rqsg"><div class="c" style="margin-bottom:4mm">อนุมัติให้ดำเนินการได้</div></div><br>${sg(R.aprName,R.aprPos)}</div><div></div></div>
   </div>`}
 
 /* ---------- นำเข้าไฟล์ 4033 (.xls / .xlsx) ---------- */
