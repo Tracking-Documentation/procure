@@ -328,6 +328,7 @@ body.exec .hdr{padding-bottom:12px}
 
 <main class="wrap">
   <section class="view" id="v-dash"></section>
+  <section class="view" id="v-prep" hidden></section>
   <section class="view" id="v-req" hidden></section>
   <section class="view" id="v-orders" hidden></section>
   <section class="view" id="v-edit" hidden></section>
@@ -590,11 +591,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['prep','ขั้นเตรียมการ','check'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p)});({cal:rCal,dash:rDash,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
+function render(){S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p)});({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -664,7 +665,7 @@ function rEdit(){
   const el=$('#v-edit');if(needProject(el))return;const p=P();
   el.innerHTML=`${curBar('กำลังแก้ไข',`<button class="btn" data-goto="result" type="button">${ICON.calc} ดูผลคำนวณ</button><button class="btn pri" id="btnSave" type="button">บันทึก</button>`)}
   <div class="two"><div class="grid" style="gap:18px;min-width:0">
-   ${prepCard(p)}
+   ${prepMini(p)}
    ${p.legacy?`<div class="note" style="margin:0">ข้อมูลจากระบบติดตามเดิม · รหัส ${esc(p.legacy.id||'-')} · หน่วย ${esc(p.legacy.unit||'-')} · กม. ${esc(p.legacy.km||'-')}${p.legacy.assign?' · ผู้รับผิดชอบ '+esc(Object.entries(p.legacy.assign).map(([k,v])=>k+' ('+v+')').join(', ')):''}${p.legacy.committees?' · มีรายชื่อกรรมการ '+esc(Object.keys(p.legacy.committees).map(k=>({tor:'TOR',price:'ราคากลาง',result:'พิจารณาผล'})[k]).join('/')):''}</div>`:''}
    <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
@@ -688,7 +689,6 @@ function rEdit(){
   </div>
   <aside class="card side" id="sideSum"></aside></div>`;
   // bind fields
-  bindPrep(el,p);
   $$('[data-f]',el).forEach(inp=>{
     inp.addEventListener('input',()=>{const k=inp.dataset.f;p[k]=inp.hasAttribute('data-money')?num(inp.value):inp.value;touch(p);sideSum()});
     if(inp.hasAttribute('data-money'))inp.addEventListener('blur',()=>{inp.value=num(inp.value)?fmt(num(inp.value)):''});
@@ -2471,10 +2471,10 @@ function ordTplDialog(){if(!canEdit())return toast('บัญชีนี้ด�
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=()=>{keep();save();m.close();rOrders();toast('บันทึกข้อความคำสั่งแล้ว · ใช้กับทุกโครงการ')};fill()}
 
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
-const STEPS={req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
+const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
 const stepUnl=new Set();
 function stepHasData(p,t){const has=o=>!!o&&Object.values(o).some(v=>v!==''&&v!=null&&!(Array.isArray(v)&&!v.length)&&!(typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length));
-  switch(t){case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
+  switch(t){case 'prep':return has(p.prep)||!!(p.midApproveDate||p.torStart||p.torEnd);case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
     case 'nego':case 'result':return !!(p.rounds||[]).length;case 'sign':return has(p.sign);case 'cert':return has(p.cert);}return false}
 function ensureSaved(p){if(p&&p.saved===undefined){p.saved={};for(const t in STEPS)if(stepHasData(p,t))p.saved[t]=true}}
 function stepLocked(t){const p=P();return !!(p&&STEPS[t]&&canEdit()&&p.saved&&p.saved[t]&&!stepUnl.has(p.id+':'+t))}
@@ -2494,7 +2494,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='#rqGoBoq,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
@@ -2509,7 +2509,7 @@ function execBidCard(){const L=S.projects.filter(p=>(p.bidders||[]).length).sort
       </tbody></table></div></details>`}).join('')}</div></div>`}
 rCal=(o=>function(){o.apply(this,arguments);if(EXEC){const el=$('#v-cal');el.insertAdjacentHTML('afterbegin',overviewCard()+signAlertCard());el.insertAdjacentHTML('beforeend',execBidCard())}})(rCal);
 if(EXEC){document.body.classList.add('exec');const h=$('.hdr .ttl h1');if(h)h.insertAdjacentHTML('beforeend',' <span class="exec-chip">มุมมองผู้บริหาร</span>');document.title='ปฏิทินจัดซื้อจัดจ้าง (ผู้บริหาร)'}
-rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rOrders=(o=>function(){o.apply(this,arguments);stepBar()})(rOrders);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
+rPrep=(o=>function(){o.apply(this,arguments);stepBar()})(rPrep);rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rOrders=(o=>function(){o.apply(this,arguments);stepBar()})(rOrders);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
 rNego=(o=>function(){o.apply(this,arguments);stepBar()})(rNego);rResult=(o=>function(){o.apply(this,arguments);stepBar()})(rResult);rSignTab=(o=>function(){o.apply(this,arguments);stepBar()})(rSignTab);rCert=(o=>function(){o.apply(this,arguments);stepBar()})(rCert);
 
 /* ================= สรุปภาพรวมตามขั้นตอน (แดชบอร์ด + ผู้บริหาร) ================= */
@@ -2558,18 +2558,25 @@ function prepCard(p){const R=prepOf(p);const sug=authSuggest(p);const au=R.autho
    <div class="s12 pstep"><b>4. อนุมัติราคากลาง / ร่าง TOR</b></div>
    ${F('midApproveDate','อนุมัติราคากลางวันที่',{cls:'s4',type:'date'})}${F('torStart','ระยะเวลาร่าง TOR ตั้งแต่วันที่',{cls:'s4',type:'date'})}${F('torEnd','ถึงวันที่',{cls:'s4',type:'date'})}
   </div></div>`}
+function prepMini(p){const R=prepOf(p);const d=x=>x?thDate(x):'-';
+  const ok=[!!(R.approveNo||R.approveDate),!!R.plan,!!R.draft,!!p.midApproveDate].filter(Boolean).length;
+  return `<div class="note" style="margin:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span><b>ขั้นเตรียมการ</b> ${ok}/4 · เห็นชอบ ${esc(R.approveNo||'-')} ${R.approveDate?'ลว. '+esc(d(R.approveDate)):''} · แบบ ${R.plan?'✓':'—'} · ร่างขออนุมัติประกาศ ${R.draft?'✓':'—'} (${(R.authority||authSuggest(p))==='region'?'อำนาจเขต':'อำนาจแขวง'}) · อนุมัติราคากลาง ${esc(d(p.midApproveDate))}</span><button class="btn sm" data-goto="prep" type="button" style="margin-left:auto">แก้ที่แท็บขั้นเตรียมการ →</button></div>`}
+function rPrep(){const el=$('#v-prep');if(needProject(el))return;const p=P();
+  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}${prepCard(p)}`;
+  bindPrep(el,p);
+  $$('[data-f]',el).forEach(inp=>inp.addEventListener(inp.type==='date'?'change':'input',()=>{p[inp.dataset.f]=inp.value;touch(p)}))}
 function bindPrep(el,p){const R=prepOf(p);
   $$('[data-pp]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{R[i.dataset.pp]=i.value;touch(p)}));
   $$('[data-pc]',el).forEach(i=>i.onchange=()=>{R[i.dataset.pc]=i.checked;touch(p)});
-  $$('[data-pa]',el).forEach(i=>i.onchange=()=>{if(i.checked){R.authority=i.dataset.pa;touch(p);rEdit()}});
+  $$('[data-pa]',el).forEach(i=>i.onchange=()=>{if(i.checked){R.authority=i.dataset.pa;touch(p);render()}});
   $$('[data-fup]',el).forEach(b=>b.onclick=()=>{const key=b.dataset.fup;const f=document.createElement('input');f.type='file';f.multiple=true;f.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.dwg,.zip';
     f.onchange=async()=>{const files=[...f.files];if(!files.length)return;if(!central())return alert('แนบไฟล์ได้เมื่อใช้ระบบกลาง (เข้าสู่ระบบ)');
       b.disabled=true;let n=0;for(const file of files){try{if(file.size>10*1024*1024)throw new Error(file.name+' ใหญ่เกิน 10 MB');toast(`กำลังอัปโหลด ${file.name}…`);
         const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]||'');r.onerror=no;r.readAsDataURL(file)});
         const j=await srvCall({action:'files.upload',projectId:p.projectNo||p.id,label:key==='planFiles'?'แบบ':'หนังสือเห็นชอบ',name:file.name,mime:file.type,b64});
         R[key]=(R[key]||[]).concat([j.file]);if(key==='planFiles')R.plan=true;n++;touch(p)}catch(e){alert(/ไม่รู้จักคำสั่ง|ตอบกลับไม่ถูกต้อง/.test(e.message)?'เซิร์ฟเวอร์ยังไม่รองรับการแนบไฟล์ — ต้องอัปเดต Code.gs และ Deploy เป็น New version ก่อน':e.message)}}
-      b.disabled=false;if(n)toast(`แนบแล้ว ${n} ไฟล์`);rEdit()};f.click()});
-  $$('[data-fdel]',el).forEach(b=>b.onclick=()=>{const [k,i]=b.dataset.fdel.split(':');const f=R[k][+i];confirmBox(`เอาไฟล์ “${f.name}” ออกจากโครงการ? (ไฟล์ยังเก็บอยู่ใน Google Drive)`,'เอาออก',()=>{R[k].splice(+i,1);touch(p);rEdit()})})}
+      b.disabled=false;if(n)toast(`แนบแล้ว ${n} ไฟล์`);render()};f.click()});
+  $$('[data-fdel]',el).forEach(b=>b.onclick=()=>{const [k,i]=b.dataset.fdel.split(':');const f=R[k][+i];confirmBox(`เอาไฟล์ “${f.name}” ออกจากโครงการ? (ไฟล์ยังเก็บอยู่ใน Google Drive)`,'เอาออก',()=>{R[k].splice(+i,1);touch(p);render()})})}
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-fview]');if(!b)return;e.preventDefault();
   const w=window.open('','_blank');if(w)w.document.write('<p style="font-family:sans-serif">กำลังเปิดไฟล์…</p>');
   try{const j=await srvCall({action:'files.get',id:b.dataset.fview});const bin=atob(j.b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
