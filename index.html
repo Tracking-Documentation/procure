@@ -424,7 +424,7 @@ function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.pars
   if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
 let saveT=null;
 function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}if(typeof syncSoon==='function')syncSoon()},250)}
-function P(){const p=S.projects.find(p=>p.id===cur);if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
+function P(){const p=S.projects.find(p=>p.id===cur);if(p&&!Array.isArray(p.bidders))p.bidders=[];if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
 function touch(p){p.updatedAt=nowStr();save()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
 
@@ -951,7 +951,7 @@ function cmpLines(p){const fp=num(finalPrice(p)),bud=num(p.budget),mid=num(p.mid
   return `<div class="ind1">- ต่ำกว่าวงเงินงบประมาณ (${f(bud)} – ${f(fp)}) = ${f(bud-fp)} บาท หรือ ${fmt(bud?(bud-fp)/bud*100:0)}%</div><div class="ind1">- ต่ำกว่าราคากลาง (${f(mid)} – ${f(fp)}) = ${f(r2(mid-fp))} บาท หรือ ${fmt(mid?(mid-fp)/mid*100:0)}%</div>`}
 
 /* ---------- page ---------- */
-function rEval(){
+function rEval(){const PL=peopleAll();
   const el=$('#v-eval');if(needProject(el))return;const p=P();const e=evOf(p);const ranked=bidRank(p);const w=bidWinner(p);
   const dl=evDeadline(p),dd=evDoneDate(p),ext=needExtend(p);
   const F2=(path,label,type='text',cls='s4',ph='')=>{const v=path.split('.').reduce((o,k)=>o?.[k],e)??'';return `<label class="f ${cls}"><span>${label}</span><input class="i" type="${type}" data-ev="${path}" value="${esc(v)}" placeholder="${esc(ph)}"></label>`};
@@ -968,8 +968,8 @@ function rEval(){
    </div></div>
    <div class="card"><div class="card-h"><h2><span class="step">2</span>คณะกรรมการพิจารณาผล</h2><button class="btn ghost-brand sm" id="cmAdd" type="button">+ เพิ่มกรรมการ</button></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>#</th><th>ชื่อ-สกุล (ไม่ต้องใส่วงเล็บ)</th><th>ตำแหน่ง</th><th>หน้าที่ในคณะกรรมการ</th><th>ผู้จดรายงานการประชุม</th><th>ประชุมครั้งที่ 1 ไม่มา (เหตุ)</th><th>ประชุมครั้งที่ 2 ไม่มา (เหตุ)</th><th></th></tr></thead>
-     <tbody id="cmBody">${p.committee.map((m,i)=>`<tr data-cm="${i}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(m.name)}" placeholder="นายสมชาย ใจดี"></td><td><input class="i" data-c="position" value="${esc(m.position)}" style="min-width:260px"></td>
-       <td><select class="i" data-c="role">${['ประธานกรรมการฯ','กรรมการฯ','กรรมการและเลขานุการ'].map(r=>`<option ${m.role===r?'selected':''}>${r}</option>`).join('')}</select></td>
+     <tbody id="cmBody">${p.committee.map((m,i)=>`<tr data-cm="${i}"><td class="n">${i+1}</td><td>${personSel('data-c="name"',m.name,PL)}</td><td><input class="i" data-c="position" value="${esc(m.position)}" style="min-width:260px"></td>
+       <td><select class="i" data-c="role">${CM_ROLES.map(r=>`<option ${rNorm(m.role)===rNorm(r)?'selected':''}>${r}</option>`).join('')}</select></td>
        <td style="text-align:center"><input type="radio" name="sec" data-sec="${i}" ${e.secretary===i?'checked':''}></td>
        <td><input class="i" data-abs1="${i}" value="${esc(e.m1.absent[i]||'')}" placeholder="ว่าง = มาประชุม" style="width:170px"></td><td><input class="i" data-abs="${i}" value="${esc(e.m2.absent[i]||'')}" placeholder="ว่าง = มาประชุม" style="width:170px"></td>
        <td><button class="icon-btn del" data-cmdel type="button">${ICON.x}</button></td></tr>`).join('')}</tbody></table></div></div>
@@ -1005,9 +1005,10 @@ function rEval(){
   $('#cmAdd').onclick=()=>{p.committee.push({name:'',position:'',role:'กรรมการฯ'});touch(p);rEval()};
   const cb=$('#cmBody');
   cb.oninput=ev=>{const tr=ev.target.closest('[data-cm]');if(!tr)return;const i=+tr.dataset.cm,t=ev.target;
-    if(t.dataset.c){p.committee[i][t.dataset.c]=t.value}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}else if(t.dataset.abs1!==undefined){if(t.value.trim())e.m1.absent[i]=t.value;else delete e.m1.absent[i]}touch(p)};
+    if(t.dataset.c){if(personSwap(t))return;if(t.tagName==='SELECT'&&ev.type==='input'&&t.dataset.c==='name')return;p.committee[i][t.dataset.c]=t.value;
+      if(t.dataset.c==='name'){const hit=PL.find(x=>x.name===t.value.trim());if(hit&&(t.tagName==='SELECT'||!p.committee[i].position)){p.committee[i].position=hit.position;const pi=tr.querySelector('[data-c="position"]');if(pi)pi.value=hit.position}}}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}else if(t.dataset.abs1!==undefined){if(t.value.trim())e.m1.absent[i]=t.value;else delete e.m1.absent[i]}touch(p)};
   cb.onchange=cb.oninput;
-  cb.onclick=ev=>{if(!ev.target.closest('[data-cmdel]'))return;const i=+ev.target.closest('[data-cm]').dataset.cm;p.committee.splice(i,1);for(const mm of [e.m1,e.m2]){const ab={};Object.entries(mm.absent||{}).forEach(([k,v])=>{k=+k;if(k<i)ab[k]=v;else if(k>i)ab[k-1]=v});mm.absent=ab}if(e.secretary>=p.committee.length)e.secretary=0;touch(p);rEval()};
+  cb.onclick=ev=>{if(!ev.target.closest('[data-cmdel]'))return;const i=+ev.target.closest('[data-cm]').dataset.cm;cmRemove(p,i);touch(p);rEval()};
   const bk=$('#bkBody');
   bk.oninput=ev=>{const tr=ev.target.closest('[data-bk]');if(!tr)return;const b=p.bidders.find(x=>x.id===tr.dataset.bk);const k=ev.target.dataset.k;
     b[k]=k==='netOk'?ev.target.value==='1':ev.target.value;touch(p)};
@@ -1022,6 +1023,7 @@ function memoHead(sec,subject,to){const st=S.settings;return `<div class="mh"><i
   <div class="ml"><b>ส่วนราชการ</b><span class="dl">${sec}</span></div>
   <div class="ml two"><div class="ml"><b>ที่</b><span class="dl">-</span></div><div class="ml"><b>วันที่</b><span class="dl">${dayBlank()}</span></div></div>
   <div class="ml"><b>เรื่อง</b><span class="dl">${subject}</span></div><div class="to">เรียน ${esc(to)}</div>`}
+function cmRemove(p,i){const e=evOf(p);p.committee.splice(i,1);for(const mm of [e.m1,e.m2]){const ab={};Object.entries(mm.absent||{}).forEach(([k,v])=>{k=+k;if(k<i)ab[k]=v;else if(k>i)ab[k-1]=v});mm.absent=ab}if(e.secretary>=p.committee.length)e.secretary=0}
 function cmSigList(p,{title=true}={}){return `<div class="cms">${p.committee.map(m=>`<div class="cm1"><div>(ลงชื่อ)......................................................${esc(m.role==='ประธานกรรมการฯ'?(title?'ประธานกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์':'ประธานกรรมการฯ'):m.role)}</div><div class="nm">(${esc(m.name||'......................................................')})</div></div>`).join('')}</div>`}
 function chairOf(p){return p.committee.find(m=>m.role==='ประธานกรรมการฯ')||p.committee[0]||{name:''}}
 function projTitle(p){return esc(p.name)}
@@ -2291,7 +2293,14 @@ function ordNo(c){return c.no||('สทล.๑๗ ขท.กระบี่.๑/
 function ordDate(iso){return iso?thDate(iso):'……………………………'}
 function ordCode(p){return (p.legacy&&p.legacy.id)||p.projectNo||'-'}
 function ordBudget(p){return `${fmt(p.budget)} บาท (${bahtText(p.budget)})`}
-function ordText(p,k){const d=esc(p.name||'-'),b=esc(ordBudget(p)),c=esc(ordCode(p));
+const ORD_PH={'{ชื่อโครงการ}':p=>p.name||'-','{วงเงิน}':p=>ordBudget(p),'{รหัสงาน}':p=>ordCode(p)};
+/* ข้อความคำสั่ง: ใช้ที่แก้ไว้ใน S.settings.ordTpl ถ้ามี ไม่งั้นใช้ข้อความตามเทมเพลตเดิม */
+function ordTplDef(k){const T=ordTextBase('{ชื่อโครงการ}','{วงเงิน}','{รหัสงาน}',k);const tx=a=>a.map(x=>typeof x==='string'?x:'## '+x.h).join('\n\n');return {subj:T.subj,pre:tx(T.pre),post:tx(T.post)}}
+function ordTpl(k){const u=S.settings.ordTpl&&S.settings.ordTpl[k];return u&&u.subj!=null?u:ordTplDef(k)}
+function ordText(p,k){const t=ordTpl(k);const sub=x=>{let h=esc(x);for(const ph in ORD_PH)h=h.split(esc(ph)).join(esc(ORD_PH[ph](p)));return h};
+  const pa=x=>String(x||'').split(/\n/).map(l=>l.trim()).filter(Boolean).map(l=>/^##\s*/.test(l)?{h:l.replace(/^##\s*/,'')}:sub(l));
+  return {subj:t.subj,pre:pa(t.pre),post:pa(t.post)}}
+function ordTextBase(d,b,c,k){
   if(k==='inspect')return {subj:'แต่งตั้งคณะกรรมการตรวจรับพัสดุและผู้ควบคุมงาน',pre:[`ด้วยแขวงทางหลวงกระบี่ มีความประสงค์จะดำเนินการจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c}`,'จึงขอแต่งตั้งคณะกรรมการตรวจรับพัสดุและผู้ควบคุมงานดังนี้.-'],
     post:['ให้คณะกรรมการฯ ที่ได้รับการแต่งตั้งถือปฏิบัติตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๑๗๖ และข้อ ๑๗๘ โดยเคร่งครัด']};
   if(k==='tor')return {subj:'แต่งตั้งคณะกรรมการจัดทำแบบรูปรายการงานก่อสร้าง',pre:[`ด้วยแขวงทางหลวงกระบี่ มีความประสงค์จะประกวดราคาจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c}`,'เพื่อให้เป็นไปตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ จึงขอแต่งตั้งรายชื่อต่อไปนี้เป็นคณะกรรมการจัดทำแบบรูปรายการงานก่อสร้างประกอบด้วย'],
@@ -2301,7 +2310,6 @@ function ordText(p,k){const d=esc(p.name||'-'),b=esc(ordBudget(p)),c=esc(ordCode
   return {subj:'แต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',pre:['ตามระเบียบกระทรวงการคลังว่าด้วยจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๕๕, ข้อ ๕๖ และข้อ ๕๗ และคำสั่งกรมทางหลวง ที่ บ.๑/๑๒๔/๒๕๖๐ มอบอำนาจให้หัวหน้าส่วนราชการที่ดำเนินการจัดหาพัสดุด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) มีอำนาจในการแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',`จึงแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c} โดยมีองค์ประกอบและหน้าที่ดังนี้.-`,{h:'๑. องค์ประกอบ'}],
     post:[{h:'๒. หน้าที่'},'ดำเนินการตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๕๕ ข้อ ๕๖ ข้อ ๕๗ และข้อ ๕๘ ทั้งนี้ให้คณะกรรมการฯ ดำเนินการให้แล้วเสร็จภายใน ๕ วันทำการ นับถัดจากวันเสนอราคา']}}
 const fName=n=>String(n||'').trim().replace(/\s+/g,'  ');
-function drafterBlock(O){const dr=O.drafter||(me()&&me().name)||'';return `<div class="odr">${esc(dr||'..........')}/ร่าง/ทาน<br>${esc(O.typist||dr||'..........')}/พิมพ์<br>....../ตรวจ</div>`}
 function repOrder(p,k){const O=ordersOf(p),c=k==='result'?O.result:O[k],T=ordText(p,k),F=letterFont(),sg=orderSigners()[O.signer]||orderSigners()[0];
   const L=ordMembers(p,k);const para=x=>typeof x==='string'?`<p>${x}</p>`:`<div class="oh">${esc(x.h)}</div>`;
   const out=`<div class="paper letter ord${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
@@ -2313,7 +2321,7 @@ function repOrder(p,k){const O=ordersOf(p),c=k==='result'?O.result:O[k],T=ordTex
    <p>ทั้งนี้ ตั้งแต่บัดนี้เป็นต้นไป</p>
    <div class="osd">สั่ง ณ วันที่ ${esc(ordDate(c.date))}</div>
    <div class="osg"><div style="height:16mm"></div>(${esc(fName(sg.name))})<br>${esc(sg.position)}${sg.acting?'<br>'+esc(sg.acting):''}</div>
-   ${drafterBlock(O)}</div>`;return thDig(out)}
+   </div>`;return thDig(out)}
 function repInspMemo(p){const O=ordersOf(p),c=O.inspect,F=letterFont();const L=O.inspect.members.filter(m=>m.name&&!/ผู้ควบคุมงาน/.test(m.role||''));
   const ch=L[0]||{name:'',position:''};const insp=L[O.inspector]||L.filter(m=>/^กรรมการ/.test(m.role||'')).slice(-1)[0]||ch;
   const dl='.'.repeat(45);const sign=m=>`<div class="isg">(ลงชื่อ)${'.'.repeat(40)}${esc(m.role||'กรรมการ')}ฯ<br>(${esc(fName(m.name))})<br>${esc(m.position||'')}</div>`;
@@ -2336,38 +2344,66 @@ function repInspMemo(p){const O=ordersOf(p),c=O.inspect,F=letterFont();const L=O
    <p class="pi" style="margin-top:4mm">จึงเรียนมาเพื่อโปรดทราบ</p>
    <div class="isg" style="margin:14mm 0 0 auto;width:95mm">(ลงชื่อ)${'.'.repeat(36)}กรรมการฯ (ผู้ได้รับมอบหมาย)<br>(${esc(fName(insp.name))})<br>${esc(insp.position||'')}</div>
    <div class="inote" style="margin-top:10mm">หมายเหตุ :<br>- การกำหนดระยะเวลาความถี่ในการออกตรวจงานจ้างให้พิจารณาดำเนินการตามความเหมาะสมและสภาพข้อเท็จจริงของแต่ละโครงการ<br>- ให้รายงานผลการออกตรวจงานจ้างต่อประธานคณะกรรมการตรวจรับพัสดุ ตามสภาพข้อเท็จจริงที่ตรวจพบ เช่น ขณะออกตรวจงานดำเนินการถึงขั้นใด มีปัญหา อุปสรรคใดๆ หรือไม่ เป็นต้น สามารถแนบเอกสารที่เกี่ยวข้องใดๆ หรือภาพถ่าย เพื่อประกอบรายงานได้ แล้วจัดเก็บบันทึกผลการออกตรวจไว้เป็นหลักฐานที่สำนักงาน/โครงการ</div></div>`;return thDig(out)}
+/* รายชื่อบุคลากรสำหรับดรอปลิสต์: ทำเนียบ + รายชื่อกรรมการที่เคยกรอกในทุกโครงการ */
+function peopleAll(){const M=new Map();const add=(n,pos)=>{n=String(n||'').trim();if(!n)return;const k=fName(n);const e=M.get(k);if(!e)M.set(k,{name:n,position:pos||''});else if(!e.position&&pos)e.position=pos};
+  (S.settings.people||[]).forEach(x=>add(x.name,x.position));
+  (S.projects||[]).forEach(q=>{(q.committee||[]).forEach(m=>add(m.name,m.position));const O=q.orders;if(O)['inspect','tor','price'].forEach(k=>(O[k]&&O[k].members||[]).forEach(m=>add(m.name,m.position)));
+    const L=q.legacy&&q.legacy.committees;if(L)Object.values(L).forEach(c=>(c&&c.members||[]).forEach(m=>add(m.name,m.position)))});
+  return [...M.values()].sort((a,b)=>fName(a.name).localeCompare(fName(b.name),'th'))}
+function personSel(attr,val,list){val=String(val||'');const has=!val||list.some(x=>x.name===val);
+  return `<select class="i psel" ${attr}><option value="">— เลือกรายชื่อ —</option>${has?'':`<option selected value="${esc(val)}">${esc(val)}</option>`}${list.map(x=>`<option value="${esc(x.name)}" ${x.name===val?'selected':''}>${esc(x.name)}${x.position?' — '+esc(x.position):''}</option>`).join('')}<option value="__new">+ พิมพ์ชื่อใหม่ (ไม่มีในรายการ)</option></select>`}
+/* เลือก "พิมพ์ชื่อใหม่" → เปลี่ยนเป็นช่องพิมพ์ คืนค่า true ถ้าสลับ */
+function personSwap(sel){if(sel.value!=='__new')return false;const i=document.createElement('input');i.className='i';i.placeholder='พิมพ์ชื่อ-สกุล';for(const a of sel.attributes)if(a.name.startsWith('data-'))i.setAttribute(a.name,a.value);sel.replaceWith(i);i.focus();return true}
+var rNorm=x=>String(x||'').replace(/ฯ$/,'').trim();
+var CM_ROLES=['ประธานกรรมการฯ','กรรมการฯ','กรรมการและเลขานุการ'];
 const ORD_REPORTS=[['ord_inspect','คำสั่งตรวจรับ/ผู้ควบคุมงาน',p=>repOrder(p,'inspect')],['ord_tor','คำสั่งกรรมการ TOR',p=>repOrder(p,'tor')],['ord_price','คำสั่งกรรมการราคากลาง',p=>repOrder(p,'price')],['ord_result','คำสั่งกรรมการพิจารณาผล',p=>repOrder(p,'result')],['insp_memo','บันทึกมอบหมายออกตรวจงาน',p=>repInspMemo(p)]];
-function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P();const O=ordersOf(p);const SG=orderSigners();
-  const people=S.settings.people||[];const dup=(()=>{const a=ordMembers(p,'inspect').map(m=>fName(m.name)),b=ordMembers(p,'result').map(m=>fName(m.name));return b.filter(n=>n&&a.includes(n))})();
+function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P();const O=ordersOf(p);evOf(p);const SG=orderSigners();
+  const people=peopleAll();const dup=(()=>{const a=ordMembers(p,'inspect').map(m=>fName(m.name)),b=ordMembers(p,'result').map(m=>fName(m.name));return [...new Set(b.filter(n=>n&&a.includes(n)))]})();
   const card=(k,step)=>{const K=ORD_KINDS[k],c=k==='result'?O.result:O[k],L=ordMembers(p,k);
     return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
      <label class="f s6"><span>คำสั่งที่ (ว่าง = สทล.๑๗ ขท.กระบี่.๑/......./${ordFY()})</span><input class="i" data-oc="${k}" data-ok="no" value="${esc(c.no)}"></label>
      <label class="f s3"><span>สั่ง ณ วันที่</span><input class="i" type="date" data-oc="${k}" data-ok="date" value="${esc(c.date)}"></label>
-     <div class="s12">${k==='result'?`<div class="muted" style="font-size:13.5px">รายชื่อชุดนี้ใช้ร่วมกับแท็บ “พิจารณาผล” (${L.length} คน) · แก้ที่แท็บพิจารณาผล <button class="btn sm" data-goto="eval" type="button">ไปแท็บพิจารณาผล</button></div>${L.map((m,i)=>`<div class="omr ro">${i+1}. ${esc(fName(m.name))} · ${esc(m.position||'')} · <b>${esc(m.role)}</b></div>`).join('')}`
-      :`${L.map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span><input class="i" list="peopleList" data-om="${k}:${i}:name" value="${esc(m.name)}" placeholder="ชื่อ-สกุล"><input class="i" data-om="${k}:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="${k}:${i}:role">${K.roles.map(r=>`<option ${r===m.role?'selected':''}>${r}</option>`).join('')}</select>${k==='inspect'&&!/ผู้ควบคุม/.test(m.role)?`<label class="switch" title="ผู้ได้รับมอบหมายออกตรวจ"><input type="radio" name="oinsp" data-oinsp="${i}" ${O.inspector===i?'checked':''}> ออกตรวจ</label>`:'<span></span>'}<button class="icon-btn del" data-odel="${k}:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
+     <div class="s12">${k==='result'?`<div class="note" style="margin:0 0 8px;font-size:13.5px">รายชื่อชุดนี้เป็นชุดเดียวกับการ์ด “คณะกรรมการพิจารณาผล” ในแท็บพิจารณาผล · แก้ที่นี่หรือที่แท็บพิจารณาผลก็ได้ ข้อมูลเปลี่ยนทั้งสองที่ <button class="btn sm" data-goto="eval" type="button">ไปการ์ดพิจารณาผล →</button></div>${(p.committee||[]).map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span>${personSel(`data-om="result:${i}:name"`,m.name,people)}<input class="i" data-om="result:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="result:${i}:role">${CM_ROLES.map(r=>`<option ${rNorm(r)===rNorm(m.role)?'selected':''}>${r}</option>`).join('')}</select><span></span><button class="icon-btn del" data-odel="result:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
+        <button class="btn sm" data-oadd="result" type="button">+ เพิ่มรายชื่อ</button>`
+      :`${L.map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span>${personSel(`data-om="${k}:${i}:name"`,m.name,people)}<input class="i" data-om="${k}:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="${k}:${i}:role">${K.roles.map(r=>`<option ${r===m.role?'selected':''}>${r}</option>`).join('')}</select>${k==='inspect'&&!/ผู้ควบคุม/.test(m.role)?`<label class="switch" title="ผู้ได้รับมอบหมายออกตรวจ"><input type="radio" name="oinsp" data-oinsp="${i}" ${O.inspector===i?'checked':''}> ออกตรวจ</label>`:'<span></span>'}<button class="icon-btn del" data-odel="${k}:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
         <button class="btn sm" data-oadd="${k}" type="button">+ เพิ่มรายชื่อ</button>`}</div></div></div>`};
   el.innerHTML=`${curBar('คำสั่งแต่งตั้งคณะกรรมการ',`<button class="btn" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
-  <datalist id="peopleList">${people.map(x=>`<option value="${esc(x.name)}">${esc(x.position||'')}</option>`).join('')}</datalist>
   <div class="grid" style="gap:14px">
-   <div class="card"><div class="card-h"><h2>ผู้ลงนามคำสั่งและผู้จัดทำ</h2></div><div class="card-b grid g12">
+   <div class="card"><div class="card-h"><h2>ผู้ลงนามคำสั่ง</h2></div><div class="card-b grid g12">
     <label class="f s6"><span>ผู้ลงนามคำสั่ง</span><select class="i" id="oSigner">${SG.map((s,i)=>`<option value="${i}" ${O.signer===i?'selected':''}>${esc(s.label||s.name)}</option>`).join('')}</select></label>
-    <label class="f s3"><span>ผู้ร่าง/ทาน</span><input class="i" data-oo="drafter" value="${esc(O.drafter)}" placeholder="${esc(me()?.name||'')}"></label>
-    <label class="f s3"><span>ผู้พิมพ์</span><input class="i" data-oo="typist" value="${esc(O.typist)}"></label>
     ${dup.length?`<div class="s12 note bad" style="margin:0">ชื่อซ้ำกันระหว่างคณะกรรมการตรวจรับกับคณะกรรมการพิจารณาผล: ${esc(dup.join(', '))}</div>`:''}
-    ${people.length?'':'<div class="s12 muted" style="font-size:13px">ยังไม่มีรายชื่อบุคลากรให้เลือก · นำเข้าไฟล์ระบบติดตามเดิมเพื่อเพิ่มรายชื่อ 31 คน</div>'}
+    ${people.length?'':'<div class="s12 muted" style="font-size:13px">ยังไม่มีรายชื่อบุคลากรให้เลือก · เลือก “พิมพ์ชื่อใหม่” ได้ หรือนำเข้าไฟล์ระบบติดตามเดิม</div>'}
    </div></div>
-   ${card('tor',1)}${card('price',2)}${card('result',3)}${card('inspect',4)}</div>`;
+   ${card('tor',1)}${card('price',2)}${card('result',3)}${card('inspect',4)}
+   <div class="card"><div class="card-h"><h2>ข้อความในคำสั่ง</h2><button class="btn sm" id="oTplEdit" type="button">✎ แก้ไขข้อความคำสั่ง</button></div><div class="card-b muted" style="font-size:13.5px">ข้อความในคำสั่งทั้ง 4 ชุดแก้ได้ที่ปุ่มนี้ · แก้ครั้งเดียวใช้กับทุกโครงการและทุกเครื่อง${S.settings.ordTpl&&Object.keys(S.settings.ordTpl).length?' · <b>มีการแก้ไขจากต้นฉบับแล้ว</b>':''}</div></div></div>`;
   const R=()=>{touch(p);rOrders()};
   $('#oSigner').onchange=e=>{O.signer=+e.target.value;touch(p)};
-  $$('[data-oo]',el).forEach(i=>i.oninput=()=>{O[i.dataset.oo]=i.value;touch(p)});
   $$('[data-oc]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{const k=i.dataset.oc;(k==='result'?O.result:O[k])[i.dataset.ok]=i.value;touch(p)}));
-  $$('[data-om]',el).forEach(i=>i.addEventListener(i.tagName==='SELECT'?'change':'input',()=>{const [k,ix,f]=i.dataset.om.split(':');const m=O[k].members[+ix];m[f]=i.value;
-    if(f==='name'){const hit=people.find(x=>x.name===i.value.trim());if(hit&&!m.position){m.position=hit.position;const pi=el.querySelector(`[data-om="${k}:${ix}:position"]`);if(pi)pi.value=hit.position}}touch(p)}));
-  $$('[data-oadd]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.oadd;O[k].members.push({name:'',position:'',role:O[k].members.length?'กรรมการ':'ประธานกรรมการ'});R()});
-  $$('[data-odel]',el).forEach(b=>b.onclick=()=>{const [k,ix]=b.dataset.odel.split(':');O[k].members.splice(+ix,1);if(k==='inspect'&&O.inspector>=O[k].members.length)O.inspector=-1;R()});
+  const omH=ev=>{const i=ev.target;if(!i.dataset||!i.dataset.om)return;if(i.tagName==='SELECT'&&ev.type==='input')return;if(personSwap(i))return;const [k,ix,f]=i.dataset.om.split(':');const m=(k==='result'?p.committee:O[k].members)[+ix];if(!m)return;m[f]=i.value;
+    if(f==='name'){const hit=people.find(x=>x.name===i.value.trim());if(hit&&(i.tagName==='SELECT'||!m.position)){m.position=hit.position;const pi=el.querySelector(`[data-om="${k}:${ix}:position"]`);if(pi)pi.value=hit.position}}touch(p)};
+  el.oninput=omH;el.onchange=omH;
+  $$('[data-oadd]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.oadd;if(k==='result'){evOf(p);p.committee.push({name:'',position:'',role:p.committee.length?'กรรมการฯ':'ประธานกรรมการฯ'});return R()}O[k].members.push({name:'',position:'',role:O[k].members.length?'กรรมการ':'ประธานกรรมการ'});R()});
+  $$('[data-odel]',el).forEach(b=>b.onclick=()=>{const [k,ix]=b.dataset.odel.split(':');if(k==='result'){cmRemove(p,+ix);return R()}O[k].members.splice(+ix,1);if(k==='inspect'&&O.inspector>=O[k].members.length)O.inspector=-1;R()});
   $$('[data-oinsp]',el).forEach(r=>r.onchange=()=>{O.inspector=+r.dataset.oinsp;touch(p)});
   $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
+  $('#oTplEdit').onclick=ordTplDialog;
 }
+function ordTplDialog(){if(!canEdit())return toast('บัญชีนี้ดูได้อย่างเดียว');const KS=['tor','price','result','inspect'];let k='tor';
+  const m=modal('แก้ไขข้อความคำสั่ง',`<div class="row" style="gap:6px;flex-wrap:wrap;margin-bottom:8px">${KS.map(x=>`<button class="btn sm" data-tk="${x}" type="button">${esc(ORD_KINDS[x].t)}</button>`).join('')}</div>
+    <div class="muted" style="font-size:13px;margin-bottom:8px">คำที่ระบบเติมให้: <b>{ชื่อโครงการ}</b> <b>{วงเงิน}</b> <b>{รหัสงาน}</b> · 1 บรรทัด = 1 ย่อหน้า · ขึ้นต้นด้วย <b>##</b> = หัวข้อ · รายชื่อกรรมการจะแทรกระหว่างช่อง 2 กับช่อง 3 · ตัวเลขเปลี่ยนเป็นเลขไทยให้อัตโนมัติ</div>
+    <label class="f"><span>เรื่อง</span><input class="i" id="otS"></label>
+    <label class="f"><span>ข้อความก่อนรายชื่อกรรมการ</span><textarea class="i" id="otA" rows="7"></textarea></label>
+    <label class="f"><span>ข้อความหลังรายชื่อกรรมการ</span><textarea class="i" id="otB" rows="6"></textarea></label>
+    <div class="muted" style="font-size:13px">ท้ายคำสั่งมี “ทั้งนี้ ตั้งแต่บัดนี้เป็นต้นไป / สั่ง ณ วันที่ / ผู้ลงนาม” ให้อัตโนมัติ</div>`,
+    `<button class="btn" data-tr type="button">คืนค่าต้นฉบับ (ชุดนี้)</button><button class="btn" data-mc type="button">ปิด</button><button class="btn pri" data-mo type="button">บันทึกข้อความ</button>`);
+  const q=s=>m.root.querySelector(s);const fill=()=>{const t=ordTpl(k);q('#otS').value=t.subj;q('#otA').value=t.pre;q('#otB').value=t.post;
+    m.root.querySelectorAll('[data-tk]').forEach(b=>b.classList.toggle('pri',b.dataset.tk===k))};
+  const keep=()=>{const v={subj:q('#otS').value.trim(),pre:q('#otA').value,post:q('#otB').value},d=ordTplDef(k);S.settings.ordTpl=S.settings.ordTpl||{};
+    const norm=x=>String(x).split(/\n/).map(l=>l.trim()).filter(Boolean).join('\n');
+    if(v.subj===d.subj&&norm(v.pre)===norm(d.pre)&&norm(v.post)===norm(d.post))delete S.settings.ordTpl[k];else S.settings.ordTpl[k]=v};
+  m.root.querySelectorAll('[data-tk]').forEach(b=>b.onclick=()=>{keep();k=b.dataset.tk;fill()});
+  q('[data-tr]').onclick=()=>{const d=ordTplDef(k);q('#otS').value=d.subj;q('#otA').value=d.pre;q('#otB').value=d.post};
+  q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=()=>{keep();save();m.close();rOrders();toast('บันทึกข้อความคำสั่งแล้ว · ใช้กับทุกโครงการ')};fill()}
 
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
 const STEPS={req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
@@ -2393,7 +2429,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='[data-oprint],[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
@@ -2536,7 +2572,7 @@ function legacyDialog(d,fname){const nk=x=>String(x.name||'').replace(/\s+/g,' '
       R.links=(R.links||[]);lp.links.forEach(l=>{if(!R.links.some(x=>x.url===l.url))R.links.push(l)});
       if(lp.sign.no||lp.sign.date){p.sign=p.sign||{};fill(p.sign,'no',lp.sign.no);fill(p.sign,'date',lp.sign.date)}
       p.orders=p.orders||{};['inspect','tor','price','result'].forEach(k=>{const v=lp[k];const has=k==='inspect'?(v.chair||v.members.length||v.supervisors.length||v.no):(v.members.length||v.no);if(has&&!p.orders[k])p.orders[k]=v});
-      if((!p.committee||!p.committee.some(x=>x.name))&&lp.result.members.length)p.committee=lp.result.members.map((x,i,A)=>({name:x.name,position:x.position,role:i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการฯ':'กรรมการฯ'}));
+      if((!p.committee||!p.committee.some(x=>x.name))&&lp.result.members.length)p.committee=lp.result.members.map((x,i,A)=>({name:x.name,position:x.position,role:i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการ':'กรรมการฯ'}));
       if(!p.items.some(i=>i.kind==='item')&&lp.items.length){const cc=p.categories.find(c=>c.kind==='construction')||p.categories[0];const f=lp.items.find(x=>x.factor);if(f&&cc&&(!num(cc.factor)||num(cc.factor)===1))cc.factor=f.factor;
         p.items=lp.items.map(x=>({id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,unitCost:x.cost,catId:cc.id,midOverride:'',fixed:false,std:x.std}))}
       p.updatedAt=nowStr();if(isNew){S.projects.push(p);a++}else u++});
