@@ -292,6 +292,13 @@ body.exec .hdr{padding-bottom:12px}
 .prep .pstep{margin-top:4px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px}.prep .pstep:first-child{border-top:0;padding-top:0;margin-top:0}
 .fbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:38px}.fchip{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:8px;padding:2px 4px 2px 8px;background:var(--soft)}
 .lnk{border:0;background:none;color:var(--blue);cursor:pointer;font:inherit;padding:2px 0;text-align:left;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fchip .icon-btn{width:24px;height:24px}
+.ord .oc{text-align:center}.ord .b{font-weight:700}.ord .oh{text-indent:25mm;margin-top:1mm}.ord .osd{padding-left:50mm;margin-top:3mm}
+.ord .osg{margin-left:55mm;width:100mm;text-align:center}.ord .odr{margin-top:auto;padding-top:6mm;text-align:right;font-size:.8em;line-height:1.25}
+.olist{margin:1mm 0 2mm 12mm}.oli{display:grid;grid-template-columns:8mm 1fr auto;column-gap:3mm;text-align:left}.oli>span:last-child{white-space:nowrap}
+.imemo .isgs{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;margin-top:10mm;break-inside:avoid}.imemo .isg{text-align:center;line-height:1.5}
+.imemo .inote{font-size:.85em;margin-top:8mm;line-height:1.35}.imemo .idots{border-bottom:1px dotted #000;height:9mm}
+.omr{display:grid;grid-template-columns:22px 1.3fr 1.6fr 1fr auto 34px;gap:8px;align-items:center;margin-bottom:6px}.omr.ro{display:block;font-size:14.5px;padding:4px 0}
+@media (max-width:760px){.omr{grid-template-columns:22px 1fr 1fr}.omr>select,.omr>label,.omr>button,.omr>span:empty{grid-column:auto}}
 .ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
 .urow{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.3fr 1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
 @media (max-width:760px){.urow{grid-template-columns:1fr 1fr}.urow .uname{grid-column:1/-1}}
@@ -322,6 +329,7 @@ body.exec .hdr{padding-bottom:12px}
 <main class="wrap">
   <section class="view" id="v-dash"></section>
   <section class="view" id="v-req" hidden></section>
+  <section class="view" id="v-orders" hidden></section>
   <section class="view" id="v-edit" hidden></section>
   <section class="view" id="v-bid" hidden></section>
   <section class="view" id="v-eval" hidden></section>
@@ -582,11 +590,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p)});({cal:rCal,dash:rDash,req:rReq,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
+function render(){S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p)});({cal:rCal,dash:rDash,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -1263,7 +1271,7 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
 function papersToDocx(html){
   const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
-  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
+  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
   const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
     return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
@@ -1279,7 +1287,7 @@ function papersToDocx(html){
   (B.media||[]).forEach(m=>{const bin=atob(m.src.split(',')[1]||'');const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);files.push(['word/media/'+m.name,u])});
   return zipStore(files)}
 function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
-  const L=[['req','บันทึกขออนุมัติซื้อจ้าง 4033',()=>repReq(p)],['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
+  const L=[['req','บันทึกขออนุมัติซื้อจ้าง 4033',()=>repReq(p)],...ORD_REPORTS.map(x=>[x[0],x[1],()=>x[2](p)]),['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
   const map=EVMAP();
   evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
   L.push(['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['sign','หนังสือเรียกลงนามในสัญญา',()=>repSign(p)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)]);
@@ -1429,7 +1437,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['req','ขออนุมัติซื้อ/จ้าง (4033)'],['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแนบท้ายสัญญา'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
+  const segs=[['req','ขออนุมัติซื้อ/จ้าง (4033)'],...ORD_REPORTS.map(x=>[x[0],x[1]]),['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแนบท้ายสัญญา'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -1440,7 +1448,7 @@ function rReport(){
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
      <div class="muted" style="font-size:12.5px;margin-top:8px">ถ้ากระดาษมีวันที่/ชื่อเว็บที่หัวหรือท้ายหน้า: ในหน้าต่างพิมพ์ กด “การตั้งค่าเพิ่มเติม” แล้วเอาเครื่องหมายออกจาก “ส่วนหัวและส่วนท้าย” และตั้ง “ระยะขอบ” เป็น “ค่าเริ่มต้น” (ตั้งครั้งเดียว Chrome จะจำไว้) · ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></div></div>
   ${wordPanel(p)}
-  <div class="paper-wrap" id="printArea">${reportSel==='req'?repReq(p):(reportSel==='all'?repReq(p):'')+(r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
+  <div class="paper-wrap" id="printArea">${ORD_REPORTS.some(x=>x[0]===reportSel)?ORD_REPORTS.find(x=>x[0]===reportSel)[2](p):reportSel==='req'?repReq(p):(reportSel==='all'?repReq(p):'')+(r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
     (['nego','all'].includes(reportSel)?repNego(p,r,b):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(reportSel==='pack'?repNego(p,r,b):'')+(['notice','all'].includes(reportSel)?repNotice(p):'')+(['eval','all'].includes(reportSel)?repEval(p):'')+(['mid','all'].includes(reportSel)?repMid(p,r,b):'')+(['sign','all'].includes(reportSel)?repSign(p):'')+(['contract','all'].includes(reportSel)?repContract(p,r,b):'')+(['cert','all'].includes(reportSel)?repCertAll(p):''))}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
@@ -1900,7 +1908,7 @@ function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ย
   const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
 function unlockThen(cb){if(central()){toast('บัญชีนี้ดูได้อย่างเดียว · ขอสิทธิ์แก้ไขจากผู้ดูแลระบบ');return}askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
 /* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
-const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
+const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,[data-oprint],#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
 function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
@@ -2263,8 +2271,106 @@ function import4033Dialog(d,fname){const p=P();const has=!!p&&p.items.some(i=>i.
     if(mode==='new'||!t.name)t.name=d.title.join(' ').replace(/\s*ตามรายละเอียดดังนี้\.?-?\s*$/,'').trim()||R.subject;
     if(d.budget||d.grand)t.budget=d.budget||d.grand;touch(t);m.close();go('req');toast(`นำเข้า ${d.items.length} รายการแล้ว`)}}
 
+/* ================= คำสั่งแต่งตั้งคณะกรรมการ 4 ชุด + บันทึกมอบหมายออกตรวจงานจ้าง (ถ้อยคำตามเทมเพลตเดิมใน Drive) ================= */
+const ORDER_SIGNERS_DEF=[{label:'ผอ.ขท.กระบี่ (ลงนามเอง)',name:'นายทรงฤทธิ์  ชยานันท์',position:'ผู้อำนวยการแขวงทางหลวงกระบี่',acting:''},
+  {label:'รองวัฒน์ — ปฏิบัติราชการแทน',name:'นายสุวัฒชัย  สิงหพันธ์',position:'นายช่างโยธาอาวุโส ปฏิบัติราชการแทน',acting:'ผู้อำนวยการแขวงทางหลวงกระบี่'},
+  {label:'รองอ้อ — ปฏิบัติราชการแทน',name:'นายคุณวุฒิ  สุนทรนนท์',position:'วิศวกรโยธาชำนาญการพิเศษ ปฏิบัติราชการแทน',acting:'ผู้อำนวยการแขวงทางหลวงกระบี่'},
+  {label:'พี่ต๋อง — ปฏิบัติราชการแทน',name:'นายวีรวัธน์  แพรกสงฆ์',position:'นายช่างโยธาอาวุโส ปฏิบัติราชการแทน',acting:'ผู้อำนวยการแขวงทางหลวงกระบี่'}];
+const ORD_KINDS={inspect:{t:'คณะกรรมการตรวจรับพัสดุและผู้ควบคุมงาน',roles:['ประธานกรรมการ','กรรมการ','ผู้ควบคุมงาน','ผู้ช่วยผู้ควบคุมงาน']},
+  tor:{t:'คณะกรรมการจัดทำแบบรูปรายการงานก่อสร้าง (TOR)',roles:['ประธานกรรมการ','กรรมการ']},
+  price:{t:'คณะกรรมการกำหนดราคากลาง',roles:['ประธานกรรมการ','กรรมการ']},
+  result:{t:'คณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',roles:['ประธานกรรมการ','กรรมการ','กรรมการและเลขานุการ']}};
+function orderSigners(){return (S.settings.orderSigners&&S.settings.orderSigners.length)?S.settings.orderSigners:ORDER_SIGNERS_DEF}
+function ordersOf(p){if(!p.orders){const L=(p.legacy&&p.legacy.committees)||{};const mk=c=>({no:(c&&c.orderNo)||'',date:(c&&c.orderDate)||'',members:((c&&c.members)||[]).map((m,i)=>({name:m.name,position:m.position,role:i?'กรรมการ':'ประธานกรรมการ'}))});
+    p.orders={signer:0,drafter:'',typist:'',inspect:mk(null),tor:mk(L.tor),price:mk(L.price),result:{no:(L.result&&L.result.orderNo)||'',date:(L.result&&L.result.orderDate)||''},inspector:-1}}
+  const O=p.orders;['inspect','tor','price'].forEach(k=>{O[k]=Object.assign({no:'',date:'',members:[]},O[k]||{})});O.result=Object.assign({no:'',date:''},O.result||{});return O}
+/* ชุดพิจารณาผลใช้รายชื่อเดียวกับแท็บพิจารณาผล (p.committee) */
+function ordMembers(p,k){const O=ordersOf(p);if(k!=='result')return O[k].members;return (p.committee||[]).filter(m=>m.name).map(m=>({name:m.name,position:m.position,role:String(m.role||'กรรมการ').replace(/ฯ$/,'')}))}
+const ordFY=()=>toTH(fyNow());
+function ordNo(c){return c.no||('สทล.๑๗ ขท.กระบี่.๑/............../'+ordFY())}
+function ordDate(iso){return iso?thDate(iso):'……………………………'}
+function ordCode(p){return (p.legacy&&p.legacy.id)||p.projectNo||'-'}
+function ordBudget(p){return `${fmt(p.budget)} บาท (${bahtText(p.budget)})`}
+function ordText(p,k){const d=esc(p.name||'-'),b=esc(ordBudget(p)),c=esc(ordCode(p));
+  if(k==='inspect')return {subj:'แต่งตั้งคณะกรรมการตรวจรับพัสดุและผู้ควบคุมงาน',pre:[`ด้วยแขวงทางหลวงกระบี่ มีความประสงค์จะดำเนินการจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c}`,'จึงขอแต่งตั้งคณะกรรมการตรวจรับพัสดุและผู้ควบคุมงานดังนี้.-'],
+    post:['ให้คณะกรรมการฯ ที่ได้รับการแต่งตั้งถือปฏิบัติตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๑๗๖ และข้อ ๑๗๘ โดยเคร่งครัด']};
+  if(k==='tor')return {subj:'แต่งตั้งคณะกรรมการจัดทำแบบรูปรายการงานก่อสร้าง',pre:[`ด้วยแขวงทางหลวงกระบี่ มีความประสงค์จะประกวดราคาจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c}`,'เพื่อให้เป็นไปตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ จึงขอแต่งตั้งรายชื่อต่อไปนี้เป็นคณะกรรมการจัดทำแบบรูปรายการงานก่อสร้างประกอบด้วย'],
+    post:['โดยให้มีอำนาจหน้าที่ในการจัดทำแบบรูปรายการงานก่อสร้าง และดำเนินการให้แล้วเสร็จภายใน ๕ วันทำการ นับถัดจากวันที่มีคำสั่งแต่งตั้ง']};
+  if(k==='price')return {subj:'แต่งตั้งคณะกรรมการกำหนดราคากลางในการจัดจ้าง',pre:[`ด้วยแขวงทางหลวงกระบี่ มีความประสงค์จะดำเนินการจัดจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c} นั้น`,'เพื่อให้เป็นไปตามประกาศคณะกรรมการราคากลางและขึ้นทะเบียนผู้ประกอบการ เรื่อง หลักเกณฑ์และวิธีการกำหนดราคากลางงานก่อสร้าง จึงขอแต่งตั้งคณะกรรมการกำหนดราคากลาง ตามรายชื่อต่อไปนี้',{h:'คณะกรรมการ ประกอบด้วย'}],
+    post:[{h:'หน้าที่ความรับผิดชอบ'},'๑. คำนวณราคากลางงานก่อสร้างข้างต้น','๒. เสนอขอความเห็นชอบก่อนดำเนินการจัดจ้าง','๓. กรณีราคากลางที่คณะกรรมการกำหนดราคากลางคำนวณไว้ แตกต่างจากราคาของผู้เสนอราคารายที่ส่วนราชการเห็นควรจ้าง ตั้งแต่ร้อยละ ๑๕ ขึ้นไป ให้คณะกรรมการกำหนดราคากลางแจ้งรายละเอียดการคำนวณราคากลางงานก่อสร้างนั้น ให้สำนักงานการตรวจเงินแผ่นดินทราบโดยเร็ว','๔. ปฏิบัติงานอื่นตามที่ได้รับมอบหมาย']};
+  return {subj:'แต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',pre:['ตามระเบียบกระทรวงการคลังว่าด้วยจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๕๕, ข้อ ๕๖ และข้อ ๕๗ และคำสั่งกรมทางหลวง ที่ บ.๑/๑๒๔/๒๕๖๐ มอบอำนาจให้หัวหน้าส่วนราชการที่ดำเนินการจัดหาพัสดุด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) มีอำนาจในการแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',`จึงแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c} โดยมีองค์ประกอบและหน้าที่ดังนี้.-`,{h:'๑. องค์ประกอบ'}],
+    post:[{h:'๒. หน้าที่'},'ดำเนินการตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๕๕ ข้อ ๕๖ ข้อ ๕๗ และข้อ ๕๘ ทั้งนี้ให้คณะกรรมการฯ ดำเนินการให้แล้วเสร็จภายใน ๕ วันทำการ นับถัดจากวันเสนอราคา']}}
+const fName=n=>String(n||'').trim().replace(/\s+/g,'  ');
+function drafterBlock(O){const dr=O.drafter||(me()&&me().name)||'';return `<div class="odr">${esc(dr||'..........')}/ร่าง/ทาน<br>${esc(O.typist||dr||'..........')}/พิมพ์<br>....../ตรวจ</div>`}
+function repOrder(p,k){const O=ordersOf(p),c=k==='result'?O.result:O[k],T=ordText(p,k),F=letterFont(),sg=orderSigners()[O.signer]||orderSigners()[0];
+  const L=ordMembers(p,k);const para=x=>typeof x==='string'?`<p>${x}</p>`:`<div class="oh">${esc(x.h)}</div>`;
+  const out=`<div class="paper letter ord${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <img class="garuda" src="${GARUDA}" alt="ตราครุฑ">
+   <div class="oc b">คำสั่งแขวงทางหลวงกระบี่</div><div class="oc">ที่ ${esc(ordNo(c))}</div><div class="oc">เรื่อง ${esc(T.subj)}</div><div class="oc">……………………………………………</div>
+   ${T.pre.map(para).join('')}
+   <div class="olist">${L.length?L.map((m,i)=>`<div class="oli"><span>${i+1}.</span><span>${esc(fName(m.name))}${m.position?'&nbsp;&nbsp;'+esc(m.position):''}</span><span>${esc(m.role||'กรรมการ')}</span></div>`).join(''):'<div class="oli"><span></span><span>(ยังไม่ได้กรอกรายชื่อ)</span><span></span></div>'}</div>
+   ${T.post.map(para).join('')}
+   <p>ทั้งนี้ ตั้งแต่บัดนี้เป็นต้นไป</p>
+   <div class="osd">สั่ง ณ วันที่ ${esc(ordDate(c.date))}</div>
+   <div class="osg"><div style="height:16mm"></div>(${esc(fName(sg.name))})<br>${esc(sg.position)}${sg.acting?'<br>'+esc(sg.acting):''}</div>
+   ${drafterBlock(O)}</div>`;return thDig(out)}
+function repInspMemo(p){const O=ordersOf(p),c=O.inspect,F=letterFont();const L=O.inspect.members.filter(m=>m.name&&!/ผู้ควบคุมงาน/.test(m.role||''));
+  const ch=L[0]||{name:'',position:''};const insp=L[O.inspector]||L.filter(m=>/^กรรมการ/.test(m.role||'')).slice(-1)[0]||ch;
+  const dl='.'.repeat(45);const sign=m=>`<div class="isg">(ลงชื่อ)${'.'.repeat(40)}${esc(m.role||'กรรมการ')}ฯ<br>(${esc(fName(m.name))})<br>${esc(m.position||'')}</div>`;
+  const out=`<div class="paper ev imemo${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="mh"><img src="${GARUDA}" alt=""><div class="mt" style="font-size:1.25em">บันทึกมอบหมายการออกตรวจงานจ้าง</div></div>
+   <div style="text-align:right;margin:3mm 0">วันที่${dl}</div>
+   <p class="pi">ตามคำสั่งแขวงทางหลวงกระบี่ ที่ ${esc(ordNo(c))} ลงวันที่ ${esc(ordDate(c.date))} ได้แต่งตั้งคณะกรรมการตรวจรับพัสดุในงานจ้างก่อสร้าง ${esc(p.name||'-')} ประกอบด้วย.-</p>
+   <div class="olist">${L.map((m,i)=>`<div class="oli"><span>${i+1}.</span><span>${esc(fName(m.name))}${m.position?'&nbsp;&nbsp;'+esc(m.position):''}</span><span>${esc(m.role)}</span></div>`).join('')}</div>
+   <p class="pi">เพื่อให้เป็นตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๑๗๖ (๓) คณะกรรมการฯ เห็นควรมอบหมายให้ ${esc(fName(insp.name))}${insp.position?'&nbsp;&nbsp;'+esc(insp.position):''} มีหน้าที่ออกตรวจงานจ้าง ณ สถานที่ที่กำหนดไว้ในสัญญาหรือที่ตกลงให้ทำงานจ้างนั้น ตามเวลาที่เหมาะสมและเห็นสมควร</p>
+   <div class="isgs">${L.map(sign).join('')}</div>
+   <div style="margin-top:8mm">เรียน ผอ.ขท.กระบี่</div><div style="padding-left:12mm">-เพื่อโปรดทราบ</div>
+   <div class="isg" style="margin:10mm 0 0 auto;width:90mm">(${esc(fName(ch.name))})<br>${esc(ch.position||'')}<br>ประธานกรรมการฯ</div>
+   <div class="inote">หมายเหตุ - การทำบันทึกมอบหมายให้จัดทำครั้งเดียว ยกเว้นกรณีมีการเปลี่ยนแปลงผู้ได้รับมอบหมายให้จัดทำใหม่<br>- การมอบหมายจะมอบให้กรรมการคนใด หรือจำนวนกี่คน ให้พิจารณาตามความเหมาะสมและคล่องตัวในการปฏิบัติงาน<br>- เมื่อมีมอบหมายแล้วให้รายงานหัวหน้าหน่วยงานเจ้าของสัญญาทราบ</div></div>
+  <div class="paper ev imemo${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="ct b" style="font-size:1.15em">บันทึกผลการออกตรวจงานจ้างก่อสร้าง</div>
+   <div style="text-align:right;margin:3mm 0">วันที่${dl}</div>
+   <div>เรียน ประธานคณะกรรมการตรวจรับพัสดุในงานจ้างก่อสร้าง</div>
+   <p class="pi">ตามที่ได้รับมอบหมายให้ออกตรวจงาน ${esc(p.name||'-')} กรรมการฯ ได้ดำเนินการออกตรวจงานจ้างตามที่ได้รับมอบหมายแล้วเมื่อวันที่............................ครั้งที่................... ขอรายงานผลการออกตรวจงานจ้าง ดังนี้</p>
+   ${Array.from({length:8},()=>'<div class="idots"></div>').join('')}
+   <p class="pi" style="margin-top:4mm">จึงเรียนมาเพื่อโปรดทราบ</p>
+   <div class="isg" style="margin:14mm 0 0 auto;width:95mm">(ลงชื่อ)${'.'.repeat(36)}กรรมการฯ (ผู้ได้รับมอบหมาย)<br>(${esc(fName(insp.name))})<br>${esc(insp.position||'')}</div>
+   <div class="inote" style="margin-top:10mm">หมายเหตุ :<br>- การกำหนดระยะเวลาความถี่ในการออกตรวจงานจ้างให้พิจารณาดำเนินการตามความเหมาะสมและสภาพข้อเท็จจริงของแต่ละโครงการ<br>- ให้รายงานผลการออกตรวจงานจ้างต่อประธานคณะกรรมการตรวจรับพัสดุ ตามสภาพข้อเท็จจริงที่ตรวจพบ เช่น ขณะออกตรวจงานดำเนินการถึงขั้นใด มีปัญหา อุปสรรคใดๆ หรือไม่ เป็นต้น สามารถแนบเอกสารที่เกี่ยวข้องใดๆ หรือภาพถ่าย เพื่อประกอบรายงานได้ แล้วจัดเก็บบันทึกผลการออกตรวจไว้เป็นหลักฐานที่สำนักงาน/โครงการ</div></div>`;return thDig(out)}
+const ORD_REPORTS=[['ord_inspect','คำสั่งตรวจรับ/ผู้ควบคุมงาน',p=>repOrder(p,'inspect')],['ord_tor','คำสั่งกรรมการ TOR',p=>repOrder(p,'tor')],['ord_price','คำสั่งกรรมการราคากลาง',p=>repOrder(p,'price')],['ord_result','คำสั่งกรรมการพิจารณาผล',p=>repOrder(p,'result')],['insp_memo','บันทึกมอบหมายออกตรวจงาน',p=>repInspMemo(p)]];
+function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P();const O=ordersOf(p);const SG=orderSigners();
+  const people=S.settings.people||[];const dup=(()=>{const a=ordMembers(p,'inspect').map(m=>fName(m.name)),b=ordMembers(p,'result').map(m=>fName(m.name));return b.filter(n=>n&&a.includes(n))})();
+  const card=(k,step)=>{const K=ORD_KINDS[k],c=k==='result'?O.result:O[k],L=ordMembers(p,k);
+    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
+     <label class="f s6"><span>คำสั่งที่ (ว่าง = สทล.๑๗ ขท.กระบี่.๑/......./${ordFY()})</span><input class="i" data-oc="${k}" data-ok="no" value="${esc(c.no)}"></label>
+     <label class="f s3"><span>สั่ง ณ วันที่</span><input class="i" type="date" data-oc="${k}" data-ok="date" value="${esc(c.date)}"></label>
+     <div class="s12">${k==='result'?`<div class="muted" style="font-size:13.5px">รายชื่อชุดนี้ใช้ร่วมกับแท็บ “พิจารณาผล” (${L.length} คน) · แก้ที่แท็บพิจารณาผล <button class="btn sm" data-goto="eval" type="button">ไปแท็บพิจารณาผล</button></div>${L.map((m,i)=>`<div class="omr ro">${i+1}. ${esc(fName(m.name))} · ${esc(m.position||'')} · <b>${esc(m.role)}</b></div>`).join('')}`
+      :`${L.map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span><input class="i" list="peopleList" data-om="${k}:${i}:name" value="${esc(m.name)}" placeholder="ชื่อ-สกุล"><input class="i" data-om="${k}:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="${k}:${i}:role">${K.roles.map(r=>`<option ${r===m.role?'selected':''}>${r}</option>`).join('')}</select>${k==='inspect'&&!/ผู้ควบคุม/.test(m.role)?`<label class="switch" title="ผู้ได้รับมอบหมายออกตรวจ"><input type="radio" name="oinsp" data-oinsp="${i}" ${O.inspector===i?'checked':''}> ออกตรวจ</label>`:'<span></span>'}<button class="icon-btn del" data-odel="${k}:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
+        <button class="btn sm" data-oadd="${k}" type="button">+ เพิ่มรายชื่อ</button>`}</div></div></div>`};
+  el.innerHTML=`${curBar('คำสั่งแต่งตั้งคณะกรรมการ',`<button class="btn" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
+  <datalist id="peopleList">${people.map(x=>`<option value="${esc(x.name)}">${esc(x.position||'')}</option>`).join('')}</datalist>
+  <div class="grid" style="gap:14px">
+   <div class="card"><div class="card-h"><h2>ผู้ลงนามคำสั่งและผู้จัดทำ</h2></div><div class="card-b grid g12">
+    <label class="f s6"><span>ผู้ลงนามคำสั่ง</span><select class="i" id="oSigner">${SG.map((s,i)=>`<option value="${i}" ${O.signer===i?'selected':''}>${esc(s.label||s.name)}</option>`).join('')}</select></label>
+    <label class="f s3"><span>ผู้ร่าง/ทาน</span><input class="i" data-oo="drafter" value="${esc(O.drafter)}" placeholder="${esc(me()?.name||'')}"></label>
+    <label class="f s3"><span>ผู้พิมพ์</span><input class="i" data-oo="typist" value="${esc(O.typist)}"></label>
+    ${dup.length?`<div class="s12 note bad" style="margin:0">ชื่อซ้ำกันระหว่างคณะกรรมการตรวจรับกับคณะกรรมการพิจารณาผล: ${esc(dup.join(', '))}</div>`:''}
+    ${people.length?'':'<div class="s12 muted" style="font-size:13px">ยังไม่มีรายชื่อบุคลากรให้เลือก · นำเข้าไฟล์ระบบติดตามเดิมเพื่อเพิ่มรายชื่อ 31 คน</div>'}
+   </div></div>
+   ${card('tor',1)}${card('price',2)}${card('result',3)}${card('inspect',4)}</div>`;
+  const R=()=>{touch(p);rOrders()};
+  $('#oSigner').onchange=e=>{O.signer=+e.target.value;touch(p)};
+  $$('[data-oo]',el).forEach(i=>i.oninput=()=>{O[i.dataset.oo]=i.value;touch(p)});
+  $$('[data-oc]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{const k=i.dataset.oc;(k==='result'?O.result:O[k])[i.dataset.ok]=i.value;touch(p)}));
+  $$('[data-om]',el).forEach(i=>i.addEventListener(i.tagName==='SELECT'?'change':'input',()=>{const [k,ix,f]=i.dataset.om.split(':');const m=O[k].members[+ix];m[f]=i.value;
+    if(f==='name'){const hit=people.find(x=>x.name===i.value.trim());if(hit&&!m.position){m.position=hit.position;const pi=el.querySelector(`[data-om="${k}:${ix}:position"]`);if(pi)pi.value=hit.position}}touch(p)}));
+  $$('[data-oadd]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.oadd;O[k].members.push({name:'',position:'',role:O[k].members.length?'กรรมการ':'ประธานกรรมการ'});R()});
+  $$('[data-odel]',el).forEach(b=>b.onclick=()=>{const [k,ix]=b.dataset.odel.split(':');O[k].members.splice(+ix,1);if(k==='inspect'&&O.inspector>=O[k].members.length)O.inspector=-1;R()});
+  $$('[data-oinsp]',el).forEach(r=>r.onchange=()=>{O.inspector=+r.dataset.oinsp;touch(p)});
+  $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
+}
+
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
-const STEPS={req:'ขออนุมัติซื้อ/จ้าง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
+const STEPS={req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
 const stepUnl=new Set();
 function stepHasData(p,t){const has=o=>!!o&&Object.values(o).some(v=>v!==''&&v!=null&&!(Array.isArray(v)&&!v.length)&&!(typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length));
   switch(t){case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
@@ -2287,7 +2393,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='[data-oprint],[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
@@ -2302,7 +2408,7 @@ function execBidCard(){const L=S.projects.filter(p=>(p.bidders||[]).length).sort
       </tbody></table></div></details>`}).join('')}</div></div>`}
 rCal=(o=>function(){o.apply(this,arguments);if(EXEC){const el=$('#v-cal');el.insertAdjacentHTML('afterbegin',overviewCard()+signAlertCard());el.insertAdjacentHTML('beforeend',execBidCard())}})(rCal);
 if(EXEC){document.body.classList.add('exec');const h=$('.hdr .ttl h1');if(h)h.insertAdjacentHTML('beforeend',' <span class="exec-chip">มุมมองผู้บริหาร</span>');document.title='ปฏิทินจัดซื้อจัดจ้าง (ผู้บริหาร)'}
-rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
+rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rOrders=(o=>function(){o.apply(this,arguments);stepBar()})(rOrders);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
 rNego=(o=>function(){o.apply(this,arguments);stepBar()})(rNego);rResult=(o=>function(){o.apply(this,arguments);stepBar()})(rResult);rSignTab=(o=>function(){o.apply(this,arguments);stepBar()})(rSignTab);rCert=(o=>function(){o.apply(this,arguments);stepBar()})(rCert);
 
 /* ================= สรุปภาพรวมตามขั้นตอน (แดชบอร์ด + ผู้บริหาร) ================= */
