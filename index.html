@@ -325,7 +325,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 67 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 68 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1941,7 +1941,7 @@ function applyRemote(it,sm,chg){const id=it.id;
   if(id==='__settings'){if(it.data){const keep={};LOCAL_SET.forEach(k=>keep[k]=S.settings[k]);S.settings=Object.assign(structuredClone(DEF_SETTINGS),it.data,keep);applyTheme()}
     sm.revs[id]=it.rev;sm.hash[id]=hashOf(JSON.stringify(sharedSettings()));chg.add(id);return}
   const i=S.projects.findIndex(p=>p.id===id),loc=i>=0?S.projects[i]:null;
-  const dirty=!!loc&&sm.hash[id]!==hashOf(JSON.stringify(loc));
+  const dirty=canEdit()&&!!loc&&sm.hash[id]!==hashOf(JSON.stringify(loc));
   if(dirty){const c=structuredClone(loc);c.id=uid();c.name=(loc.name||'')+' (ฉบับในเครื่อง — แก้ไขชนกัน)';S.projects.splice(i,0,c);chg.add('conflict');if(cur===id)cur=c.id}
   const j=S.projects.findIndex(p=>p.id===id);
   if(it.deleted){if(j>=0)S.projects.splice(j,1);delete sm.revs[id];delete sm.hash[id];if(cur===id)cur=S.projects[0]?.id||null}
@@ -1994,7 +1994,8 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
       const prev=me()?.username;const j=await srvCall({action:'auth.login',username:g.querySelector('#gUser').value,password:g.querySelector('#gPw').value});saveAuth(j);
       g.remove();document.body.classList.remove('gated');lockUI();toast('ยินดีต้อนรับ '+(j.user.name||j.user.username));afterLogin(prev&&prev!==j.user.username)}
     catch(x){err(x.message);b.disabled=false}}}
-function afterLogin(){const sm=syncMeta();const isSample=p=>/\(ตัวอย่าง\)\s*$/.test(p.name||'');
+function afterLogin(){if(me()&&me().role==='viewer'){S.projects=[];cur=null;putSyncMeta({since:0,revs:{},hash:{},adopted:true,last:''});try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}render();return syncNow()}
+  const sm=syncMeta();const isSample=p=>/\(ตัวอย่าง\)\s*$/.test(p.name||'');
   if(!sm.adopted&&S.projects.some(p=>!sm.revs[p.id]&&isSample(p))){S.projects=S.projects.filter(p=>sm.revs[p.id]||!isSample(p));if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
   const locals=S.projects.filter(p=>!sm.revs[p.id]);
   if(sm.adopted||!locals.length){sm.adopted=true;putSyncMeta(sm);return syncNow()}
