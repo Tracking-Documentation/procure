@@ -2285,7 +2285,17 @@ const ORD_KINDS={inspect:{t:'คณะกรรมการตรวจรับ
 function orderSigners(){return (S.settings.orderSigners&&S.settings.orderSigners.length)?S.settings.orderSigners:ORDER_SIGNERS_DEF}
 function ordersOf(p){if(!p.orders){const L=(p.legacy&&p.legacy.committees)||{};const mk=c=>({no:(c&&c.orderNo)||'',date:(c&&c.orderDate)||'',members:((c&&c.members)||[]).map((m,i)=>({name:m.name,position:m.position,role:i?'กรรมการ':'ประธานกรรมการ'}))});
     p.orders={signer:0,drafter:'',typist:'',inspect:mk(null),tor:mk(L.tor),price:mk(L.price),result:{no:(L.result&&L.result.orderNo)||'',date:(L.result&&L.result.orderDate)||''},inspector:-1}}
-  const O=p.orders;['inspect','tor','price'].forEach(k=>{O[k]=Object.assign({no:'',date:'',members:[]},O[k]||{})});O.result=Object.assign({no:'',date:''},O.result||{});return O}
+  const O=p.orders;const I=O.inspect;if(I&&(I.chair!==undefined||I.supervisors)){const r=(x,role)=>x&&x.name?{name:x.name,position:x.position||'',role}:null;
+    O.inspect={no:I.no||'',date:I.date||'',members:[r(I.chair,'ประธานกรรมการ'),...(I.members||[]).map(x=>r(x,'กรรมการ')),...(I.supervisors||[]).map(x=>r(x,'ผู้ควบคุมงาน')),...(I.assistants||[]).map(x=>r(x,'ผู้ช่วยผู้ควบคุมงาน'))].filter(Boolean)}}
+  ['inspect','tor','price'].forEach(k=>{O[k]=Object.assign({no:'',date:'',members:[]},O[k]||{})});
+  if(!O.inspect.members.length&&!O._seeded){const A=inspFromAssign(p);if(A.length){O.inspect.members=A;O._seeded=1}}O.result=Object.assign({no:'',date:''},O.result||{});return O}
+/* ตารางผู้รับผิดชอบเดิม (ป/ก/ค/ผช ตามชื่อย่อในแผ่น “รายชื่อกรรมการ”) → คณะกรรมการตรวจรับและผู้ควบคุมงาน */
+const ASSIGN_ROLE={'ป':['ประธานกรรมการ',0],'ก':['กรรมการ',1],'1':['กรรมการ',1],'ค':['ผู้ควบคุมงาน',2],'ผช':['ผู้ช่วยผู้ควบคุมงาน',3]};
+const nickKey=x=>String(x||'').replace(/\(.*?\)/g,'').replace(/\s+/g,'').trim();
+function inspFromAssign(p){const A=p.legacy&&p.legacy.assign;if(!A)return [];const PL=S.settings.people||[];
+  return Object.entries(A).map(([nk,code])=>{const R=ASSIGN_ROLE[String(code).trim()]||(/^ผช/.test(code)?ASSIGN_ROLE['ผช']:null);if(!R)return null;
+    const hit=PL.find(x=>x.nick&&nickKey(x.nick)===nickKey(nk));return {name:hit?hit.name:nickKey(nk),position:hit?hit.position:'',role:R[0],_o:R[1]}})
+   .filter(Boolean).sort((a,b)=>a._o-b._o).map(({_o,...m})=>m)}
 /* ชุดพิจารณาผลใช้รายชื่อเดียวกับแท็บพิจารณาผล (p.committee) */
 function ordMembers(p,k){const O=ordersOf(p);if(k!=='result')return O[k].members;return (p.committee||[]).filter(m=>m.name).map(m=>({name:m.name,position:m.position,role:String(m.role||'กรรมการ').replace(/ฯ$/,'')}))}
 const ordFY=()=>toTH(fyNow());
@@ -2360,7 +2370,7 @@ const ORD_REPORTS=[['ord_inspect','คำสั่งตรวจรับ/ผ�
 function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P();const O=ordersOf(p);evOf(p);const SG=orderSigners();
   const people=peopleAll();const dup=(()=>{const a=ordMembers(p,'inspect').map(m=>fName(m.name)),b=ordMembers(p,'result').map(m=>fName(m.name));return [...new Set(b.filter(n=>n&&a.includes(n)))]})();
   const card=(k,step)=>{const K=ORD_KINDS[k],c=k==='result'?O.result:O[k],L=ordMembers(p,k);
-    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
+    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'&&inspFromAssign(p).length?`<button class="btn sm" id="oPullAssign" type="button">↻ ดึงจากตารางผู้รับผิดชอบเดิม</button>`:''}${k==='inspect'?`<button class="btn sm" id="oLoad" type="button">ภาระงานแต่ละคน</button>`:''}${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
      <label class="f s6"><span>คำสั่งที่ (ว่าง = สทล.๑๗ ขท.กระบี่.๑/......./${ordFY()})</span><input class="i" data-oc="${k}" data-ok="no" value="${esc(c.no)}"></label>
      <label class="f s3"><span>สั่ง ณ วันที่</span><input class="i" type="date" data-oc="${k}" data-ok="date" value="${esc(c.date)}"></label>
      <div class="s12">${k==='result'?`<div class="note" style="margin:0 0 8px;font-size:13.5px">รายชื่อชุดนี้เป็นชุดเดียวกับการ์ด “คณะกรรมการพิจารณาผล” ในแท็บพิจารณาผล · แก้ที่นี่หรือที่แท็บพิจารณาผลก็ได้ ข้อมูลเปลี่ยนทั้งสองที่ <button class="btn sm" data-goto="eval" type="button">ไปการ์ดพิจารณาผล →</button></div>${(p.committee||[]).map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span>${personSel(`data-om="result:${i}:name"`,m.name,people)}<input class="i" data-om="result:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="result:${i}:role">${CM_ROLES.map(r=>`<option ${rNorm(r)===rNorm(m.role)?'selected':''}>${r}</option>`).join('')}</select><span></span><button class="icon-btn del" data-odel="result:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
@@ -2387,7 +2397,15 @@ function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P()
   $$('[data-oinsp]',el).forEach(r=>r.onchange=()=>{O.inspector=+r.dataset.oinsp;touch(p)});
   $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
   $('#oTplEdit').onclick=ordTplDialog;
+  const pa=$('#oPullAssign');if(pa)pa.onclick=()=>{if(O.inspect.members.some(m=>m.name)&&!confirm('แทนที่รายชื่อคณะกรรมการตรวจรับ/ผู้ควบคุมงานที่มีอยู่ ด้วยรายชื่อจากตารางผู้รับผิดชอบเดิม?'))return;O.inspect.members=inspFromAssign(p);O.inspector=-1;R()};
+  $('#oLoad').onclick=inspLoadDialog;
 }
+/* ภาระงานตรวจรับ/ควบคุมงานต่อคน (แบบแถวสรุปท้ายตารางเดิม) */
+function inspLoadDialog(){const roles=['ประธานกรรมการ','กรรมการ','ผู้ควบคุมงาน','ผู้ช่วยผู้ควบคุมงาน'];const M=new Map();
+  S.projects.forEach(q=>{if(!q.orders&&!(q.legacy&&q.legacy.assign))return;const L=ordersOf(q).inspect.members;L.forEach(m=>{if(!m.name)return;const k=fName(m.name);const e=M.get(k)||{name:m.name,position:m.position,c:roles.map(()=>0),pj:[]};const ix=roles.indexOf(m.role);if(ix>=0)e.c[ix]++;e.pj.push(q.name||'');M.set(k,e)})});
+  const L=[...M.values()].sort((a,b)=>b.pj.length-a.pj.length);
+  const m=modal('ภาระงานคณะกรรมการตรวจรับ/ผู้ควบคุมงาน (ทุกโครงการ)',L.length?`<div class="tbl-wrap"><table class="t"><thead><tr><th>ชื่อ-สกุล</th><th>ตำแหน่ง</th>${roles.map(r=>`<th>${r}</th>`).join('')}<th>รวม</th></tr></thead><tbody>${L.map(e=>`<tr><td>${esc(e.name)}</td><td>${esc(e.position||'')}</td>${e.c.map(n=>`<td class="n">${n||''}</td>`).join('')}<td class="n"><b>${e.pj.length}</b></td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">ยังไม่มีโครงการที่กรอกคณะกรรมการตรวจรับ</div>',`<button class="btn" data-mc type="button">ปิด</button>`);
+  m.root.querySelector('[data-mc]').onclick=m.close}
 function ordTplDialog(){if(!canEdit())return toast('บัญชีนี้ดูได้อย่างเดียว');const KS=['tor','price','result','inspect'];let k='tor';
   const m=modal('แก้ไขข้อความคำสั่ง',`<div class="row" style="gap:6px;flex-wrap:wrap;margin-bottom:8px">${KS.map(x=>`<button class="btn sm" data-tk="${x}" type="button">${esc(ORD_KINDS[x].t)}</button>`).join('')}</div>
     <div class="muted" style="font-size:13px;margin-bottom:8px">คำที่ระบบเติมให้: <b>{ชื่อโครงการ}</b> <b>{วงเงิน}</b> <b>{รหัสงาน}</b> · 1 บรรทัด = 1 ย่อหน้า · ขึ้นต้นด้วย <b>##</b> = หัวข้อ · รายชื่อกรรมการจะแทรกระหว่างช่อง 2 กับช่อง 3 · ตัวเลขเปลี่ยนเป็นเลขไทยให้อัตโนมัติ</div>
@@ -2543,7 +2561,7 @@ function parseLegacy(X,wb){const rows=n=>X.utils.sheet_to_json(wb.Sheets[n],{hea
     mem.forEach((c,i)=>{const n=lgStr(r[C(c)]);if(n)L.push({name:n,position:lgStr(r[C(memPos[i])]),role:'กรรมการ'})});if(L.length>1&&roleLast)L[L.length-1].role=roleLast;
     return {no:lgStr(r[C(no)]),date:lgDate(r[C(date)]),members:L}};
   const projects=[];M.slice(1).forEach(r=>{const id=lgId(r[1]),name=lgStr(r[2]);if(!id&&!name)return;
-    const marks={chair:null,members:[],supervisors:[]};for(let c=9;c<=35;c++){const mk=lgStr(r[c]),nick=H[c];if(!mk||!nick)continue;if(mk==='ป')marks.chair=who(nick);else if(mk==='ค')marks.supervisors.push(who(nick));else if(mk==='1'||mk==='ก')marks.members.push(who(nick))}
+    const marks={chair:null,members:[],supervisors:[],assistants:[]};for(let c=9;c<=35;c++){const mk=lgStr(r[c]),nick=H[c];if(!mk||!nick)continue;if(mk==='ป')marks.chair=who(nick);else if(mk==='ค')marks.supervisors.push(who(nick));else if(/^ผช/.test(mk))marks.assistants.push(who(nick));else if(mk==='1'||mk==='ก')marks.members.push(who(nick))}
     const au=lgStr(r[6])+lgStr(r[8]);
     projects.push({legacyId:id,name,division:lgStr(r[0]),km:lgStr(r[3]),workDays:lgStr(r[4]),budget:lgNum(r[5]),authority:/เขต/.test(au)?'region':/แขวง/.test(au)?'district':'',
       egp:egpCol>=0?lgId(r[egpCol]):'',approveDate:lgDate(r[C(39)]),plan:!!lgStr(r[C(40)]),draft:!!lgStr(r[C(41)]),midApproveDate:lgDate(r[C(42)]),torStart:lgDate(r[C(43)]),inviteDate:lgDate(r[C(44)]),
@@ -2571,7 +2589,7 @@ function legacyDialog(d,fname){const nk=x=>String(x.name||'').replace(/\s+/g,' '
       const R=prepOf(p);fill(R,'approveDate',lp.approveDate);if(lp.plan)R.plan=true;if(lp.draft)R.draft=true;fill(R,'authority',lp.authority);
       R.links=(R.links||[]);lp.links.forEach(l=>{if(!R.links.some(x=>x.url===l.url))R.links.push(l)});
       if(lp.sign.no||lp.sign.date){p.sign=p.sign||{};fill(p.sign,'no',lp.sign.no);fill(p.sign,'date',lp.sign.date)}
-      p.orders=p.orders||{};['inspect','tor','price','result'].forEach(k=>{const v=lp[k];const has=k==='inspect'?(v.chair||v.members.length||v.supervisors.length||v.no):(v.members.length||v.no);if(has&&!p.orders[k])p.orders[k]=v});
+      p.orders=p.orders||{};['inspect','tor','price','result'].forEach(k=>{const v=lp[k];const has=k==='inspect'?(v.chair||v.members.length||v.supervisors.length||(v.assistants||[]).length||v.no):(v.members.length||v.no);if(has&&!p.orders[k])p.orders[k]=v});
       if((!p.committee||!p.committee.some(x=>x.name))&&lp.result.members.length)p.committee=lp.result.members.map((x,i,A)=>({name:x.name,position:x.position,role:i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการ':'กรรมการฯ'}));
       if(!p.items.some(i=>i.kind==='item')&&lp.items.length){const cc=p.categories.find(c=>c.kind==='construction')||p.categories[0];const f=lp.items.find(x=>x.factor);if(f&&cc&&(!num(cc.factor)||num(cc.factor)===1))cc.factor=f.factor;
         p.items=lp.items.map(x=>({id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,unitCost:x.cost,catId:cc.id,midOverride:'',fixed:false,std:x.std}))}
