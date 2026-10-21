@@ -287,8 +287,26 @@ function handleAuth_(d) {
     const blob = file.getBlob();
     return { ok: true, name: file.getName(), mime: blob.getContentType(), b64: Utilities.base64Encode(blob.getBytes()) };
   }
+  if (a === 'legacy.pull') {
+    needEdit_(me);
+    let ss;
+    try { ss = SpreadsheetApp.openById(LEGACY_SHEET_ID); } catch (e) { throw new Error('เปิดชีตระบบติดตามเดิมไม่ได้ — ให้แชร์ชีตนั้นให้บัญชี Google ที่ Deploy เว็บแอปนี้ (สิทธิ์ผู้มีสิทธิ์อ่านขึ้นไป)'); }
+    const mod = DriveApp.getFileById(LEGACY_SHEET_ID).getLastUpdated().getTime();
+    if (+d.since && +d.since >= mod) return { ok: true, unchanged: true, modified: mod };
+    const tz = ss.getSpreadsheetTimeZone(), out = {};
+    ss.getSheets().forEach(sh => {
+      const n = sh.getName();
+      if (sh.getLastRow() < 1 || sh.getLastColumn() < 1) return;
+      if (LEGACY_SHEETS.indexOf(n) < 0) { const h = sh.getRange(1, 1, 1, Math.max(1, sh.getLastColumn())).getDisplayValues()[0] || []; if (!(h.indexOf('ID') >= 0 && h.indexOf('ชื่อโครงการ') >= 0)) return; }
+      out[n] = sh.getRange(1, 1, sh.getLastRow(), sh.getLastColumn()).getValues().map(r => r.map(v => v instanceof Date ? Utilities.formatDate(v, tz, 'yyyy-MM-dd') : v));
+    });
+    return { ok: true, modified: mod, name: ss.getName(), sheets: out };
+  }
   throw new Error('ไม่รู้จักคำสั่ง');
 }
+/* ชีตระบบติดตามจัดซื้อจัดจ้างเดิม (ซิงก์โครงการ ID คณะกรรมการ ผู้ควบคุมงาน เข้าแอป) */
+const LEGACY_SHEET_ID = '1HHXkVyUYeQXlM4ZvDzQbxcD1WExjIIIqbh_vnurM0Gc';
+const LEGACY_SHEETS = ['รายชื่อกรรมการ', 'ข้อมูลและผลงาน', 'มาตรฐาน'];
 /* ไฟล์แนบของโครงการ: เก็บใน Drive โฟลเดอร์ DOC_FOLDER เปิดได้เฉพาะผ่านแอปที่เข้าสู่ระบบแล้ว */
 const DOC_FOLDER = 'เอกสารโครงการ (ระบบพิจารณาผล)';
 function docRoot_() {
@@ -334,8 +352,8 @@ function doGet(e) {
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents || '{}');
-    if (/^(auth|users|data|files)\./.test(d.action || '')) {
-      const write = !/^(auth\.login|auth\.me|users\.list|data\.pull|files\.get|files\.upload)$/.test(d.action);
+    if (/^(auth|users|data|files|legacy)\./.test(d.action || '')) {
+      const write = !/^(auth\.login|auth\.me|users\.list|data\.pull|files\.get|files\.upload|legacy\.pull)$/.test(d.action);
       const lk = write ? LockService.getScriptLock() : null; if (lk) lk.waitLock(25000);
       try { return json_(handleAuth_(d)); }
       catch (err) { return json_({ ok: false, error: String(err.message || err), relogin: !!err.relogin }); }

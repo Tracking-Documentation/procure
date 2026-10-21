@@ -424,7 +424,7 @@ function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.pars
   if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
 let saveT=null;
 function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}if(typeof syncSoon==='function')syncSoon()},250)}
-function P(){const p=S.projects.find(p=>p.id===cur);if(p&&!Array.isArray(p.bidders))p.bidders=[];if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
+function P(){const p=S.projects.find(p=>p.id===cur);if(p&&p.legacy&&p.legacy.id&&p.legacyId===undefined)p.legacyId=p.legacy.id;if(p&&!Array.isArray(p.bidders))p.bidders=[];if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
 function touch(p){p.updatedAt=nowStr();save()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
 
@@ -668,7 +668,7 @@ function rEdit(){
    ${p.legacy?`<div class="note" style="margin:0">ข้อมูลจากระบบติดตามเดิม · รหัส ${esc(p.legacy.id||'-')} · หน่วย ${esc(p.legacy.unit||'-')} · กม. ${esc(p.legacy.km||'-')}${p.legacy.assign?' · ผู้รับผิดชอบ '+esc(Object.entries(p.legacy.assign).map(([k,v])=>k+' ('+v+')').join(', ')):''}${p.legacy.committees?' · มีรายชื่อกรรมการ '+esc(Object.keys(p.legacy.committees).map(k=>({tor:'TOR',price:'ราคากลาง',result:'พิจารณาผล'})[k]).join('/')):''}</div>`:''}
    <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
-     ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
+     ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('legacyId','ID / รหัสงาน (ชีตติดตาม)',{cls:'s3'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s5'})}
      ${F('division','หน่วยดำเนินการ',{cls:'s4'})}${F('km','กม.ดำเนินการ',{cls:'s4'})}${F('workDays','ระยะเวลาดำเนินการ (วัน)',{cls:'s4'})}
      ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
      ${F('inviteNo','ประกาศประกวดราคาเลขที่',{cls:'s6'})}${F('inviteDate','ประกาศลงวันที่',{cls:'s6',type:'date'})}
@@ -1860,7 +1860,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   <div class="card"><div class="card-h"><h2>การแสดงผล</h2></div><div class="card-b row"><span>ธีม</span><div class="seg">${[['system','ตามเครื่อง'],['light','สว่าง'],['dark','มืด']].map(([k,l])=>`<button class="${st.theme===k?'on':''}" data-th="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>สำรองและกู้คืนข้อมูล</h2></div><div class="card-b grid">
    <p class="muted" style="margin:0">${central()?'ข้อมูลโครงการเก็บในระบบกลาง (Google Sheet) · ไฟล์สำรองยังมีประโยชน์ไว้เก็บเป็นหลักฐาน · นำเข้าในโหมดนี้จะเพิ่มเป็นโครงการใหม่เสมอ ไม่ลบของเดิม':'ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหาย ควรสำรองเป็นไฟล์ไว้'}</p>
-   <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn" id="bLegacy" type="button">นำเข้าจากระบบติดตามเดิม (.xlsx)</button><button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
+   <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn" id="bLegacy" type="button">นำเข้าจากระบบติดตามเดิม (.xlsx)</button>${central()?`<button class="btn" id="bLgSync" type="button">↻ ซิงก์จากชีตเดิมตอนนี้</button>`:''}</div>${central()?`<div class="row" style="gap:10px;flex-wrap:wrap;font-size:13.5px"><label class="switch"><input type="checkbox" id="lgAuto" ${st.legacyAuto!==false?'checked':''}> ซิงก์โครงการ ID คณะกรรมการ และผู้ควบคุมงาน จากชีต “สถานะโครงการจัดซื้อจัดจ้าง” อัตโนมัติ (ทุก 5 นาที)</label><span class="muted" id="lgInfo">${esc(lgInfoTxt())}</span>`:''}<button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
   </div></div></div>`;
   $('#sAgency').oninput=e=>{st.agency=e.target.value;save()};
   $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
@@ -1877,6 +1877,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   $('#bExport').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`boq-nego-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();toast('กำลังดาวน์โหลด (ถ้าไม่มีไฟล์ ให้ใช้ “คัดลอกข้อมูลสำรอง”)')};
   $('#bCopy').onclick=()=>{const txt=JSON.stringify(S);navigator.clipboard?.writeText(txt).then(()=>toast('คัดลอกแล้ว นำไปวางเก็บในไฟล์ข้อความ'),()=>{const m=modal('ข้อมูลสำรอง',`<textarea class="i" rows="10" readonly>${esc(txt)}</textarea>`,'');m.root.querySelector('textarea').select()})};
   $('#bImport').onclick=()=>$('#fileImport').click();
+  if($('#bLgSync'))$('#bLgSync').onclick=()=>legacySync(true);if($('#lgAuto'))$('#lgAuto').onchange=e=>{st.legacyAuto=e.target.checked;save()};
   $('#bLegacy').onclick=()=>{if(!canEdit())return toast('บัญชีนี้ดูได้อย่างเดียว');legacyImportPick()};
   $('#bPasteImp').onclick=()=>{const m=modal('วางข้อมูลสำรอง',`<textarea class="i" id="impTxt" rows="10" placeholder="วางข้อความ JSON ที่สำรองไว้"></textarea><label class="switch"><input type="checkbox" id="impMerge" checked> รวมกับโครงการที่มีอยู่ (ไม่ลบของเดิม)</label>`,`<button class="btn pri" id="impGo" type="button">นำเข้า</button>`);$('#impGo').onclick=()=>{importData($('#impTxt').value,$('#impMerge').checked);m.close()}};
 }
@@ -2301,7 +2302,7 @@ function ordMembers(p,k){const O=ordersOf(p);if(k!=='result')return O[k].members
 const ordFY=()=>toTH(fyNow());
 function ordNo(c){return c.no||('สทล.๑๗ ขท.กระบี่.๑/............../'+ordFY())}
 function ordDate(iso){return iso?thDate(iso):'……………………………'}
-function ordCode(p){return (p.legacy&&p.legacy.id)||p.projectNo||'-'}
+function ordCode(p){return p.legacyId||(p.legacy&&p.legacy.id)||'-'}
 function ordBudget(p){return `${fmt(p.budget)} บาท (${bahtText(p.budget)})`}
 const ORD_PH={'{ชื่อโครงการ}':p=>p.name||'-','{วงเงิน}':p=>ordBudget(p),'{รหัสงาน}':p=>ordCode(p)};
 /* ข้อความคำสั่ง: ใช้ที่แก้ไว้ใน S.settings.ordTpl ถ้ามี ไม่งั้นใช้ข้อความตามเทมเพลตเดิม */
@@ -2573,8 +2574,7 @@ function parseLegacy(X,wb){const rows=n=>X.utils.sheet_to_json(wb.Sheets[n],{hea
   return {mainName,projects,people,stds,itemCodes:Object.keys(items).length}}
 function legacyImportPick(){const f=document.createElement('input');f.type='file';f.accept='.xlsx,.xls';f.onchange=async()=>{const file=f.files[0];if(!file)return;toast('กำลังอ่านไฟล์…');
   try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});legacyDialog(parseLegacy(X,wb),file.name)}catch(e){alert(e.message)}};f.click()}
-function legacyDialog(d,fname){const nk=x=>String(x.name||'').replace(/\s+/g,' ').trim()+'|'+String(x.km||'').replace(/\s+/g,'');
-  const find=lp=>S.projects.find(p=>(lp.legacyId&&p.legacyId===lp.legacyId)||(lp.egp&&p.projectNo&&lgId(p.projectNo)===lp.egp)||(!lp.legacyId&&p.legacyKey&&p.legacyKey===nk(lp)));
+function legacyDialog(d,fname){const find=lgFind;
   const upd=d.projects.filter(find).length,nw=d.projects.length-upd,withItems=d.projects.filter(p=>p.items.length).length;
   const m=modal('นำเข้าจากระบบติดตามจัดซื้อจัดจ้างเดิม',`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">${esc(fname)} · ชีต “${esc(d.mainName)}”</div>
     <ul style="margin:0;padding-left:20px;line-height:1.8"><li>โครงการ <b>${d.projects.length}</b> รายการ — เพิ่มใหม่ <b>${nw}</b> · ตรงกับโครงการที่มีอยู่ <b>${upd}</b> (เติมเฉพาะช่องที่ยังว่าง)</li>
@@ -2582,21 +2582,54 @@ function legacyDialog(d,fname){const nk=x=>String(x.name||'').replace(/\s+/g,' '
     <p class="muted" style="font-size:13px;margin:0">นำเข้าซ้ำได้ ระบบจับคู่โครงการด้วย ID / รหัส e-GP ไม่สร้างซ้ำ และไม่ทับข้อมูลที่กรอกในระบบนี้แล้ว</p></div>`,
     `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">นำเข้า</button>`);
   m.root.querySelector('[data-mc]').onclick=m.close;
-  m.root.querySelector('[data-mo]').onclick=()=>{let a=0,u=0;const fill=(o,k,v)=>{if(v!==''&&v!=null&&v!==false&&(o[k]===''||o[k]==null||o[k]===0))o[k]=v};
-    d.projects.forEach(lp=>{let p=find(lp);const isNew=!p;if(isNew){p=newProject();delete p.saved;p.name='';}
-      fill(p,'legacyId',lp.legacyId);if(!lp.legacyId)fill(p,'legacyKey',nk(lp));fill(p,'name',lp.name);fill(p,'division',lp.division);fill(p,'km',lp.km);fill(p,'workDays',lp.workDays);fill(p,'budget',lp.budget);fill(p,'projectNo',lp.egp);
-      fill(p,'contractor',lp.contractor);fill(p,'inviteDate',lp.inviteDate);fill(p,'midApproveDate',lp.midApproveDate);fill(p,'torStart',lp.torStart);
-      const R=prepOf(p);fill(R,'approveDate',lp.approveDate);if(lp.plan)R.plan=true;if(lp.draft)R.draft=true;fill(R,'authority',lp.authority);
-      R.links=(R.links||[]);lp.links.forEach(l=>{if(!R.links.some(x=>x.url===l.url))R.links.push(l)});
-      if(lp.sign.no||lp.sign.date){p.sign=p.sign||{};fill(p.sign,'no',lp.sign.no);fill(p.sign,'date',lp.sign.date)}
-      p.orders=p.orders||{};['inspect','tor','price','result'].forEach(k=>{const v=lp[k];const has=k==='inspect'?(v.chair||v.members.length||v.supervisors.length||(v.assistants||[]).length||v.no):(v.members.length||v.no);if(has&&!p.orders[k])p.orders[k]=v});
-      if((!p.committee||!p.committee.some(x=>x.name))&&lp.result.members.length)p.committee=lp.result.members.map((x,i,A)=>({name:x.name,position:x.position,role:i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการ':'กรรมการฯ'}));
-      if(!p.items.some(i=>i.kind==='item')&&lp.items.length){const cc=p.categories.find(c=>c.kind==='construction')||p.categories[0];const f=lp.items.find(x=>x.factor);if(f&&cc&&(!num(cc.factor)||num(cc.factor)===1))cc.factor=f.factor;
-        p.items=lp.items.map(x=>({id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,unitCost:x.cost,catId:cc.id,midOverride:'',fixed:false,std:x.std}))}
-      p.updatedAt=nowStr();if(isNew){S.projects.push(p);a++}else u++});
-    const st=S.settings;st.people=st.people||[];Object.entries(d.people).forEach(([nick,v])=>{const e=st.people.find(x=>x.nick===nick);if(e){if(!e.name)e.name=v.name;if(!e.position)e.position=v.position}else st.people.push({nick,name:v.name,position:v.position})});
-    if(d.stds.length)st.dohStandards=d.stds;
-    save();m.close();go('dash');toast(`นำเข้าแล้ว: เพิ่ม ${a} · อัปเดต ${u} โครงการ`)}}
+  m.root.querySelector('[data-mo]').onclick=()=>{const r=applyLegacy(d,'fill');m.close();go('dash');toast(`นำเข้าแล้ว: เพิ่ม ${r.a} · อัปเดต ${r.u} โครงการ`)}}
+
+const lgNk=x=>String(x.name||'').replace(/\s+/g,' ').trim()+'|'+String(x.km||'').replace(/\s+/g,'');
+const lgPid=p=>p.legacyId||(p.legacy&&p.legacy.id)||'';
+function lgFind(lp){return S.projects.find(p=>(lp.legacyId&&lgPid(p)===lp.legacyId)||(lp.egp&&p.projectNo&&lgId(p.projectNo)===lp.egp)||(!lp.legacyId&&(p.legacyKey===lgNk(lp)||lgNk({name:p.name,km:p.km||(p.legacy&&p.legacy.km)})===lgNk(lp))))}
+/* นำเข้า/ซิงก์จากชีตระบบติดตามเดิม
+   fill = เติมเฉพาะช่องที่ว่าง · sync = ค่าที่เปลี่ยนในชีตตั้งแต่ซิงก์ครั้งก่อน ทับค่าในระบบ (ค่าที่ชีตไม่เปลี่ยนจะไม่ไปทับที่แก้ในระบบ) */
+function applyLegacy(d,mode){let a=0,u=0,ch=0;const emp=v=>v===''||v==null||v===0||(Array.isArray(v)&&!v.length);
+  const resRole=(i,A)=>i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการ':'กรรมการฯ';
+  d.projects.forEach(lp=>{let p=lgFind(lp);const isNew=!p;if(isNew){p=newProject();delete p.saved;p.name=''}
+    const before=isNew?'':JSON.stringify(p);const sn=p.lgSnap=p.lgSnap||{};
+    const set=(o,k,v,key)=>{if(v===undefined)return;const sv=JSON.stringify(v==null?'':v);
+      if(mode==='sync'&&key in sn){if(sn[key]!==sv&&!(emp(v)&&!sn[key]))o[k]=structuredClone(v)}else if(!emp(v)&&emp(o[k]))o[k]=structuredClone(v);
+      if(mode==='sync')sn[key]=sv};
+    if(lp.legacyId){set(p,'legacyId',lp.legacyId,'id');if(p.legacy)p.legacy.id=p.legacyId}else if(!p.legacyKey)p.legacyKey=lgNk(lp);
+    set(p,'name',lp.name,'name');set(p,'division',lp.division,'division');set(p,'km',lp.km,'km');set(p,'workDays',lp.workDays,'workDays');set(p,'budget',lp.budget,'budget');set(p,'projectNo',lp.egp,'egp');
+    set(p,'contractor',lp.contractor,'contractor');set(p,'inviteDate',lp.inviteDate,'inviteDate');set(p,'midApproveDate',lp.midApproveDate,'midApproveDate');set(p,'torStart',lp.torStart,'torStart');
+    const R=prepOf(p);set(R,'approveDate',lp.approveDate,'approveDate');set(R,'authority',lp.authority,'authority');if(lp.plan)R.plan=true;if(lp.draft)R.draft=true;
+    R.links=(R.links||[]);lp.links.forEach(l=>{if(!R.links.some(x=>x.url===l.url))R.links.push(l)});
+    p.sign=p.sign||{};set(p.sign,'no',lp.sign.no,'signNo');set(p.sign,'date',lp.sign.date,'signDate');
+    const O=ordersOf(p);const v=lp.inspect;const mm=(x,role)=>x&&x.name?{name:x.name,position:x.position||'',role}:null;
+    const im=[mm(v.chair,'ประธานกรรมการ'),...v.members.map(x=>mm(x,'กรรมการ')),...v.supervisors.map(x=>mm(x,'ผู้ควบคุมงาน')),...(v.assistants||[]).map(x=>mm(x,'ผู้ช่วยผู้ควบคุมงาน'))].filter(Boolean);
+    set(O.inspect,'members',im,'insp.m');set(O.inspect,'no',v.no,'insp.no');set(O.inspect,'date',v.date,'insp.date');if(im.length)O._seeded=1;
+    ['tor','price'].forEach(k=>{set(O[k],'members',lp[k].members,k+'.m');set(O[k],'no',lp[k].no,k+'.no');set(O[k],'date',lp[k].date,k+'.date')});
+    set(O.result,'no',lp.result.no,'result.no');set(O.result,'date',lp.result.date,'result.date');
+    const rm=lp.result.members.map((x,i,A)=>({name:x.name,position:x.position,role:resRole(i,A)}));
+    if(!(p.committee||[]).some(x=>x.name)&&rm.length&&!(mode==='sync'&&'result.m' in sn))p.committee=rm;else if(mode==='sync'&&'result.m' in sn&&sn['result.m']!==JSON.stringify(rm)&&rm.length){evOf(p);p.committee=rm}
+    if(mode==='sync')sn['result.m']=JSON.stringify(rm);
+    if(!p.items.some(i=>i.kind==='item')&&lp.items.length){const cc=p.categories.find(c=>c.kind==='construction')||p.categories[0];const f=lp.items.find(x=>x.factor);if(f&&cc&&(!num(cc.factor)||num(cc.factor)===1))cc.factor=f.factor;
+      p.items=lp.items.map(x=>({id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,unitCost:x.cost,catId:cc.id,midOverride:'',fixed:false,std:x.std}))}
+    if(isNew){p.updatedAt=nowStr();S.projects.push(p);a++;ch++}else{u++;if(JSON.stringify(p)!==before){p.updatedAt=nowStr();ch++}}});
+  const st=S.settings;st.people=st.people||[];Object.entries(d.people).forEach(([nick,v])=>{const e=st.people.find(x=>x.nick===nick);
+    if(e){if(mode==='sync'){if(v.name)e.name=v.name;if(v.position)e.position=v.position}else{if(!e.name)e.name=v.name;if(!e.position)e.position=v.position}}else st.people.push({nick,name:v.name,position:v.position})});
+  if(d.stds.length)st.dohStandards=d.stds;
+  save();return {a,u,ch}}
+/* ซิงก์จากชีตเดิมผ่านเซิร์ฟเวอร์ (Code.gs → legacy.pull) อัตโนมัติทุก 5 นาที และเมื่อกดปุ่ม */
+const LGK=LS+'.lgSync';let lgBusy=false;
+function lgMeta(){try{return JSON.parse(localStorage.getItem(LGK)||'{}')||{}}catch(e){return {}}}
+async function legacySync(manual){if(lgBusy||!central()||!authOk()||!canEdit()||EXEC)return;const M=lgMeta();if(!manual&&(S.settings.legacyAuto===false||Date.now()-(M.at||0)<5*60000))return;
+  lgBusy=true;try{const j=await srvCall({action:'legacy.pull',since:manual?0:(M.mod||0)});const at=Date.now();
+    if(j.unchanged){localStorage.setItem(LGK,JSON.stringify(Object.assign(M,{at})));if(manual)toast('ข้อมูลในชีตเดิมไม่มีการเปลี่ยนแปลง');return}
+    const X={utils:{sheet_to_json:sh=>sh}};const wb={SheetNames:Object.keys(j.sheets),Sheets:j.sheets};const d=parseLegacy(X,wb);
+    const r=applyLegacy(d,'sync');localStorage.setItem(LGK,JSON.stringify({at,mod:j.modified,name:j.name,n:d.projects.length}));
+    if(r.ch){render();syncSoon()}if(manual||r.ch)toast(`ซิงก์จากชีตเดิมแล้ว: ${r.a?'เพิ่ม '+r.a+' · ':''}เปลี่ยน ${r.ch-r.a} โครงการ`);if($('#lgInfo'))$('#lgInfo').textContent=lgInfoTxt()}
+  catch(e){if(manual)alert(e.message);else console.warn('legacySync',e.message)}finally{lgBusy=false}}
+function lgInfoTxt(){const M=lgMeta();return M.at?`ซิงก์ล่าสุด ${new Date(M.at).toLocaleString('th-TH')} · ${M.n||0} โครงการ`:'ยังไม่เคยซิงก์'}
+setInterval(()=>legacySync(false),60000);setTimeout(()=>legacySync(false),4000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)legacySync(false)});
+
 
 /* expose core for testing */
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
