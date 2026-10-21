@@ -217,6 +217,9 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper thead{display:table-header-group}
 @page{size:A4;margin:0}
 @page land{size:A4 landscape;margin:0}
+.paper.tor{padding:15mm 20mm 15mm 30mm}.paper.tor .tp{margin:0;text-align:justify;white-space:pre-wrap}.paper.tor .tp.c{text-align:center}.paper.tor .tp.r{text-align:right}.paper.tor .tp.tsg{text-align:center;margin-left:45mm;white-space:pre-line}.paper.tor .tp.e{line-height:1}.paper.tor .tlb{display:inline-block;min-width:8.3mm;padding-right:2mm;text-indent:0}
+.tor-g{text-align:center;margin-bottom:2mm}.tor-g img{width:3cm;height:auto}.tor-t{width:100%;border-collapse:collapse;margin:2mm 0 3mm}.tor-t th,.tor-t td{border:1px solid #000;padding:1px 6px;vertical-align:top;font-size:inherit}.tor-t th{text-align:center;font-weight:700}.tor-t .c{text-align:center}.tor-t .r{text-align:right;white-space:nowrap}
+@media print{.paper.tor{padding:0!important;width:auto!important;min-height:0!important}.tor-t tr{break-inside:avoid}}
 .paper.ev{width:210mm;min-height:297mm;padding:15mm 20mm 15mm 30mm;font-family:var(--lf);font-size:var(--ls);line-height:1.38;box-sizing:border-box}
 .ev p{margin:0}.ev .pi{text-indent:25mm;text-align:justify}
 .ev .mh{position:relative;height:16mm;display:flex;align-items:flex-end;justify-content:center}.ev .mh img{position:absolute;left:0;bottom:0;height:15mm}.ev .mt{font-size:1.8em;font-weight:700;line-height:1}
@@ -1317,7 +1320,7 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
 function papersToDocx(html){
   const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
-  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
+  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
   const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
     return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
@@ -2470,6 +2473,126 @@ function ordTplDialog(){if(!canEdit())return toast('บัญชีนี้ด�
   q('[data-tr]').onclick=()=>{const d=ordTplDef(k);q('#otS').value=d.subj;q('#otA').value=d.pre;q('#otB').value=d.post};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=()=>{keep();save();m.close();rOrders();toast('บันทึกข้อความคำสั่งแล้ว · ใช้กับทุกโครงการ')};fill()}
 
+/* ================= ร่างขอบเขตของงาน (TOR) / ร่างประกาศ / ร่างเอกสารประกวดราคา =================
+   ข้อความตามเทมเพลต_ร่างขอบเขตงาน_TOR.docx (แม่แบบอยู่ในไฟล์ tor-tpl.js โหลดเมื่อใช้)
+   จัดรูปแบบตามแอปนี้: TH SarabunIT๙ 16pt ย่อหน้า 2.5 ซม. เลขข้อเรียงระดับ · เงื่อนไข/เลขข้อคำนวณตามระบบเดิม */
+let TOR_LOADING=null;
+function loadTorTpl(){if(window.TOR_TPL)return Promise.resolve(window.TOR_TPL);if(TOR_LOADING)return TOR_LOADING;
+  TOR_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='tor-tpl.js';s.onload=()=>ok(window.TOR_TPL);s.onerror=()=>{TOR_LOADING=null;no(new Error('โหลดแม่แบบ TOR ไม่ได้'))};document.head.appendChild(s)});return TOR_LOADING}
+const TOR_DEF={workType:'road',useRecord:false,recordAmt:'',maintainTypes:'',plant:null,k:false,warranty:'2',fineSub:'10',fineDaily:'0.10',approvedBy:'',planLine:'',hwy:'',background:'',standards:''};
+function torOf(p){p.tor=Object.assign({},TOR_DEF,p.tor||{});return p.tor}
+/* ชั้นผู้ประกอบการตามตารางกรมบัญชีกลาง (บัญชีแนบท้าย ๒-๐๑ ทาง / ๒-๐๒ สะพาน) — เพดานวงเงินต่อสัญญา (ล้านบาท) */
+const TOR_CLASS={road:[[10,'ชั้น 6'],[20,'ชั้น 5'],[60,'ชั้น 4'],[150,'ชั้น 3'],[300,'ชั้น 2'],[500,'ชั้น 1']],bridge:[[10,'ชั้น 5'],[Infinity,'ชั้น 4']],special:[[Infinity,'ชั้นพิเศษ']]};
+const TOR_BRANCH={road:'งานก่อสร้างทาง',bridge:'งานก่อสร้างสะพาน',special:'งานก่อสร้างทางและสะพานพิเศษ'};
+const TOR_STD_ALWAYS=['คู่มือเครื่องหมายควบคุมการจราจรในงานก่อสร้าง งานบูรณะและงานบำรุงรักษาทางหลวงแผ่นดิน (มีนาคม ๒๕๖๑) (ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณช่องจราจรซ้าย สำหรับทางหลวง ๒ ช่องจราจร)'];
+function torClass(p){const T=torOf(p);const mb=num(p.budget)/1e6;if(!mb)return '';const t=TOR_CLASS[T.workType]||TOR_CLASS.road;for(const [c,l] of t)if(mb<=c)return l;return 'ชั้นพิเศษ'}
+function torMode(p){const T=torOf(p);return T.workType==='maintain'?'maintain':(T.useRecord&&num(T.recordAmt)?'record':'class')}
+function torBond(p){const b=num(p.budget);if(b/1e6<5)return null;const a=Math.round(b*0.05);return {fig:a.toLocaleString('en-US')+'.-',words:'เงิน'+bahtText(a)}}
+function torHwy(p){const T=torOf(p);if(T.hwy)return T.hwy;const m=String(p.name||'').match(/ทางหลวงหมายเลข\s*(\d+)\s*(ตอน(?:ควบคุม\s*\d+\s*ตอน)?\s*.+?)?(?=\s+(?:ระหว่าง|จ\.|ปริมาณ|กม\.)|$)/);return m?(m[1]+(m[2]?'  '+m[2].trim():'')):''}
+function torPlant(p){const T=torOf(p);if(T.plant!==null&&T.plant!==undefined)return !!T.plant;return (p.items||[]).some(i=>i.kind==='item'&&/ASPHALT|แอสฟัลต์/i.test(i.name||''))}
+function torItems(p){return (p.items||[]).filter(i=>i.kind==='item')}
+function torStdLines(p){const T=torOf(p);if(String(T.standards||'').trim())return T.standards.split(/\n/).map(s=>s.trim()).filter(Boolean);
+  const seen=new Set(),L=[];torItems(p).forEach(i=>{const s=String(i.std||'').trim();if(s&&!seen.has(s)){seen.add(s);L.push(s)}});TOR_STD_ALWAYS.forEach(s=>{if(!seen.has(s)){seen.add(s);L.push(s)}});return L}
+function torNums(p){const bond=torBond(p)?1:0,k=torOf(p).k?1:0;const c=5+bond,res=c+7,cr=res+1+k;
+  return {N_CRITERIA:c,N_CONTRACT:c+1,N_PAYMENT:c+2,N_PENALTY:c+3,N_WARRANTY:c+4,N_ADVANCE:c+5,N_RETENTION:c+6,N_RESERVED:res,N_K:res+1,N_CRAFT:cr,N_LAW:cr+1,N_EVAL:cr+2,N_G_CONTRACT:1+bond,N_G_ADVANCE:2+bond,N_G_RETENTION:3+bond}}
+function torMoney(a){a=Math.round(num(a));return {fig:a.toLocaleString('en-US')+'.-',words:'เงิน'+bahtText(a)}}
+function torQual(p,no){const T=torOf(p),m=torMode(p);
+  if(m==='maintain')return [no+'  ผู้ยื่นข้อเสนอต้องเป็นผู้ที่ผ่านการคัดเลือกผู้มีคุณสมบัติเบื้องต้นในการจ้างของกรมทางหลวง โดยเป็นผู้ได้รับการจดทะเบียนเป็นผู้รับเหมา งานบำรุงทางประเภท '+(T.maintainTypes||'.......')+' และต้องไม่ขาดคุณสมบัติตามเงื่อนไขในการจดทะเบียนผู้รับเหมากับกรมทางหลวง'];
+  if(m==='record'){const x=torMoney(T.recordAmt);return [no+'  ผู้ยื่นข้อเสนอต้องมีผลงานก่อสร้างประเภทเดียวกันกับงานที่ประกวดราคาจ้างก่อสร้างในวงเงินไม่น้อยกว่า  '+x.fig+' บาท  ('+x.words+')  และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ  หรือหน่วยงานเอกชนที่กรมเชื่อถือ  โดยจะต้องมีหนังสือรับรองผลงานจาก  ผู้ว่าจ้าง  และต้องเป็นผลงานที่แล้วเสร็จ   มีการตรวจรับงานงวดสุดท้ายแล้ว']}
+  return [no+'  ผู้ยื่นข้อเสนอต้องเป็นผู้ประกอบการที่ขึ้นทะเบียนงานก่อสร้าง สาขา'+(TOR_BRANCH[T.workType]||TOR_BRANCH.road)+' ไม่น้อยกว่า'+(torClass(p)||'.......')+' ประเภทหลักเกณฑ์คุณสมบัติ เฉพาะอื่นๆ ไว้กับกรมบัญชีกลาง']}
+function torJV(p){const T=torOf(p),m=torMode(p);let mid='';
+  if(m==='maintain')mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องเป็นผู้ประกอบการที่ขึ้นทะเบียนงานบำรุงทางประเภทที่ '+(T.maintainTypes||'.......')+' และต้องไม่ขาดคุณสมบัติตามเงื่อนไขในการจดทะเบียนผู้รับเหมากับกรมทางหลวง  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
+  else if(m==='record'){const x=torMoney(T.recordAmt);mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องมีผลงานก่อสร้างประเภทเดียวกันกับงานที่ประกวดราคาจ้างก่อสร้างในวงเงินไม่น้อยกว่า '+x.fig+'บาท  ('+x.words+')  และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ  หรือหน่วยงานเอกชนที่กรมเชื่อถือ  โดยจะต้องมีหนังสือรับรองผลงานจากผู้ว่าจ้าง  และต้องเป็นผลงานที่แล้วเสร็จ  มีการตรวจรับงานงวดสุดท้ายแล้ว  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีผลงานก่อสร้างตามที่กำหนดข้างต้นหรือไม่ก็ได้'}
+  return ['(๓)  งานก่อสร้างที่ขึ้นทะเบียนไว้กรมบัญชีกลางตามสาขางานก่อสร้างที่คณะกรรมการราคากลางและขึ้นทะเบียนผู้ประกอบการกำหนด',mid,'สำหรับข้อตกลงฯ ที่ไม่ได้กำหนดให้ผู้เข้าร่วมค้ารายใดเป็นผู้เข้าร่วมหลัก ผู้เข้าร่วมค้าทุกรายจะต้องมีคุณสมบัติครบถ้วนตามเงื่อนไขที่กำหนดไว้ในเอกสารเชิญชวน'].filter(Boolean)}
+function torVals(p){const T=torOf(p),st=S.settings,bond=torBond(p),tm=ordMembers(p,'tor');const ch=tm[0]||{},m1=tm[1]||{},m2=tm[2]||{};const dots='..............................';
+  const v={PROJECT_ACTIVITY:p.name||'-',PROJECT_KM_SHORT:torHwy(p)||'.........',PROJECT_PLAN_LINE:T.planLine||'',DURATION:p.workDays||(p.legacy&&p.legacy.duration)||'.......',
+    BUDGET_TEXT:fmt(p.budget),BUDGET_TEXT_WORDS:bahtText(p.budget),BUDGET_YEAR:String(fyNow()),CONTRACTOR_CLASS:torClass(p),
+    FINE_SUBCONTRACT_PCT:T.fineSub||'10',FINE_DAILY_PCT:T.fineDaily||'0.10',WARRANTY_YEARS:T.warranty||'2',WARRANTY_REPAIR_DAYS:'15',CRAFTSMAN_PCT:'',
+    TOR_CHAIRMAN_NAME:ch.name?fName(ch.name):dots,TOR_CHAIRMAN_POSITION:ch.position||'',TOR_MEMBER1_NAME:m1.name?fName(m1.name):dots,TOR_MEMBER1_POSITION:m1.position||'',TOR_MEMBER2_NAME:m2.name?fName(m2.name):dots,TOR_MEMBER2_POSITION:m2.position||'',
+    DIRECTOR_NAME:fName(st.director||''),DIRECTOR_POSITION:st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',APPROVED_BY:T.approvedBy||'.............................',DIRECTOR_DEPT:'',
+    ITEM_COUNT:String(torItems(p).length),BID_BOND_FIGURE:bond?bond.fig:'',BID_BOND_WORDS:bond?bond.words:''};
+  const n=torNums(p);for(const k in n)v[k]=String(n[k]);return v}
+function torConds(p){const pl=torPlant(p),k=!!torOf(p).k,b=!!torBond(p),mt=torOf(p).workType==='maintain';return {PLANT:pl,NO_PLANT:!pl,K:k,NO_K:!k,BID_BOND:b,NO_BID_BOND:!b,MAINTAIN:mt,CONSTRUCT:!mt}}
+/* จัดย่อหน้าตามเลขข้อ (ระดับ) แทนแท็บ/ช่องว่างในเทมเพลต */
+const TOR_NUM='[0-9๐-๙]+';
+function torIndent(txt,lead){
+  if(new RegExp('^'+TOR_NUM+'\\.(?!['+'0-9๐-๙'+'])').test(txt))return lead?'ti:12.5mm':'ti:0';
+  if(new RegExp('^'+TOR_NUM+'\\.'+TOR_NUM).test(txt))return 'ti:25mm';
+  if(new RegExp('^\\('+TOR_NUM+'\\.'+TOR_NUM+'\\)').test(txt))return 'ti:40mm';
+  if(new RegExp('^\\(('+TOR_NUM+'|[ก-ฮ])\\)').test(txt))return 'ti:32mm';
+  if(/^[-✓☐]/.test(txt))return 'ti:25mm';
+  return lead?'ti:25mm':''}
+function torEsc(t){return esc(t).replace(/\t/g,'  ').replace(/ {3,}/g,'  ').replace(/\n/g,'<br>')}
+function torRuns(r,vals){return (r||[]).map(x=>{const [t,f]=typeof x==='string'?[x,0]:x;return [t.replace(/\{\{([A-Z_0-9]+)\}\}/g,(m,k)=>k in vals?vals[k]:''),f]})}
+/* เลขข้อนำหน้า + ช่องว่าง → กล่องเว้นระยะคงที่ (ไม่ให้การจัดชิดขอบไปถ่างช่องหลังเลขข้อ) */
+function torLabel(h){return h.replace(/^((?:<[bu]>)*)((?:[0-9๐-๙]+\.)+[0-9๐-๙]*|\((?:[0-9๐-๙.]+|[ก-ฮ])\)|[-✓])[ \u00a0]+/,(m,t,l)=>`${t}<span class="tlb">${l} </span>`)}
+function torHtmlRuns(R){return R.map(([t,f])=>{let h=torEsc(t);if(!h)return '';if(f&1)h=`<b>${h}</b>`;if(f&2)h=`<u>${h}</u>`;return h}).join('')}
+function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
+  if(!T){loadTorTpl().then(()=>{if(tab==='report'||tab==='prep')render()}).catch(e=>toast(e.message));return '<div class="note">กำลังโหลดแม่แบบ TOR…</div>'}
+  const vals=torVals(p),C=torConds(p);const out=[];const stack=[];let skip=0,empties=0;
+  const mk=(cls,style,inner)=>`<p class="${cls}"${style?` style="${style}"`:''}>${inner||'&nbsp;'}</p>`;
+  const para=(txt,lead,extra)=>{const ind=torIndent(txt,lead);return ind.startsWith('ti:')?`text-indent:${ind.slice(3)};${extra||''}`:(extra||'')};
+  for(const o of T[doc]){
+    if(o.k==='if'){const c=C[o.t.replace(/^IF_/,'')];stack.push(c!==false);if(c===false)skip++;continue}
+    if(o.k==='fi'){const v=stack.pop();if(v===false)skip--;continue}
+    if(skip)continue;
+    if(o.img){out.push(`<div class="tor-g"><img src="${GARUDA}" alt="ตราครุฑ"></div>`);empties=0;continue}
+    if(o.blk){
+      if(o.blk==='ITEM_TABLE'){const L=torItems(p);out.push(`<table class="tor-t"><thead><tr><th>ลำดับ</th><th>รายการ</th><th>หน่วย</th><th>ปริมาณ</th></tr></thead><tbody>${L.map((it,i)=>`<tr><td class="c">${i+1}</td><td>${escBr(it.name)}</td><td class="c">${esc(it.unit||'')}</td><td class="r">${Number.isInteger(num(it.qty))?num(it.qty).toLocaleString('en-US'):fmt(it.qty)}</td></tr>`).join('')||'<tr><td colspan="4" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}</tbody></table>`)}
+      else if(o.blk==='STANDARDS_LIST')torStdLines(p).forEach((s,i)=>out.push(mk('tp','padding-left:40.8mm;text-indent:-8.3mm',torLabel(torEsc(`(${i+2})  ${s}`)))));
+      else{const no=o.blk==='SECTION_310'?'๓.๑๐':o.blk==='SECTION_210'?'๒.๑๐':'';const L=no?torQual(p,no):torJV(p);
+        L.filter(s=>!out.some(h=>h.includes(torEsc(s.slice(0,40))))).forEach((s,i)=>out.push(mk('tp',`text-indent:${no?'25mm':(i===0?'32mm':'25mm')}`,torLabel(torEsc(s)))))}
+      empties=0;continue}
+    const R=torRuns(o.r,vals);let plain=R.map(x=>x[0]).join('');
+    if(o.bg&&String(torOf(p).background||'').trim()){out.push(mk('tp','text-indent:25mm'+(o.b?';margin-top:'+(o.b/20)+'pt':''),torEsc(torOf(p).background.trim())));empties=0;continue}
+    if(!plain.trim()){if(++empties<=2)out.push(mk('tp e',''));continue}
+    empties=0;
+    // ตัดช่องว่าง/แท็บนำหน้า (อาจคร่อมหลาย run)
+    const lead=/^[\t ​]/.test(plain);let i=0;while(i<R.length){R[i][0]=R[i][0].replace(/^[\t ​]+/,'');if(R[i][0])break;i++}
+    plain=R.map(x=>x[0]).join('');const sp=(o.b?`margin-top:${o.b/20}pt;`:'')+(o.s?`margin-bottom:${o.s/20}pt;`:'');
+    if(/\(ลงชื่อ\)|ประกาศ ณ วันที่|ปฏิบัติราชการแทน/.test(plain)||plain.trim()==='อนุมัติ'||(plain.trim().length<90&&/\{\{(TOR_|DIRECTOR_(NAME|POSITION))/.test(JSON.stringify(o.r||[])))){
+      const lines=R.map(x=>[x[0].split('\n').map(s=>s.replace(/^[\t ]+|[\t ]+$/g,'')).join('\n'),x[1]]);out.push(`<p class="tp tsg" style="${sp}">${torHtmlRuns(lines)}</p>`);continue}
+    if(o.a==='c'&&/^[-–]$/.test(plain.trim()))continue;
+    if(o.a==='c'){out.push(`<p class="tp c" style="${sp}">${torHtmlRuns(R.map(x=>[x[0].replace(/^[\t ]+|[\t ]+$/g,''),x[1]]))}</p>`);continue}
+    if(o.h){out.push(`<p class="tp" style="${sp}padding-left:40.8mm;text-indent:-8.3mm">${torLabel(torHtmlRuns(R))}</p>`);continue}
+    out.push(`<p class="tp${o.a==='r'?' r':''}" style="${sp}${para(plain,lead||!!o.f)}">${torLabel(torHtmlRuns(R))}</p>`)}
+  return `<style>@media print{@page{size:A4;margin:15mm 20mm 15mm 30mm}@page{@bottom-center{content:counter(page);font-family:"TH SarabunIT๙","Sarabun",sans-serif;font-size:14pt}}}</style>`+thDig(`<div class="paper ev tor${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">${out.join('')}</div>`)}
+const TOR_REPORTS=[['tor_scope','ร่างขอบเขตของงาน (TOR)',p=>repTor(p,'tor')],['tor_ann','ร่างประกาศประกวดราคา',p=>repTor(p,'ann')],['tor_bid','ร่างเอกสารประกวดราคา',p=>repTor(p,'bid')]];
+ORD_REPORTS.push(...TOR_REPORTS);
+function torWarn(p){const T=torOf(p),w=[];const mb=num(p.budget)/1e6;
+  if(!num(p.budget))w.push('ยังไม่ได้กรอกวงเงินงบประมาณ');
+  else if(torMode(p)==='class'&&mb<5)w.push('วงเงินต่ำกว่า 5 ล้านบาท อ้างชั้นผู้ประกอบการไม่ได้ — ติ๊ก “กำหนดผลงานย้อนหลัง” แทน');
+  if(T.workType==='maintain'&&!String(T.maintainTypes||'').trim())w.push('ยังไม่ได้ระบุประเภทงานบำรุงทาง');
+  if(T.useRecord&&!num(T.recordAmt)&&T.workType!=='maintain')w.push('ยังไม่ได้กรอกวงเงินผลงานย้อนหลัง');
+  if(!torItems(p).length)w.push('ยังไม่มีรายการ BOQ (ตารางข้อ ๔.๑ จะว่าง)');
+  if(!ordMembers(p,'tor').some(m=>m.name))w.push('ยังไม่มีรายชื่อคณะกรรมการจัดทำ TOR (แท็บคำสั่งแต่งตั้ง)');
+  if(!p.workDays&&!(p.legacy&&p.legacy.duration))w.push('ยังไม่ได้กรอกระยะเวลาดำเนินการ (วัน) ในข้อมูลโครงการ');
+  return w}
+function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p,'tor').filter(m=>m.name);const W=torWarn(p);
+  const ck=(k,l,on)=>`<label class="switch"><input type="checkbox" data-tk="${k}" ${on?'checked':''}> ${l}</label>`;
+  const tx=(k,l,cls,ph='')=>`<label class="f ${cls}"><span>${l}</span><input class="i" data-tv="${k}" value="${esc(T[k]||'')}" placeholder="${esc(ph)}"></label>`;
+  return `<div class="card" id="torCard"><div class="card-h"><h2><span class="step">5</span>ร่างขอบเขตของงาน (TOR) · ประกาศ · เอกสารประกวดราคา</h2>
+    <button class="btn blue sm" data-oprint="tor_scope" type="button">${ICON.print} ร่าง TOR</button><button class="btn sm" data-oprint="tor_ann" type="button">${ICON.print} ร่างประกาศ</button><button class="btn sm" data-oprint="tor_bid" type="button">${ICON.print} ร่างเอกสารประกวดราคา</button></div>
+   <div class="card-b grid g12">
+    <label class="f s4"><span>สาขางาน / คุณสมบัติผู้ยื่นข้อเสนอ</span><select class="i" data-tv="workType">${[['road','งานก่อสร้างทาง'],['bridge','งานก่อสร้างสะพาน'],['special','งานก่อสร้างทางและสะพานพิเศษ'],['maintain','งานบำรุงทาง (จดทะเบียนกับกรมทางหลวง)']].map(([k,l])=>`<option value="${k}" ${T.workType===k?'selected':''}>${l}</option>`).join('')}</select></label>
+    ${T.workType==='maintain'?tx('maintainTypes','ประเภทงานบำรุงทาง','s4','เช่น ๑ และ ๒'):`<div class="f s4"><span>&nbsp;</span>${ck('useRecord','กำหนดผลงานย้อนหลัง (แทนชั้นผู้ประกอบการ)',T.useRecord)}</div>`}
+    ${T.workType!=='maintain'&&T.useRecord?`<label class="f s4"><span>วงเงินผลงานไม่น้อยกว่า (บาท)</span><input class="i r" data-tv="recordAmt" data-money value="${num(T.recordAmt)?fmt(T.recordAmt):''}" placeholder="${fmt(num(p.budget)*0.5)}"></label>`:'<div class="s4"></div>'}
+    <div class="s12 row" style="gap:16px;flex-wrap:wrap;margin:0">${ck('plant','ต้องมีโรงงานผสมแอสฟัลต์ (Plant)',torPlant(p))}${ck('k','มีการปรับราคาค่างานก่อสร้าง (ค่า K)',T.k)}</div>
+    <label class="f s3"><span>รับประกันความชำรุดบกพร่อง (ปี)</span><select class="i" data-tv="warranty">${['1','2','3','5'].map(y=>`<option ${String(T.warranty)===y?'selected':''}>${y}</option>`).join('')}</select></label>
+    ${tx('fineSub','ค่าปรับจ้างช่วง (ร้อยละ)','s3')}${tx('fineDaily','ค่าปรับรายวัน (ร้อยละ)','s3')}${tx('hwy','ทางหลวงหมายเลข (ข้อ ๑ ความเป็นมา)','s3',torHwy(p))}
+    ${tx('approvedBy','ได้รับความเห็นชอบจาก','s6','เช่น สำนักบำรุงทาง')}${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
+    <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
+    <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea></label>
+    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
+    ${W.length?`<div class="s12 note" style="margin:0">${W.map(esc).join('<br>')}</div>`:''}
+   </div></div>`}
+function bindTor(el,p){const T=torOf(p);
+  $$('[data-tk]',el).forEach(i=>i.onchange=()=>{T[i.dataset.tk]=i.checked;touch(p);render()});
+  $$('[data-tv]',el).forEach(i=>{const k=i.dataset.tv;const re=k==='workType'||k==='warranty';i.addEventListener(i.tagName==='SELECT'?'change':'input',()=>{T[k]=i.hasAttribute('data-money')?num(i.value):i.value;touch(p);if(re)render()});
+    if(i.hasAttribute('data-money'))i.addEventListener('blur',()=>{i.value=num(i.value)?fmt(num(i.value)):''})});
+  $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
+  loadTorTpl().catch(()=>{})}
+
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
 const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
 const stepUnl=new Set();
@@ -2562,8 +2685,8 @@ function prepMini(p){const R=prepOf(p);const d=x=>x?thDate(x):'-';
   const ok=[!!(R.approveNo||R.approveDate),!!R.plan,!!R.draft,!!p.midApproveDate].filter(Boolean).length;
   return `<div class="note" style="margin:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span><b>ขั้นเตรียมการ</b> ${ok}/4 · เห็นชอบ ${esc(R.approveNo||'-')} ${R.approveDate?'ลว. '+esc(d(R.approveDate)):''} · แบบ ${R.plan?'✓':'—'} · ร่างขออนุมัติประกาศ ${R.draft?'✓':'—'} (${(R.authority||authSuggest(p))==='region'?'อำนาจเขต':'อำนาจแขวง'}) · อนุมัติราคากลาง ${esc(d(p.midApproveDate))}</span><button class="btn sm" data-goto="prep" type="button" style="margin-left:auto">แก้ที่แท็บขั้นเตรียมการ →</button></div>`}
 function rPrep(){const el=$('#v-prep');if(needProject(el))return;const p=P();
-  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}${prepCard(p)}`;
-  bindPrep(el,p);
+  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}</div>`;
+  bindPrep(el,p);bindTor(el,p);
   $$('[data-f]',el).forEach(inp=>inp.addEventListener(inp.type==='date'?'change':'input',()=>{p[inp.dataset.f]=inp.value;touch(p)}))}
 function bindPrep(el,p){const R=prepOf(p);
   $$('[data-pp]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{R[i.dataset.pp]=i.value;touch(p)}));
