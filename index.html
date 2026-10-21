@@ -333,7 +333,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 70 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 71 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1948,15 +1948,31 @@ function saveAuth(j){try{localStorage.setItem(LS+'.lastUser',j.user.username);lo
 function pendingItems(sm){const out=[],L=new Map();S.projects.forEach(p=>L.set(p.id,p));L.set('__settings',sharedSettings());
   L.forEach((d,id)=>{const h=hashOf(JSON.stringify(d));if(sm.hash[id]!==h)out.push({id,baseRev:sm.revs[id]||0,data:d,_h:h})});
   Object.keys(sm.revs).forEach(id=>{if(!L.has(id))out.push({id,baseRev:sm.revs[id],deleted:true})});return out}
+/* รวมการแก้ไข: ค่าที่เครื่องนี้แก้หลังซิงก์ครั้งล่าสุดชนะ ค่าอื่นใช้ของระบบกลาง — ไม่สร้างสำเนาซ้ำ */
+function merge3(base,local,remote){const out=structuredClone(remote);const J=x=>JSON.stringify(x);
+  if(!base){for(const k in local)if(!(k in remote))out[k]=structuredClone(local[k]);return out}
+  new Set([...Object.keys(local),...Object.keys(base)]).forEach(k=>{if(J(local[k])!==J(base[k])){if(local[k]===undefined)delete out[k];else out[k]=structuredClone(local[k])}});return out}
+function baseStore(){try{return JSON.parse(localStorage.getItem(LS+'.base')||'{}')||{}}catch(e){return {}}}
+function putBase(B){try{localStorage.setItem(LS+'.base',JSON.stringify(B))}catch(e){try{localStorage.removeItem(LS+'.base')}catch(x){}}}
+/* เก็บกวาดสำเนา "(ฉบับในเครื่อง — แก้ไขชนกัน)" ที่เคยเกิด: ลบเฉพาะสำเนาที่ข้อมูลเหมือนตัวหลักทุกอย่าง และคืนชื่อเดิม */
+const CF_MARK=/\s*\(ฉบับในเครื่อง — แก้ไขชนกัน\)/;
+function cleanConflictCopies(){if(!canEdit())return 0;const strip=n=>String(n||'').replace(new RegExp(CF_MARK.source,'g'),'').trim();const core=p=>{const o={...p};['id','name','updatedAt','createdAt','saved'].forEach(k=>delete o[k]);return JSON.stringify(o)};
+  const g={};S.projects.forEach(p=>{const k=strip(p.name)+'|'+(p.projectNo||'');(g[k]=g[k]||[]).push(p)});let n=0;
+  Object.values(g).forEach(L=>{if(!L.some(p=>CF_MARK.test(p.name||'')))return;
+    const keep=L.find(p=>!(p.name||'').match(CF_MARK))||L.slice().sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')))[0];
+    L.forEach(p=>{if(p===keep)return;if(core(p)===core(keep)){S.projects=S.projects.filter(x=>x!==p);if(cur===p.id)cur=keep.id;n++}});
+    if((keep.name||'').match(CF_MARK)){keep.name=strip(keep.name);n++}});
+  if(n){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}return n}
 function applyRemote(it,sm,chg){const id=it.id;
   if(id==='__settings'){if(it.data){const keep={};LOCAL_SET.forEach(k=>keep[k]=S.settings[k]);S.settings=Object.assign(structuredClone(DEF_SETTINGS),it.data,keep);applyTheme()}
     sm.revs[id]=it.rev;sm.hash[id]=hashOf(JSON.stringify(sharedSettings()));chg.add(id);return}
   const i=S.projects.findIndex(p=>p.id===id),loc=i>=0?S.projects[i]:null;
-  const dirty=canEdit()&&!!loc&&sm.hash[id]!==hashOf(JSON.stringify(loc));
-  if(dirty){const c=structuredClone(loc);c.id=uid();c.name=(loc.name||'')+' (ฉบับในเครื่อง — แก้ไขชนกัน)';S.projects.splice(i,0,c);chg.add('conflict');if(cur===id)cur=c.id}
-  const j=S.projects.findIndex(p=>p.id===id);
-  if(it.deleted){if(j>=0)S.projects.splice(j,1);delete sm.revs[id];delete sm.hash[id];if(cur===id)cur=S.projects[0]?.id||null}
-  else{if(j>=0)S.projects[j]=it.data;else S.projects.push(it.data);sm.revs[id]=it.rev;sm.hash[id]=hashOf(JSON.stringify(it.data))}
+  const dirty=canEdit()&&!!loc&&sm.hash[id]!==hashOf(JSON.stringify(loc));const B=baseStore();
+  const j=i;
+  if(it.deleted){if(j>=0)S.projects.splice(j,1);delete sm.revs[id];delete sm.hash[id];delete B[id];putBase(B);if(cur===id)cur=S.projects[0]?.id||null}
+  else{const rj=JSON.stringify(it.data);let v=it.data;
+    if(dirty){let base=null;try{base=B[id]?JSON.parse(B[id]):null}catch(e){}v=merge3(base,loc,it.data);chg.add('merged')}
+    if(j>=0)S.projects[j]=v;else S.projects.push(v);sm.revs[id]=it.rev;sm.hash[id]=hashOf(rj);B[id]=rj;putBase(B)}
   chg.add(id)}
 async function syncNow({pull=true}={}){if(!central()||!authOk()||!navigator.onLine)return syncChip();
   if(syncing){syncAgain=true;return}syncing=true;const chg=new Set();
@@ -1967,9 +1983,10 @@ async function syncNow({pull=true}={}){if(!central()||!authOk()||!navigator.onLi
     if(sm.adopted&&canEdit()){const items=pendingItems(sm);
       if(items.length){const r=await srvCall({action:'data.push',items:items.map(({_h,...x})=>x)});sm=syncMeta();
         r.results.forEach(x=>{const it=items.find(y=>y.id===x.id);
-          if(x.conflict){applyRemote({id:x.id,rev:x.rev,deleted:x.deleted,data:x.data},sm,chg);toast('มีผู้อื่นแก้ไขโครงการเดียวกัน · เก็บฉบับของคุณเป็นสำเนาไว้แล้ว')}
+          if(x.conflict){applyRemote({id:x.id,rev:x.rev,deleted:x.deleted,data:x.data},sm,chg)}
           else if(x.deleted){delete sm.revs[x.id];delete sm.hash[x.id]}
-          else{sm.revs[x.id]=x.rev;sm.hash[x.id]=it._h}});putSyncMeta(sm)}}
+          else{sm.revs[x.id]=x.rev;sm.hash[x.id]=it._h;if(x.id!=='__settings'){const B=baseStore();B[x.id]=JSON.stringify(it.data);putBase(B)}}});putSyncMeta(sm)}}
+    if(sm.adopted&&canEdit()&&cleanConflictCopies()){chg.add('conflict');syncAgain=true}
     sm.last=nowStr();putSyncMeta(sm);syncErr='';
     if(chg.size){try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}
       if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null;
@@ -2021,7 +2038,7 @@ function afterLogin(){if(me()&&me().role==='viewer'){S.projects=[];cur=null;putS
   const ok=m.root.querySelector('[data-mo]');if(ok)ok.onclick=()=>{done();toast('กำลังอัปโหลด '+locals.length+' โครงการ')}}
 async function logout(){const sm=syncMeta();let n=sm.adopted?pendingItems(sm).length:0;
   if(n&&navigator.onLine){try{await syncNow({pull:false})}catch(e){}n=pendingItems(syncMeta()).length}
-  const go_=()=>{try{localStorage.removeItem(AUTHK);localStorage.removeItem(SYNK)}catch(e){}S.projects=[];cur=null;try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur','')}catch(e){}
+  const go_=()=>{try{localStorage.removeItem(AUTHK);localStorage.removeItem(SYNK);localStorage.removeItem(LS+'.base')}catch(e){}S.projects=[];cur=null;try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur','')}catch(e){}
     $('#modalRoot').innerHTML='';go('dash');showGate('ออกจากระบบแล้ว')};
   if(n)confirmBox(`ยังมี ${n} รายการที่ส่งขึ้นระบบกลางไม่สำเร็จ ถ้าออกจากระบบตอนนี้ การแก้ไขเหล่านั้นจะหาย`,'ออกจากระบบ',go_);else go_()}
 
