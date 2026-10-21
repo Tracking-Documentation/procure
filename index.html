@@ -2417,7 +2417,7 @@ const ORD_REPORTS=[['ord_inspect','คำสั่งตรวจรับ/ผ�
 function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P();const O=ordersOf(p);evOf(p);const SG=orderSigners();
   const people=peopleAll();const dup=(()=>{const a=ordMembers(p,'inspect').map(m=>fName(m.name)),b=ordMembers(p,'result').map(m=>fName(m.name));return [...new Set(b.filter(n=>n&&a.includes(n)))]})();
   const card=(k,step)=>{const K=ORD_KINDS[k],c=k==='result'?O.result:O[k],L=ordMembers(p,k);
-    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'&&inspFromAssign(p).length?`<button class="btn sm" id="oPullAssign" type="button">↻ ดึงจากตารางผู้รับผิดชอบเดิม</button>`:''}${k==='inspect'?`<button class="btn sm" id="oLoad" type="button">ภาระงานแต่ละคน</button>`:''}${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
+    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'&&central()&&canEdit()?`<button class="btn sm" id="oLgSync" type="button" title="${esc(lgInfoTxt())}">↻ ซิงก์จากชีตเดิม</button>`:''}${k==='inspect'&&!central()&&inspFromAssign(p).length?`<button class="btn sm" id="oPullAssign" type="button">↻ ดึงจากตารางผู้รับผิดชอบเดิม</button>`:''}${k==='inspect'?`<button class="btn sm" id="oLoad" type="button">ภาระงานแต่ละคน</button>`:''}${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
      <label class="f s6"><span>คำสั่งที่ (ว่าง = สทล.๑๗ ขท.กระบี่.๑/......./${ordFY()})</span><input class="i" data-oc="${k}" data-ok="no" value="${esc(c.no)}"></label>
      <label class="f s3"><span>สั่ง ณ วันที่</span><input class="i" type="date" data-oc="${k}" data-ok="date" value="${esc(c.date)}"></label>
      <div class="s12">${k==='result'?`<div class="note" style="margin:0 0 8px;font-size:13.5px">รายชื่อชุดนี้เป็นชุดเดียวกับการ์ด “คณะกรรมการพิจารณาผล” ในแท็บพิจารณาผล · แก้ที่นี่หรือที่แท็บพิจารณาผลก็ได้ ข้อมูลเปลี่ยนทั้งสองที่ <button class="btn sm" data-goto="eval" type="button">ไปการ์ดพิจารณาผล →</button></div>${(p.committee||[]).map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span>${personSel(`data-om="result:${i}:name"`,m.name,people)}<input class="i" data-om="result:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="result:${i}:role">${CM_ROLES.map(r=>`<option ${rNorm(r)===rNorm(m.role)?'selected':''}>${r}</option>`).join('')}</select><span></span><button class="icon-btn del" data-odel="result:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
@@ -2445,7 +2445,7 @@ function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P()
   $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
   $('#oTplEdit').onclick=ordTplDialog;
   const pa=$('#oPullAssign');if(pa)pa.onclick=()=>{if(O.inspect.members.some(m=>m.name)&&!confirm('แทนที่รายชื่อคณะกรรมการตรวจรับ/ผู้ควบคุมงานที่มีอยู่ ด้วยรายชื่อจากตารางผู้รับผิดชอบเดิม?'))return;O.inspect.members=inspFromAssign(p);O.inspector=-1;R()};
-  $('#oLoad').onclick=inspLoadDialog;
+  $('#oLoad').onclick=inspLoadDialog;const ls=$('#oLgSync');if(ls)ls.onclick=async()=>{ls.disabled=true;await legacySync(true);rOrders()};
 }
 /* ภาระงานตรวจรับ/ควบคุมงานต่อคน (แบบแถวสรุปท้ายตารางเดิม) */
 function inspLoadDialog(){const roles=['ประธานกรรมการ','กรรมการ','ผู้ควบคุมงาน','ผู้ช่วยผู้ควบคุมงาน'];const M=new Map();
@@ -2642,12 +2642,12 @@ const lgPid=p=>p.legacyId||(p.legacy&&p.legacy.id)||'';
 function lgFind(lp){return S.projects.find(p=>(lp.legacyId&&lgPid(p)===lp.legacyId)||(lp.egp&&p.projectNo&&lgId(p.projectNo)===lp.egp)||(!lp.legacyId&&(p.legacyKey===lgNk(lp)||lgNk({name:p.name,km:p.km||(p.legacy&&p.legacy.km)})===lgNk(lp))))}
 /* นำเข้า/ซิงก์จากชีตระบบติดตามเดิม
    fill = เติมเฉพาะช่องที่ว่าง · sync = ค่าที่เปลี่ยนในชีตตั้งแต่ซิงก์ครั้งก่อน ทับค่าในระบบ (ค่าที่ชีตไม่เปลี่ยนจะไม่ไปทับที่แก้ในระบบ) */
-function applyLegacy(d,mode){let a=0,u=0,ch=0;const emp=v=>v===''||v==null||v===0||(Array.isArray(v)&&!v.length);
+function applyLegacy(d,mode){let a=0,u=0,ch=0;const emp=v=>v===''||v==null||v===0||(Array.isArray(v)&&!v.some(x=>x&&(typeof x!=='object'||x.name)));
   const resRole=(i,A)=>i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการ':'กรรมการฯ';
   d.projects.forEach(lp=>{let p=lgFind(lp);const isNew=!p;if(isNew){p=newProject();delete p.saved;p.name=''}
     const before=isNew?'':JSON.stringify(p);const sn=p.lgSnap=p.lgSnap||{};
     const set=(o,k,v,key)=>{if(v===undefined)return;const sv=JSON.stringify(v==null?'':v);
-      if(mode==='sync'&&key in sn){if(sn[key]!==sv&&!(emp(v)&&!sn[key]))o[k]=structuredClone(v)}else if(!emp(v)&&emp(o[k]))o[k]=structuredClone(v);
+      if(mode==='sync'&&key in sn){if(sn[key]!==sv){if(!(emp(v)&&!sn[key]))o[k]=structuredClone(v)}else if(emp(o[k])&&!emp(v))o[k]=structuredClone(v)}else if(!emp(v)&&emp(o[k]))o[k]=structuredClone(v);
       if(mode==='sync')sn[key]=sv};
     if(lp.legacyId){set(p,'legacyId',lp.legacyId,'id');if(p.legacy)p.legacy.id=p.legacyId}else if(!p.legacyKey)p.legacyKey=lgNk(lp);
     set(p,'name',lp.name,'name');set(p,'division',lp.division,'division');set(p,'km',lp.km,'km');set(p,'workDays',lp.workDays,'workDays');set(p,'budget',lp.budget,'budget');set(p,'projectNo',lp.egp,'egp');
@@ -2677,10 +2677,11 @@ async function legacySync(manual){if(lgBusy||!central()||!authOk()||!canEdit()||
   lgBusy=true;try{const j=await srvCall({action:'legacy.pull',since:manual?0:(M.mod||0)});const at=Date.now();
     if(j.unchanged){localStorage.setItem(LGK,JSON.stringify(Object.assign(M,{at})));if(manual)toast('ข้อมูลในชีตเดิมไม่มีการเปลี่ยนแปลง');return}
     const X={utils:{sheet_to_json:sh=>sh}};const wb={SheetNames:Object.keys(j.sheets),Sheets:j.sheets};const d=parseLegacy(X,wb);
-    const r=applyLegacy(d,'sync');localStorage.setItem(LGK,JSON.stringify({at,mod:j.modified,name:j.name,n:d.projects.length}));
+    const r=applyLegacy(d,'sync');localStorage.setItem(LGK,JSON.stringify({at,mod:j.modified,name:j.name,n:d.projects.length}));if(tab==='orders'&&!r.ch)rOrders();
     if(r.ch){render();syncSoon()}if(manual||r.ch)toast(`ซิงก์จากชีตเดิมแล้ว: ${r.a?'เพิ่ม '+r.a+' · ':''}เปลี่ยน ${r.ch-r.a} โครงการ`);if($('#lgInfo'))$('#lgInfo').textContent=lgInfoTxt()}
-  catch(e){if(manual)alert(e.message);else console.warn('legacySync',e.message)}finally{lgBusy=false}}
-function lgInfoTxt(){const M=lgMeta();return M.at?`ซิงก์ล่าสุด ${new Date(M.at).toLocaleString('th-TH')} · ${M.n||0} โครงการ`:'ยังไม่เคยซิงก์'}
+  catch(e){const M2=lgMeta();M2.err=e.message;M2.errAt=Date.now();try{localStorage.setItem(LGK,JSON.stringify(M2))}catch(x){}if($('#lgInfo'))$('#lgInfo').textContent=lgInfoTxt();
+    if(manual)alert(/ไม่รู้จักคำสั่ง|ตอบกลับไม่ถูกต้อง/.test(e.message)?'เซิร์ฟเวอร์ยังไม่รองรับการซิงก์จากชีตเดิม — ต้องวางโค้ด Code.gs ฉบับใหม่ แล้ว Deploy › Manage deployments › Edit › Version: New version':e.message);else console.warn('legacySync',e.message)}finally{lgBusy=false}}
+function lgInfoTxt(){const M=lgMeta();if(M.err&&(!M.at||M.errAt>M.at))return 'ซิงก์ไม่สำเร็จ: '+(/ไม่รู้จักคำสั่ง|ตอบกลับไม่ถูกต้อง/.test(M.err)?'เซิร์ฟเวอร์ยังไม่ได้อัปเดต Code.gs':M.err);return M.at?`ซิงก์ล่าสุด ${new Date(M.at).toLocaleString('th-TH')} · ${M.n||0} โครงการ`:'ยังไม่เคยซิงก์'}
 setInterval(()=>legacySync(false),60000);setTimeout(()=>legacySync(false),4000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)legacySync(false)});
 
 
