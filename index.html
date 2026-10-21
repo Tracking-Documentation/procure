@@ -679,7 +679,7 @@ function rEdit(){
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ลำดับ</th><th>ชื่อหมวด</th><th>ประเภท</th><th class="n">Factor F / VAT</th><th>การปรับลด</th><th></th></tr></thead><tbody id="catBody"></tbody></table></div>
      <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>หมวดครุภัณฑ์และค่าใช้จ่ายพิเศษจะคงราคากลางไว้ ไม่ถูกปรับลด</b></div></div>
    <div class="card"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
-     <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
+     <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn sm" id="sumXl" type="button" title="ไฟล์คำนวณราคากลาง (.xlsm/.xlsx) ที่มีชีต SUMMARY">แนบไฟล์ราคากลาง (SUMMARY)</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
      <div class="card-b row" style="padding-block:10px;font-size:14px"><span>ช่องค่างานต้นทุนกรอกเป็น</span><div class="seg" id="costModeSeg"><button type="button" data-cm="total" class="${(p.costMode||'total')==='total'?'on':''}">ยอดรวมของรายการ</button><button type="button" data-cm="unit" class="${p.costMode==='unit'?'on':''}">ราคาต่อหน่วย</button></div><span class="muted" style="font-size:13px">เช่น เสา 83 ต้น ค่างานต้นทุนรวม 3,083,508.10 → เลือก “ยอดรวมของรายการ”</span></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ที่</th><th style="min-width:360px">รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">${(p.costMode||'total')==='total'?'ค่างานต้นทุน (รวม)':'ค่างานต้นทุน/หน่วย'}</th><th>หมวด</th><th class="n">ราคากลาง (บาท)</th><th title="ติ๊กเพื่อไม่ปรับลดรายการนี้">ไม่ลด</th><th></th></tr></thead><tbody id="boqBody"></tbody>
      <tfoot><tr><td colspan="6" class="n">ราคากลางรวม</td><td class="n" id="boqTotal"></td><td colspan="2"></td></tr></tfoot></table></div>
@@ -697,7 +697,7 @@ function rEdit(){
   $('#addCat').onclick=()=>{p.categories.push({id:uid(),name:'หมวดใหม่',kind:'construction',factor:1});touch(p);rCats();rBoq()};
   $('#addItem').onclick=()=>{const last=[...p.items].reverse().find(i=>i.catId);p.items.push({id:uid(),kind:'item',name:'',unit:'',qty:1,unitCost:0,catId:last?.catId||p.categories[0]?.id,midOverride:'',fixed:false});touch(p);rBoq();const tas=$$('#boqBody textarea');tas[tas.length-1]?.focus()};
   $('#addHead').onclick=()=>{p.items.push({id:uid(),kind:'heading',name:'',catId:p.categories[0]?.id});touch(p);rBoq()};
-  $('#pasteXl').onclick=pasteDialog;
+  $('#pasteXl').onclick=pasteDialog;$('#sumXl').onclick=summaryPick;
   $('#costModeSeg').onclick=e=>{const bt=e.target.closest('[data-cm]');if(!bt)return;p.costMode=bt.dataset.cm;touch(p);rEdit()};
   rCats();rBoq();rSign();sideSum();
 }
@@ -750,11 +750,11 @@ function rSign(){const p=P();p.signers=p.signers||structuredClone(S.settings.sig
   $('#signBox').oninput=e=>{const t=e.target;if(t.dataset.si===undefined)return;p.signers[+t.dataset.si][t.dataset.sk]=t.value;touch(p)};
 }
 function sideSum(){const p=P();const box=$('#sideSum');if(!box)return;const t=totals(p);const b=basisOf(p);const r=compute(p,b.price);const d=decision(p);
-  const md=toS(p.midDeclared);const midOk=!md||md===t.sumM;
+  const md=toS(p.midDeclared);const midOk=!md||md===t.sumM||(num(p.midAdjust)&&md===t.sumM+toS(p.midAdjust));
   box.innerHTML=`<div class="card-h"><h2>สรุปผลแบบทันที</h2></div><div class="card-b">
    <div class="big-pct"><div class="muted" style="font-size:13px">อัตราร้อยละที่ปรับลด · ${esc(b.label)}</div><div class="v">${r.errors.length?'–':fmt(r.pct)}</div></div>
    <div class="sumrow"><span>ราคากลางรวม</span><b>${fS(t.sumM)}</b></div>
-   ${md?`<div class="sumrow"><span>ตรวจกับ ปร.5/ปร.6</span><b style="color:${midOk?'var(--ok-ink)':'var(--danger)'}">${midOk?'✓ ตรงกัน':'ต่าง '+fS(t.sumM-md)}</b></div>`:''}
+   ${md?`<div class="sumrow"><span>ตรวจกับ ปร.5/ปร.6</span><b style="color:${midOk?'var(--ok-ink)':'var(--danger)'}">${midOk?(md!==t.sumM?'✓ ตรงกัน (รวมปรับยอด '+fmt(p.midAdjust)+')':'✓ ตรงกัน'):'ต่าง '+fS(t.sumM-md)}</b></div>`:''}
    <div class="sumrow"><span>ค่าใช้จ่ายพิเศษฯ (ไม่ลด)</span><b>${fS(t.sumSpecial)}</b></div>
    <div class="sumrow"><span>ครุภัณฑ์จัดซื้อ (ไม่ลด)</span><b>${fS(t.sumEquip)}</b></div>
    ${t.sumOtherFixed?`<div class="sumrow"><span>รายการอื่นที่ติ๊กไม่ลด</span><b>${fS(t.sumOtherFixed)}</b></div>`:''}
@@ -805,6 +805,50 @@ function pasteDialog(){const p=P();
     if($('#pxRep').checked){const old=p.items.filter(i=>i.kind==='item'),nw=o.filter(i=>i.kind==='item');nw.forEach((x,i)=>{const e=old.length===nw.length?old[i]:old.find(e=>normName(e.name)===normName(x.name));if(e&&e.est!==''&&e.est!=null)x.est=e.est})}
     p.items=$('#pxRep').checked?o:p.items.concat(o);touch(p);m.close();rBoq();toast(`นำเข้า ${o.length} แถวแล้ว`)};
 }
+
+/* ================= นำเข้า BOQ จากไฟล์คำนวณราคากลาง (ชีต SUMMARY) =================
+   คอลัมน์: A=1 ใช้รายการนี้ · E ลำดับ · F รายการ · G ปริมาณ · H หน่วย · I ต้นทุน/หน่วย · J ต้นทุนรวม · K Factor · L ราคากลาง/หน่วย · M ราคากลางรวม · AB กลุ่ม Factor
+   AD-AH แถว 2-5 = คณะกรรมการกำหนดราคากลาง/ผู้อนุมัติ */
+function summaryPick(){const f=document.createElement('input');f.type='file';f.accept='.xlsm,.xlsx,.xls';f.onchange=async()=>{const file=f.files[0];if(!file)return;toast('กำลังอ่านไฟล์…');
+  try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});summaryDialog(parseSummary(X,wb),file.name)}catch(e){alert(e.message)}};f.click()}
+function parseSummary(X,wb){const sn=wb.SheetNames.find(n=>n.trim().toUpperCase()==='SUMMARY');if(!sn)throw new Error('ไม่พบชีต SUMMARY ในไฟล์นี้');
+  const R=X.utils.sheet_to_json(wb.Sheets[sn],{header:1,raw:true,defval:''});const s=v=>v==null?'':String(v).trim();const n=v=>typeof v==='number'&&isFinite(v)?v:num(String(v||'').replace(/,/g,''));
+  const isN=v=>typeof v==='number'&&isFinite(v);const items=[];let costSum=0,midSum=0,grand=0,adj=0;
+  R.forEach(r=>{const lab=s(r[12])+s(r[13]);if(/รวมเป็นเงินทั้งสิ้น/.test(lab)&&isN(r[14]))grand=r[14];else if(/รวมเป็นเงินทั้งสิ้น/.test(s(r[12]))&&isN(r[13]))grand=r[13];
+    if(/ปรับยอด/.test(lab)&&isN(r[14]))adj=r[14];
+    if(+r[0]!==1||!isN(r[4])||r[4]<=0||!s(r[5]))return;
+    const qty=n(r[6]),k=isN(r[10])?r[10]:0,cost=isN(r[9])?r[9]:qty*n(r[8]),mid=isN(r[12])?r[12]:qty*n(r[11]);
+    items.push({seq:r[4],name:s(r[5]),qty,unit:s(r[7]),cost,factor:k,mid,grp:s(r[27])||(k?'':'ไม่คิด Factor')});costSum+=cost;midSum+=mid});
+  const hd=[2,3,4,5].map(i=>s((R[i]||[])[4])).filter(Boolean);
+  const cm=[1,2,3,4].map(i=>R[i]||[]).filter(r=>s(r[31])).map(r=>({role:s(r[29]),name:s(r[31]),position:s(r[33])}));
+  if(!grand)grand=Math.round((midSum+adj)*100)/100;
+  return {items,costSum,midSum,grand,adj,title:hd.join(' ').replace(/\s+/g,' '),committee:cm}}
+function summaryDialog(d,fname){const p=P();if(!d.items.length)return alert('ไม่พบรายการที่เลือกใช้ (คอลัมน์ A = 1) ในชีต SUMMARY');
+  const has=p.items.some(i=>i.kind==='item');const fs=[...new Set(d.items.filter(x=>x.factor).map(x=>x.factor))];const O=ordersOf(p);const pc=d.committee.filter(m=>!/อนุมัติ/.test(m.role));
+  const m=modal('นำเข้า BOQ จากไฟล์ราคากลาง',`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">${esc(fname)} · ชีต SUMMARY${d.title?' · '+esc(d.title):''}</div>
+   <div class="tbl-wrap" style="max-height:260px"><table class="t"><thead><tr><th>ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">ปริมาณ</th><th class="n">ต้นทุนรวม</th><th class="n">Factor</th><th class="n">ราคากลางรวม</th></tr></thead><tbody>${d.items.map(x=>`<tr><td class="n">${x.seq}</td><td>${esc(x.name)}</td><td>${esc(x.unit)}</td><td class="n">${fmt(x.qty)}</td><td class="n">${fmt(x.cost)}</td><td class="n">${x.factor||'-'}</td><td class="n">${fmt(x.mid)}</td></tr>`).join('')}</tbody>
+   <tfoot><tr><td></td><td colspan="3"><b>รวม ${d.items.length} รายการ</b></td><td class="n"><b>${fmt(d.costSum)}</b></td><td></td><td class="n"><b>${fmt(d.midSum)}</b></td></tr>${d.grand&&Math.abs(d.grand-d.midSum)>0.004?`<tr><td></td><td colspan="5">ปรับยอด ${fmt(d.adj)} → รวมเป็นเงินทั้งสิ้น</td><td class="n"><b>${fmt(d.grand)}</b></td></tr>`:''}</tfoot></table></div>
+   ${has?'<label class="switch"><input type="checkbox" id="smRep" checked> แทนที่รายการ BOQ เดิมทั้งหมด (ไม่ติ๊ก = ต่อท้าย)</label>':''}
+   <label class="switch"><input type="checkbox" id="smMid" ${!num(p.midDeclared)||num(p.midDeclared)===d.grand?'checked':''}> ตั้ง “ราคากลางตาม ปร.5/ปร.6” = ${fmt(d.grand||d.midSum)} บาท${num(p.midDeclared)?` (ตอนนี้ ${fmt(p.midDeclared)})`:''}</label>
+   ${pc.length?`<label class="switch"><input type="checkbox" id="smCm" ${O.price.members.some(x=>x.name)?'':'checked'}> ใส่คณะกรรมการกำหนดราคากลางจากไฟล์ (${esc(pc.map(x=>x.name).join(', '))})</label>`:''}
+   ${fs.length>1?`<div class="note" style="margin:0">ไฟล์นี้มี Factor ${fs.length} ค่า (${fs.join(', ')}) · ระบบแยกเป็นหมวดตาม Factor ให้</div>`:''}
+   <div class="muted" style="font-size:13px">ราคากลางรายการใช้ตัวเลขจากไฟล์ตรงตัว (ปัดหน่วยละ 2 ตำแหน่งตามไฟล์) · รายการที่ไม่คิด Factor (เช่น ป้ายในงานก่อสร้าง) ไปอยู่หมวดค่าใช้จ่ายพิเศษฯ</div></div>`,
+   `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">นำเข้า ${d.items.length} รายการ</button>`);
+  m.root.querySelector('[data-mc]').onclick=m.close;
+  m.root.querySelector('[data-mo]').onclick=()=>{const q=x=>m.root.querySelector(x);
+    const cons=p.categories.filter(c=>c.kind==='construction');const catFor=new Map();let ci=0;
+    fs.forEach(k=>{let c=cons.find(c=>Math.abs(num(c.factor)-k)<1e-9&&!catFor.has(k)&&![...catFor.values()].includes(c));if(!c)c=cons[ci]&&![...catFor.values()].includes(cons[ci])?cons[ci]:null;
+      if(!c){c={id:uid(),name:'งานก่อสร้าง (Factor '+k+')',kind:'construction',factor:k};p.categories.push(c)}c.factor=k;catFor.set(k,c);ci++});
+    let sp=p.categories.find(c=>c.kind==='special');if(!sp&&d.items.some(x=>!x.factor)){sp={id:uid(),name:'ค่าใช้จ่ายพิเศษตามข้อกำหนด',kind:'special',factor:1};p.categories.push(sp)}
+    const nw=d.items.map(x=>{const c=x.factor?catFor.get(x.factor):sp;const mo=x.factor?Math.round(x.mid*100)/100:'';
+      return {id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,costTotal:x.factor?x.cost:x.mid,unitCost:x.qty?(x.factor?x.cost:x.mid)/x.qty:0,catId:c.id,midOverride:mo!==''&&Math.floor(x.cost*x.factor*100+1e-6)!==Math.round(x.mid*100)?mo:'',fixed:false}});
+    const rep=q('#smRep')?q('#smRep').checked:true;
+    if(rep){const old=p.items.filter(i=>i.kind==='item');nw.forEach((x,i)=>{const e=old.length===nw.length?old[i]:old.find(e=>normName(e.name)===normName(x.name));if(e&&e.est!==''&&e.est!=null)x.est=e.est})}
+    p.items=rep?nw:p.items.concat(nw);p.costMode='total';
+    if(q('#smMid')&&q('#smMid').checked){p.midDeclared=d.grand||Math.round(d.midSum*100)/100;p.midAdjust=Math.round((p.midDeclared-d.midSum)*100)/100||''}
+    if(q('#smCm')&&q('#smCm').checked)O.price.members=pc.map((x,i)=>({name:x.name,position:x.position,role:/ประธาน/.test(x.role)||i===0?'ประธานกรรมการ':'กรรมการ'}));
+    if(!p.name&&d.title)p.name=d.title;
+    touch(p);m.close();rEdit();const t=totals(p);toast(`นำเข้า ${nw.length} รายการ · ราคากลางรวม ${fmt(t.sumM/100)} บาท`)}}
 
 /* ================= bidders ================= */
 function bidRank(p){const L=(p.bidders||[]).map((b,i)=>({b,i}));L.sort((x,y)=>{const a=num(x.b.price),c=num(y.b.price);if(a&&c)return a-c||x.i-y.i;if(a)return -1;if(c)return 1;return x.i-y.i});return L.map((x,k)=>({...x.b,rank:k+1}))}
