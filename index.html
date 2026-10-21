@@ -333,7 +333,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 72 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 73 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -598,7 +598,7 @@ function rDash(){
   const rows=S.projects.map((p,ix)=>{const t=totals(p);const b=basisOf(p);const cp=contractPrice(p);const fin=cp??b.price;if(t.sumM>0&&fin>0){tm+=t.sumM;tc+=toS(fin)}else skip++;if(cp!==null)cnt++;
     const r=compute(p,fin);return {p,t,b,fin,r,cp,ix}});
   const key=x=>String(x.p.createdAt||x.p.updatedAt||'');
-  const found=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor].join(' ').toLowerCase().includes(q)).sort((a,b)=>key(b).localeCompare(key(a))||a.ix-b.ix);
+  const found=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor,x.p.legacyId,x.p.km].join(' ').toLowerCase().includes(q)).sort((a,b)=>key(b).localeCompare(key(a))||a.ix-b.ix);
   const PER=5,pages=Math.max(1,Math.ceil(found.length/PER));el._pg=Math.min(Math.max(1,el._pg||1),pages);
   const shown=found.slice((el._pg-1)*PER,el._pg*PER);
   const pager=pages>1?`<div class="pager"><span class="muted">แสดง ${(el._pg-1)*PER+1}–${(el._pg-1)*PER+shown.length} จาก ${found.length} โครงการ</span><div class="pg-btns"><button class="btn sm" data-pg="${el._pg-1}" ${el._pg<=1?'disabled':''} type="button">‹ ก่อนหน้า</button>${Array.from({length:pages},(_,i)=>`<button class="btn sm ${i+1===el._pg?'pri':''}" data-pg="${i+1}" type="button">${i+1}</button>`).join('')}<button class="btn sm" data-pg="${el._pg+1}" ${el._pg>=pages?'disabled':''} type="button">ถัดไป ›</button></div></div>`:'';
@@ -660,6 +660,7 @@ function rEdit(){
    <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
      ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
+     ${F('division','หน่วยดำเนินการ',{cls:'s4'})}${F('km','กม.ดำเนินการ',{cls:'s4'})}${F('workDays','ระยะเวลาดำเนินการ (วัน)',{cls:'s4'})}
      ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
      ${F('inviteNo','ประกาศประกวดราคาเลขที่',{cls:'s6'})}${F('inviteDate','ประกาศลงวันที่',{cls:'s6',type:'date'})}
      ${F('contractor','ชื่อผู้ชนะ / ผู้รับจ้าง',{cls:'s6'})}${F('announceDate','วันที่ประกาศผลผู้ชนะ',{cls:'s3',type:'date'})}${F('status','สถานะ',{cls:'s3',sel:['ร่าง','กำลังต่อรอง','ตกลงราคาแล้ว','ลงนามสัญญาแล้ว']})}
@@ -1848,7 +1849,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   <div class="card"><div class="card-h"><h2>การแสดงผล</h2></div><div class="card-b row"><span>ธีม</span><div class="seg">${[['system','ตามเครื่อง'],['light','สว่าง'],['dark','มืด']].map(([k,l])=>`<button class="${st.theme===k?'on':''}" data-th="${k}" type="button">${l}</button>`).join('')}</div></div></div>
   <div class="card"><div class="card-h"><h2>สำรองและกู้คืนข้อมูล</h2></div><div class="card-b grid">
    <p class="muted" style="margin:0">${central()?'ข้อมูลโครงการเก็บในระบบกลาง (Google Sheet) · ไฟล์สำรองยังมีประโยชน์ไว้เก็บเป็นหลักฐาน · นำเข้าในโหมดนี้จะเพิ่มเป็นโครงการใหม่เสมอ ไม่ลบของเดิม':'ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหาย ควรสำรองเป็นไฟล์ไว้'}</p>
-   <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
+   <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn" id="bLegacy" type="button">นำเข้าจากระบบติดตามเดิม (.xlsx)</button><button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
   </div></div></div>`;
   $('#sAgency').oninput=e=>{st.agency=e.target.value;save()};
   $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
@@ -1865,6 +1866,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   $('#bExport').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`boq-nego-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();toast('กำลังดาวน์โหลด (ถ้าไม่มีไฟล์ ให้ใช้ “คัดลอกข้อมูลสำรอง”)')};
   $('#bCopy').onclick=()=>{const txt=JSON.stringify(S);navigator.clipboard?.writeText(txt).then(()=>toast('คัดลอกแล้ว นำไปวางเก็บในไฟล์ข้อความ'),()=>{const m=modal('ข้อมูลสำรอง',`<textarea class="i" rows="10" readonly>${esc(txt)}</textarea>`,'');m.root.querySelector('textarea').select()})};
   $('#bImport').onclick=()=>$('#fileImport').click();
+  $('#bLegacy').onclick=()=>{if(!canEdit())return toast('บัญชีนี้ดูได้อย่างเดียว');legacyImportPick()};
   $('#bPasteImp').onclick=()=>{const m=modal('วางข้อมูลสำรอง',`<textarea class="i" id="impTxt" rows="10" placeholder="วางข้อความ JSON ที่สำรองไว้"></textarea><label class="switch"><input type="checkbox" id="impMerge" checked> รวมกับโครงการที่มีอยู่ (ไม่ลบของเดิม)</label>`,`<button class="btn pri" id="impGo" type="button">นำเข้า</button>`);$('#impGo').onclick=()=>{importData($('#impTxt').value,$('#impMerge').checked);m.close()}};
 }
 $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>importData(rd.result,true);rd.readAsText(f);e.target.value=''};
@@ -2338,6 +2340,7 @@ function prepCard(p){const R=prepOf(p);const sug=authSuggest(p);const au=R.autho
    <label class="f s5"><span>เห็นชอบตามหนังสือที่</span><input class="i" data-pp="approveNo" value="${esc(R.approveNo)}"></label>
    <label class="f s3"><span>ลงวันที่</span><input class="i" type="date" data-pp="approveDate" value="${esc(R.approveDate)}"></label>
    <div class="f s4"><span>แนบไฟล์หนังสือ</span><div class="fbox">${fileChips(R.approveFiles,'approveFiles')}<button class="btn sm" data-fup="approveFiles" type="button">+ แนบไฟล์</button></div></div>
+   ${(R.links||[]).length?`<div class="s12 fbox"><span class="muted" style="font-size:13px">ไฟล์จากระบบเดิม:</span>${R.links.map(l=>`<a class="fchip lnk" href="${esc(l.url)}" target="_blank" rel="noopener" style="padding:2px 8px">🔗 ${esc(l.label)}</a>`).join('')}</div>`:''}
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="plan" ${R.plan?'checked':''}> <b>2. แบบ</b></label></div>
    <div class="f s12"><div class="fbox">${fileChips(R.planFiles,'planFiles')}<button class="btn sm" data-fup="planFiles" type="button">+ แนบไฟล์แบบ</button></div></div>
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="draft" ${R.draft?'checked':''}> <b>3. จัดทำร่างเพื่อขออนุมัติออกประกาศ</b></label></div>
@@ -2364,6 +2367,74 @@ document.addEventListener('click',async e=>{const b=e.target.closest('[data-fvie
     const url=URL.createObjectURL(new Blob([u],{type:j.mime||'application/octet-stream'}));
     if(/^(application\/pdf|image\/)/.test(j.mime||'')&&w){w.location.href=url}else{if(w)w.close();const a=document.createElement('a');a.href=url;a.download=b.dataset.fname||j.name;document.body.appendChild(a);a.click();a.remove()}}
   catch(err){if(w)w.close();alert(err.message)}});
+
+/* ================= นำเข้าจากระบบติดตามจัดซื้อจัดจ้างเดิม (ไฟล์ .xlsx ของ Google Sheet) ================= */
+const TH_MON=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const TH_MON_S=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function lgDigits(s){return String(s??'').replace(/[๐-๙]/g,c=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(c))}
+function lgDate(v){if(v===''||v==null)return '';const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  if(v instanceof Date&&!isNaN(v))return iso(v);
+  if(typeof v==='number'&&v>20000&&v<80000){const d=new Date(Date.UTC(1899,11,30)+v*864e5);return d.toISOString().slice(0,10)}
+  const s=lgDigits(v).trim();let m=s.match(/^(\d{1,2})\s*([^\d\s]+)\s*(\d{4})$/);
+  if(m){let mi=TH_MON.indexOf(m[2]);if(mi<0)mi=TH_MON_S.indexOf(m[2].replace(/\s/g,''));if(mi>=0){let y=+m[3];if(y>2400)y-=543;return `${y}-${String(mi+1).padStart(2,'0')}-${String(+m[1]).padStart(2,'0')}`}}
+  m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);if(m){let y=+m[3];if(y>2400)y-=543;return `${y}-${String(+m[2]).padStart(2,'0')}-${String(+m[1]).padStart(2,'0')}`}
+  m=s.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return m[0];return ''}
+function lgStr(v){return v==null?'':String(v instanceof Date?lgDate(v):v).trim()}
+function lgId(v){return lgStr(v).replace(/\.0+$/,'').replace(/[^\d]/g,'')}
+function lgNum(v){return typeof v==='number'?v:num(lgDigits(v))}
+function parseLegacy(X,wb){const rows=n=>X.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:''});
+  let mainName=null;wb.SheetNames.forEach(n=>{const h=(rows(n)[0]||[]).map(lgStr);if(!mainName&&h.includes('ID')&&h.includes('ชื่อโครงการ')&&h.some(x=>/วงเงิน/.test(x)))mainName=n});
+  if(!mainName)throw new Error('ไม่พบชีตหลัก (ต้องมีหัวคอลัมน์ ID, ชื่อโครงการ, วงเงินงบประมาณ ในแถวที่ 1)');
+  const M=rows(mainName),H=M[0].map(lgStr);const off=/ผู้ช่วย/.test(H[37]||'')?1:0;const C=i=>i>=37?i+off:i;
+  const egpCol=H.findIndex(x=>/e-GP/i.test(x));
+  const people={};if(wb.SheetNames.includes('รายชื่อกรรมการ'))rows('รายชื่อกรรมการ').slice(1).forEach(r=>{const k=lgStr(r[0]);if(k)people[k]={name:lgStr(r[1]),position:lgStr(r[2])}});
+  const who=nick=>{const p=people[nick];return p&&p.name?{name:p.name,position:p.position,nick}:{name:nick,position:'',nick}};
+  const items={};if(wb.SheetNames.includes('ข้อมูลและผลงาน')){const R=rows('ข้อมูลและผลงาน');const h=R[0].map(lgStr);const ix=k=>h.findIndex(x=>x.startsWith(k));
+    const cC=ix('รหัสโครงการ'),cS=ix('ลำดับ'),cN=ix('รายการ'),cU=ix('หน่วย'),cQ=ix('ปริมาณ'),cSt=ix('มาตรฐาน'),cCo=ix('ค่างานต้นทุน'),cF=ix('Factor');let curCode='',last=null;
+    R.slice(1).forEach(r=>{const code=lgId(r[cC]);const name=lgStr(r[cN]);if(code)curCode=code;if(!curCode||!name)return;const seq=parseInt(lgDigits(r[cS]),10);
+      if(seq>0){last={seq,name,unit:lgStr(r[cU]),qty:lgNum(r[cQ]),std:lgStr(r[cSt]),cost:r[cCo]===''?'':lgNum(r[cCo]),factor:r[cF]===''?'':lgNum(r[cF])};(items[curCode]=items[curCode]||[]).push(last)}
+      else if(last&&!code)last.name+='\n'+name})}
+  const stds=[];if(wb.SheetNames.includes('มาตรฐาน'))rows('มาตรฐาน').slice(1).forEach(r=>{const a=lgStr(r[0]),b=lgStr(r[1]);if(a&&b)stds.push({item:a,std:b})});
+  const cm=(r,chair,chairPos,mem,memPos,no,date,roleLast)=>{const L=[];const nm=lgStr(r[C(chair)]);if(nm)L.push({name:nm,position:lgStr(r[C(chairPos)]),role:'ประธานกรรมการ'});
+    mem.forEach((c,i)=>{const n=lgStr(r[C(c)]);if(n)L.push({name:n,position:lgStr(r[C(memPos[i])]),role:'กรรมการ'})});if(L.length>1&&roleLast)L[L.length-1].role=roleLast;
+    return {no:lgStr(r[C(no)]),date:lgDate(r[C(date)]),members:L}};
+  const projects=[];M.slice(1).forEach(r=>{const id=lgId(r[1]),name=lgStr(r[2]);if(!id&&!name)return;
+    const marks={chair:null,members:[],supervisors:[]};for(let c=9;c<=35;c++){const mk=lgStr(r[c]),nick=H[c];if(!mk||!nick)continue;if(mk==='ป')marks.chair=who(nick);else if(mk==='ค')marks.supervisors.push(who(nick));else if(mk==='1'||mk==='ก')marks.members.push(who(nick))}
+    const au=lgStr(r[6])+lgStr(r[8]);
+    projects.push({legacyId:id,name,division:lgStr(r[0]),km:lgStr(r[3]),workDays:lgStr(r[4]),budget:lgNum(r[5]),authority:/เขต/.test(au)?'region':/แขวง/.test(au)?'district':'',
+      egp:egpCol>=0?lgId(r[egpCol]):'',approveDate:lgDate(r[C(39)]),plan:!!lgStr(r[C(40)]),draft:!!lgStr(r[C(41)]),midApproveDate:lgDate(r[C(42)]),torStart:lgDate(r[C(43)]),inviteDate:lgDate(r[C(44)]),
+      considerDate:lgDate(r[C(45)]),contractor:lgStr(r[C(46)]),callDate:lgDate(r[C(48)]),
+      links:[[C(51),'ไฟล์อนุมัติ/เห็นชอบ'],[C(52),'ไฟล์แบบ'],[C(53),'เล่มขาวคาดแดง']].map(([c,l])=>({label:l,url:lgStr(r[c])})).filter(x=>/^https?:/.test(x.url)),
+      inspect:Object.assign(marks,{no:lgStr(r[C(49)]),date:lgDate(r[C(50)]),askSupervisor:!!lgStr(r[36]),askCommittee:!!lgStr(r[C(37)])}),
+      tor:cm(r,54,73,[55,56],[74,75],57,58),price:cm(r,59,76,[60,61,62,63],[77,78,79,80],64,65),result:cm(r,66,81,[67,68,69,70],[82,83,84,85],71,72,'กรรมการและเลขานุการ'),
+      sign:{no:lgStr(r[C(86)]),date:lgDate(r[C(87)])},contractValue:lgNum(r[C(88)]),items:items[id]||[]})});
+  return {mainName,projects,people,stds,itemCodes:Object.keys(items).length}}
+function legacyImportPick(){const f=document.createElement('input');f.type='file';f.accept='.xlsx,.xls';f.onchange=async()=>{const file=f.files[0];if(!file)return;toast('กำลังอ่านไฟล์…');
+  try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});legacyDialog(parseLegacy(X,wb),file.name)}catch(e){alert(e.message)}};f.click()}
+function legacyDialog(d,fname){const nk=x=>String(x.name||'').replace(/\s+/g,' ').trim()+'|'+String(x.km||'').replace(/\s+/g,'');
+  const find=lp=>S.projects.find(p=>(lp.legacyId&&p.legacyId===lp.legacyId)||(lp.egp&&p.projectNo&&lgId(p.projectNo)===lp.egp)||(!lp.legacyId&&p.legacyKey&&p.legacyKey===nk(lp)));
+  const upd=d.projects.filter(find).length,nw=d.projects.length-upd,withItems=d.projects.filter(p=>p.items.length).length;
+  const m=modal('นำเข้าจากระบบติดตามจัดซื้อจัดจ้างเดิม',`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">${esc(fname)} · ชีต “${esc(d.mainName)}”</div>
+    <ul style="margin:0;padding-left:20px;line-height:1.8"><li>โครงการ <b>${d.projects.length}</b> รายการ — เพิ่มใหม่ <b>${nw}</b> · ตรงกับโครงการที่มีอยู่ <b>${upd}</b> (เติมเฉพาะช่องที่ยังว่าง)</li>
+    <li>มีรายการ BOQ <b>${withItems}</b> โครงการ</li><li>ทำเนียบบุคลากร <b>${Object.keys(d.people).length}</b> คน · มาตรฐานงานทาง <b>${d.stds.length}</b> รายการ</li></ul>
+    <p class="muted" style="font-size:13px;margin:0">นำเข้าซ้ำได้ ระบบจับคู่โครงการด้วย ID / รหัส e-GP ไม่สร้างซ้ำ และไม่ทับข้อมูลที่กรอกในระบบนี้แล้ว</p></div>`,
+    `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">นำเข้า</button>`);
+  m.root.querySelector('[data-mc]').onclick=m.close;
+  m.root.querySelector('[data-mo]').onclick=()=>{let a=0,u=0;const fill=(o,k,v)=>{if(v!==''&&v!=null&&v!==false&&(o[k]===''||o[k]==null||o[k]===0))o[k]=v};
+    d.projects.forEach(lp=>{let p=find(lp);const isNew=!p;if(isNew){p=newProject();delete p.saved;p.name='';}
+      fill(p,'legacyId',lp.legacyId);if(!lp.legacyId)fill(p,'legacyKey',nk(lp));fill(p,'name',lp.name);fill(p,'division',lp.division);fill(p,'km',lp.km);fill(p,'workDays',lp.workDays);fill(p,'budget',lp.budget);fill(p,'projectNo',lp.egp);
+      fill(p,'contractor',lp.contractor);fill(p,'inviteDate',lp.inviteDate);fill(p,'midApproveDate',lp.midApproveDate);fill(p,'torStart',lp.torStart);
+      const R=prepOf(p);fill(R,'approveDate',lp.approveDate);if(lp.plan)R.plan=true;if(lp.draft)R.draft=true;fill(R,'authority',lp.authority);
+      R.links=(R.links||[]);lp.links.forEach(l=>{if(!R.links.some(x=>x.url===l.url))R.links.push(l)});
+      if(lp.sign.no||lp.sign.date){p.sign=p.sign||{};fill(p.sign,'no',lp.sign.no);fill(p.sign,'date',lp.sign.date)}
+      p.orders=p.orders||{};['inspect','tor','price','result'].forEach(k=>{const v=lp[k];const has=k==='inspect'?(v.chair||v.members.length||v.supervisors.length||v.no):(v.members.length||v.no);if(has&&!p.orders[k])p.orders[k]=v});
+      if((!p.committee||!p.committee.some(x=>x.name))&&lp.result.members.length)p.committee=lp.result.members.map((x,i,A)=>({name:x.name,position:x.position,role:i===0?'ประธานกรรมการฯ':i===A.length-1&&A.length>2?'กรรมการและเลขานุการฯ':'กรรมการฯ'}));
+      if(!p.items.some(i=>i.kind==='item')&&lp.items.length){const cc=p.categories.find(c=>c.kind==='construction')||p.categories[0];const f=lp.items.find(x=>x.factor);if(f&&cc&&(!num(cc.factor)||num(cc.factor)===1))cc.factor=f.factor;
+        p.items=lp.items.map(x=>({id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,unitCost:x.cost,catId:cc.id,midOverride:'',fixed:false,std:x.std}))}
+      p.updatedAt=nowStr();if(isNew){S.projects.push(p);a++}else u++});
+    const st=S.settings;st.people=st.people||[];Object.entries(d.people).forEach(([nick,v])=>{const e=st.people.find(x=>x.nick===nick);if(e){if(!e.name)e.name=v.name;if(!e.position)e.position=v.position}else st.people.push({nick,name:v.name,position:v.position})});
+    if(d.stds.length)st.dohStandards=d.stds;
+    save();m.close();go('dash');toast(`นำเข้าแล้ว: เพิ่ม ${a} · อัปเดต ${u} โครงการ`)}}
 
 /* expose core for testing */
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
