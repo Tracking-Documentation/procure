@@ -75,7 +75,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .calg .cd.today .dn b{background:var(--brand);color:#fff;border-radius:999px;padding:0 7px}
 .ev1{font-size:12px;line-height:1.3;border-radius:5px;padding:2px 5px;border-left:3px solid;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:var(--soft)}
 .ev1:hover{filter:brightness(.96)}
-.k-open{border-color:#7a8a99}.k-dead{border-color:#d29a00;background:var(--warn-bg);color:var(--warn-ink)}.k-mtg{border-color:#2f7fd1}.k-ann{border-color:#7b52c7}
+.k-mid{border-color:#b45309}.k-tor{border-color:#0891b2}.k-open{border-color:#7a8a99}.k-dead{border-color:#d29a00;background:var(--warn-bg);color:var(--warn-ink)}.k-mtg{border-color:#2f7fd1}.k-ann{border-color:#7b52c7}
 .k-appeal{border-color:#c2410c}.k-sign{border-color:#20a160;background:var(--ok-bg);color:var(--ok-ink)}.k-signdue{border-color:var(--danger);background:var(--bad-bg);color:var(--bad-ink)}.k-signed{border-color:#20a160}.k-book{border-color:#0e8f8f}
 .calleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;margin:10px 0 18px}.calleg span{display:inline-flex;align-items:center;gap:6px}.calleg i{width:12px;height:12px;border-radius:3px;border-left-width:4px;border-left-style:solid;background:var(--soft)}
 @media (max-width:700px){.calg .cd{min-height:64px;padding:3px}.ev1{font-size:0;padding:0;height:6px;border-left-width:0;border-top-width:6px;border-top-style:solid;background:none}.calg .cd .dn small{display:none}}
@@ -284,6 +284,11 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
 body.exec #tabs,body.exec #btnInstall,body.exec [data-signprint],body.exec button[data-calp],body.exec [data-booksync],body.exec .stepbar{display:none!important}
 body.exec .ev1{cursor:default}.xbt{table-layout:fixed;min-width:1000px}.xbt td:nth-child(2){overflow-wrap:anywhere}.xbid{border:1px solid var(--line);border-radius:10px;padding:10px 14px}.xbid summary{cursor:pointer;list-style-position:outside}.xbid[open] summary{margin-bottom:8px}.exec-chip{font-size:13px;font-weight:500;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:2px 10px;vertical-align:middle;white-space:nowrap}
 body.exec .hdr{padding-bottom:12px}
+.ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.ov{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 10px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-family:var(--f-body)}
+.ov .ovl{font-size:14.5px;font-weight:600;text-align:center}.ov b{font-family:var(--f-head);font-size:26px;line-height:1.1}.ov.on{outline:2px solid var(--brand);outline-offset:1px}
+.ov-mid,.ov-tor,.ov-tordone,.ov-pub,.ov-bid,.ov-eval{background:var(--warn-bg)}.ov-win,.ov-appeal{background:color-mix(in srgb,var(--blue) 10%,var(--card))}.ov-call,.ov-cno{background:var(--soft)}.ov-signed{background:var(--ok-bg)}
+.ovlist{margin-top:14px;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}.ovlh{font-weight:600}.ovi{display:flex;flex-direction:column;padding:6px 0;border-bottom:1px dashed var(--line)}.ovi .muted{font-size:13px}
 .ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
 .urow{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.3fr 1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
 @media (max-width:760px){.urow{grid-template-columns:1fr 1fr}.urow .uname{grid-column:1/-1}}
@@ -325,7 +330,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 68 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 69 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -594,7 +599,7 @@ function rDash(){
   const PER=5,pages=Math.max(1,Math.ceil(found.length/PER));el._pg=Math.min(Math.max(1,el._pg||1),pages);
   const shown=found.slice((el._pg-1)*PER,el._pg*PER);
   const pager=pages>1?`<div class="pager"><span class="muted">แสดง ${(el._pg-1)*PER+1}–${(el._pg-1)*PER+shown.length} จาก ${found.length} โครงการ</span><div class="pg-btns"><button class="btn sm" data-pg="${el._pg-1}" ${el._pg<=1?'disabled':''} type="button">‹ ก่อนหน้า</button>${Array.from({length:pages},(_,i)=>`<button class="btn sm ${i+1===el._pg?'pri':''}" data-pg="${i+1}" type="button">${i+1}</button>`).join('')}<button class="btn sm" data-pg="${el._pg+1}" ${el._pg>=pages?'disabled':''} type="button">ถัดไป ›</button></div></div>`:'';
-  el.innerHTML=`${signAlertCard()}
+  el.innerHTML=`${signAlertCard()}${overviewCard()}
   <div class="kpis">
     <div class="kpi hl"><div class="l">จำนวนโครงการ</div><div class="v">${S.projects.length}</div><div class="s">ได้ราคาที่ตกลงแล้ว ${cnt} โครงการ</div></div>
     <div class="kpi"><div class="l">ราคากลางรวม (บาท)</div><div class="v">${fS(tm)}</div><div class="s">รวมค่าใช้จ่ายพิเศษและครุภัณฑ์${skip?` · ไม่นับ ${skip} โครงการที่ยังไม่มีราคากลาง`:''}</div></div>
@@ -651,6 +656,7 @@ function rEdit(){
    <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
      ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
+     ${F('midApproveDate','อนุมัติราคากลางวันที่',{cls:'s4',type:'date'})}${F('torStart','ระยะเวลาร่าง TOR ตั้งแต่วันที่',{cls:'s4',type:'date'})}${F('torEnd','ถึงวันที่',{cls:'s4',type:'date'})}
      ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
      ${F('inviteNo','ประกาศประกวดราคาเลขที่',{cls:'s6'})}${F('inviteDate','ประกาศลงวันที่',{cls:'s6',type:'date'})}
      ${F('contractor','ชื่อผู้ชนะ / ผู้รับจ้าง',{cls:'s6'})}${F('announceDate','วันที่ประกาศผลผู้ชนะ',{cls:'s3',type:'date'})}${F('status','สถานะ',{cls:'s3',sel:['ร่าง','กำลังต่อรอง','ตกลงราคาแล้ว','ลงนามสัญญาแล้ว']})}
@@ -869,6 +875,7 @@ function addWorkdays(iso,n){if(!iso)return '';const H=holidaySet();const d=new D
 let calYM=null;
 function calEvents(){const out=[];const add=(p,date,kind,label,time)=>{if(date)out.push({p,date,kind,label,time:time||''})};
   S.projects.forEach(p=>{const e=evOf(p);
+    add(p,p.midApproveDate,'mid','อนุมัติราคากลาง');if(p.torStart)add(p,p.torStart,'tor',p.torEnd&&p.torEnd!==p.torStart?'เริ่มร่าง TOR (ถึง '+thDate(p.torEnd)+')':'ร่าง TOR');if(p.torEnd&&p.torEnd!==p.torStart)add(p,p.torEnd,'tor','สิ้นสุดร่าง TOR');
     add(p,e.openDate,'open','เปิดข้อเสนอ',e.openTime);
     if(e.openDate)add(p,evDeadline(p),'dead','ครบกำหนดพิจารณาผล (5 วันทำการ)');
     add(p,e.m1.date,'mtg',`ประชุมครั้งที่ ${e.m1.no||1}`,e.m1.start);
@@ -879,7 +886,7 @@ function calEvents(){const out=[];const add=(p,date,kind,label,time)=>{if(date)o
     const bk=p.book&&p.book.booking;if(bk&&bk.confirmed!=='Y')add(p,bk.date,'book','นัดลงนาม (รอยืนยัน) · '+(bk.contractNo||''),bk.time);
     add(p,p.contractDate,'signed','ลงนามสัญญา'+(bk&&bk.confirmed==='Y'?' · '+(bk.contractNo||''):''),bk&&bk.confirmed==='Y'?bk.time:'')});
   return out.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))}
-const CAL_KINDS=[['open','เปิดข้อเสนอ'],['dead','ครบกำหนดพิจารณาผล'],['mtg','ประชุมคณะกรรมการ'],['ann','ประกาศผู้ชนะ'],['appeal','ครบระยะอุทธรณ์'],['sign','เรียกลงนามได้'],['signdue','ครบกำหนดมาลงนามสัญญา'],['book','จองนัดลงนาม (รอยืนยัน)'],['signed','นัดลงนาม/ลงนามสัญญา']];
+const CAL_KINDS=[['mid','อนุมัติราคากลาง'],['tor','ร่าง TOR'],['open','เปิดข้อเสนอ'],['dead','ครบกำหนดพิจารณาผล'],['mtg','ประชุมคณะกรรมการ'],['ann','ประกาศผู้ชนะ'],['appeal','ครบระยะอุทธรณ์'],['sign','เรียกลงนามได้'],['signdue','ครบกำหนดมาลงนามสัญญา'],['book','จองนัดลงนาม (รอยืนยัน)'],['signed','นัดลงนาม/ลงนามสัญญา']];
 function shortName(p){const n=String(p.name||'(ยังไม่ตั้งชื่อ)');const m=n.match(/ทางหลวงหมายเลข\s*(\d+)/);return (p.inviteNo?p.inviteNo+' ':'')+(m?'ทล.'+m[1]:n.slice(0,28))}
 function rCal(){const el=$('#v-cal');const t=todayISO();if(!calYM)calYM=t.slice(0,7);
   const [Y,M]=calYM.split('-').map(Number);const first=new Date(Y,M-1,1);const start=new Date(first);start.setDate(1-((first.getDay()+6)%7));
@@ -1883,7 +1890,7 @@ function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ย
   const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
 function unlockThen(cb){if(central()){toast('บัญชีนี้ดูได้อย่างเดียว · ขอสิทธิ์แก้ไขจากผู้ดูแลระบบ');return}askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
 /* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
-const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],#modalRoot,#gate';
+const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],#modalRoot,#gate';
 function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
@@ -2266,10 +2273,34 @@ function execBidCard(){const L=S.projects.filter(p=>(p.bidders||[]).length).sort
       <div class="tbl-wrap"><table class="t dash xbt"><colgroup><col style="width:70px"><col><col style="width:200px"><col style="width:170px"><col style="width:200px"><col style="width:150px"><col style="width:100px"></colgroup><thead><tr><th class="n">ลำดับ</th><th>ผู้เสนอราคา</th><th>เลขประจำตัวผู้เสียภาษี</th><th class="n">ราคาที่เสนอ (บาท)</th><th class="n">ราคาที่ยืนยันหลังต่อรอง</th><th class="n">ต่ำกว่าราคากลาง</th><th>ผล</th></tr></thead><tbody>
       ${R.map(b=>{const pr=num(b.price);const isW=w&&b.name===w.name&&num(w.price)===pr;return `<tr class="${isW?'adj':''}"><td class="n">${b.rank}</td><td>${esc(b.name||'-')}</td><td style="white-space:nowrap;font-variant-numeric:tabular-nums">${esc(String(b.taxId||'').replace(/^(\d)(\d{4})(\d{5})(\d{2})(\d)$/,'$1-$2-$3-$4-$5')||'-')}</td><td class="n"><b>${pr?fmt(pr):'-'}</b></td><td class="n">${isW?(cp!=null?`<b style="color:var(--ok-ink)">${fmt(cp)}</b>`:'<span class="muted">รอผลต่อรอง</span>'):''}</td><td class="n">${(()=>{const v=isW&&cp!=null?cp:pr;return mid&&v?fmt((mid-v)/mid*100)+'%':'-'})()}</td><td>${isW?'<span class="pill p-adj">ผู้ชนะ</span>':b.qualified===false?'<span class="pill p-nego">ไม่ผ่าน</span>':''}</td></tr>`}).join('')}
       </tbody></table></div></details>`}).join('')}</div></div>`}
-rCal=(o=>function(){o.apply(this,arguments);if(EXEC){const el=$('#v-cal');el.insertAdjacentHTML('afterbegin',signAlertCard());el.insertAdjacentHTML('beforeend',execBidCard())}})(rCal);
+rCal=(o=>function(){o.apply(this,arguments);if(EXEC){const el=$('#v-cal');el.insertAdjacentHTML('afterbegin',overviewCard()+signAlertCard());el.insertAdjacentHTML('beforeend',execBidCard())}})(rCal);
 if(EXEC){document.body.classList.add('exec');const h=$('.hdr .ttl h1');if(h)h.insertAdjacentHTML('beforeend',' <span class="exec-chip">มุมมองผู้บริหาร</span>');document.title='ปฏิทินจัดซื้อจัดจ้าง (ผู้บริหาร)'}
 rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
 rNego=(o=>function(){o.apply(this,arguments);stepBar()})(rNego);rResult=(o=>function(){o.apply(this,arguments);stepBar()})(rResult);rSignTab=(o=>function(){o.apply(this,arguments);stepBar()})(rSignTab);rCert=(o=>function(){o.apply(this,arguments);stepBar()})(rCert);
+
+/* ================= สรุปภาพรวมตามขั้นตอน (แดชบอร์ด + ผู้บริหาร) ================= */
+let ovSel='';
+function projStage(p){const t=todayISO(),e=p.ev||{},sg=p.sign||{},bk=p.book&&p.book.booking;const le=d=>d&&d<=t;
+  if(le(p.contractDate)||p.status==='ลงนามสัญญาแล้ว')return 'signed';
+  if(p.contractNo||(bk&&bk.confirmed==='Y'&&bk.contractNo))return 'cno';
+  if(le(sg.date))return 'call';
+  if(p.announceDate&&le(p.announceDate))return t>addWorkdays(p.announceDate,7)?'appeal':'win';
+  if(le(e.m1&&e.m1.date)||le(e.summaryDate))return 'eval';
+  if(le(e.submitDate)||le(e.openDate)||(p.bidders||[]).length)return 'bid';
+  if(le(e.pubStart)||le(p.inviteDate))return 'pub';
+  if(le(p.torEnd)&&p.torEnd<t)return 'tordone';
+  if(le(p.torStart))return 'tor';
+  if(le(p.midApproveDate))return 'mid';
+  return 'none'}
+const OV_STAGES=[['mid','💰','อนุมัติราคากลางแล้ว'],['tor','✏️','กำลังร่าง TOR'],['tordone','📝','ร่าง TOR แล้ว'],['pub','📢','ออกประกาศแล้ว'],['bid','💵','เสนอราคาแล้ว'],['eval','⚖️','พิจารณาผลแล้ว'],['win','🏆','ประกาศผู้ชนะแล้ว'],['appeal','🔔','ครบอุทธรณ์แล้ว'],['call','📞','เรียกลงนามสัญญา'],['cno','📑','ออกเลขสัญญา'],['signed','✍️','ลงนามสัญญาแล้ว']];
+function overviewCard(){const by={};S.projects.forEach(p=>{const s=projStage(p);(by[s]=by[s]||[]).push(p)});
+  const sel=ovSel&&by[ovSel]?ovSel:'';const lab=Object.fromEntries(OV_STAGES.map(x=>[x[0],x[2]]));lab.none='ยังไม่เริ่ม';
+  const list=sel?by[sel]:[];
+  return `<div class="card ovcard" id="ovCard" style="margin-bottom:18px"><div class="card-h"><h2>สรุปภาพรวม</h2><span class="muted" style="font-size:13px">ทั้งหมด ${S.projects.length} โครงการ · นับตามขั้นตอนล่าสุดที่ถึงแล้ว · กดการ์ดเพื่อดูรายชื่อ</span></div>
+   <div class="card-b"><div class="ovgrid">${OV_STAGES.map(([k,ic,l])=>`<button class="ov ov-${k} ${sel===k?'on':''}" data-ov="${k}" type="button"><span class="ovl">${ic} ${esc(l)}</span><b>${(by[k]||[]).length}</b></button>`).join('')}
+     ${by.none?`<button class="ov ov-none ${sel==='none'?'on':''}" data-ov="none" type="button"><span class="ovl">⏳ ยังไม่เริ่ม</span><b>${by.none.length}</b></button>`:''}</div>
+   ${sel?`<div class="ovlist"><div class="ovlh">${esc(lab[sel])} · ${list.length} โครงการ</div>${list.map(p=>`<div class="ovi"><b>${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</b><span class="muted">${esc([p.inviteNo,p.contractor,p.contractNo?'สัญญา '+p.contractNo:''].filter(Boolean).join(' · '))}</span></div>`).join('')}</div>`:''}</div></div>`}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ov]');if(!b)return;ovSel=ovSel===b.dataset.ov?'':b.dataset.ov;const c=$('#ovCard');if(c)c.outerHTML=overviewCard()});
 
 /* expose core for testing */
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
