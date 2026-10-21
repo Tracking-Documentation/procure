@@ -657,6 +657,7 @@ function rEdit(){
   el.innerHTML=`${curBar('กำลังแก้ไข',`<button class="btn" data-goto="result" type="button">${ICON.calc} ดูผลคำนวณ</button><button class="btn pri" id="btnSave" type="button">บันทึก</button>`)}
   <div class="two"><div class="grid" style="gap:18px;min-width:0">
    ${prepCard(p)}
+   ${p.legacy?`<div class="note" style="margin:0">ข้อมูลจากระบบติดตามเดิม · รหัส ${esc(p.legacy.id||'-')} · หน่วย ${esc(p.legacy.unit||'-')} · กม. ${esc(p.legacy.km||'-')}${p.legacy.assign?' · ผู้รับผิดชอบ '+esc(Object.entries(p.legacy.assign).map(([k,v])=>k+' ('+v+')').join(', ')):''}${p.legacy.committees?' · มีรายชื่อกรรมการ '+esc(Object.keys(p.legacy.committees).map(k=>({tor:'TOR',price:'ราคากลาง',result:'พิจารณาผล'})[k]).join('/')):''}</div>`:''}
    <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
      ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
@@ -1871,6 +1872,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
 }
 $('#fileImport').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>importData(rd.result,true);rd.readAsText(f);e.target.value=''};
 function importData(txt,merge){if(central())merge=true;try{const d=JSON.parse(txt);const list=Array.isArray(d)?d:d.projects;if(!Array.isArray(list))throw 0;
+  if(Array.isArray(d.people)){const P0=S.settings.people||[];d.people.forEach(x=>{if(x&&x.name&&!P0.some(y=>y.name===x.name))P0.push(x)});S.settings.people=P0}
   if(merge){const ids=new Set(S.projects.map(p=>p.id));list.forEach(p=>{if(ids.has(p.id))p.id=uid();S.projects.push(p)})}else{S.projects=list;if(d.settings)S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings)}
   cur=S.projects[0]?.id||null;save();toast(`นำเข้า ${list.length} โครงการแล้ว`);go('dash')}catch(e){toast('อ่านข้อมูลไม่ได้ ตรวจว่าเป็นไฟล์สำรองจากระบบนี้')}}
 function applyTheme(){const t=S.settings.theme;if(t==='system')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',t)}
