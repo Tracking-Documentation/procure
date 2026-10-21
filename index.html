@@ -678,7 +678,7 @@ function rEdit(){
    <div class="card"><div class="card-h"><h2><span class="step">2</span>หมวดงานและค่า Factor F / VAT</h2><button class="btn ghost-brand sm" id="addCat" type="button">+ เพิ่มหมวด</button></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ลำดับ</th><th>ชื่อหมวด</th><th>ประเภท</th><th class="n">Factor F / VAT</th><th>การปรับลด</th><th></th></tr></thead><tbody id="catBody"></tbody></table></div>
      <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>หมวดครุภัณฑ์และค่าใช้จ่ายพิเศษจะคงราคากลางไว้ ไม่ถูกปรับลด</b></div></div>
-   <div class="card"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
+   <div class="card" id="boqCard"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
      <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn sm" id="sumXl" type="button" title="ไฟล์คำนวณราคากลาง (.xlsm/.xlsx) ที่มีชีต SUMMARY">แนบไฟล์ราคากลาง (SUMMARY)</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
      <div class="card-b row" style="padding-block:10px;font-size:14px"><span>ช่องค่างานต้นทุนกรอกเป็น</span><div class="seg" id="costModeSeg"><button type="button" data-cm="total" class="${(p.costMode||'total')==='total'?'on':''}">ยอดรวมของรายการ</button><button type="button" data-cm="unit" class="${p.costMode==='unit'?'on':''}">ราคาต่อหน่วย</button></div><span class="muted" style="font-size:13px">เช่น เสา 83 ต้น ค่างานต้นทุนรวม 3,083,508.10 → เลือก “ยอดรวมของรายการ”</span></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ที่</th><th style="min-width:360px">รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">${(p.costMode||'total')==='total'?'ค่างานต้นทุน (รวม)':'ค่างานต้นทุน/หน่วย'}</th><th>หมวด</th><th class="n">ราคากลาง (บาท)</th><th title="ติ๊กเพื่อไม่ปรับลดรายการนี้">ไม่ลด</th><th></th></tr></thead><tbody id="boqBody"></tbody>
@@ -848,7 +848,7 @@ function summaryDialog(d,fname){const p=P();if(!d.items.length)return alert('ไ
     if(q('#smMid')&&q('#smMid').checked){p.midDeclared=d.grand||Math.round(d.midSum*100)/100;p.midAdjust=Math.round((p.midDeclared-d.midSum)*100)/100||''}
     if(q('#smCm')&&q('#smCm').checked)O.price.members=pc.map((x,i)=>({name:x.name,position:x.position,role:/ประธาน/.test(x.role)||i===0?'ประธานกรรมการ':'กรรมการ'}));
     if(!p.name&&d.title)p.name=d.title;
-    touch(p);m.close();rEdit();const t=totals(p);toast(`นำเข้า ${nw.length} รายการ · ราคากลางรวม ${fmt(t.sumM/100)} บาท`)}}
+    touch(p);m.close();render();const t=totals(p);toast(`นำเข้า ${nw.length} รายการ · ราคากลางรวม ${fmt(t.sumM/100)} บาท`)}}
 
 /* ================= bidders ================= */
 function bidRank(p){const L=(p.bidders||[]).map((b,i)=>({b,i}));L.sort((x,y)=>{const a=num(x.b.price),c=num(y.b.price);if(a&&c)return a-c||x.i-y.i;if(a)return -1;if(c)return 1;return x.i-y.i});return L.map((x,k)=>({...x.b,rank:k+1}))}
@@ -2197,9 +2197,9 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
   </div></div>
   <div class="card"><div class="card-h"><h2>รายการ (ชุดเดียวกับ BOQ)</h2>
     <label class="switch" style="margin-left:auto"><input type="checkbox" id="rqRound" ${R.roundTo==='budget'?'checked':''}> ปรับยอดให้เท่าวงเงินงบประมาณ</label>
-    <button class="btn sm" id="rqUseMid" type="button">ใช้ราคากลางต่อหน่วยเป็นราคาประมาณ</button></div>
+    <button class="btn sm" id="rqUseMid" type="button">ใช้ราคากลางต่อหน่วยเป็นราคาประมาณ</button><button class="btn sm" id="rqSum" type="button" title="ไฟล์คำนวณราคากลาง (.xlsm/.xlsx) ที่มีชีต SUMMARY">แนบไฟล์ราคากลาง (SUMMARY)</button><button class="btn ghost-brand sm" id="rqGoBoq" type="button">ไปหน้า BOQ ราคากลาง →</button></div>
    <div class="card-b muted" style="font-size:13.5px;padding-bottom:0">ชื่อรายการ หน่วย และจำนวน มาจากแท็บ “ข้อมูลโครงการ / BOQ” แก้ที่ใดที่หนึ่งก็เปลี่ยนตรงกัน · กรอกเฉพาะ <b>ราคาที่สืบทราบ/ประมาณได้ ต่อหน่วย</b> ที่นี่ (ราคาก่อนทำราคากลาง)</div>
-   <div class="tbl-wrap"><table class="t dash"><thead><tr><th class="n">ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ราคาประมาณ/หน่วย</th><th class="n">รวม</th><th class="n">ราคากลาง/หน่วย</th></tr></thead><tbody>
+   <div class="tbl-wrap"><table class="t dash"><thead><tr><th class="n">ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ราคาประมาณ/หน่วย</th><th class="n">รวม</th><th class="n"><a href="#" id="rqGoBoq2" title="แก้ราคากลางที่หน้า BOQ ราคากลาง" style="color:inherit">ราคากลาง/หน่วย ↗</a></th></tr></thead><tbody>
     ${c.rows.length?c.rows.map(x=>`<tr><td class="n">${x.no}</td><td style="min-width:260px">${escBr(x.it.name)}</td><td>${esc(x.it.unit)}</td><td class="n">${fmt(x.q,x.q%1?2:0)}</td>
       <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null?'':fmt(x.u)}" inputmode="decimal" style="width:140px"></td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ 4033 หรือเพิ่มรายการในแท็บ “ข้อมูลโครงการ / BOQ”</td></tr>`}
     </tbody><tfoot><tr><td></td><td colspan="4"><b>รวมเป็นเงิน</b>${c.missing?` <span class="pill p-nego">ยังไม่กรอกราคา ${c.missing} รายการ</span>`:''}</td><td class="n"><b>${fmt(c.sum)}</b></td><td></td></tr>
@@ -2217,6 +2217,8 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
   $$('[data-bs]',el).forEach(i=>i.onchange=()=>{R.budgetStatus=i.checked?i.dataset.bs:'';$$('[data-bs]',el).forEach(o=>{if(o!==i)o.checked=false});touch(p)});
   $$('[data-est]',el).forEach(i=>i.onchange=()=>{const it=p.items.find(x=>x.id===i.dataset.est);it.est=i.value.trim()===''?'':num(i.value);touch(p);rReq()});
   $('#rqRound').onchange=e=>{R.roundTo=e.target.checked?'budget':'none';touch(p);rReq()};
+  $('#rqSum').onclick=()=>{if(!canEdit())return toast('บัญชีนี้ดูได้อย่างเดียว');summaryPick()};
+  const goBoq=e=>{e&&e.preventDefault();go('edit');setTimeout(()=>{const c=$('#boqCard');if(c)c.scrollIntoView({behavior:'smooth',block:'start'})},60)};$('#rqGoBoq').onclick=goBoq;$('#rqGoBoq2').onclick=goBoq;
   $('#rqUseMid').onclick=()=>{const rows=c.rows.filter(x=>x.mid);if(!rows.length)return toast('ยังไม่มีราคากลาง (กรอกค่างานต้นทุนใน BOQ ก่อน)');
     confirmBox(`ใส่ราคากลางต่อหน่วยเป็นราคาประมาณ ${rows.length} รายการ (ทับค่าที่กรอกไว้)`,'ใส่ราคา',()=>{rows.forEach(x=>x.it.est=r2(x.mid));touch(p);rReq()})};
   $('#rqPrint').onclick=()=>{reportSel='req';go('report')};
