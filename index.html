@@ -333,7 +333,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 71 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 72 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -1676,6 +1676,8 @@ function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div cla
   $('#certPrint').onclick=()=>{reportSel='cert';go('report')}}
 function rSignTab(){const el=$('#v-sign');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
   el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}`;
+  {const sg=p.sign||{},ap=p.announceDate?addWorkdays(p.announceDate,7):'';const di=el.querySelector('[data-sg="date"]');
+   if(di&&ap&&sg.date&&sg.date<=ap)di.closest('.card-b')?.insertAdjacentHTML('afterbegin',`<div class="s12 note warn" style="margin:0 0 6px">หนังสือเรียกลงนามลงวันที่ ${thDate(sg.date)} ยังอยู่ในระยะอุทธรณ์ (ครบ ${thDate(ap)}) · เรียกลงนามได้ตั้งแต่ ${thDate(addWorkdays(p.announceDate,8))} · การ์ดสรุปภาพรวมจะยังนับโครงการนี้เป็น “ประกาศผู้ชนะแล้ว”</div>`)}
   $$('[data-sg]',el).forEach(i=>{i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)};if(['received','date','days','warranty'].includes(i.dataset.sg))i.onchange=()=>{bookAutoPush(p);rSignTab()}});
   bindBook(el,p,rSignTab)}
 function sigBlock(p){if(!S.settings.showSign)return '';const s=p.signers||[];
@@ -2304,8 +2306,9 @@ let ovSel='';
 function projStage(p){const t=todayISO(),e=p.ev||{},sg=p.sign||{},bk=p.book&&p.book.booking;const le=d=>d&&d<=t;
   if(le(p.contractDate)||p.status==='ลงนามสัญญาแล้ว')return 'signed';
   if(p.contractNo||(bk&&bk.confirmed==='Y'&&bk.contractNo))return 'cno';
-  if(le(sg.date))return 'call';
-  if(p.announceDate&&le(p.announceDate))return t>addWorkdays(p.announceDate,7)?'appeal':'win';
+  const apEnd=p.announceDate?addWorkdays(p.announceDate,7):'';
+  if(le(sg.date)&&(!apEnd||(t>apEnd&&sg.date>apEnd)))return 'call';
+  if(p.announceDate&&le(p.announceDate))return t>apEnd?'appeal':'win';
   if(le(e.m1&&e.m1.date)||le(e.summaryDate))return 'eval';
   if(le(e.submitDate)||le(e.openDate)||(p.bidders||[]).length)return 'bid';
   if(le(e.pubStart)||le(p.inviteDate))return 'pub';
