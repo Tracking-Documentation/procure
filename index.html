@@ -281,6 +281,9 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
 .stepbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 14px;border-radius:10px;margin-bottom:12px;font-size:14.5px;border:1px solid var(--line)}
 .stepbar.lk{background:var(--ok-bg);color:var(--ok-ink)}.stepbar.ed{background:var(--warn-bg);color:var(--warn-ink)}.stepbar.new{background:var(--soft)}
 .view.step-locked input:not([type=checkbox]):not([type=radio]),.view.step-locked select,.view.step-locked textarea{background:var(--soft);cursor:not-allowed}
+body.exec #tabs,body.exec #btnInstall,body.exec [data-signprint],body.exec button[data-calp],body.exec [data-booksync],body.exec .stepbar{display:none!important}
+body.exec .ev1{cursor:default}.exec-chip{font-size:13px;font-weight:500;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:2px 10px;vertical-align:middle;white-space:nowrap}
+body.exec .hdr{padding-bottom:12px}
 .ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
 .urow{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.3fr 1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
 @media (max-width:760px){.urow{grid-template-columns:1fr 1fr}.urow .uname{grid-column:1/-1}}
@@ -322,7 +325,7 @@ body.gated>*:not(#gate):not(#toast){display:none!important}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 62 · 20 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 63 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -388,6 +391,7 @@ const ICON={
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
+const EXEC=(()=>{try{return new URLSearchParams(location.search).get('view')==='exec'}catch(e){return false}})();
 const SRV_BAKED='https://script.google.com/macros/s/AKfycbz2w8so4_kfOWz0EPjzWhB3_-3iuhJDbJM4Z6q0U5swFAT_AVF4XezAkNsVH4MBsSCz/exec';
 const SRVK=LS+'.server',AUTHK=LS+'.auth',SYNK=LS+'.sync',LOCAL_SET=['gasKey','gasUrl','theme'];
 const ROLE_TH={admin:'ผู้ดูแลระบบ',editor:'แก้ไขได้',viewer:'ดูได้อย่างเดียว'};
@@ -572,7 +576,7 @@ function decision(p){
 /* ================= tabs ================= */
 const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
-function go(t){tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
+function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
 function render(){S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p)});({cal:rCal,dash:rDash,req:rReq,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
@@ -1915,7 +1919,7 @@ function gasBase(){return String(S.settings.gasUrl||'').trim()||srvUrl()}
 function authRec(){try{return JSON.parse(localStorage.getItem(AUTHK)||'null')}catch(e){return null}}
 function authOk(){const a=authRec();return !!(a&&a.token&&a.exp>Date.now())}
 function me(){return (authRec()||{}).user||null}
-function canEdit(){return !central()||(me()&&me().role!=='viewer')}
+function canEdit(){if(EXEC)return false;return !central()||(me()&&me().role!=='viewer')}
 function hashOf(str){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (h2>>>0).toString(36)+(h1>>>0).toString(36)}
 function syncMeta(){let d={};try{d=JSON.parse(localStorage.getItem(SYNK)||'{}')||{}}catch(e){}return Object.assign({since:0,revs:{},hash:{},adopted:false,last:''},d)}
@@ -1963,7 +1967,7 @@ async function syncNow({pull=true}={}){if(!central()||!authOk()||!navigator.onLi
   finally{syncing=false;syncChip();if(syncAgain){syncAgain=false;setTimeout(()=>syncNow({pull:false}),300)}}}
 function syncSoon(){if(!central()||!authOk())return;clearTimeout(syncT);syncT=setTimeout(()=>syncNow({pull:false}),1800)}
 function syncChip(){const c=$('#netChip');if(!c)return;if(!central()){c.textContent=(navigator.onLine?'ใช้งานออฟไลน์ได้':'โหมดออฟไลน์')+' · ข้อมูลอยู่ในเครื่องนี้';c.title='';return}
-  const sm=syncMeta();const n=authOk()&&sm.adopted?pendingItems(sm).length:0;
+  const sm=syncMeta();const n=authOk()&&sm.adopted&&canEdit()?pendingItems(sm).length:0;
   c.textContent=!navigator.onLine?`ออฟไลน์ · รอส่ง ${n} รายการ`:syncErr?'ซิงก์ไม่สำเร็จ · จะลองใหม่':syncing?'กำลังซิงก์…':n?`รอส่ง ${n} รายการ`:'ข้อมูลกลาง · ซิงก์แล้ว '+(sm.last?String(sm.last).slice(-5):'');
   c.title=syncErr||'ข้อมูลโครงการใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ'}
 
@@ -1972,7 +1976,7 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
   if(!g){g=document.createElement('div');g.id='gate';document.body.appendChild(g)}
   let last='';try{last=localStorage.getItem(LS+'.lastUser')||''}catch(e){}
   g.innerHTML=`<form class="gate-card" autocomplete="on">
-   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา</span></div></div>
+   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา${EXEC?' · มุมมองผู้บริหาร (ดูอย่างเดียว)':''}</span></div></div>
    <label class="f"><span>ชื่อผู้ใช้</span><input class="i" id="gUser" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(last)}" required></label>
    <label class="f"><span>รหัสผ่าน</span><input class="i" id="gPw" type="password" autocomplete="current-password" required></label>
    <div id="gErr" class="gate-err">${esc(msg||'')}</div>
@@ -2050,7 +2054,7 @@ function usersDialog(list){
 function centralCard(){const u=me();
   if(central())return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2></div><div class="card-b grid" style="gap:10px">
     <div>เข้าสู่ระบบเป็น <b>${esc(u?.name||u?.username||'-')}</b> · สิทธิ์ ${esc(ROLE_TH[u?.role]||'-')} · ข้อมูลโครงการและค่าตั้งค่าในหน้านี้ใช้ร่วมกันทุกเครื่อง (ยกเว้นธีม URL และรหัสเจ้าหน้าที่ ซึ่งเป็นของแต่ละเครื่อง)</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button>':''}</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button><button class="btn" id="cExec" type="button">คัดลอกลิงก์สำหรับผู้บริหาร</button>':''}</div>
     ${u?.role==='admin'?`<p class="muted" style="font-size:13px;margin:0">ส่งลิงก์ติดตั้งให้ผู้ใช้เปิดครั้งแรก แอปจะรู้จักเซิร์ฟเวอร์และขึ้นหน้าเข้าสู่ระบบเอง · ผู้ใช้กดติดตั้งแอปได้หลังเข้าสู่ระบบ</p>`:''}</div></div>`;
   return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2><span class="muted" style="font-size:13px">ยังไม่เปิดใช้ · ตอนนี้ข้อมูลอยู่ในเครื่องนี้เท่านั้น</span></div><div class="card-b grid g12">
     <p class="s12" style="margin:0">เปิดใช้แล้ว ทุกเครื่องต้องเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ทั้งก่อนใช้งานและก่อนติดตั้งแอป และเห็นข้อมูลโครงการชุดเดียวกัน (เก็บใน Google Sheet เดียวกับระบบจองลงนาม ชีต users และ store)</p>
@@ -2063,6 +2067,7 @@ function centralCard(){const u=me();
     <p class="s12 muted" style="font-size:13px;margin:0">โครงการที่อยู่ในเครื่องนี้ ระบบจะถามก่อนอัปโหลดขึ้นระบบกลาง · ถ้ามีบัญชีผู้ดูแลอยู่แล้ว ให้กรอกบัญชีนั้นเพื่อเข้าสู่ระบบ</p></div></div>`}
 function bindCentralCard(){const q=s=>$(s);
   if(central()){q('#cAcc')&&(q('#cAcc').onclick=accountDialog);q('#cUsers')&&(q('#cUsers').onclick=()=>usersDialog());
+    q('#cExec')&&(q('#cExec').onclick=()=>{const l=location.origin+location.pathname+'?view=exec';navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์ผู้บริหารแล้ว · สร้างบัญชีสิทธิ์ “ดูได้อย่างเดียว” ให้ผู้บริหาร'),()=>prompt('คัดลอกลิงก์นี้',l))});
     q('#cLink')&&(q('#cLink').onclick=()=>{const l=location.origin+location.pathname+'?server='+encodeURIComponent(srvUrl());navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์แล้ว'),()=>prompt('คัดลอกลิงก์นี้',l))});return}
   const go_=q('#caGo');if(!go_)return;const msg=t=>q('#caMsg').textContent=t;
   go_.onclick=async()=>{const url=String(S.settings.gasUrl||'').trim(),key=String(S.settings.gasKey||'').trim();
@@ -2252,6 +2257,8 @@ function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.c
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,stepGuard,true));
+rCal=(o=>function(){o.apply(this,arguments);if(EXEC){const el=$('#v-cal');el.insertAdjacentHTML('afterbegin',signAlertCard())}})(rCal);
+if(EXEC){document.body.classList.add('exec');const h=$('.hdr .ttl h1');if(h)h.insertAdjacentHTML('beforeend',' <span class="exec-chip">มุมมองผู้บริหาร</span>');document.title='ปฏิทินจัดซื้อจัดจ้าง (ผู้บริหาร)'}
 rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
 rNego=(o=>function(){o.apply(this,arguments);stepBar()})(rNego);rResult=(o=>function(){o.apply(this,arguments);stepBar()})(rResult);rSignTab=(o=>function(){o.apply(this,arguments);stepBar()})(rSignTab);rCert=(o=>function(){o.apply(this,arguments);stepBar()})(rCert);
 
