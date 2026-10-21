@@ -269,7 +269,37 @@ function handleAuth_(d) {
     });
     return { ok: true, results: out };
   }
+  if (a === 'files.upload') {
+    needEdit_(me);
+    const bytes = Utilities.base64Decode(String(d.b64 || ''));
+    if (!bytes.length) throw new Error('ไฟล์ว่าง');
+    if (bytes.length > MAX_FILE_MB * 1024 * 1024) throw new Error('ไฟล์ใหญ่เกิน ' + MAX_FILE_MB + ' MB');
+    const root = docRoot_();
+    const pid = String(d.projectId || 'อื่นๆ').replace(/[\\/:*?"<>|]/g, '-').slice(0, 80);
+    const it = root.getFoldersByName(pid); const folder = it.hasNext() ? it.next() : root.createFolder(pid);
+    const name = String(d.name || 'file').slice(0, 150);
+    const file = folder.createFile(Utilities.newBlob(bytes, d.mime || 'application/octet-stream', (d.label ? d.label + ' - ' : '') + name));
+    return { ok: true, file: { id: file.getId(), name: name, size: bytes.length, mime: d.mime || '', by: me.username, at: now_() } };
+  }
+  if (a === 'files.get') {
+    const file = DriveApp.getFileById(String(d.id || ''));
+    if (!inDocRoot_(file)) throw new Error('ไม่พบไฟล์');
+    const blob = file.getBlob();
+    return { ok: true, name: file.getName(), mime: blob.getContentType(), b64: Utilities.base64Encode(blob.getBytes()) };
+  }
   throw new Error('ไม่รู้จักคำสั่ง');
+}
+/* ไฟล์แนบของโครงการ: เก็บใน Drive โฟลเดอร์ DOC_FOLDER เปิดได้เฉพาะผ่านแอปที่เข้าสู่ระบบแล้ว */
+const DOC_FOLDER = 'เอกสารโครงการ (ระบบพิจารณาผล)';
+function docRoot_() {
+  const props = PropertiesService.getScriptProperties(); const id = props.getProperty('DOC_FOLDER_ID');
+  if (id) { try { return DriveApp.getFolderById(id); } catch (e) {} }
+  const f = DriveApp.createFolder(DOC_FOLDER); props.setProperty('DOC_FOLDER_ID', f.getId()); return f;
+}
+function inDocRoot_(file) {
+  const rootId = docRoot_().getId(); const ps = file.getParents();
+  while (ps.hasNext()) { const p = ps.next(); if (p.getId() === rootId) return true; const gp = p.getParents(); while (gp.hasNext()) if (gp.next().getId() === rootId) return true; }
+  return false;
 }
 /* เจ้าหน้าที่ที่เข้าสู่ระบบแล้ว ใช้คำสั่งจองลงนามสัญญาได้โดยไม่ต้องรู้ ADMIN_KEY */
 function staffOk_(key, token) {
@@ -304,8 +334,8 @@ function doGet(e) {
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents || '{}');
-    if (/^(auth|users|data)\./.test(d.action || '')) {
-      const write = !/^(auth\.login|auth\.me|users\.list|data\.pull)$/.test(d.action);
+    if (/^(auth|users|data|files)\./.test(d.action || '')) {
+      const write = !/^(auth\.login|auth\.me|users\.list|data\.pull|files\.get|files\.upload)$/.test(d.action);
       const lk = write ? LockService.getScriptLock() : null; if (lk) lk.waitLock(25000);
       try { return json_(handleAuth_(d)); }
       catch (err) { return json_({ ok: false, error: String(err.message || err), relogin: !!err.relogin }); }
@@ -457,7 +487,7 @@ function attachFiles(projectId, token, newFiles) {
 
 /* Run ครั้งแรกจากหน้า Apps Script เพื่อสร้างชีตและอนุญาตสิทธิ์ */
 function setup() {
-  sheet_('projects'); sheet_('bookings'); sheet_('settings'); sheet_('users'); sheet_('store'); secret_();
+  sheet_('projects'); sheet_('bookings'); sheet_('settings'); sheet_('users'); sheet_('store'); secret_(); docRoot_();
   Logger.log('โควตาอีเมลวันนี้: ' + MailApp.getRemainingDailyQuota());
   const it = DriveApp.getFoldersByName(ROOT_FOLDER); if (!it.hasNext()) DriveApp.createFolder(ROOT_FOLDER);
   Logger.log('พร้อมใช้งาน · ขั้นต่อไป: Deploy > New deployment > Web app');

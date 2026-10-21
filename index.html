@@ -99,7 +99,7 @@ main{padding-block:20px 40px}
 .icon-btn{border:1px solid var(--line);background:var(--card);width:32px;height:30px;border-radius:6px;cursor:pointer;display:inline-grid;place-items:center;color:var(--tab-on)}
 .icon-btn.del{color:var(--danger)}
 .icon-btn svg{width:16px;height:16px}
-label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
+label.f,div.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);min-width:0}
 label.f>span b{color:var(--danger)}
 input.i,select.i,textarea.i{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:8px 11px;font-size:15px;color:var(--ink);width:100%;min-width:0}
 input.i.r{text-align:right;font-variant-numeric:tabular-nums}
@@ -289,6 +289,9 @@ body.exec .hdr{padding-bottom:12px}
 .ov .ovl{font-size:14.5px;font-weight:600;text-align:center}.ov b{font-family:var(--f-head);font-size:26px;line-height:1.1}.ov.on{outline:2px solid var(--brand);outline-offset:1px}
 .ov-mid,.ov-tor,.ov-tordone,.ov-pub,.ov-bid,.ov-eval{background:var(--warn-bg)}.ov-win,.ov-appeal{background:color-mix(in srgb,var(--blue) 10%,var(--card))}.ov-call,.ov-cno{background:var(--soft)}.ov-signed{background:var(--ok-bg)}
 .ovlist{margin-top:14px;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px}.ovlh{font-weight:600}.ovi{display:flex;flex-direction:column;padding:6px 0;border-bottom:1px dashed var(--line)}.ovi .muted{font-size:13px}
+.prep .pstep{margin-top:4px;padding-top:8px;border-top:1px dashed var(--line);font-size:15px}.prep .pstep:first-child{border-top:0;padding-top:0;margin-top:0}
+.fbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:38px}.fchip{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line);border-radius:8px;padding:2px 4px 2px 8px;background:var(--soft)}
+.lnk{border:0;background:none;color:var(--blue);cursor:pointer;font:inherit;padding:2px 0;text-align:left;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fchip .icon-btn{width:24px;height:24px}
 .ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
 .urow{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.3fr 1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
 @media (max-width:760px){.urow{grid-template-columns:1fr 1fr}.urow .uname{grid-column:1/-1}}
@@ -330,7 +333,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 69 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version 70 · 21 Oct 2026)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -653,10 +656,10 @@ function rEdit(){
   const el=$('#v-edit');if(needProject(el))return;const p=P();
   el.innerHTML=`${curBar('กำลังแก้ไข',`<button class="btn" data-goto="result" type="button">${ICON.calc} ดูผลคำนวณ</button><button class="btn pri" id="btnSave" type="button">บันทึก</button>`)}
   <div class="two"><div class="grid" style="gap:18px;min-width:0">
+   ${prepCard(p)}
    <div class="card"><div class="card-h"><h2><span class="step">1</span>ข้อมูลโครงการและผู้ชนะการจัดซื้อจัดจ้าง</h2></div><div class="card-b grid g12">
      ${F('name','ชื่อโครงการงานก่อสร้าง',{cls:'s8',req:1,area:1})}${F('type','ประเภทงาน',{cls:'s4',sel:['ทาง','สะพานและท่อเหลี่ยม','ไฟฟ้าแสงสว่าง','อาคาร','ชลประทาน','อื่นๆ']})}
      ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s8'})}
-     ${F('midApproveDate','อนุมัติราคากลางวันที่',{cls:'s4',type:'date'})}${F('torStart','ระยะเวลาร่าง TOR ตั้งแต่วันที่',{cls:'s4',type:'date'})}${F('torEnd','ถึงวันที่',{cls:'s4',type:'date'})}
      ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
      ${F('inviteNo','ประกาศประกวดราคาเลขที่',{cls:'s6'})}${F('inviteDate','ประกาศลงวันที่',{cls:'s6',type:'date'})}
      ${F('contractor','ชื่อผู้ชนะ / ผู้รับจ้าง',{cls:'s6'})}${F('announceDate','วันที่ประกาศผลผู้ชนะ',{cls:'s3',type:'date'})}${F('status','สถานะ',{cls:'s3',sel:['ร่าง','กำลังต่อรอง','ตกลงราคาแล้ว','ลงนามสัญญาแล้ว']})}
@@ -675,6 +678,7 @@ function rEdit(){
   </div>
   <aside class="card side" id="sideSum"></aside></div>`;
   // bind fields
+  bindPrep(el,p);
   $$('[data-f]',el).forEach(inp=>{
     inp.addEventListener('input',()=>{const k=inp.dataset.f;p[k]=inp.hasAttribute('data-money')?num(inp.value):inp.value;touch(p);sideSum()});
     if(inp.hasAttribute('data-money'))inp.addEventListener('blur',()=>{inp.value=num(inp.value)?fmt(num(inp.value)):''});
@@ -875,7 +879,7 @@ function addWorkdays(iso,n){if(!iso)return '';const H=holidaySet();const d=new D
 let calYM=null;
 function calEvents(){const out=[];const add=(p,date,kind,label,time)=>{if(date)out.push({p,date,kind,label,time:time||''})};
   S.projects.forEach(p=>{const e=evOf(p);
-    add(p,p.midApproveDate,'mid','อนุมัติราคากลาง');if(p.torStart)add(p,p.torStart,'tor',p.torEnd&&p.torEnd!==p.torStart?'เริ่มร่าง TOR (ถึง '+thDate(p.torEnd)+')':'ร่าง TOR');if(p.torEnd&&p.torEnd!==p.torStart)add(p,p.torEnd,'tor','สิ้นสุดร่าง TOR');
+    if(p.prep&&p.prep.approveDate)add(p,p.prep.approveDate,'mid','เห็นชอบ'+(p.prep.approveNo?' ('+p.prep.approveNo+')':''));add(p,p.midApproveDate,'mid','อนุมัติราคากลาง');if(p.torStart)add(p,p.torStart,'tor',p.torEnd&&p.torEnd!==p.torStart?'เริ่มร่าง TOR (ถึง '+thDate(p.torEnd)+')':'ร่าง TOR');if(p.torEnd&&p.torEnd!==p.torStart)add(p,p.torEnd,'tor','สิ้นสุดร่าง TOR');
     add(p,e.openDate,'open','เปิดข้อเสนอ',e.openTime);
     if(e.openDate)add(p,evDeadline(p),'dead','ครบกำหนดพิจารณาผล (5 วันทำการ)');
     add(p,e.m1.date,'mtg',`ประชุมครั้งที่ ${e.m1.no||1}`,e.m1.start);
@@ -1890,7 +1894,7 @@ function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ย
   const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
 function unlockThen(cb){if(central()){toast('บัญชีนี้ดูได้อย่างเดียว · ขอสิทธิ์แก้ไขจากผู้ดูแลระบบ');return}askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
 /* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
-const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],#modalRoot,#gate';
+const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
 function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
@@ -2260,7 +2264,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
@@ -2301,6 +2305,45 @@ function overviewCard(){const by={};S.projects.forEach(p=>{const s=projStage(p);
      ${by.none?`<button class="ov ov-none ${sel==='none'?'on':''}" data-ov="none" type="button"><span class="ovl">⏳ ยังไม่เริ่ม</span><b>${by.none.length}</b></button>`:''}</div>
    ${sel?`<div class="ovlist"><div class="ovlh">${esc(lab[sel])} · ${list.length} โครงการ</div>${list.map(p=>`<div class="ovi"><b>${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</b><span class="muted">${esc([p.inviteNo,p.contractor,p.contractNo?'สัญญา '+p.contractNo:''].filter(Boolean).join(' · '))}</span></div>`).join('')}</div>`:''}</div></div>`}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-ov]');if(!b)return;ovSel=ovSel===b.dataset.ov?'':b.dataset.ov;const c=$('#ovCard');if(c)c.outerHTML=overviewCard()});
+
+/* ================= ขั้นเตรียมการ: เห็นชอบ / แบบ / ร่างขออนุมัติออกประกาศ (ก่อนอนุมัติราคากลาง) ================= */
+const PREP_DEF={approveNo:'',approveDate:'',approveFiles:[],plan:false,planFiles:[],draft:false,authority:''};
+function prepOf(p){p.prep=Object.assign(structuredClone(PREP_DEF),p.prep||{});return p.prep}
+const REGION_LIMIT=10000000;
+function authSuggest(p){return num(p.budget)>REGION_LIMIT?'region':'district'}
+function fileChips(list,key){return (list||[]).map((f,i)=>`<span class="fchip"><button class="lnk" data-fview="${esc(f.id)}" data-fname="${esc(f.name)}" type="button">📎 ${esc(f.name)}</button><button class="icon-btn del" data-fdel="${key}:${i}" title="เอาออก" type="button">✕</button></span>`).join('')}
+function prepCard(p){const R=prepOf(p);const sug=authSuggest(p);const au=R.authority||sug;
+  return `<div class="card"><div class="card-h"><h2><span class="step">0</span>ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)</h2></div><div class="card-b grid g12 prep">
+   <div class="s12 pstep"><b>1. เห็นชอบ</b></div>
+   <label class="f s5"><span>เห็นชอบตามหนังสือที่</span><input class="i" data-pp="approveNo" value="${esc(R.approveNo)}"></label>
+   <label class="f s3"><span>ลงวันที่</span><input class="i" type="date" data-pp="approveDate" value="${esc(R.approveDate)}"></label>
+   <div class="f s4"><span>แนบไฟล์หนังสือ</span><div class="fbox">${fileChips(R.approveFiles,'approveFiles')}<button class="btn sm" data-fup="approveFiles" type="button">+ แนบไฟล์</button></div></div>
+   <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="plan" ${R.plan?'checked':''}> <b>2. แบบ</b></label></div>
+   <div class="f s12"><div class="fbox">${fileChips(R.planFiles,'planFiles')}<button class="btn sm" data-fup="planFiles" type="button">+ แนบไฟล์แบบ</button></div></div>
+   <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="draft" ${R.draft?'checked':''}> <b>3. จัดทำร่างเพื่อขออนุมัติออกประกาศ</b></label></div>
+   <div class="s12 row" style="gap:18px;margin:0;padding-left:28px"><label class="switch"><input type="radio" name="pAuth" data-pa="region" ${au==='region'?'checked':''}> อำนาจเขต (สทล.17)</label><label class="switch"><input type="radio" name="pAuth" data-pa="district" ${au==='district'?'checked':''}> อำนาจแขวง</label>
+     <span class="muted" style="font-size:13px">ตามวงเงิน ${fmt(p.budget)} บาท แนะนำ <b>${sug==='region'?'อำนาจเขต':'อำนาจแขวง'}</b> (เกิน ${fmt(REGION_LIMIT,0)} บาท = อำนาจเขต)${R.authority&&R.authority!==sug?' · <span style="color:var(--danger)">เลือกต่างจากที่แนะนำ</span>':''}</span></div>
+   <div class="s12 pstep"><b>4. อนุมัติราคากลาง / ร่าง TOR</b></div>
+   ${F('midApproveDate','อนุมัติราคากลางวันที่',{cls:'s4',type:'date'})}${F('torStart','ระยะเวลาร่าง TOR ตั้งแต่วันที่',{cls:'s4',type:'date'})}${F('torEnd','ถึงวันที่',{cls:'s4',type:'date'})}
+  </div></div>`}
+function bindPrep(el,p){const R=prepOf(p);
+  $$('[data-pp]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{R[i.dataset.pp]=i.value;touch(p)}));
+  $$('[data-pc]',el).forEach(i=>i.onchange=()=>{R[i.dataset.pc]=i.checked;touch(p)});
+  $$('[data-pa]',el).forEach(i=>i.onchange=()=>{if(i.checked){R.authority=i.dataset.pa;touch(p);rEdit()}});
+  $$('[data-fup]',el).forEach(b=>b.onclick=()=>{const key=b.dataset.fup;const f=document.createElement('input');f.type='file';f.multiple=true;f.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.dwg,.zip';
+    f.onchange=async()=>{const files=[...f.files];if(!files.length)return;if(!central())return alert('แนบไฟล์ได้เมื่อใช้ระบบกลาง (เข้าสู่ระบบ)');
+      b.disabled=true;let n=0;for(const file of files){try{if(file.size>10*1024*1024)throw new Error(file.name+' ใหญ่เกิน 10 MB');toast(`กำลังอัปโหลด ${file.name}…`);
+        const b64=await new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]||'');r.onerror=no;r.readAsDataURL(file)});
+        const j=await srvCall({action:'files.upload',projectId:p.projectNo||p.id,label:key==='planFiles'?'แบบ':'หนังสือเห็นชอบ',name:file.name,mime:file.type,b64});
+        R[key]=(R[key]||[]).concat([j.file]);if(key==='planFiles')R.plan=true;n++;touch(p)}catch(e){alert(/ไม่รู้จักคำสั่ง|ตอบกลับไม่ถูกต้อง/.test(e.message)?'เซิร์ฟเวอร์ยังไม่รองรับการแนบไฟล์ — ต้องอัปเดต Code.gs และ Deploy เป็น New version ก่อน':e.message)}}
+      b.disabled=false;if(n)toast(`แนบแล้ว ${n} ไฟล์`);rEdit()};f.click()});
+  $$('[data-fdel]',el).forEach(b=>b.onclick=()=>{const [k,i]=b.dataset.fdel.split(':');const f=R[k][+i];confirmBox(`เอาไฟล์ “${f.name}” ออกจากโครงการ? (ไฟล์ยังเก็บอยู่ใน Google Drive)`,'เอาออก',()=>{R[k].splice(+i,1);touch(p);rEdit()})})}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-fview]');if(!b)return;e.preventDefault();
+  const w=window.open('','_blank');if(w)w.document.write('<p style="font-family:sans-serif">กำลังเปิดไฟล์…</p>');
+  try{const j=await srvCall({action:'files.get',id:b.dataset.fview});const bin=atob(j.b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    const url=URL.createObjectURL(new Blob([u],{type:j.mime||'application/octet-stream'}));
+    if(/^(application\/pdf|image\/)/.test(j.mime||'')&&w){w.location.href=url}else{if(w)w.close();const a=document.createElement('a');a.href=url;a.download=b.dataset.fname||j.name;document.body.appendChild(a);a.click();a.remove()}}
+  catch(err){if(w)w.close();alert(err.message)}});
 
 /* expose core for testing */
 window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
