@@ -346,7 +346,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">88</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">89</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -409,7 +409,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='88',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='89',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2545,7 +2545,11 @@ const TOR_CAP=[[1,0],[5,1],[10,2],[20,3],[60,8],[150,20],[300,60],[500,100],[Inf
 const TOR_W124='เป็นไปตามหนังสือคณะกรรมการวินิจฉัยปัญหาการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ ด่วนที่สุด ที่ กค (กวจ) 0405.2/ว 124 ลงวันที่ 1 มีนาคม 2566';
 function torCap(p){const mb=num(p.budget)/1e6;for(const [c,v] of TOR_CAP)if(mb<=c)return v;return 200}
 function torCapText(p){const v=torCap(p);return v?`ไม่ต่ำกว่า ${v} ล้านบาท`:'(มูลค่าการจัดซื้อจัดจ้างไม่เกิน 1 ล้านบาท ไม่ต้องกำหนดทุนจดทะเบียน)'}
-function torFix(t,p){
+const TOR_TD='๐๑๒๓๔๕๖๗๘๙';const thN=s=>+String(s).replace(/[๐-๙]/g,d=>TOR_TD.indexOf(d));
+/* ไม่มีค่า K → ตัดข้อ ๑.๕ สูตรการปรับราคา แล้วเลื่อนเลข ๑.๖ ขึ้นไป (ทั้งหัวข้อและที่อ้างถึง "ข้อ ๑.x") */
+function torShift15(t){const f=(m,pre,n)=>{const v=thN(n);return v>=6?pre+'๑.'+toTH(String(v-1)):m};
+  t=t.replace(/^([\t \u200b]*)๑\.([๐-๙]+)(?![๐-๙.])/,f);return t.replace(/(ข้อ\s*)๑\.([๐-๙]+)(?![๐-๙.])/g,f)}
+function torFix(t,p){if(!torOf(p).k)t=torShift15(t);
   t=t.replace(/(ผู้ยื่นข้อเสนอต้องมีมูลค่าสุทธิของกิจการ)(\s*ดังนี้)?\s*$/,(m,a)=>`${a}  ${TOR_W124}  ดังนี้`);
   t=t.replace(/(ทุนจดทะเบียนที่เรียกชำระมูลค่าหุ้นแล้ว\s*ณ\s*วันที่ยื่นข้อเสนอ)(\s*ไม่ต่ำกว่า\s*[0-9๐-๙]+\s*ล้านบาท)?/,(m,a)=>`${a}  ${torCapText(p)}`);
   return t}
@@ -2579,6 +2583,7 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
     if(/\(ลงชื่อ\)|ประกาศ ณ วันที่|ปฏิบัติราชการแทน/.test(plain)||plain.trim()==='อนุมัติ'||(plain.trim().length<90&&/\{\{(TOR_|DIRECTOR_(NAME|POSITION))/.test(JSON.stringify(o.r||[])))){
       const lines=R.map(x=>[x[0].split('\n').map(s=>s.replace(/^[\t ]+|[\t ]+$/g,'')).join('\n'),x[1]]);out.push(`<p class="tp tsg" style="${sp}">${torHtmlRuns(lines)}</p>`);continue}
     if(o.a==='c'&&/^[-–]$/.test(plain.trim()))continue;
+    if(!C.K&&/^๑\.๕\s+สูตรการปรับราคา/.test(plain.trim()))continue;
     if(o.a==='c'){out.push(`<p class="tp c" style="${sp}">${torHtmlRuns(R.map(x=>[x[0].replace(/^[\t ]+|[\t ]+$/g,''),x[1]]))}</p>`);continue}
     if(o.h){out.push(`<p class="tp" style="${sp}padding-left:40.8mm;text-indent:-8.3mm">${torLabel(torHtmlRuns(R))}</p>`);continue}
     out.push(`<p class="tp${o.a==='r'?' r':''}" style="${sp}${para(plain,lead||!!o.f)}">${torLabel(torHtmlRuns(R))}</p>`)}
