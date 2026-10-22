@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">100</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">101</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='100',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='101',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -840,7 +840,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan
    <label class="switch"><input type="checkbox" id="smMid" ${!num(p.midDeclared)||num(p.midDeclared)===d.grand?'checked':''}> ตั้ง “ราคากลางตาม ปร.5/ปร.6” = ${fmt(d.grand||d.midSum)} บาท${num(p.midDeclared)?` (ตอนนี้ ${fmt(p.midDeclared)})`:''}</label>
    ${pc.length?`<label class="switch"><input type="checkbox" id="smCm" ${O.price.members.some(x=>x.name)?'':'checked'}> ใส่คณะกรรมการกำหนดราคากลางจากไฟล์ (${esc(pc.map(x=>x.name).join(', '))})</label>`:''}
    ${(c=>c?`<div class="note ${c.ok?'ok':'bad'}" style="margin:0"><b>ตรวจรายการ ข้อมูลและผลงาน กับ SUMMARY:</b> ${c.ok?`ตรงกันทั้ง ${c.n} รายการ (ชื่อ ปริมาณ หน่วย ราคากลาง)`:`<b>ไม่ตรงกัน ${c.W.length} จุด</b> — ตรวจไฟล์ Excel ก่อนนำเข้า<br>${c.W.map(esc).join('<br>')}`}</div>`:'')(chk)}
-   ${plan?`<div class="note" style="margin:0"><b>แผ่น “ข้อมูลและผลงาน”</b>${plan.days?`<label class="switch"><input type="checkbox" id="smDays" ${!num(p.workDays)?'checked':''}> ระยะเวลาดำเนินการ = ${plan.days} วัน${num(p.workDays)?` (ตอนนี้ ${esc(p.workDays)})`:''}</label>`:''}${plan.planLine?`<label class="switch"><input type="checkbox" id="smPlan" ${!T.planLine?'checked':''}> แผนงาน/รหัสงาน (TOR): ${esc(plan.planLine)}</label>`:''}${plan.reason?`<label class="switch"><input type="checkbox" id="smWhy" ${!T.background&&!R0.reason?'checked':''}> เหตุผลและความจำเป็น → ข้อ ๑ ความเป็นมา (TOR) และเหตุที่ขออนุมัติ (4033)<br><span class="muted" style="font-size:12.5px">${esc(plan.reason.slice(0,160))}${plan.reason.length>160?'…':''}</span></label>`:''}${plan.km&&!p.km?`<label class="switch"><input type="checkbox" id="smKm" checked> กม.ดำเนินการ: ${esc(plan.km)}</label>`:''}</div>`:''}
+   ${plan?`<div class="note" style="margin:0"><b>แผ่น “ข้อมูลและผลงาน”</b>${plan.days?`<label class="switch"><input type="checkbox" id="smDays" ${!num(p.workDays)?'checked':''}> ระยะเวลาดำเนินการ = ${plan.days} วัน${num(p.workDays)?` (ตอนนี้ ${esc(p.workDays)})`:''}</label>`:''}${plan.planLine?`<label class="switch"><input type="checkbox" id="smPlan" ${!T.planLine?'checked':''}> แผนงาน/รหัสงาน (TOR): ${esc(plan.planLine)}</label>`:''}${plan.reason?`<label class="switch"><input type="checkbox" id="smWhy" ${!T.background&&!R0.reason?'checked':''}> เหตุผลและความจำเป็น → ข้อ ๑ ความเป็นมา (TOR) และเหตุที่ขออนุมัติ (4033)<br><span class="muted" style="font-size:12.5px">${esc(plan.reason.slice(0,160))}${plan.reason.length>160?'…':''}</span></label>`:''}${plan.km&&!p.km?`<label class="switch"><input type="checkbox" id="smKm" checked> กม.ดำเนินการ: ${esc(plan.km)}</label>`:''}${plan.millNote?`<label class="switch"><input type="checkbox" id="smMill" checked> หมายเหตุ MILLING → เอกสารแนบประกาศ/สัญญา: กองเก็บ ณ ${esc(plan.millAt||plan.millNote)}</label>`:''}</div>`:''}
    ${file&&central()?`<label class="switch"><input type="checkbox" id="smUp" checked> เก็บไฟล์ Excel นี้ไว้ในโครงการ (ขั้นเตรียมการ)</label>`:''}
    ${fs.length>1?`<div class="note" style="margin:0">ไฟล์นี้มี Factor ${fs.length} ค่า (${fs.join(', ')}) · ระบบแยกเป็นหมวดตาม Factor ให้</div>`:''}
    <div class="muted" style="font-size:13px">ราคากลางรายการใช้ตัวเลขจากไฟล์ตรงตัว (ปัดหน่วยละ 2 ตำแหน่งตามไฟล์) · รายการที่ไม่คิด Factor (เช่น ป้ายในงานก่อสร้าง) ไปอยู่หมวดค่าใช้จ่ายพิเศษฯ</div></div>`,
@@ -861,7 +861,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan
     if(q('#smCm')&&q('#smCm').checked)O.price.members=pc.map((x,i)=>({name:x.name,position:x.position,role:/ประธาน/.test(x.role)||i===0?'ประธานกรรมการ':'กรรมการ'}));
     if(!p.name&&d.title)p.name=d.title;
     if(plan){if(q('#smDays')&&q('#smDays').checked)p.workDays=String(plan.days);if(q('#smPlan')&&q('#smPlan').checked)T.planLine=plan.planLine;
-      if(q('#smWhy')&&q('#smWhy').checked){const bg=plan.reason;if(!T.background)T.background=bg;if(!R0.reason)R0.reason=bg}if(q('#smKm')&&q('#smKm').checked){p.km=plan.km;fixNameKm(p)}}
+      if(q('#smWhy')&&q('#smWhy').checked){const bg=plan.reason;if(!T.background)T.background=bg;if(!R0.reason)R0.reason=bg}if(q('#smKm')&&q('#smKm').checked){p.km=plan.km;fixNameKm(p)}if(q('#smMill')&&q('#smMill').checked){const A=anxOf(p);A.mill=true;if(plan.millAt)A.millAt=plan.millAt}}
     if(file&&q('#smUp')&&q('#smUp').checked)prepUpload(p,'xlsFiles',[file]);
     touch(p);m.close();render();const t=totals(p);toast(`นำเข้า ${nw.length} รายการ · ราคากลางรวม ${fmt(t.sumM/100)} บาท`)}}
 
@@ -2822,11 +2822,14 @@ function parsePlanSheet(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'')
   const a=find('กิจกรรม');if(a)o.planLine=[s(R[a.i][a.c]),first(R[a.i+1])].filter(Boolean).join(' ');
   const d=find('ระยะเวลาดำเนินการ');if(d){const v=num(after(d,v=>num(v)>0));if(v)o.days=v}
   const k=find('ระยะทำงานจริง');if(k)o.km=s(after(k,v=>/กม|\+/.test(String(v))));
-  const w=find('เหตุผลและความจำเป็น');if(w){const L=[];for(let i=w.i+1;i<R.length&&i<w.i+12;i++){const t=first(R[i]);if(!t){if(L.length)break;continue}L.push(t)}o.reason=L.join('')}
+  const w=find('เหตุผลและความจำเป็น');if(w){const L=[];for(let i=w.i+1;i<R.length&&i<w.i+12;i++){const t=first(R[i]);if(!t){if(L.length)break;continue}if(/^หมายเหตุ|^ระยะ|^กิจกรรม/.test(t.replace(/\s/g,'')))break;L.push(t)}o.reason=L.join('')}
   // รายการงาน (ฝั่งขวาของแผ่น: ลำดับ | งาน | ชื่อรายการ / แถวถัดไป: ปริมาณงาน จำนวน หน่วย ๆ ละ ราคา บาท เป็นเงิน รวม)
   const it=[];for(let i=0;i<R.length;i++){const r=R[i]||[],n=r[12],nm=s(r[14]);if(!(num(n)>0)||!nm||/^#N\/A$/.test(nm)||s(r[13])!=='งาน')continue;
     const q=R[i+1]||[];it.push({no:num(n),name:nm,qty:num(q[16]),unit:s(q[17]),u:num(q[19]),total:num(q[21])})}
   if(it.length)o.items=it;
+  /* หมายเหตุ MILLING (เช่น “วัสดุ MILLING กองเก็บ ณ กองเก็บหมวดทางหลวงทรายขาว ทล.4 ที่ กม.1033+890 (LT.)”) */
+  for(let i=0;i<R.length;i++){const t0=(R[i]||[]).slice(0,12).map(s).filter(x=>x&&!/^#N\/A$/.test(x)).join(' '),t=t0.replace(/^หมายเหตุ\s*:?\s*/,'');
+    if(/MILLING|ขูดไส/i.test(t)&&/กองเก็บ|^หมายเหตุ/.test(t0)){o.millNote=t;const m=t.match(/\sณ\s*(.+)$/);if(m)o.millAt=m[1].trim();break}}
   return Object.keys(o).length?o:null}
 /* ตรวจรายการระหว่างแผ่น ข้อมูลและผลงาน กับ SUMMARY */
 function planCheck(d,plan){if(!plan||!plan.items)return null;const nz=t=>String(t||'').toUpperCase().replace(/[\s.]+/g,'');const A=plan.items,B=d.items,W=[];
