@@ -279,18 +279,22 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   .paper{box-shadow:none;margin:0;width:auto;min-height:0;padding:10mm}
   .paper+.paper{break-before:page}
 }
-.man .card-b{display:block;line-height:1.75;font-size:15px}.man-title{text-align:center;margin-bottom:12px}.man-title b{display:block;font-family:var(--f-head);font-size:21px}.man-title span{color:var(--muted);font-size:13.5px}
+.man .card-b{display:block;line-height:1.75;font-size:15px}.man-title{text-align:center;margin-bottom:12px}.man-title b{display:block;font-family:var(--f-head);font-size:21px}.man-title>span{color:var(--muted);font-size:13.5px;display:block}
 .man-h{font-family:var(--f-head);font-size:19px;margin:22px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--brand,#7a1f2b)}.man-toc{columns:2;font-size:14.5px;background:var(--soft);border-radius:10px;padding:10px 10px 10px 30px;margin:0}
 .man-ol{padding-left:22px;margin:6px 0;display:grid;gap:4px}.man-t{width:100%;border-collapse:collapse;font-size:14px}.man-t th,.man-t td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}.man-t th{background:var(--soft)}
 .man-flow{display:grid;gap:4px;max-width:760px;margin:8px auto}.man-ph{border:2px solid var(--mc);border-radius:12px;padding:8px 10px;background:color-mix(in srgb,var(--mc) 7%,transparent)}
-.man-phh{font-weight:700;color:var(--mc);font-size:14px;margin-bottom:6px}.man-st{background:var(--card,#fff);border:1px solid var(--line);border-radius:8px;padding:6px 10px;display:grid;gap:1px;position:relative}.man-st b{font-size:15.5px}.man-st span{font-size:13.5px;color:var(--muted)}
+.man-phh{font-weight:700;color:var(--mc);font-size:14px;margin-bottom:6px}.man-st{background:var(--card,#fff);border:1px solid var(--line);border-radius:8px;padding:6px 10px;display:grid;gap:1px;position:relative}.man-st b{font-size:15.5px}.man-st>span{font-size:13.5px;color:var(--muted)}
 .man-go{position:absolute;right:8px;top:6px;font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid var(--line);background:var(--soft);cursor:pointer}
 .man-ar{text-align:center;color:var(--muted);line-height:1.1;font-size:15px}.man-ar.big{font-size:22px;color:var(--mc,#888)}
 .man-a{--mc:#7a1f2b}.man-b{--mc:#8a6d1a}.man-c{--mc:#1f5f8a}.man-d{--mc:#2c7a3f}.man-e{--mc:#6b4a8a}
-.man-swim{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:6px;align-items:start;margin:8px 0}.man-lane{border:2px solid var(--mc);border-radius:12px;padding:8px;display:grid;gap:3px}.man-lane .man-st span{color:inherit}.man-ar.side{align-self:center;font-size:24px}
+.man-swim{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:6px;align-items:start;margin:8px 0}.man-lane{border:2px solid var(--mc);border-radius:12px;padding:8px;display:grid;gap:3px}.man-lane .man-st>span{color:inherit}.man-ar.side{align-self:center;font-size:24px}
 @media (max-width:760px){.man-swim{grid-template-columns:1fr}.man-ar.side{transform:rotate(90deg)}.man-toc{columns:1}}
+.man .nw{white-space:nowrap}.man-title b{display:block}.man-title .man-sys{font-size:19px;margin-top:2px}.man p,.man li,.man td{line-break:strict}
+@media print{body.pman .man .card-b{font-family:'Sarabun',sans-serif!important;font-size:14pt!important;line-height:1.6}body.pman .man-title b{font-size:20pt}body.pman .man-title .man-sys{font-size:17pt}body.pman .man-title i,body.pman .man-title>span{font-size:11.5pt}
+ body.pman .man-h{font-size:16.5pt;margin:16pt 0 6pt}body.pman .man-t{font-size:12pt}body.pman .man-t th,body.pman .man-t td{padding:4pt 6pt}body.pman .man-st b{font-size:13.5pt}body.pman .man-st>span{font-size:12pt;line-height:1.45;color:#444}body.pman .man-phh{font-size:12pt}
+ body.pman .man-lane .man-st>span{font-size:12pt;color:#222}body.pman .man-ar{font-size:11pt}body.pman .man-ar.big{font-size:15pt}body.pman .man-ol{gap:2pt}body.pman .man-flow{max-width:none}}
 @media print{body.pman .view{display:none!important}body.pman #v-manual{display:block!important}body.pman .man{border:0;box-shadow:none}body.pman .man-st,body.pman .man-ph,body.pman .man-lane,body.pman .man-t tr{break-inside:avoid}body.pman .man-company,body.pman #man-book{break-before:page}body.pman .man-h{break-after:avoid}
- body.pman .man .card-b{font-size:13pt}body.pman .man-ph,body.pman .man-lane{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:14mm}}
+ body.pman .man-ph,body.pman .man-lane{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:14mm}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 body.gated>*:not(#gate):not(#toast){display:none!important}
 #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
@@ -362,7 +366,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">109</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">110</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -425,7 +429,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='109',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='110',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1903,10 +1907,16 @@ function manBookFlow(){const L=(who,c,items)=>`<div class="man-lane man-${c}"><d
  return `<div class="man-swim">${L('เจ้าหน้าที่','a',['กรอก “วันที่บริษัทได้รับหนังสือ” ในแท็บเรียกลงนามสัญญา (ระบบคำนวณช่วงวันจองให้ และต้องพ้นระยะอุทธรณ์)','พิมพ์หนังสือเรียกลงนามสัญญา — <b>ระบบเปิดรับจองให้อัตโนมัติ</b> QR ในหนังสือใช้ได้ทันที','ส่งหนังสือให้บริษัท (หรือกด “คัดลอกลิงก์” ส่งทางไลน์/อีเมล)'])}
   <div class="man-ar side">→</div>${L('บริษัท (ผู้ชนะ)','d',['สแกน QR / เปิดลิงก์','เลือกวันและเวลาลงนาม','กรอกผู้ติดต่อ (อีเมลรับแจ้งผล) และผู้ลงนามในสัญญา','เลือกรูปแบบหลักประกันสัญญา แนบเอกสาร แล้วส่งจอง (กลับมาแนบเอกสารเพิ่มภายหลังด้วยลิงก์เดิมได้)'])}
   <div class="man-ar side">→</div>${L('เจ้าหน้าที่','a',['กด “ดึงข้อมูลการจอง” ตรวจเอกสารที่แนบ','ยืนยันนัด (ใส่เลขที่สัญญาได้) — ระบบส่งอีเมลแจ้งบริษัท','ลงนามสัญญาตามวันนัด · ถ้าต้องเลื่อน กด “ยกเลิก” ให้บริษัทจองใหม่ด้วยลิงก์เดิม'])}</div>`}
+/* กันคำไทยถูกตัดกลางคำ (เบราว์เซอร์ไม่รู้จักคำทับศัพท์/คำประสม) */
+const MAN_NB=['แขวงทางหลวงกระบี่','หัวหน้าเจ้าหน้าที่','หลักประกันการเสนอราคา','หลักประกันสัญญา','ทุนจดทะเบียน','ใบแจ้งปริมาณงานและราคา','เอกสารประกวดราคา','รายละเอียด','แดชบอร์ด','ดรอปลิสต์','หลักประกัน','ตอบกลับ','ผู้ควบคุมงาน','ราคากลาง','ขั้นเตรียมการ','คณะกรรมการ','ผู้เสนอราคา','อัตโนมัติ','เจ้าหน้าที่','ระบบกลาง','อากรแสตมป์','ลงนามสัญญา','ดาวน์โหลด','ข้อมูลและผลงาน','ทุกเครื่อง','ระยะเวลา','หมดอายุ','รีเฟรช','เวอร์ชัน','พิจารณาผล','ต่อรองราคา','ปรับลด','วงเงิน','เลขที่สัญญา','ล่างสุด','ประมาณ','อุทธรณ์','โทรศัพท์','คอมพิวเตอร์','ผู้รับจ้าง','ผู้ยื่นข้อเสนอ','ค่าธรรมเนียม','การไฟฟ้า','รับรองผลงาน','ส่งมอบ','ผู้ดูแล','รหัสผ่าน','ชื่อผู้ใช้','ไฟล์ Excel','ร่าง TOR','ปฏิทิน','คำค้นหา','คำค้น','ซิงก์','ชีตเดิม','แท็บ','ลิงก์','คัดลอก','ยืนยันนัด','ผู้ลงนาม','ตรายาง','บริษัท','ครุภัณฑ์','ค่าใช้จ่ายพิเศษ','สถานะ','ผู้บริหาร','ปัญหา','วิธีแก้'].sort((a,b)=>b.length-a.length);
+const MAN_NB_RE=new RegExp('('+MAN_NB.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g');
+function manNoBreak(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&!n.parentElement.closest('.nw,script,style,button')&&MAN_NB_RE.test(n.nodeValue)?(MAN_NB_RE.lastIndex=0,NodeFilter.FILTER_ACCEPT):(MAN_NB_RE.lastIndex=0,NodeFilter.FILTER_REJECT)});
+  const L=[];while(w.nextNode())L.push(w.currentNode);
+  L.forEach(n=>{const f=document.createDocumentFragment();String(n.nodeValue).split(MAN_NB_RE).forEach((t,i)=>{if(!t)return;if(i%2){const s=document.createElement('span');s.className='nw';s.textContent=t;f.appendChild(s)}else f.appendChild(document.createTextNode(t))});n.replaceWith(f)})}
 function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" class="man-h">${t}</h2>`;
  el.innerHTML=`<div class="row no-print" style="margin-bottom:14px"><div class="sp"><div class="muted" style="font-size:13px">คู่มือการใช้งาน</div><b style="font-size:18px">${esc('ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่')}</b></div><button class="btn blue" id="manPrint" type="button">${ICON.print} พิมพ์คู่มือ</button></div>
  <div class="card man"><div class="card-b">
- <div class="man-title"><b>คู่มือการใช้งานระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</b><i style="display:block;font-size:14px;color:var(--muted)">User Manual — Construction Contract Tracking &amp; Documentation System · Krabi Highway District</i><span>${esc(S.settings.office||'แขวงทางหลวงกระบี่')} · ${esc(S.settings.unit||'งานพัสดุและสัญญา')} · ฉบับระบบเวอร์ชัน ${APP_VER} (${APP_DATE})</span></div>
+ <div class="man-title"><b>คู่มือการใช้งาน</b><b class="man-sys">ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง <span class="nw">แขวงทางหลวงกระบี่</span></b><i style="display:block;font-size:14px;color:var(--muted)">User Manual — Construction Contract Tracking &amp; Documentation System · Krabi Highway District</i><span>${esc(S.settings.office||'แขวงทางหลวงกระบี่')} · ${esc(S.settings.unit||'งานพัสดุและสัญญา')} · ฉบับระบบเวอร์ชัน ${APP_VER} (${APP_DATE})</span></div>
  <ol class="man-toc no-print">${[['flow','ผังการทำงานภาพรวม'],['start','เริ่มต้นใช้งาน'],['steps','ขั้นตอนทีละแท็บ'],['book','ระบบจองวันลงนามสัญญาออนไลน์'],['company','คู่มือฝั่งบริษัท (แนบไปกับหนังสือได้)'],['lock','การบันทึกและล็อกขั้นตอน'],['faq','ปัญหาที่พบบ่อย']].map(([a,t])=>`<li><a href="#man-${a}" data-manjump="${a}">${t}</a></li>`).join('')}</ol>
 
  ${H('flow','1. ผังการทำงานภาพรวม')}
@@ -1923,7 +1933,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
  </ol>
 
  ${H('steps','3. ขั้นตอนทีละแท็บ')}
- <table class="man-t"><thead><tr><th style="width:20%">แท็บ</th><th>ทำอะไร</th><th style="width:28%">เอกสารที่ได้</th></tr></thead><tbody>
+ <table class="man-t"><thead><tr><th style="width:17%">แท็บ</th><th>ทำอะไร</th><th style="width:31%">เอกสารที่ได้</th></tr></thead><tbody>
   <tr><td>ขั้นเตรียมการ</td><td>① แนบหนังสือเห็นชอบ เล่มแผน แบบ · ② กด “แนบไฟล์ Excel และดึงข้อมูล” ระบบอ่านแผ่น SUMMARY (รายการ BOQ ราคากลาง กรรมการราคากลาง) และแผ่น “ข้อมูลและผลงาน” (ระยะเวลา กม. แผนงาน เหตุผลความจำเป็น หมายเหตุ MILLING) พร้อมตรวจรายการสองแผ่นให้ตรงกัน · ③ ตั้งค่า TOR (สาขางาน Plant ค่า K ค่าปรับ รับประกัน) · ④ เลือกหมายเหตุเอกสารแนบ (งานทาง/งานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า MILLING)</td><td>ร่าง TOR · ร่างประกาศ · ร่างเอกสารประกวดราคา · รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (พิมพ์/Excel)</td></tr>
   <tr><td>ขออนุมัติซื้อ/จ้าง</td><td>เลือกอำนาจ: <b>แขวง</b> → เรียน ผอ.ขท.กระบี่ ผ่านหัวหน้าเจ้าหน้าที่ · <b>เขต</b> (เกิน 10 ล้าน) → เรียน ผส.ทล.17 ผ่านหัวหน้าเจ้าหน้าที่ · กรอกเหตุผล ระยะเวลา และรายการที่ต้องการ</td><td>บันทึกรายงานขอซื้อขอจ้าง</td></tr>
   <tr><td>คำสั่งแต่งตั้ง</td><td>เลือกรายชื่อกรรมการจากดรอปลิสต์ แก้ข้อความในคำสั่งได้ · กรรมการพิจารณาผลแก้ที่นี่แล้วลิงก์ไปการ์ดพิจารณาผล · กรรมการตรวจรับ/ผู้ควบคุมงานดึงจากตาราง ป/ก/ค/ผช ในชีตเดิม</td><td>คำสั่ง TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน · บันทึกมอบหมาย</td></tr>
@@ -1975,6 +1985,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
   <tr><td>กลัวข้อมูลหาย</td><td>ตั้งค่า → สำรองข้อมูลเป็นไฟล์เป็นระยะ</td></tr>
  </tbody></table>
  </div></div>`;
+ manNoBreak(el);
  $('#manPrint',el).onclick=()=>{document.body.classList.add('pman');try{window.print()}finally{setTimeout(()=>document.body.classList.remove('pman'),500)}};
  $$('[data-manjump]',el).forEach(a=>a.onclick=e=>{e.preventDefault();const t=$('#man-'+a.dataset.manjump);if(t)t.scrollIntoView({behavior:'smooth'})})}
 
