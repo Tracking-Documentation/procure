@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">98</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">99</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='98',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='99',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -601,7 +601,7 @@ const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิ�
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p)});({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
+function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -698,6 +698,7 @@ function rEdit(){
   // bind fields
   $$('[data-f]',el).forEach(inp=>{
     inp.addEventListener('input',()=>{const k=inp.dataset.f;p[k]=inp.hasAttribute('data-money')?num(inp.value):inp.value;touch(p);sideSum()});
+    if(inp.dataset.f==='km'){inp.dataset.old=p.km||'';inp.addEventListener('change',()=>{if(kmChanged(p,inp.dataset.old??''))(q=>{if(q){q.value=p.name;touch(p)}})($('#f_name',el));inp.dataset.old=p.km})}
     if(inp.hasAttribute('data-money'))inp.addEventListener('blur',()=>{inp.value=num(inp.value)?fmt(num(inp.value)):''});
   });
   $('#btnSave').onclick=()=>{touch(p);try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}toast('บันทึกแล้ว')};
@@ -860,7 +861,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan
     if(q('#smCm')&&q('#smCm').checked)O.price.members=pc.map((x,i)=>({name:x.name,position:x.position,role:/ประธาน/.test(x.role)||i===0?'ประธานกรรมการ':'กรรมการ'}));
     if(!p.name&&d.title)p.name=d.title;
     if(plan){if(q('#smDays')&&q('#smDays').checked)p.workDays=String(plan.days);if(q('#smPlan')&&q('#smPlan').checked)T.planLine=plan.planLine;
-      if(q('#smWhy')&&q('#smWhy').checked){const bg=plan.reason;if(!T.background)T.background=bg;if(!R0.reason)R0.reason=bg}if(q('#smKm')&&q('#smKm').checked)p.km=plan.km}
+      if(q('#smWhy')&&q('#smWhy').checked){const bg=plan.reason;if(!T.background)T.background=bg;if(!R0.reason)R0.reason=bg}if(q('#smKm')&&q('#smKm').checked){p.km=plan.km;fixNameKm(p)}}
     if(file&&q('#smUp')&&q('#smUp').checked)prepUpload(p,'xlsFiles',[file]);
     touch(p);m.close();render();const t=totals(p);toast(`นำเข้า ${nw.length} รายการ · ราคากลางรวม ${fmt(t.sumM/100)} บาท`)}}
 
@@ -2845,6 +2846,16 @@ const stepUnl=new Set();
 function stepHasData(p,t){const has=o=>!!o&&Object.values(o).some(v=>v!==''&&v!=null&&!(Array.isArray(v)&&!v.length)&&!(typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length));
   switch(t){case 'prep':return has(p.prep)||!!(p.midApproveDate||p.torStart||p.torEnd);case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
     case 'nego':case 'result':return !!(p.rounds||[]).length;case 'sign':return has(p.sign);case 'cert':return has(p.cert);}return false}
+/* ชื่อโครงการ + "ระหว่าง กม. …" (แทรกหลังชื่อตอน ก่อน จ./จังหวัด) */
+function kmText(km){const t=String(km||'').replace(/กม\.?/g,' ');const re=/(\d+\+\d+)\s*(?:-|–|ถึง)\s*(\d+\+\d+)|(\d+\+\d+)/g;const L=[];let m;
+  while((m=re.exec(t)))L.push(m[1]?[m[1],m[2]]:[m[3]]);
+  if(L.length===2&&L.every(x=>x.length===1)&&!/,|และ/.test(t))return 'ระหว่าง กม. '+L[0][0]+' - '+L[1][0];
+  if(!L.length)return '';if(L.every(x=>x.length===1)&&L.length===1)return 'ที่ กม. '+L[0][0];
+  return 'ระหว่าง '+L.map(x=>'กม. '+x.join(' - ')).join(' และ ')}
+function nameKm(name,km){name=String(name||'');const seg=kmText(km);if(!seg||!name.trim()||/กม\.?\s*\d/.test(name))return name;
+  const m=name.match(/\s*(?:จ\.|จังหวัด)\s*[^\s]+\s*$/);return m?name.slice(0,m.index).replace(/\s+$/,'')+' '+seg+' '+name.slice(m.index).trim():name.replace(/\s+$/,'')+' '+seg}
+function fixNameKm(p){if(!p||!p.km)return false;const n=nameKm(p.name,p.km);if(n===p.name)return false;p._kmSeg=kmText(p.km);p.name=n;return true}
+function kmChanged(p,oldKm){const o=kmText(oldKm),n=kmText(p.km);if(o&&p._kmSeg===o&&String(p.name||'').includes(o)){p.name=n?p.name.replace(o,n):p.name.replace(' '+o,'').replace(o,'');p._kmSeg=n;return true}return fixNameKm(p)}
 function ensureSaved(p){if(p&&p.saved===undefined){p.saved={};for(const t in STEPS)if(stepHasData(p,t))p.saved[t]=true}}
 function stepLocked(t){const p=P();return !!(p&&STEPS[t]&&canEdit()&&p.saved&&p.saved[t]&&!stepUnl.has(p.id+':'+t))}
 function stepBar(){$$('.view').forEach(v=>v.classList.remove('step-locked'));const p=P();if(!p||!STEPS[tab]||!canEdit())return;const el=$('#v-'+tab);if(!el)return;
@@ -3025,7 +3036,7 @@ function applyLegacy(d,mode){let a=0,u=0,ch=0;const emp=v=>v===''||v==null||v===
       if(mode==='sync'&&key in sn){if(sn[key]!==sv){if(!(emp(v)&&!sn[key]))o[k]=structuredClone(v)}else if(emp(o[k])&&!emp(v))o[k]=structuredClone(v)}else if(!emp(v)&&emp(o[k]))o[k]=structuredClone(v);
       if(mode==='sync')sn[key]=sv};
     if(lp.legacyId){set(p,'legacyId',lp.legacyId,'id');if(p.legacy)p.legacy.id=p.legacyId}else if(!p.legacyKey)p.legacyKey=lgNk(lp);
-    set(p,'name',lp.name,'name');set(p,'division',lp.division,'division');set(p,'km',lp.km,'km');set(p,'workDays',lp.workDays,'workDays');set(p,'budget',lp.budget,'budget');set(p,'projectNo',lp.egp,'egp');
+    set(p,'name',nameKm(lp.name,lp.km),'name');set(p,'division',lp.division,'division');set(p,'km',lp.km,'km');set(p,'workDays',lp.workDays,'workDays');set(p,'budget',lp.budget,'budget');set(p,'projectNo',lp.egp,'egp');
     set(p,'contractor',lp.contractor,'contractor');set(p,'inviteDate',lp.inviteDate,'inviteDate');set(p,'midApproveDate',lp.midApproveDate,'midApproveDate');set(p,'torStart',lp.torStart,'torStart');
     const R=prepOf(p);set(R,'approveDate',lp.approveDate,'approveDate');set(R,'authority',lp.authority,'authority');if(lp.plan)R.plan=true;if(lp.draft)R.draft=true;
     R.links=(R.links||[]);lp.links.forEach(l=>{if(!R.links.some(x=>x.url===l.url))R.links.push(l)});
