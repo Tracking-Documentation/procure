@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">91</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">92</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='91',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='92',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -817,7 +817,7 @@ function pasteDialog(){const p=P();
    AD-AH แถว 2-5 = คณะกรรมการกำหนดราคากลาง/ผู้อนุมัติ */
 function summaryPick(){const f=document.createElement('input');f.type='file';f.accept='.xlsm,.xlsx,.xls';f.onchange=async()=>{const file=f.files[0];if(!file)return;toast('กำลังอ่านไฟล์…');
   try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});let plan=null;try{plan=parsePlanSheet(X,wb)}catch(e){}summaryDialog(parseSummary(X,wb),file.name,plan,file)}catch(e){alert(e.message)}};f.click()}
-function parseSummary(X,wb){const sn=wb.SheetNames.find(n=>n.trim().toUpperCase()==='SUMMARY');if(!sn)throw new Error('ไม่พบชีต SUMMARY ในไฟล์นี้');
+function parseSummary(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'').toUpperCase()==='SUMMARY');if(!sn)throw new Error('ไม่พบชีต SUMMARY ในไฟล์นี้');
   const R=sheetAOA(X,wb.Sheets[sn]);const s=v=>v==null?'':String(v).trim();const n=v=>typeof v==='number'&&isFinite(v)?v:num(String(v||'').replace(/,/g,''));
   const isN=v=>typeof v==='number'&&isFinite(v);const items=[];let costSum=0,midSum=0,grand=0,adj=0;
   R.forEach(r=>{const lab=s(r[12])+s(r[13]);if(/รวมเป็นเงินทั้งสิ้น/.test(lab)&&isN(r[14]))grand=r[14];else if(/รวมเป็นเงินทั้งสิ้น/.test(s(r[12]))&&isN(r[13]))grand=r[13];
@@ -829,7 +829,7 @@ function parseSummary(X,wb){const sn=wb.SheetNames.find(n=>n.trim().toUpperCase(
   const cm=[1,2,3,4].map(i=>R[i]||[]).filter(r=>s(r[31])).map(r=>({role:s(r[29]),name:s(r[31]),position:s(r[33])}));
   if(!grand)grand=Math.round((midSum+adj)*100)/100;
   return {items,costSum,midSum,grand,adj,title:hd.join(' ').replace(/\s+/g,' '),committee:cm}}
-function summaryDialog(d,fname,plan,file){const p=P();const T=torOf(p);const R0=reqOf(p);if(!d.items.length)return alert('ไม่พบรายการที่เลือกใช้ (คอลัมน์ A = 1) ในชีต SUMMARY');
+function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan);const T=torOf(p);const R0=reqOf(p);if(!d.items.length)return alert('ไม่พบรายการที่เลือกใช้ (คอลัมน์ A = 1) ในชีต SUMMARY');
   const has=p.items.some(i=>i.kind==='item');const fs=[...new Set(d.items.filter(x=>x.factor).map(x=>x.factor))];const O=ordersOf(p);const pc=d.committee.filter(m=>!/อนุมัติ/.test(m.role));
   const m=modal('นำเข้า BOQ จากไฟล์ราคากลาง',`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">${esc(fname)} · ชีต SUMMARY${d.title?' · '+esc(d.title):''}</div>
    <div class="tbl-wrap" style="max-height:260px"><table class="t"><thead><tr><th>ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">ปริมาณ</th><th class="n">ต้นทุนรวม</th><th class="n">Factor</th><th class="n">ราคากลางรวม</th></tr></thead><tbody>${d.items.map(x=>`<tr><td class="n">${x.seq}</td><td>${esc(x.name)}</td><td>${esc(x.unit)}</td><td class="n">${fmt(x.qty)}</td><td class="n">${fmt(x.cost)}</td><td class="n">${x.factor||'-'}</td><td class="n">${fmt(x.mid)}</td></tr>`).join('')}</tbody>
@@ -837,6 +837,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const T=torOf(p);const R0=
    ${has?'<label class="switch"><input type="checkbox" id="smRep" checked> แทนที่รายการ BOQ เดิมทั้งหมด (ไม่ติ๊ก = ต่อท้าย)</label>':''}
    <label class="switch"><input type="checkbox" id="smMid" ${!num(p.midDeclared)||num(p.midDeclared)===d.grand?'checked':''}> ตั้ง “ราคากลางตาม ปร.5/ปร.6” = ${fmt(d.grand||d.midSum)} บาท${num(p.midDeclared)?` (ตอนนี้ ${fmt(p.midDeclared)})`:''}</label>
    ${pc.length?`<label class="switch"><input type="checkbox" id="smCm" ${O.price.members.some(x=>x.name)?'':'checked'}> ใส่คณะกรรมการกำหนดราคากลางจากไฟล์ (${esc(pc.map(x=>x.name).join(', '))})</label>`:''}
+   ${(c=>c?`<div class="note ${c.ok?'ok':'bad'}" style="margin:0"><b>ตรวจรายการ ข้อมูลและผลงาน กับ SUMMARY:</b> ${c.ok?`ตรงกันทั้ง ${c.n} รายการ (ชื่อ ปริมาณ หน่วย ราคากลาง)`:`<b>ไม่ตรงกัน ${c.W.length} จุด</b> — ตรวจไฟล์ Excel ก่อนนำเข้า<br>${c.W.map(esc).join('<br>')}`}</div>`:'')(chk)}
    ${plan?`<div class="note" style="margin:0"><b>แผ่น “ข้อมูลและผลงาน”</b>${plan.days?`<label class="switch"><input type="checkbox" id="smDays" ${!num(p.workDays)?'checked':''}> ระยะเวลาดำเนินการ = ${plan.days} วัน${num(p.workDays)?` (ตอนนี้ ${esc(p.workDays)})`:''}</label>`:''}${plan.planLine?`<label class="switch"><input type="checkbox" id="smPlan" ${!T.planLine?'checked':''}> แผนงาน/รหัสงาน (TOR): ${esc(plan.planLine)}</label>`:''}${plan.reason?`<label class="switch"><input type="checkbox" id="smWhy" ${!T.background&&!R0.reason?'checked':''}> เหตุผลและความจำเป็น → ข้อ ๑ ความเป็นมา (TOR) และเหตุที่ขออนุมัติ (4033)<br><span class="muted" style="font-size:12.5px">${esc(plan.reason.slice(0,160))}${plan.reason.length>160?'…':''}</span></label>`:''}${plan.km&&!p.km?`<label class="switch"><input type="checkbox" id="smKm" checked> กม.ดำเนินการ: ${esc(plan.km)}</label>`:''}</div>`:''}
    ${file&&central()?`<label class="switch"><input type="checkbox" id="smUp" checked> เก็บไฟล์ Excel นี้ไว้ในโครงการ (ขั้นเตรียมการ)</label>`:''}
    ${fs.length>1?`<div class="note" style="margin:0">ไฟล์นี้มี Factor ${fs.length} ค่า (${fs.join(', ')}) · ระบบแยกเป็นหมวดตาม Factor ให้</div>`:''}
@@ -844,6 +845,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const T=torOf(p);const R0=
    `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">นำเข้า ${d.items.length} รายการ</button>`);
   m.root.querySelector('[data-mc]').onclick=m.close;
   m.root.querySelector('[data-mo]').onclick=()=>{const q=x=>m.root.querySelector(x);
+    if(chk&&!chk.ok&&!confirm(`รายการในแผ่น “ข้อมูลและผลงาน” กับ “SUMMARY” ไม่ตรงกัน ${chk.W.length} จุด\n\nนำเข้าตาม SUMMARY ต่อหรือไม่?`))return;
     const cons=p.categories.filter(c=>c.kind==='construction');const catFor=new Map();let ci=0;
     fs.forEach(k=>{let c=cons.find(c=>Math.abs(num(c.factor)-k)<1e-9&&!catFor.has(k)&&![...catFor.values()].includes(c));if(!c)c=cons[ci]&&![...catFor.values()].includes(cons[ci])?cons[ci]:null;
       if(!c){c={id:uid(),name:'งานก่อสร้าง (Factor '+k+')',kind:'construction',factor:k};p.categories.push(c)}c.factor=k;catFor.set(k,c);ci++});
@@ -2736,15 +2738,33 @@ function bindAnx(el,p){const A=anxOf(p);
 /* ---------- อ่านแผ่น “ข้อมูลและผลงาน” ของไฟล์ราคากลาง ---------- */
 /* แปลงชีตเป็นตาราง โดยนับคอลัมน์/แถวจาก A1 เสมอ (ชีตที่ช่วงข้อมูลเริ่มที่ B จะได้ไม่เลื่อน) */
 function sheetAOA(X,ws){const R=X.utils.sheet_to_json(ws,{header:1,raw:true,defval:''});const ref=ws&&ws['!ref'];if(!ref||!X.utils.decode_range)return R;const g=X.utils.decode_range(ref);const pad=Array(g.s.c).fill('');return Array.from({length:g.s.r},()=>[]).concat(R.map(x=>pad.concat(x)))}
-function parsePlanSheet(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'')==='ข้อมูลและผลงาน');if(!sn)return null;
+function parsePlanSheet(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'').replace(/เเ/g,'แ')==='ข้อมูลและผลงาน');if(!sn)return null;
   const R=sheetAOA(X,wb.Sheets[sn]);const s=v=>v==null?'':String(v).replace(/\s+/g,' ').trim();
-  const first=r=>{for(const v of (r||[]).slice(0,12)){const t=s(v);if(t&&!/^#N\/A$/.test(t))return t}return ''};
-  const o={};const ix=lab=>R.findIndex(r=>s(r[1]).replace(/\s/g,'').startsWith(lab));
-  const a=ix('กิจกรรม');if(a>=0)o.planLine=[s(R[a][1]),s((R[a+1]||[])[1])].filter(Boolean).join(' ');
-  const d=ix('ระยะเวลาดำเนินการ');if(d>=0){const v=num(R[d][4]);if(v)o.days=v}
-  const k=ix('ระยะทำงานจริง');if(k>=0)o.km=s(R[k][4]);
-  const w=ix('เหตุผลและความจำเป็น');if(w>=0){const L=[];for(let i=w+1;i<R.length&&i<w+12;i++){const t=first(R[i]);if(!t){if(L.length)break;continue}L.push(t)}o.reason=L.join('')}
+  const first=r=>{for(const v of (r||[]).slice(0,12)){const t=s(v);if(t&&!/^#N\/A$/.test(t)&&!/^\d+(\.\d+)?$/.test(t))return t}return ''};
+  /* หาป้ายกำกับได้ทุกคอลัมน์ (ไม่ยึดว่าต้องอยู่คอลัมน์ A หรือ B) */
+  const o={};const nz=t=>s(t).replace(/\s/g,'').replace(/เเ/g,'แ');
+  const find=lab=>{for(let i=0;i<R.length;i++){const r=R[i]||[];for(let c=0;c<Math.min(r.length,12);c++)if(nz(r[c]).startsWith(lab))return {i,c}}return null};
+  const after=(h,pred)=>{const r=R[h.i]||[];for(let c=h.c+1;c<r.length;c++){const v=r[c];if(v!==''&&v!=null&&pred(v))return v}return ''};
+  const a=find('กิจกรรม');if(a)o.planLine=[s(R[a.i][a.c]),first(R[a.i+1])].filter(Boolean).join(' ');
+  const d=find('ระยะเวลาดำเนินการ');if(d){const v=num(after(d,v=>num(v)>0));if(v)o.days=v}
+  const k=find('ระยะทำงานจริง');if(k)o.km=s(after(k,v=>/กม|\+/.test(String(v))));
+  const w=find('เหตุผลและความจำเป็น');if(w){const L=[];for(let i=w.i+1;i<R.length&&i<w.i+12;i++){const t=first(R[i]);if(!t){if(L.length)break;continue}L.push(t)}o.reason=L.join('')}
+  // รายการงาน (ฝั่งขวาของแผ่น: ลำดับ | งาน | ชื่อรายการ / แถวถัดไป: ปริมาณงาน จำนวน หน่วย ๆ ละ ราคา บาท เป็นเงิน รวม)
+  const it=[];for(let i=0;i<R.length;i++){const r=R[i]||[],n=r[12],nm=s(r[14]);if(!(num(n)>0)||!nm||/^#N\/A$/.test(nm)||s(r[13])!=='งาน')continue;
+    const q=R[i+1]||[];it.push({no:num(n),name:nm,qty:num(q[16]),unit:s(q[17]),u:num(q[19]),total:num(q[21])})}
+  if(it.length)o.items=it;
   return Object.keys(o).length?o:null}
+/* ตรวจรายการระหว่างแผ่น ข้อมูลและผลงาน กับ SUMMARY */
+function planCheck(d,plan){if(!plan||!plan.items)return null;const nz=t=>String(t||'').toUpperCase().replace(/[\s.]+/g,'');const A=plan.items,B=d.items,W=[];
+  if(A.length!==B.length)W.push(`จำนวนรายการไม่เท่ากัน: ข้อมูลและผลงาน ${A.length} รายการ · SUMMARY ${B.length} รายการ`);
+  const n=Math.max(A.length,B.length);for(let i=0;i<n;i++){const a=A[i],b=B[i];const no=i+1;
+    if(!a){W.push(`รายการที่ ${no} “${b.name}” มีใน SUMMARY แต่ไม่มีในข้อมูลและผลงาน`);continue}if(!b){W.push(`รายการที่ ${no} “${a.name}” มีในข้อมูลและผลงาน แต่ไม่มีใน SUMMARY`);continue}
+    const d1=[];if(nz(a.name)!==nz(b.name))d1.push(`ชื่อรายการ (ข้อมูลและผลงาน: “${a.name}” · SUMMARY: “${b.name}”)`);
+    if(Math.abs(a.qty-num(b.qty))>1e-6)d1.push(`ปริมาณ ${fQ(a.qty)} ≠ ${fQ(b.qty)}`);
+    if(nz(a.unit)!==nz(b.unit))d1.push(`หน่วย ${a.unit||'-'} ≠ ${b.unit||'-'}`);
+    if(a.total&&Math.abs(a.total-b.mid)>0.01)d1.push(`ราคากลางรวม ${fmt(a.total)} ≠ ${fmt(b.mid)}`);
+    if(d1.length)W.push(`รายการที่ ${no}: ${d1.join(' · ')}`)}
+  return {ok:!W.length,W,n:A.length}}
 
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
 const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
@@ -2968,7 +2988,7 @@ setInterval(()=>legacySync(false),60000);setTimeout(()=>legacySync(false),4000);
 
 
 /* expose core for testing */
-window.__boq={fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
+window.__boq={parsePlanSheet:(...a)=>parsePlanSheet(...a),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
 try{$('#appVer').textContent=APP_VER;$('#appDate').textContent=APP_DATE}catch(e){}
 load();applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}
