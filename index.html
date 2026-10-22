@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">102</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">103</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='102',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='103',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2801,18 +2801,22 @@ function anxCard(p,kinds,title){const A=anxOf(p);const con=kinds.includes('con')
    <label class="f s4"><span>แบบหมายเหตุ</span><select class="i" data-anx="kind"><option value="" ${!A.kind?'selected':''}>อัตโนมัติ (${light?'งานไฟฟ้า':'งานทาง'})</option><option value="road" ${A.kind==='road'?'selected':''}>งานทาง/ก่อสร้างทั่วไป</option><option value="light" ${A.kind==='light'?'selected':''}>งานไฟฟ้าแสงสว่าง/ไฟสัญญาณ</option></select></label>
    <div class="f s8"><span>&nbsp;</span><div class="row" style="gap:16px;flex-wrap:wrap;margin:0">${[['elec','หมายเหตุค่าธรรมเนียมการไฟฟ้า',anxElec(p)],['mill','หมายเหตุวัสดุงาน MILLING',anxMill(p)],...(light?[['lstd','ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10)',anxLstd(p)]]:[])].map(([k,l,on])=>`<label class="switch"><input type="checkbox" data-anx="${k}" ${on?'checked':''}> ${l} <span class="muted" style="font-size:12px">${A[k]===null||A[k]===undefined?'(ระบบเลือกให้ตาม BOQ)':'(เลือกเอง)'}</span></label>`).join('')}${['elec','mill','lstd'].some(k=>A[k]!==null&&A[k]!==undefined)?'<button class="btn sm" data-anxauto type="button">ให้ระบบเลือกตาม BOQ</button>':''}</div></div>
    ${anxMill(p)?`<label class="f s9"><span>กองเก็บวัสดุ MILLING ณ ${A.millAt?(A.millSrc?'<span class="muted" style="font-size:12px">(จาก Excel แผ่นข้อมูลและผลงาน)</span>':''):'<span class="muted" style="font-size:12px">(ยังไม่กรอก — จะใช้ค่าเริ่มต้นที่แสดงจาง ๆ)</span>'}</span><input class="i" data-anx="millAt" value="${esc(A.millAt||'')}" placeholder="${esc(S.settings.millAt||MILL_AT_DEF)}"></label>
-   <div class="f s3"><span>&nbsp;</span><button class="btn" type="button" id="anxMillXls" ${(prepOf(p).xlsFiles||[]).length?'':'disabled title="ยังไม่ได้แนบไฟล์ Excel ในการ์ดขั้นเตรียมการ"'}>ดึงจาก Excel ที่แนบไว้</button></div>`:''}
+   <div class="f s3"><span>&nbsp;</span><button class="btn" type="button" id="anxMillXls" title="เลือกไฟล์ Excel ราคากลางจากเครื่อง ระบบอ่านบรรทัดหมายเหตุ MILLING ในแผ่นข้อมูลและผลงาน (ไม่อัปโหลด)">ดึงจาก Excel (เลือกไฟล์)</button></div>`:''}
    ${con?`<label class="f s4"><span>ผู้ลงนามฝ่ายผู้รับจ้าง (ว่าง = จากการจองลงนาม)</span><input class="i" data-anx="signer" value="${esc(A.signer||'')}" placeholder="${esc(anxSigner(Object.assign({},p,{annex:{}}))||'นาย/นาง/นางสาว ...')}"></label>`:''}
    ${con&&light?`<label class="f s4"><span>พยานคนที่ 1</span><input class="i" data-anx="witness1" value="${esc(A.witness1||'')}" placeholder="${esc(anxWit(Object.assign({},p,{annex:{}}))[0])}"></label><label class="f s4"><span>พยานคนที่ 2</span><input class="i" data-anx="witness2" value="${esc(A.witness2||'')}" placeholder="${esc(anxWit(Object.assign({},p,{annex:{}}))[1])}"></label>`:''}
    <div class="s12 muted" style="font-size:13px">รายการ ปริมาณ และหน่วย มาจาก BOQ ราคากลาง${con?' · ราคาในผนวก 3 = ราคาตามสัญญาหลังปรับลด (ตรงกับแบบแนบท้ายสัญญา)':''}${light?' · งานไฟฟ้ามีช่องหมายเหตุ “'+esc(ANX_REMARK_LIGHT)+'” และข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง':''} · ไฟล์ Excel ใช้ฟอนต์ TH SarabunIT๙ 16 แก้ไขต่อได้</div></div></div>`}
 const millTried=new Set();
+function millPickLocal(p){const f=document.createElement('input');f.type='file';f.accept='.xls,.xlsx,.xlsm';f.onchange=async()=>{const file=f.files[0];if(!file)return;
+  try{toast('กำลังอ่าน '+file.name+'…');const X=await loadXLSX();const pl=parsePlanSheet(X,X.read(await file.arrayBuffer(),{type:'array'}));const pc=S.projects.find(x=>x.id===p.id)||p;
+    if(pl&&pl.millAt){const A=anxOf(pc);A.mill=true;A.millAt=pl.millAt;A.millSrc=1;touch(pc);render();toast('ดึงที่กองเก็บ MILLING แล้ว')}
+    else alert(pl?'ไม่พบบรรทัด “หมายเหตุ … MILLING … ณ …” ในแผ่น “ข้อมูลและผลงาน” ของไฟล์ '+file.name:'ไม่พบแผ่น “ข้อมูลและผลงาน” ในไฟล์ '+file.name)}catch(e){alert(e.message)}};f.click()}
 async function millFromXls(p,quiet){const f=(prepOf(p).xlsFiles||[]).slice(-1)[0];if(!f||!central())return;
   try{if(!quiet)toast('กำลังอ่าน '+f.name+'…');const j=await srvCall({action:'files.get',id:f.id});const bin=atob(j.b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
     const X=await loadXLSX();const pl=parsePlanSheet(X,X.read(u,{type:'array'}));const pc=S.projects.find(x=>x.id===p.id)||p;
     if(pl&&pl.millAt){const A=anxOf(pc);A.mill=true;A.millAt=pl.millAt;A.millSrc=1;touch(pc);render();toast('ดึงที่กองเก็บ MILLING จาก Excel แล้ว')}
     else if(!quiet)alert(pl?'ไม่พบบรรทัด “หมายเหตุ … MILLING … ณ …” ในแผ่น “ข้อมูลและผลงาน” ของไฟล์ '+f.name:'ไม่พบแผ่น “ข้อมูลและผลงาน” ในไฟล์ '+f.name)}
   catch(e){if(!quiet)alert(e.message)}}
-function bindAnx(el,p){const A=anxOf(p);const mx=$('#anxMillXls',el);if(mx){mx.onclick=()=>millFromXls(p,false);if(!A.millAt&&(prepOf(p).xlsFiles||[]).length&&!millTried.has(p.id)){millTried.add(p.id);millFromXls(p,true)}}
+function bindAnx(el,p){const A=anxOf(p);const mx=$('#anxMillXls',el);if(mx){mx.onclick=()=>millPickLocal(p);if(!A.millAt&&(prepOf(p).xlsFiles||[]).length&&!millTried.has(p.id)){millTried.add(p.id);millFromXls(p,true)}}
   $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.anx==='millAt')A.millSrc=0;touch(p);if(['kind','mill','elec','lstd'].includes(i.dataset.anx))render()}));
   $$('[data-anxauto]',el).forEach(b=>b.onclick=()=>{A.elec=null;A.mill=null;A.lstd=null;touch(p);render()});
   $$('[data-axl]',el).forEach(b=>b.onclick=async()=>{b.disabled=true;try{await anxXlsx(p,b.dataset.axl)}catch(e){alert(e.message)}finally{b.disabled=false}});
