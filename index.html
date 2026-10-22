@@ -346,7 +346,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">86</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">87</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -409,7 +409,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='86',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='87',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2588,7 +2588,7 @@ function torWarn(p){const T=torOf(p),w=[];const mb=num(p.budget)/1e6;
 function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p,'tor').filter(m=>m.name);const W=torWarn(p);
   const ck=(k,l,on)=>`<label class="switch"><input type="checkbox" data-tk="${k}" ${on?'checked':''}> ${l}</label>`;
   const tx=(k,l,cls,ph='')=>`<label class="f ${cls}"><span>${l}</span><input class="i" data-tv="${k}" value="${esc(T[k]||'')}" placeholder="${esc(ph)}"></label>`;
-  return `<div class="card" id="torCard"><div class="card-h"><h2><span class="step">5</span>ร่างขอบเขตของงาน (TOR) · ประกาศ · เอกสารประกวดราคา</h2>
+  return `<div class="card" id="torCard"><div class="card-h"><h2><span class="step">1</span>ร่างขอบเขตของงาน (TOR) · ประกาศ · เอกสารประกวดราคา</h2>
     <button class="btn blue sm" data-oprint="tor_scope" type="button">${ICON.print} ร่าง TOR</button><button class="btn sm" data-oprint="tor_ann" type="button">${ICON.print} ร่างประกาศ</button><button class="btn sm" data-oprint="tor_bid" type="button">${ICON.print} ร่างเอกสารประกวดราคา</button></div>
    <div class="card-b grid g12">
     <label class="f s4"><span>สาขางาน / คุณสมบัติผู้ยื่นข้อเสนอ</span><select class="i" data-tv="workType">${[['road','งานก่อสร้างทาง'],['bridge','งานก่อสร้างสะพาน'],['special','งานก่อสร้างทางและสะพานพิเศษ'],['maintain','งานบำรุงทาง (จดทะเบียนกับกรมทางหลวง)']].map(([k,l])=>`<option value="${k}" ${T.workType===k?'selected':''}>${l}</option>`).join('')}</select></label>
@@ -2702,14 +2702,15 @@ function prepCard(p){const R=prepOf(p);const sug=authSuggest(p);const au=R.autho
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="draft" ${R.draft?'checked':''}> <b>3. จัดทำร่างเพื่อขออนุมัติออกประกาศ</b></label></div>
    <div class="s12 row" style="gap:18px;margin:0;padding-left:28px"><label class="switch"><input type="radio" name="pAuth" data-pa="region" ${au==='region'?'checked':''}> อำนาจเขต (สทล.17)</label><label class="switch"><input type="radio" name="pAuth" data-pa="district" ${au==='district'?'checked':''}> อำนาจแขวง</label>
      <span class="muted" style="font-size:13px">ตามวงเงิน ${fmt(p.budget)} บาท แนะนำ <b>${sug==='region'?'อำนาจเขต':'อำนาจแขวง'}</b> (เกิน ${fmt(REGION_LIMIT,0)} บาท = อำนาจเขต)${R.authority&&R.authority!==sug?' · <span style="color:var(--danger)">เลือกต่างจากที่แนะนำ</span>':''}</span></div>
-   <div class="s12 pstep"><b>4. อนุมัติราคากลาง / ร่าง TOR</b></div>
+  </div></div>`}
+function prepDatesCard(p){return `<div class="card"><div class="card-h"><h2><span class="step">2</span>อนุมัติราคากลาง / ร่าง TOR</h2></div><div class="card-b grid g12">
    ${F('midApproveDate','อนุมัติราคากลางวันที่',{cls:'s4',type:'date'})}${F('torStart','ระยะเวลาร่าง TOR ตั้งแต่วันที่',{cls:'s4',type:'date'})}${F('torEnd','ถึงวันที่',{cls:'s4',type:'date'})}
   </div></div>`}
 function prepMini(p){const R=prepOf(p);const d=x=>x?thDate(x):'-';
   const ok=[!!(R.approveNo||R.approveDate),!!R.plan,!!R.draft,!!p.midApproveDate].filter(Boolean).length;
   return `<div class="note" style="margin:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span><b>ขั้นเตรียมการ</b> ${ok}/4 · เห็นชอบ ${esc(R.approveNo||'-')} ${R.approveDate?'ลว. '+esc(d(R.approveDate)):''} · แบบ ${R.plan?'✓':'—'} · ร่างขออนุมัติประกาศ ${R.draft?'✓':'—'} (${(R.authority||authSuggest(p))==='region'?'อำนาจเขต':'อำนาจแขวง'}) · อนุมัติราคากลาง ${esc(d(p.midApproveDate))}</span><button class="btn sm" data-goto="prep" type="button" style="margin-left:auto">แก้ที่แท็บขั้นเตรียมการ →</button></div>`}
 function rPrep(){const el=$('#v-prep');if(needProject(el))return;const p=P();
-  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}</div>`;
+  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${prepDatesCard(p)}</div>`;
   bindPrep(el,p);bindTor(el,p);
   $$('[data-f]',el).forEach(inp=>inp.addEventListener(inp.type==='date'?'change':'input',()=>{p[inp.dataset.f]=inp.value;touch(p)}))}
 function bindPrep(el,p){const R=prepOf(p);
