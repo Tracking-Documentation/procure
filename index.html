@@ -217,7 +217,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper thead{display:table-header-group}
 @page{size:A4;margin:0}
 @page land{size:A4 landscape;margin:0}
-.paper.tor{padding:15mm 20mm 15mm 30mm}.paper.tor .tp{margin:0;text-align:justify;white-space:pre-wrap}.paper.tor .tp.c{text-align:center}.paper.tor .tp.r{text-align:right}.paper.tor .tp.tsg{text-align:center;margin-left:45mm;white-space:pre-line}.paper.tor .tp.e{line-height:1}.paper.anx{padding:15mm 15mm 15mm 22mm}.paper.anx .b{font-weight:700}.paper.anx .c{text-align:center}.anx-t{width:100%;border-collapse:collapse;margin:3mm 0}.anx-t th,.anx-t td{border:1px solid #000;padding:1px 5px;vertical-align:top;font-size:inherit}.anx-t th{text-align:center;font-weight:700}.anx-t .c{text-align:center}.anx-t .r{text-align:right;white-space:nowrap}.anx-t .tot td{font-weight:700}.anx-n{margin-top:3mm}.anx-ni{display:grid;grid-template-columns:9mm 1fr;text-align:justify}.anx-s{display:grid;grid-template-columns:1fr 1fr;gap:6mm;text-align:center;white-space:nowrap;margin-top:14mm;break-inside:avoid}.anx-s1{text-align:center;margin:14mm 0 0 50%;break-inside:avoid}
+.paper.tor{padding:15mm 20mm 15mm 30mm}.paper.tor .tp{margin:0;text-align:justify;white-space:pre-wrap}.paper.tor .tp.c{text-align:center}.paper.tor .tp.r{text-align:right}.paper.tor .tp.tsg{text-align:center;margin-left:45mm;white-space:pre-line}.paper.tor .tp.e{line-height:1}.paper.anx{padding:15mm 15mm 15mm 22mm}.paper.anx .b{font-weight:700}.paper.anx .c{text-align:center}.anx-t{width:100%;border-collapse:collapse;margin:3mm 0}.anx-t th,.anx-t td{border:1px solid #000;padding:1px 5px;vertical-align:top;font-size:inherit}.anx-t th{text-align:center;font-weight:700}.anx-t .c{text-align:center}.anx-t .r{text-align:right;white-space:nowrap}.anx-t .tot td{font-weight:700}.anx-n{margin-top:3mm}.anx-ni{display:grid;grid-template-columns:9mm 1fr;text-align:justify}.anx-ni .anx-ni{grid-template-columns:14mm 1fr}.anx-s{display:grid;grid-template-columns:1fr 1fr;gap:6mm;text-align:center;white-space:nowrap;margin-top:14mm;break-inside:avoid}.anx-s1{text-align:center;margin:14mm 0 0 50%;break-inside:avoid}
 .mtbox{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:4px;background:var(--soft)}.mtbox .mt{display:flex;align-items:flex-start;gap:8px;font-size:14px}.mtbox .mt.sub{padding-left:26px}.mtbox .mth{font-size:14px;margin-top:2px}.mtc{display:inline-block;min-width:32px;color:var(--muted);font-weight:600}
 .paper.tor .tlb{display:inline-block;min-width:8.3mm;padding-right:2mm;text-indent:0}
 .tor-g{text-align:center;margin-bottom:2mm}.tor-g img{width:3cm;height:auto}.tor-t{width:100%;border-collapse:collapse;margin:2mm 0 3mm}.tor-t th,.tor-t td{border:1px solid #000;padding:1px 6px;vertical-align:top;font-size:inherit}.tor-t th{text-align:center;font-weight:700}.tor-t .c{text-align:center}.tor-t .r{text-align:right;white-space:nowrap}
@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">92</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">93</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='92',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='93',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1744,7 +1744,7 @@ function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div cla
   $('#ciReset').onclick=()=>confirmBox('คืนค่าปริมาณและจำนวนเงินทุกรายการตามแบบแนบท้ายสัญญา?','คืนค่า',()=>{c.items={};re()});
   $('#certPrint').onclick=()=>{reportSel='cert';go('report')}}
 function rSignTab(){const el=$('#v-sign');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
-  el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}<div style="margin-top:14px">${anxCard(p,['con'],'ผนวก 3 บัญชีรายการก่อสร้าง (แนบสัญญา)')}</div>`;bindAnx(el,p);
+  el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}<div style="margin-top:14px">${anxCard(p,['con','condetail'],'เอกสารแนบสัญญา: ผนวก 3 บัญชีรายการก่อสร้าง · รายละเอียดแนบท้ายสัญญา')}</div>`;bindAnx(el,p);
   {const sg=p.sign||{},ap=p.announceDate?addWorkdays(p.announceDate,7):'';const di=el.querySelector('[data-sg="date"]');
    if(di&&ap&&sg.date&&sg.date<=ap)di.closest('.card-b')?.insertAdjacentHTML('afterbegin',`<div class="s12 note warn" style="margin:0 0 6px">หนังสือเรียกลงนามลงวันที่ ${thDate(sg.date)} ยังอยู่ในระยะอุทธรณ์ (ครบ ${thDate(ap)}) · เรียกลงนามได้ตั้งแต่ ${thDate(addWorkdays(p.announceDate,8))} · การ์ดสรุปภาพรวมจะยังนับโครงการนี้เป็น “ประกาศผู้ชนะแล้ว”</div>`)}
   $$('[data-sg]',el).forEach(i=>{i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)};if(['received','date','days','warranty'].includes(i.dataset.sg))i.onchange=()=>{bookAutoPush(p);rSignTab()}});
@@ -2649,90 +2649,147 @@ function bindTor(el,p){const T=torOf(p);
   $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
   loadTorTpl().catch(()=>{})}
 
-/* ================= ผนวก 3 บัญชีรายการก่อสร้าง / รายละเอียดแนบท้ายประกาศ =================
-   ตามแม่แบบ TPL_ANNEX3 / TPL_ATTACH ของระบบติดตามเดิม · พิมพ์ได้ และดาวน์โหลดเป็น Excel (.xlsx) */
-const ANX_NOTES=[
- ['ภายในระหว่างกิโลเมตรที่แสดงไว้ในบัญชี ผู้ว่าจ้างมีสิทธิ์ที่จะกำหนดให้ทำการ ในตอนใด กว้างเท่าใด หรือเว้นตอนใด ตามความจำเป็นและเพิ่มตอนต้นหรือตอนปลาย ภายในระยะทางไม่เกินด้านละ  5  กิโลเมตร'],
- ['คู่สัญญาต้องจัดทำแผนการทำงานมาให้ภายใน 15 วัน นับถัดจากวันลงนามในสัญญา เว้นแต่เป็นกรณีการเช่าหรือกรณีสัญญา มีอายุไม่เกิน 90 วันหรือกรณีการซื้อซึ่งสัญญากำหนดส่งงานงวดเดียว หรือกรณีการซื้อ การเช่า การจ้าง และการจ้างก่อสร้างซึ่งสัญญาหรือบันทึกข้อตกลงเป็นหนังสือ  มีวงเงินไม่เกิน  500,000.-บาท โดยจัดทำแผนการทำงานตามสิ่งที่ส่งมาด้วย 2 และสิ่งที่ส่งมาด้วย 3 (ตามหนังสือด่วนที่สุด ที่ กค(กวจ) 0405.2/ว124 ลงวันที่ 1 มีนาคม 2566) ผู้รับจ้างจะต้องเสนอแผนงานให้เป็นที่พอใจแก่ผู้ว่าจ้างโดยแสดงถึงขั้นตอนของการทำงานและกำหนดเวลาที่ต้องใช้ในการทำงานหลักต่างๆ ให้แล้วเสร็จ'],
- ['ให้คู่สัญญาต้องใช้พัสดุประเภทวัสดุหรือครุภัณฑ์ที่จะใช้ในงานก่อสร้างเป็นพัสดุที่ผลิตภายในประเทศ โดยต้องใช้ไม่น้อยกว่า ร้อยละ 60 ของมูลค่าพัสดุที่จะใช้ในงานก่อสร้างทั้งหมดตามสัญญา และคู่สัญญาต้องใช้เหล็กที่ผลิตภายในประเทศไม่น้อยกว่าร้อยละ 90 ของปริมาณเหล็กที่ต้องใช้ทั้งหมดตามสัญญา'],
- ['ในระหว่างดำเนินการก่อสร้างผู้รับจ้างจะต้องจัดเตรียมและติดตั้งป้าย  เครื่องหมาย  และสัญญาณจราจรในพื้นที่ที่มีการก่อสร้าง ตามคู่มือเครื่องหมายควบคุมการจราจรในงานก่อสร้าง งานบูรณะ และงานบำรุงรักษาทางหลวงแผ่นดิน ฉบับมีนาคม  2561 โดยป้ายดังกล่าวต้องมองเห็นได้ชัดเจน ตลอดเวลาทั้งกลางวันและกลางคืน'],
- ['ถ้างานสัญญาดังกล่าว ปรากฏวงเงินค่าธรรมเนียมการไฟฟ้า สำหรับค่าขยายระบบไฟฟ้า ค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด กรมทางหลวงจะจ่ายให้แก่ผู้รับจ้างตามจำนวนที่ต้องจ่ายจริงให้กับการไฟฟ้าฯ แต่ไม่เกิน จำนวนเงินที่กำหนดไว้ในสัญญา หากการไฟฟ้าฯ แจ้งค่าธรรมเนียมไฟฟ้าฯ มาในภายหลังเป็นจำนวนที่สูงกว่าที่ระบุในสัญญา ให้ถือเป็นภาระของผู้รับจ้าง ที่จะต้องออกค่าใช้จ่ายส่วนที่เกินเอง',1],
- ['ถ้างานสัญญาดังกล่าว ปรากฏค่าใช้จ่ายงานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า สำหรับเป็นค่าขยายเขตระบบไฟฟ้า ค่ามิเตอร์และค่าหม้อแปลงพร้อมอุปกรณ์อื่นๆ ครบชุด สามารถถัวจ่ายได้ แต่ไม่นำไปคิดค่า OVERRUN หรือ UNDERRUN',1],
- ['ถ้างานสัญญาดังกล่าว ปรากฏค่าใช้จ่ายไฟฟ้า ค่าธรรมเนียมการไฟฟ้า สำหรับเป็นค่าขยายเขตระบบไฟฟ้า ค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด  เป็นปริมาณโดยประมาณการเท่านั้น ปริมาณงานที่ทำจริงอาจมากหรือน้อยกว่าที่ระบุไว้ในสัญญา',1]];
-const ATT_PRE=['ในการประกวดราคาจ้างครั้งนี้ไม่เป็นการผูกมัดว่ากรมทางหลวงจะต้องจ้างหรือลงนามในสัญญา','หากมีข้อขัดข้องหรือสาเหตุประการใดที่ทำให้กรมทางหลวงไม่อาจจ้างหรือลงนามในสัญญาได้ ผู้เสนอราคาจะไม่เรียกร้องค่าเสียหายใด  ๆ  จากทางราชการ'];
-function anxOf(p){p.annex=Object.assign({elec:null,signer:''},p.annex||{});return p.annex}
-function anxElec(p){const A=anxOf(p);if(A.elec!==null&&A.elec!==undefined)return !!A.elec;return (p.items||[]).some(i=>i.kind==='item'&&/ไฟฟ้า|มิเตอร์|หม้อแปลง/.test(i.name||'')&&/ค่าธรรมเนียม|ขยายเขต|มิเตอร์|หม้อแปลง/.test(i.name||''))}
-function anxNotes(p,pre){const L=(pre?ATT_PRE.map(t=>[t]):[]).concat(ANX_NOTES.filter(n=>!n[1]||anxElec(p)));return L.map(n=>n[0])}
+/* ================= เอกสารแนบประกาศ / แนบสัญญา =================
+   ประกาศ: รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (BOQ)
+   สัญญา: ผนวก 3 บัญชีรายการก่อสร้าง · รายละเอียดแนบท้ายสัญญา (งานไฟฟ้า)
+   ข้อความหมายเหตุแยกตามประเภทงาน (ทาง / ไฟฟ้า) ตามแบบที่แขวงฯ ใช้จริง */
+const N_KM='ภายในระหว่างกิโลเมตรที่แสดงไว้ในบัญชี ผู้ว่าจ้างมีสิทธิ์ที่จะกำหนดให้ทำการ ในตอนใด กว้างเท่าใด หรือเว้นตอนใด ตามความจำเป็นและเพิ่มตอนต้นหรือตอนปลาย ภายในระยะทางไม่เกินด้านละ 5 กิโลเมตร';
+const N_PLAN='คู่สัญญาต้องจัดทำแผนการทำงานมาให้ภายใน 15 วัน นับถัดจากวันลงนามในสัญญา เว้นแต่เป็นกรณีการเช่าหรือกรณีสัญญามีอายุไม่เกิน 90 วัน หรือกรณีการซื้อซึ่งสัญญากำหนดส่งงานงวดเดียว หรือกรณีการซื้อ การเช่า การจ้าง และการจ้างก่อสร้างซึ่งสัญญาหรือบันทึกข้อตกลงเป็นหนังสือ มีวงเงินไม่เกิน 500,000.-บาท โดยจัดทำแผนการทำงานตามสิ่งที่ส่งมาด้วย 2 และสิ่งที่ส่งมาด้วย 3 (ตามหนังสือด่วนที่สุด ที่ กค(กวจ) 0405.2/ว124 ลงวันที่ 1 มีนาคม 2566) ผู้รับจ้างจะต้องเสนอแผนงานให้เป็นที่พอใจแก่ผู้ว่าจ้างโดยแสดงถึงขั้นตอนของการทำงานและกำหนดเวลาที่ต้องใช้ในการทำงานหลักต่าง ๆ ให้แล้วเสร็จ';
+const N_LOCAL='ให้คู่สัญญาต้องใช้พัสดุประเภทวัสดุหรือครุภัณฑ์ที่จะใช้ในงานก่อสร้างเป็นพัสดุที่ผลิตภายในประเทศ โดยต้องใช้ไม่น้อยกว่าร้อยละ 60 ของมูลค่าพัสดุที่จะใช้ในงานก่อสร้างทั้งหมดตามสัญญา และคู่สัญญาต้องใช้เหล็กที่ผลิตภายในประเทศไม่น้อยกว่าร้อยละ 90 ของปริมาณเหล็กที่ต้องใช้ทั้งหมดตามสัญญา';
+const N_SIGN='ในระหว่างดำเนินการก่อสร้างผู้รับจ้างจะต้องจัดเตรียมและติดตั้งป้าย เครื่องหมาย และสัญญาณจราจรในพื้นที่ที่มีการก่อสร้าง ตามคู่มือเครื่องหมายควบคุมการจราจรในงานก่อสร้าง งานบูรณะ และงานบำรุงรักษาทางหลวงแผ่นดิน ฉบับมีนาคม 2561 โดยป้ายดังกล่าวต้องมองเห็นได้ชัดเจน ตลอดเวลาทั้งกลางวันและกลางคืน';
+const N_ELEC1='วงเงินค่าธรรมเนียมการไฟฟ้า สำหรับค่าขยายระบบไฟฟ้า ค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด กรมทางหลวงจะจ่ายให้แก่ผู้รับจ้างตามจำนวนที่ต้องจ่ายจริงให้กับการไฟฟ้าฯ แต่ไม่เกินจำนวนเงินที่กำหนดไว้ในสัญญา หากการไฟฟ้าฯ แจ้งค่าธรรมเนียมไฟฟ้าฯ มาในภายหลังเป็นจำนวนที่สูงกว่าที่ระบุในสัญญา ให้ถือเป็นภาระของผู้รับจ้างที่จะต้องออกค่าใช้จ่ายส่วนที่เกินเอง';
+const N_ELEC2='ถ้างานสัญญาดังกล่าว ปรากฏค่าใช้จ่ายงานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า สำหรับเป็นค่าขยายเขตระบบไฟฟ้า ค่ามิเตอร์และค่าหม้อแปลงพร้อมอุปกรณ์อื่นๆ ครบชุด สามารถถัวจ่ายได้ แต่ไม่นำไปคิดค่า OVERRUN หรือ UNDERRUN';
+const N_ELEC3='ถ้างานสัญญาดังกล่าว ปรากฏค่าใช้จ่ายไฟฟ้า ค่าธรรมเนียมการไฟฟ้า สำหรับเป็นค่าขยายเขตระบบไฟฟ้า ค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด เป็นปริมาณโดยประมาณการเท่านั้น ปริมาณงานที่ทำจริงอาจมากหรือน้อยกว่าที่ระบุไว้ในสัญญา';
+const N_TRAFFIC='ผู้รับจ้างจะต้องทำและติดตั้งป้ายจราจร, เครื่องหมายไม้กั้น และสิ่งประกอบอื่น ๆ ตามแบบของกรมทางหลวง เพื่อความปลอดภัยแก่การจราจร ตั้งแต่เริ่มงานจนกระทั่งงานแล้วเสร็จ';
+const N_INSPECT='การตรวจรับจะใช้วิธีตรวจรับโดยคณะกรรมการตรวจการจ้าง ณ สถานที่ส่งมอบ โดยผู้รับจ้างจะต้องจัดหาเครื่องมือในการวัดค่าความเข้มของแสงมาด้วย';
+const N_PAY='การจ่ายเงินค่างาน จะจ่ายตามความก้าวหน้าของงานหรือผลงานที่ทำได้เมื่อผลการทดสอบคุณภาพ ได้มาตรฐานตามแบบ';
+const N_DAMAGE='ถ้าการทำงานของผู้รับจ้างตามสัญญานี้ เป็นเหตุให้บุคคลภายนอกได้รับความเสียหายด้วยเหตุละเมิดหรือด้วยเหตุใดก็ตาม และกรมทางหลวงต้องเสียเงินค่าสินไหมทดแทน และค่าใช้จ่ายอื่น ๆ เพื่อความรับผิดชอบของผู้รับจ้างดังกล่าวแล้วเป็นจำนวนเท่าใดก็ดี ผู้รับจ้างยินยอมชดใช้แทนกรมทางหลวงทั้งสิ้น';
+const N_LIGHT_STD={t:'การกำหนดแบบมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง เพื่อให้การปฏิบัติมีความชัดเจนและง่ายต่อการดำเนินงานของฝ่ายปฏิบัติงาน ให้ถือปฏิบัติดังนี้.-',sub:[
+ 'หม้อแปลงขนาด 30 KVA. 1 หม้อแปลงให้ใช้สำหรับหลอดไฟขนาด 250 วัตต์ จำนวนประมาณ 60 หลอด',
+ 'ขนาดของสายไฟฟ้าที่เดินให้ใช้ ขนาด 4x10 ตร.มม. สำหรับทางหลวงในเขตการไฟฟ้านครหลวง และขนาด 3x10 ตร.มม. สำหรับทางหลวงในเขตการไฟฟ้าส่วนภูมิภาค',
+ 'เสาไฟฟ้าทุกต้นจะต้องติดตั้ง Ground Rod ให้ใช้แท่งเหล็กอาบสังกะสีหนาไม่น้อยกว่า 85 ไมครอน ขนาดเส้นผ่าศูนย์กลางไม่น้อยกว่า 16 มม. ยาวไม่น้อยกว่า 2.40 ม. และการติดตั้งต้องให้ปลายบนของ Ground Rod อยู่ต่ำจากผิวดินไม่น้อยกว่า 30 ซม. ตัวนำต่อ Ground Rod ให้ใช้แผ่นเหล็กขนาด 50x4.5 มม. (225 ตร.มม.) ชุบสังกะสีต้องไม่น้อยกว่า 85 ไมครอน การเชื่อมตัวนำต่อกับ Ground Rod ใช้วิธี Arc Welding ต้องเชื่อมก่อนอาบสังกะสี จุดต่อเชื่อมต้องอาบสังกะสีหนาไม่น้อยกว่า 85 ไมครอน ด้วยค่าความต้านทานระหว่างหลักดินกับดินต้องไม่เกินกว่า 5 โอห์ม',
+ 'เสาไฟฟ้าที่ติดตั้งบนสะพาน หรือกำแพงคอนกรีตให้ทำการเดินสายดินขนาดไม่น้อยกว่า 16 ตร.มม. ลงมาเชื่อมต่อกับหลักดิน (Ground Rod) อย่างน้อย 2 จุด ค่าความต้านทานระหว่างหลักดินกับดินต้องไม่เกินกว่า 5 โอห์ม หลักดิน ใช้ Copper Or Copper Clad Steel ขนาดเส้นผ่าศูนย์กลาง 16 มม. ยาว 240 ซม. การเชื่อมต่อระหว่างสายดินกับหลักดิน ด้วยวิธี Exothermic Welding',
+ 'ให้ติดแผ่นสะท้อนแสงสีส้ม ขนาด 15x15 ซม. มีค่าสะท้อนแสงไม่ต่ำกว่าระดับ 1 ตามมาตรฐาน มอก.606-2529 ที่โคนเสาไฟฟ้า',
+ 'ประตูปิดเปิดสำหรับช่องที่มีไว้สำหรับบำรุงรักษาให้มีโซ่ร้อยไม่ให้ประตูหลุดหาย พร้อมมีกุญแจสำหรับปิดเปิด',
+ 'การเชื่อมสายบริเวณโคนเสาให้ดำเนินการเชื่อมสายโดยใช้อุปกรณ์ Plug และ Socket',
+ 'การวางสายไฟตามแนวถนนต้องขุดดินลึกไม่ต่ำกว่า 60 ซม. และทำ Warning Concrete Slab ทับอีกชั้นหนึ่งเพื่อป้องกันอันตราย',
+ 'เพื่อป้องกันการขโมยสายไฟฟ้าในช่วงระหว่างเสาไฟฟ้าต่อเสาไฟฟ้าให้เทคอนกรีตหุ้ม 3 จุดที่บริเวณปิดหัวท้ายและตรงกลาง',
+ 'อุปกรณ์ไฟฟ้าทุกชนิดจะต้องใช้ตามมาตรฐานอุตสาหกรรม (มอก.)']};
+const ANX_REMARK_LIGHT='ตามข้อกำหนดมาตรฐานทั่วไปงานติดตั้งไฟฟ้าแสงสว่างบนทางหลวง';
+function anxOf(p){p.annex=Object.assign({kind:'',elec:null,signer:'',witness1:'',witness2:''},p.annex||{});return p.annex}
+function anxKind(p){const A=anxOf(p);if(A.kind)return A.kind;return (p.type==='ไฟฟ้าแสงสว่าง'||/ไฟฟ้าแสงสว่าง|ไฟสัญญาณ/.test(p.name||''))?'light':'road'}
+function anxElec(p){const A=anxOf(p);if(A.elec!==null&&A.elec!==undefined)return !!A.elec;return (p.items||[]).some(i=>i.kind==='item'&&/ค่าธรรมเนียม|ขยายเขต|มิเตอร์|หม้อแปลง/.test(i.name||''))}
+function anxSel(p){return /คัดเลือก/.test((p.req&&(p.req.hireMethod||p.req.buyMethod))||'')?'การจัดจ้างโดยวิธีคัดเลือก':'การประกวดราคาจ้าง'}
+/* หมายเหตุแต่ละเอกสาร: annex = ผนวก 3 · attach = รายละเอียดแนบท้ายประกาศ */
+function anxNotes(p,doc){const light=anxKind(p)==='light',el=anxElec(p);
+  const pre=[`ใน${anxSel(p)}ครั้งนี้ไม่เป็นการผูกมัดว่ากรมทางหลวงจะต้องจ้างหรือลงนามในสัญญา`,'หากมีข้อขัดข้องหรือสาเหตุประการใดที่ทำให้กรมทางหลวงไม่อาจจ้างหรือลงนามในสัญญาได้ ผู้เสนอราคาให้ความยินยอมว่า จะไม่เรียกร้องค่าเสียหายใด ๆ จากทางราชการ'];
+  if(light){if(doc==='annex')return [N_KM,N_TRAFFIC,N_PLAN,N_LOCAL,N_INSPECT,...(el?[N_ELEC1]:[]),N_SIGN];
+    return [...pre,N_KM,N_PLAN,N_LOCAL,N_TRAFFIC,N_INSPECT,N_PAY,N_DAMAGE,...(el?[N_ELEC1]:[]),N_LIGHT_STD]}
+  const base=[N_KM,N_PLAN,N_LOCAL,N_SIGN,...(el?['ถ้างานสัญญาดังกล่าว ปรากฏ'+N_ELEC1.replace(/^วงเงิน/,'วงเงิน'),N_ELEC2,N_ELEC3]:[])];
+  return doc==='attach'?[...pre,...base]:base}
 function anxContract(p){const bk=(p.book&&p.book.booking)||{};return {no:p.contractNo||bk.contractNo||'',date:p.contractDate||bk.date||''}}
 function anxSigner(p){const A=anxOf(p);if(A.signer)return A.signer;const x=(p.book&&p.book.booking)||{};return x.poa!=='มอบอำนาจ'&&x.signerName?`${x.signerName} ${x.signerSurname||''}`.trim():''}
-/* แถวรายการ: mode 'ann' ไม่มีราคา · 'con' ราคาตามสัญญา (หลังปรับลด) */
+function anxWit(p){const A=anxOf(p),st=S.settings;return [A.witness1||st.witness1||'นางวัชดาภรณ์  ด้วงชู',A.witness2||st.witness2||'นางสาวณรมา  วรกลั่น']}
 function anxRows(p,mode){if(mode!=='con')return torItems(p).map((it,i)=>({no:i+1,name:it.name,q:num(it.qty),unit:it.unit||''}));
   const b=basisOf(p);const r=compute(p,b.price);const ok=v=>isFinite(v)&&num(b.price)>0?v:'';return {rows:rowsWithHeads(p,r).filter(x=>!x.head).map(x=>({no:x.no,name:x.it.name,q:x.q,unit:x.it.unit||'',u:ok(x.uDisp),line:ok(x.line/100)})),total:ok(r.total/100),err:!num(b.price)?'ยังไม่มีราคาตามสัญญา (กรอกราคาที่ผู้ชนะเสนอ/ผลการต่อรองก่อน) — ช่องราคาจะว่าง':(r.errors&&r.errors[0])}}
 const anxQ=(q,u)=>`${fQ(q)} ${u||''}`.trim();
-function repAnnex3(p,mode){const F=letterFont();const con=mode==='con';const R=con?anxRows(p,'con'):{rows:anxRows(p,'ann'),total:0};const C=anxContract(p),st=S.settings;const sg=anxSigner(p);
+const anxHead=p=>`${p.name||'-'}  ตามรายละเอียดดังนี้.-`;
+function anxNotesHtml(L){return `<div class="anx-n"><b>หมายเหตุ</b>${L.map((n,i)=>typeof n==='string'?`<div class="anx-ni"><span>${i+1}.</span><span>${esc(n)}</span></div>`:`<div class="anx-ni"><span>${i+1}.</span><span>${esc(n.t)}${n.sub.map((s,j)=>`<div class="anx-ni"><span>${i+1}.${j+1}</span><span>${esc(s)}</span></div>`).join('')}</span></div>`).join('')}</div>`}
+function repAnnex3(p){const F=letterFont();const R=anxRows(p,'con');const C=anxContract(p),st=S.settings;const sg=anxSigner(p);
   const out=`<div class="paper ev anx${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
    <div class="b">(ผนวก 3) บัญชีรายการก่อสร้าง (ซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน, ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)</div>
-   <div style="padding-left:12mm">แนบสัญญาที่  ${esc(con&&C.no?C.no:'กบ…........../'+fyNow())}   ลงวันที่  ${esc(con&&C.date?thDate(C.date):'….......................................')}</div>
+   <div style="padding-left:12mm">แนบสัญญาที่  ${esc(C.no||'..........................')}   ลงวันที่  ${esc(C.date?thDate(C.date):'.....................................')}</div>
    <table class="anx-t"><thead><tr><th style="width:9%">ที่</th><th>รายการ</th><th style="width:17%">ปริมาณงาน</th><th style="width:14%">ราคาหน่วยละ<br>(บาท)</th><th style="width:16%">รวมเป็นเงิน<br>(บาท)</th></tr></thead><tbody>
-    <tr><td></td><td colspan="4">${esc(p.name||'-')}  ดังนี้.-</td></tr>
-    ${R.rows.map(x=>`<tr><td class="c">${x.no}</td><td>${escBr(x.name)}</td><td class="r">${esc(anxQ(x.q,x.unit))}</td><td class="r">${con&&x.u!==''?fmt(x.u):''}</td><td class="r">${con&&x.line!==''?fmt(x.line):''}</td></tr>`).join('')||'<tr><td colspan="5" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}
-    <tr class="tot"><td colspan="4" class="r">รวมเป็นเงิน</td><td class="r">${con&&R.total!==''?fmt(R.total):''}</td></tr></tbody></table>
-   ${con&&R.err?`<div class="note bad no-print">${esc(R.err)}</div>`:''}
-   <div class="anx-n"><b>หมายเหตุ</b>${anxNotes(p).map((t,i)=>`<div class="anx-ni"><span>${i+1}.</span><span>${esc(t)}</span></div>`).join('')}</div>
-   <div class="anx-s"><div>(ลงชื่อ).................................ผู้ว่าจ้าง<br>(${esc(fName(st.director||''))})</div><div>(ลงชื่อ).................................ผู้รับจ้าง<br>(${esc(con&&sg?sg:'.................................')})</div></div></div>`;
+    <tr><td></td><td colspan="4">${esc(anxHead(p))}</td></tr>
+    ${R.rows.map(x=>`<tr><td class="c">${x.no}.</td><td>${escBr(x.name)}</td><td class="r">${esc(anxQ(x.q,x.unit))}</td><td class="r">${x.u!==''?fmt(x.u):''}</td><td class="r">${x.line!==''?fmt(x.line):''}</td></tr>`).join('')||'<tr><td colspan="5" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}
+    <tr class="tot"><td colspan="4" class="r">รวมเป็นเงิน</td><td class="r">${R.total!==''?fmt(R.total):''}</td></tr></tbody></table>
+   ${R.err?`<div class="note bad no-print">${esc(R.err)}</div>`:''}
+   ${anxNotesHtml(anxNotes(p,'annex'))}
+   <div class="anx-s"><div>(ลงชื่อ).................................ผู้ว่าจ้าง<br>(${esc(fName(st.director||''))})</div><div>(ลงชื่อ).................................ผู้รับจ้าง<br>(${esc(sg||'.................................')})</div></div></div>`;
   return thDig(out)}
-function repAttach(p){const F=letterFont();const R=anxRows(p,'ann');const st=S.settings;
+function repAttach(p){const F=letterFont();const R=anxRows(p,'ann');const st=S.settings;const light=anxKind(p)==='light';
   const out=`<div class="paper ev anx${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
-   <div class="c b">รายละเอียดแนบท้ายประกาศประกวดราคาจ้างด้วยวิธีประกวดราคาอิเล็กทรอนิกส์</div><div class="c">${esc(p.name||'-')}</div><div>รายละเอียดดังนี้</div>
-   <table class="anx-t"><thead><tr><th style="width:9%">ที่</th><th>รายการ</th><th style="width:16%">ปริมาณงาน</th><th style="width:14%">หน่วย</th></tr></thead><tbody>
-    ${R.map(x=>`<tr><td class="c">${x.no}</td><td>${escBr(x.name)}</td><td class="r">${fQ(x.q)}</td><td class="c">${esc(x.unit)}</td></tr>`).join('')||'<tr><td colspan="4" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}</tbody></table>
-   <div class="anx-n"><b>หมายเหตุ</b>${anxNotes(p,true).map((t,i)=>`<div class="anx-ni"><span>${i+1}.</span><span>${esc(t)}</span></div>`).join('')}</div>
+   <div class="c b">รายละเอียดแนบท้ายประกาศประกวดราคาจ้างด้วยวิธีประกวดราคาอิเล็กทรอนิกส์</div><div style="text-indent:12mm">${esc(anxHead(p))}</div>
+   <table class="anx-t"><thead><tr><th style="width:8%">ที่</th><th>รายการ</th><th style="width:11%">หน่วย</th><th style="width:12%">ปริมาณงาน</th>${light?'<th style="width:20%">หมายเหตุ</th>':''}</tr></thead><tbody>
+    ${R.map((x,i)=>`<tr><td class="c">${x.no}.</td><td>${escBr(x.name)}</td><td class="c">${esc(x.unit)}</td><td class="r">${fQ(x.q)}</td>${light&&i===0?`<td class="c" rowspan="${R.length}">${esc(ANX_REMARK_LIGHT)}</td>`:''}</tr>`).join('')||'<tr><td colspan="5" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}</tbody></table>
+   ${anxNotesHtml(anxNotes(p,'attach'))}
    <div class="anx-s1">(${esc(fName(st.director||''))})<br>${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div></div>`;
   return thDig(out)}
-ORD_REPORTS.push(['annex3_ann','ผนวก 3 (ร่างประกาศ)',p=>repAnnex3(p,'ann')],['attach','รายละเอียดแนบท้ายประกาศ',p=>repAttach(p)],['annex3_con','ผนวก 3 (แนบสัญญา)',p=>repAnnex3(p,'con')]);
+/* ใบแจ้งปริมาณงานและราคา (BOQ) สำหรับผู้ยื่นข้อเสนอกรอกราคา */
+function repBoqForm(p){const F=letterFont();const R=anxRows(p,'ann');
+  const out=`<div class="paper ev anx${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="c b">ใบแจ้งปริมาณงานและราคา (บัญชีรายการก่อสร้างซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)</div><div>${esc(p.name||'-')}</div>
+   <table class="anx-t"><thead><tr><th rowspan="2" style="width:8%">ลำดับที่</th><th rowspan="2">รายการ</th><th colspan="2">ปริมาณงาน</th><th colspan="2">ราคา (บาท)</th></tr><tr><th style="width:10%">จำนวน</th><th style="width:9%">หน่วย</th><th style="width:13%">ต่อหน่วย</th><th style="width:15%">เป็นเงิน</th></tr></thead><tbody>
+    ${R.map(x=>`<tr><td class="c">${x.no}</td><td>${escBr(x.name)}</td><td class="r">${fQ(x.q)}</td><td class="c">${esc(x.unit)}</td><td></td><td></td></tr>`).join('')||'<tr><td colspan="6" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}
+    <tr class="tot"><td colspan="5" class="r">รวมเป็นเงิน</td><td></td></tr></tbody></table>
+   <div style="margin-top:3mm">จำนวนเงิน (ตัวอักษร)............................................................................................</div>
+   <div class="anx-s1" style="margin-top:12mm">(ลงชื่อ).....................................................<br>(.....................................................)<br>บริษัท/ห้าง.....................................................</div></div>`;
+  return thDig(out)}
+/* รายละเอียดแนบท้ายสัญญา (งานไฟฟ้า) */
+function repConDetail(p){const F=letterFont();const C=anxContract(p),st=S.settings;const sg=anxSigner(p);const W=anxWit(p);const D=C.date?thDate(C.date):'..................';
+  const kindName=String(p.name||'').split(/\s+ทางหลวง|\s+สายทาง/)[0]||'งานจ้าง';
+  const items=[`${p.name||'-'}`,N_DAMAGE,'ผู้รับจ้างจะต้องมีผู้ควบคุมงานอย่างน้อย 1 นาย ทำการควบคุมงานรายนี้ ผู้ควบคุมงานของผู้รับจ้าง จะต้องมีคุณวุฒิเป็นผู้รับอนุญาตเป็นผู้ประกอบวิชาชีพวิศวกรรมควบคุม สาขาวิศวกรรมไฟฟ้า แขนงไฟฟ้ากำลัง',N_LIGHT_STD];
+  const sig=(role,name)=>`<div>(ลงชื่อ)....................................${role}<br>(${esc(name||'....................................')})</div>`;
+  const out=`<div class="paper ev anx${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="c b">รายละเอียดแนบท้ายสัญญาที่ ${esc(C.no||'........................')} ลงวันที่ ${esc(D)}</div><div class="c">${esc(kindName)}</div><div class="c">------------------------------------------------------</div>
+   <p class="pi">รายละเอียดต่อท้ายสัญญาฉบับนี้ ทำขึ้นเมื่อวันที่ ${esc(D)} ระหว่าง ${esc(p.contractor||'.....................................')} ผู้รับจ้างฝ่ายหนึ่ง กับ กรมทางหลวง โดย${esc(fName(st.director||''))} ${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')} ผู้รับมอบอำนาจจาก อธิบดีกรมทางหลวง ผู้ว่าจ้างอีกฝ่ายหนึ่ง</p>
+   <p class="pi">รายละเอียดต่อท้ายสัญญาฉบับนี้ นับเนื่องเป็นอันเดียวกันกับสัญญาที่ ${esc(C.no||'.......................')} ลงวันที่ ${esc(D)} โดยคู่สัญญาทั้งสองฝ่ายได้ตกลงกันดังจะกล่าวต่อไปนี้</p>
+   ${items.map((n,i)=>typeof n==='string'?`<p class="pi">${i+1}. ${esc(n)}</p>`:`<p class="pi">${i+1}. ${esc(n.t)}</p>${n.sub.map((s,j)=>`<p class="pi" style="text-indent:0;padding-left:25mm"><span style="display:inline-block;min-width:12mm">${i+1}.${j+1}</span>${esc(s)}</p>`).join('')}`).join('')}
+   <p class="pi">รายละเอียดต่อท้ายหนังสือสัญญาฉบับนี้ ทั้งสองฝ่ายได้อ่านเข้าใจข้อความตลอดแล้ว เพื่อเป็นหลักฐานจึงได้ลงนามไว้เป็นสำคัญต่อหน้าพยาน</p>
+   <div class="anx-s">${sig('ผู้ว่าจ้าง',fName(st.director||''))}${sig('ผู้รับจ้าง',sg)}${sig('พยาน',fName(W[0]))}${sig('พยาน',fName(W[1]))}</div></div>`;
+  return thDig(out)}
+ORD_REPORTS.push(['attach','รายละเอียดแนบท้ายประกาศ',p=>repAttach(p)],['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',p=>repBoqForm(p)],['annex3_con','ผนวก 3 (แนบสัญญา)',p=>repAnnex3(p)],['condetail','รายละเอียดแนบท้ายสัญญา',p=>repConDetail(p)]);
 /* ---------- Excel (.xlsx) ด้วย ExcelJS ---------- */
 let EXJ_P=null;
 function loadExcelJS(){if(window.ExcelJS)return Promise.resolve(window.ExcelJS);if(EXJ_P)return EXJ_P;
   EXJ_P=new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js';s.onload=()=>ok(window.ExcelJS);s.onerror=()=>{EXJ_P=null;no(new Error('โหลดตัวสร้างไฟล์ Excel ไม่ได้ ต้องต่ออินเทอร์เน็ต'))};document.head.appendChild(s)});return EXJ_P}
-async function anxXlsx(p,kind){const X=await loadExcelJS();const wb=new X.Workbook();const st=S.settings;const th=v=>String(v);/* Excel ใช้เลขอารบิกตามแบบฟอร์มเดิม */
-  const ws=wb.addWorksheet(kind==='attach'?'รายละเอียดแนบท้ายประกาศ':'ผนวก 3',{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:0.6,right:0.4,top:0.6,bottom:0.6,header:0.3,footer:0.3}}});
-  const FONT={name:'TH SarabunIT๙',size:16};const thin={style:'thin'};const box={top:thin,left:thin,bottom:thin,right:thin};
-  const con=kind==='con';const att=kind==='attach';
-  ws.columns=att?[{width:2},{width:7},{width:62},{width:14},{width:12}]:[{width:2},{width:6},{width:52},{width:17},{width:14},{width:17}];
-  const nc=att?5:6;const lastCol=String.fromCharCode(64+nc);
-  const row=(vals,opt={})=>{const r=ws.addRow(vals);r.eachCell({includeEmpty:true},(c,i)=>{c.font=Object.assign({},FONT,opt.bold?{bold:true}:{});c.alignment={vertical:'top',wrapText:true,...(opt.al&&opt.al[i-1]?{horizontal:opt.al[i-1]}:{})};if(opt.box&&i>=2&&i<=nc)c.border=box});if(opt.merge)ws.mergeCells(`${opt.merge}${r.number}:${lastCol}${r.number}`);if(opt.h)r.height=opt.h;return r};
-  const est=(t,w)=>Math.max(1,Math.ceil(String(t||'').length/w));
-  if(att){row(['',th('รายละเอียดแนบท้ายประกาศประกวดราคาจ้างด้วยวิธีประกวดราคาอิเล็กทรอนิกส์')],{bold:true,merge:'B',al:{1:'center'}});
-    row(['',th(p.name||'-')],{merge:'B',al:{1:'center'},h:24*est(p.name,90)});row(['',th('รายละเอียดดังนี้')],{merge:'B'});
-    row(['','ที่','รายการ','ปริมาณงาน','หน่วย'],{bold:true,box:true,al:{1:'center',2:'center',3:'center',4:'center'}});
-    anxRows(p,'ann').forEach(x=>row(['',th(x.no),x.name,th(fQ(x.q)),x.unit],{box:true,al:{1:'center',3:'right',4:'center'},h:22*est(x.name,62)}));
-  }else{const R=con?anxRows(p,'con'):{rows:anxRows(p,'ann'),total:0};const C=anxContract(p);
-    row(['',th('(ผนวก 3) บัญชีรายการก่อสร้าง (ซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน, ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)')],{bold:true,merge:'B'});
-    row(['',th(`       แนบสัญญาที่  ${con&&C.no?C.no:'กบ…........../'+fyNow()}   ลงวันที่  ${con&&C.date?thDate(C.date):'….......................................'}`)],{merge:'B'});
+async function anxXlsx(p,kind){const X=await loadExcelJS();const wb=new X.Workbook();const st=S.settings;
+  const TITLE={attach:'รายละเอียดแนบท้ายประกาศ',boqform:'ใบแจ้งปริมาณงานและราคา',con:'ผนวก 3'};
+  const ws=wb.addWorksheet(TITLE[kind],{pageSetup:{paperSize:9,orientation:'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:0.6,right:0.4,top:0.6,bottom:0.6,header:0.3,footer:0.3}}});
+  const FONT={name:'TH SarabunIT๙',size:16};const thin={style:'thin'};const box={top:thin,left:thin,bottom:thin,right:thin};const light=anxKind(p)==='light';
+  const cols={attach:light?[2,6,50,10,11,22]:[2,7,62,12,14],boqform:[2,7,52,10,9,14,16],con:[2,6,52,17,14,17]}[kind];ws.columns=cols.map(w=>({width:w}));
+  const nc=cols.length,L=String.fromCharCode(64+nc);const est=(t,w)=>Math.max(1,Math.ceil(String(t||'').length/w));
+  const row=(vals,o={})=>{const r=ws.addRow(vals);for(let i=1;i<=nc;i++){const c=r.getCell(i);c.font=Object.assign({},FONT,o.bold?{bold:true}:{});c.alignment={vertical:'top',wrapText:true,...(o.al&&o.al[i-1]?{horizontal:o.al[i-1]}:{})};if(o.box&&i>=2)c.border=box}
+    if(o.merge)ws.mergeCells(`${o.merge}${r.number}:${L}${r.number}`);if(o.h)r.height=o.h;return r};
+  const notes=list=>{row(['','หมายเหตุ'],{bold:true});list.forEach((n,i)=>{const add=(lab,t,ind)=>{const r=ws.addRow(['',lab,t]);r.getCell(2).font=FONT;r.getCell(2).alignment={vertical:'top',horizontal:'right'};const c=r.getCell(3);c.font=FONT;c.alignment={wrapText:true,vertical:'top',indent:ind||0};ws.mergeCells(`C${r.number}:${L}${r.number}`);r.height=22*est(t,90)};
+    if(typeof n==='string')add(`${i+1}.`,n);else{add(`${i+1}.`,n.t);n.sub.forEach((s,j)=>add('',`${i+1}.${j+1}  ${s}`,2))}})};
+  if(kind==='attach'){row(['','รายละเอียดแนบท้ายประกาศประกวดราคาจ้างด้วยวิธีประกวดราคาอิเล็กทรอนิกส์'],{bold:true,merge:'B',al:{1:'center'}});
+    row(['','      '+anxHead(p)],{merge:'B',h:24*est(p.name,85)});
+    row(['','ที่','รายการ','หน่วย','ปริมาณงาน',...(light?['หมายเหตุ']:[])],{bold:true,box:true,al:{1:'center',2:'center',3:'center',4:'center',5:'center'}});
+    const R=anxRows(p,'ann');const r0=ws.rowCount+1;R.forEach(x=>row(['',x.no+'.',x.name,x.unit,x.q,...(light?['']:[])],{box:true,al:{1:'center',3:'center',4:'right',5:'center'},h:22*est(x.name,50)}));
+    if(light&&R.length){ws.mergeCells(`F${r0}:F${r0+R.length-1}`);const c=ws.getCell(`F${r0}`);c.value=ANX_REMARK_LIGHT;c.alignment={wrapText:true,vertical:'top',horizontal:'center'}}
+    row(['']);notes(anxNotes(p,'attach'));row(['']);row(['']);row(['',`(${fName(st.director||'')})`],{merge:'B',al:{1:'center'}});row(['',st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่'],{merge:'B',al:{1:'center'}})}
+  else if(kind==='boqform'){row(['','ใบแจ้งปริมาณงานและราคา (บัญชีรายการก่อสร้างซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)'],{bold:true,merge:'B',al:{1:'center'},h:44});
+    row(['',p.name||'-'],{merge:'B',h:24*est(p.name,85)});
+    const h1=row(['','ลำดับที่','รายการ','ปริมาณงาน','','ราคา (บาท)',''],{bold:true,box:true,al:{1:'center',2:'center',3:'center',5:'center'}});const h2=row(['','','','จำนวน','หน่วย','ต่อหน่วย','เป็นเงิน'],{bold:true,box:true,al:{3:'center',4:'center',5:'center',6:'center'}});
+    ws.mergeCells(`B${h1.number}:B${h2.number}`);ws.mergeCells(`C${h1.number}:C${h2.number}`);ws.mergeCells(`D${h1.number}:E${h1.number}`);ws.mergeCells(`F${h1.number}:G${h1.number}`);
+    anxRows(p,'ann').forEach(x=>row(['',x.no,x.name,x.q,x.unit,'',''],{box:true,al:{1:'center',3:'right',4:'center'},h:22*est(x.name,52)}));
+    row(['','','','','','รวมเป็นเงิน',''],{bold:true,box:true,al:{5:'right'}});row(['']);row(['','','จำนวนเงิน (ตัวอักษร)............................................................']);row(['']);
+    ['(ลงชื่อ).....................................','(.....................................)','บริษัท/ห้าง.....................................'].forEach(t=>{const r=ws.addRow(['','','','',t]);r.getCell(5).font=FONT;ws.mergeCells(`E${r.number}:G${r.number}`);r.getCell(5).alignment={horizontal:'center'}})}
+  else{const R=anxRows(p,'con');const C=anxContract(p);const sg=anxSigner(p);
+    row(['','(ผนวก 3) บัญชีรายการก่อสร้าง (ซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน, ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)'],{bold:true,merge:'B'});
+    row(['',`       แนบสัญญาที่  ${C.no||'..........................'}   ลงวันที่  ${C.date?thDate(C.date):'.....................................'}`],{merge:'B'});
     row(['','ที่','รายการ','ปริมาณงาน','ราคาหน่วยละ\n(บาท)','รวมเป็นเงิน\n(บาท)'],{bold:true,box:true,al:{1:'center',2:'center',3:'center',4:'center',5:'center'},h:44});
-    row(['','',th(`${p.name||'-'}  ดังนี้.-`),'','',''],{box:true,h:22*est(p.name,52)});
-    R.rows.forEach(x=>{const r=row(['',th(x.no),x.name,th(anxQ(x.q,x.unit)),con&&x.u!==''?x.u:'',con&&x.line!==''?x.line:''],{box:true,al:{1:'center',3:'right',4:'right',5:'right'},h:22*est(x.name,52)});if(con){r.getCell(5).numFmt='#,##0.00';r.getCell(6).numFmt='#,##0.00'}});
-    const t=row(['','','','','รวมเป็นเงิน',con&&R.total!==''?R.total:''],{bold:true,box:true,al:{4:'right',5:'right'}});if(con)t.getCell(6).numFmt='#,##0.00'}
-  row(['']);row(['',att?'หมายเหตุ':'   หมายเหตุ'],{bold:true});
-  anxNotes(p,att).forEach((n,i)=>{const r=ws.addRow(['',th(i+1+'.'),th(n)]);r.getCell(2).font=FONT;r.getCell(2).alignment={vertical:'top',horizontal:'center'};const c=r.getCell(3);c.font=FONT;c.alignment={wrapText:true,vertical:'top'};ws.mergeCells(`C${r.number}:${lastCol}${r.number}`);r.height=22*est(n,att?85:95)});
-  row(['']);row(['']);
-  if(att){row(['',`(${fName(st.director||'')})`],{merge:'B',al:{1:'center'}});row(['',st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่'],{merge:'B',al:{1:'center'}})}
-  else{const sg=con?anxSigner(p):'';row(['','(ลงชื่อ)..........................................................ผู้ว่าจ้าง'],{merge:'B',al:{1:'center'}});row(['',`(${fName(st.director||'')})`],{merge:'B',al:{1:'center'}});row(['']);
+    row(['','',anxHead(p),'','',''],{box:true,h:22*est(p.name,52)});
+    R.rows.forEach(x=>{const r=row(['',x.no+'.',x.name,anxQ(x.q,x.unit),x.u,x.line],{box:true,al:{1:'center',3:'right',4:'right',5:'right'},h:22*est(x.name,52)});r.getCell(5).numFmt='#,##0.00';r.getCell(6).numFmt='#,##0.00'});
+    const t=row(['','','','','รวมเป็นเงิน',R.total],{bold:true,box:true,al:{4:'right',5:'right'}});t.getCell(6).numFmt='#,##0.00';
+    row(['']);notes(anxNotes(p,'annex'));row(['']);row(['']);
+    row(['','(ลงชื่อ)..........................................................ผู้ว่าจ้าง'],{merge:'B',al:{1:'center'}});row(['',`(${fName(st.director||'')})`],{merge:'B',al:{1:'center'}});row(['']);
     row(['','(ลงชื่อ)..........................................................ผู้รับจ้าง'],{merge:'B',al:{1:'center'}});row(['',`(${sg||'                                        '})`],{merge:'B',al:{1:'center'}})}
-  // ตัวเลขในเซลล์ข้อความเป็นเลขไทยตามค่าตั้งค่า (ตัวเลขจำนวนเงินคงเป็นตัวเลขเพื่อคำนวณต่อได้)
-  ws.eachRow(r=>r.eachCell(c=>{if(typeof c.value==='string'&&c.col!==3)c.value=th(c.value)}));
-  const buf=await wb.xlsx.writeBuffer();const name=`${kind==='attach'?'รายละเอียดแนบท้ายประกาศ':kind==='con'?'ผนวก3_แนบสัญญา':'ผนวก3_ร่างประกาศ'}_${String(p.legacyId||p.projectNo||p.name||'').slice(0,40).replace(/[\\/:*?"<>|]/g,'-')}.xlsx`;
+  const buf=await wb.xlsx.writeBuffer();const name=`${TITLE[kind]}_${String(p.legacyId||p.projectNo||p.name||'').slice(0,40).replace(/[\\/:*?"<>|]/g,'-')}.xlsx`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
-function anxButtons(kinds){const L={ann:['annex3_ann','ผนวก 3 (ร่างประกาศ)'],attach:['attach','รายละเอียดแนบท้ายประกาศ'],con:['annex3_con','ผนวก 3 (แนบสัญญา)']};
-  return kinds.map(k=>`<span class="row" style="gap:4px;margin:0"><button class="btn sm" data-oprint="${L[k][0]}" type="button">${ICON.print} ${L[k][1]}</button><button class="btn sm" data-axl="${k}" type="button">⤓ Excel</button></span>`).join('')}
-function anxCard(p,kinds,title){const A=anxOf(p);const step=kinds.includes('con');
+const ANX_DOCS={attach:['attach','รายละเอียดแนบท้ายประกาศ',1],boqform:['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',1],con:['annex3_con','ผนวก 3 บัญชีรายการก่อสร้าง',1],condetail:['condetail','รายละเอียดแนบท้ายสัญญา',0]};
+function anxCard(p,kinds,title){const A=anxOf(p);const con=kinds.includes('con');const light=anxKind(p)==='light';
+  const ks=kinds.filter(k=>k!=='condetail'||light);
   return `<div class="card" id="anxCard"><div class="card-h"><h2>${title}</h2></div><div class="card-b grid g12">
-   <div class="s12 row" style="gap:10px;flex-wrap:wrap;margin:0">${anxButtons(kinds)}</div>
-   <label class="switch s6"><input type="checkbox" data-anx="elec" ${anxElec(p)?'checked':''}> ใส่หมายเหตุเรื่องค่าธรรมเนียมการไฟฟ้า (ข้อ 5–7)</label>
-   ${step?`<label class="f s6"><span>ชื่อผู้ลงนามฝ่ายผู้รับจ้าง (ว่าง = จากการจองลงนาม)</span><input class="i" data-anx="signer" value="${esc(A.signer||'')}" placeholder="${esc(anxSigner(Object.assign({},p,{annex:{}}))||'นาย/นาง/นางสาว ...')}"></label>`:''}
-   <div class="s12 muted" style="font-size:13px">รายการ ปริมาณ และหน่วย มาจาก BOQ ราคากลาง${step?' · ราคาหน่วยละ/รวมเป็นเงินในฉบับแนบสัญญา = ราคาตามสัญญาหลังปรับลด (ตรงกับแบบแนบท้ายสัญญา)':''} · ไฟล์ Excel ใช้ฟอนต์ TH SarabunIT๙ 16 แก้ไขต่อได้</div></div></div>`}
+   <div class="s12 row" style="gap:10px;flex-wrap:wrap;margin:0">${ks.map(k=>{const [r,l,x]=ANX_DOCS[k];return `<span class="row" style="gap:4px;margin:0"><button class="btn sm" data-oprint="${r}" type="button">${ICON.print} ${l}</button>${x?`<button class="btn sm" data-axl="${k}" type="button">⤓ Excel</button>`:''}</span>`}).join('')}</div>
+   <label class="f s4"><span>แบบหมายเหตุ</span><select class="i" data-anx="kind"><option value="" ${!A.kind?'selected':''}>อัตโนมัติ (${light?'งานไฟฟ้า':'งานทาง'})</option><option value="road" ${A.kind==='road'?'selected':''}>งานทาง/ก่อสร้างทั่วไป</option><option value="light" ${A.kind==='light'?'selected':''}>งานไฟฟ้าแสงสว่าง/ไฟสัญญาณ</option></select></label>
+   <div class="f s8"><span>&nbsp;</span><label class="switch"><input type="checkbox" data-anx="elec" ${anxElec(p)?'checked':''}> ใส่หมายเหตุเรื่องค่าธรรมเนียมการไฟฟ้า</label></div>
+   ${con?`<label class="f s4"><span>ผู้ลงนามฝ่ายผู้รับจ้าง (ว่าง = จากการจองลงนาม)</span><input class="i" data-anx="signer" value="${esc(A.signer||'')}" placeholder="${esc(anxSigner(Object.assign({},p,{annex:{}}))||'นาย/นาง/นางสาว ...')}"></label>`:''}
+   ${con&&light?`<label class="f s4"><span>พยานคนที่ 1</span><input class="i" data-anx="witness1" value="${esc(A.witness1||'')}" placeholder="${esc(anxWit(Object.assign({},p,{annex:{}}))[0])}"></label><label class="f s4"><span>พยานคนที่ 2</span><input class="i" data-anx="witness2" value="${esc(A.witness2||'')}" placeholder="${esc(anxWit(Object.assign({},p,{annex:{}}))[1])}"></label>`:''}
+   <div class="s12 muted" style="font-size:13px">รายการ ปริมาณ และหน่วย มาจาก BOQ ราคากลาง${con?' · ราคาในผนวก 3 = ราคาตามสัญญาหลังปรับลด (ตรงกับแบบแนบท้ายสัญญา)':''}${light?' · งานไฟฟ้ามีช่องหมายเหตุ “'+esc(ANX_REMARK_LIGHT)+'” และข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง':''} · ไฟล์ Excel ใช้ฟอนต์ TH SarabunIT๙ 16 แก้ไขต่อได้</div></div></div>`}
 function bindAnx(el,p){const A=anxOf(p);
-  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;touch(p)}));
+  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;touch(p);if(i.dataset.anx==='kind')render()}));
   $$('[data-axl]',el).forEach(b=>b.onclick=async()=>{b.disabled=true;try{await anxXlsx(p,b.dataset.axl)}catch(e){alert(e.message)}finally{b.disabled=false}});
   $$('[data-oprint]',el).forEach(b=>{if(!b.onclick)b.onclick=()=>{reportSel=b.dataset.oprint;go('report')}})}
 /* ---------- อ่านแผ่น “ข้อมูลและผลงาน” ของไฟล์ราคากลาง ---------- */
@@ -2861,7 +2918,7 @@ function prepMini(p){const R=prepOf(p);const d=x=>x?thDate(x):'-';
   const ok=[!!(R.approveNo||R.approveDate),!!R.plan,!!R.draft,!!p.midApproveDate].filter(Boolean).length;
   return `<div class="note" style="margin:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span><b>ขั้นเตรียมการ</b> ${ok}/4 · เห็นชอบ ${esc(R.approveNo||'-')} ${R.approveDate?'ลว. '+esc(d(R.approveDate)):''} · แบบ ${R.plan?'✓':'—'} · ร่างขออนุมัติประกาศ ${R.draft?'✓':'—'} (${(R.authority||authSuggest(p))==='region'?'อำนาจเขต':'อำนาจแขวง'}) · อนุมัติราคากลาง ${esc(d(p.midApproveDate))}</span><button class="btn sm" data-goto="prep" type="button" style="margin-left:auto">แก้ที่แท็บขั้นเตรียมการ →</button></div>`}
 function rPrep(){const el=$('#v-prep');if(needProject(el))return;const p=P();
-  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${anxCard(p,['ann','attach'],'ผนวก 3 (ร่างประกาศ) · รายละเอียดแนบท้ายประกาศ')}${prepDatesCard(p)}</div>`;
+  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${anxCard(p,['attach','boqform'],'เอกสารแนบประกาศ: รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (BOQ)')}${prepDatesCard(p)}</div>`;
   bindPrep(el,p);bindTor(el,p);bindAnx(el,p);
   $$('[data-f]',el).forEach(inp=>inp.addEventListener(inp.type==='date'?'change':'input',()=>{p[inp.dataset.f]=inp.value;touch(p)}))}
 const PREP_FLABEL={approveFiles:'หนังสือเห็นชอบ',planFiles:'แบบ',bookFiles:'เล่มแผน',xlsFiles:'Excel ราคากลาง'};
