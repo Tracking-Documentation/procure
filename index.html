@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">93</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">94</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='93',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='94',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -616,7 +616,8 @@ function rDash(){
   const found=rows.filter(x=>!q||[x.p.name,x.p.projectNo,x.p.contractor,x.p.legacyId,x.p.km].join(' ').toLowerCase().includes(q)).sort((a,b)=>key(b).localeCompare(key(a))||a.ix-b.ix);
   const PER=5,pages=Math.max(1,Math.ceil(found.length/PER));el._pg=Math.min(Math.max(1,el._pg||1),pages);
   const shown=found.slice((el._pg-1)*PER,el._pg*PER);
-  const pager=pages>1?`<div class="pager"><span class="muted">แสดง ${(el._pg-1)*PER+1}–${(el._pg-1)*PER+shown.length} จาก ${found.length} โครงการ</span><div class="pg-btns"><button class="btn sm" data-pg="${el._pg-1}" ${el._pg<=1?'disabled':''} type="button">‹ ก่อนหน้า</button>${Array.from({length:pages},(_,i)=>`<button class="btn sm ${i+1===el._pg?'pri':''}" data-pg="${i+1}" type="button">${i+1}</button>`).join('')}<button class="btn sm" data-pg="${el._pg+1}" ${el._pg>=pages?'disabled':''} type="button">ถัดไป ›</button></div></div>`:'';
+  const qInfo=q&&found.length?` · <b style="color:var(--warn-ink)">กรองด้วยคำค้น “${esc(el._q)}” (ทั้งหมด ${S.projects.length} โครงการ)</b> <button class="btn sm" id="dashClear2" type="button">✕ ล้างคำค้นหา</button>`:'';
+  const pager=(pages>1||qInfo)?`<div class="pager"><span class="muted">แสดง ${found.length?(el._pg-1)*PER+1:0}–${(el._pg-1)*PER+shown.length} จาก ${found.length} โครงการ${qInfo}</span><div class="pg-btns"><button class="btn sm" data-pg="${el._pg-1}" ${el._pg<=1?'disabled':''} type="button">‹ ก่อนหน้า</button>${Array.from({length:pages},(_,i)=>`<button class="btn sm ${i+1===el._pg?'pri':''}" data-pg="${i+1}" type="button">${i+1}</button>`).join('')}<button class="btn sm" data-pg="${el._pg+1}" ${el._pg>=pages?'disabled':''} type="button">ถัดไป ›</button></div></div>`:'';
   el.innerHTML=`${signAlertCard()}${overviewCard()}
   <div class="kpis">
     <div class="kpi hl"><div class="l">จำนวนโครงการ</div><div class="v">${S.projects.length}</div><div class="s">ได้ราคาที่ตกลงแล้ว ${cnt} โครงการ</div></div>
@@ -639,7 +640,7 @@ function rDash(){
         <td class="n" style="white-space:nowrap"><button class="icon-btn" title="แก้ไข" data-edit="${p.id}" type="button">${ICON.pen}</button> <button class="icon-btn" title="รายงาน" data-print="${p.id}" type="button">${ICON.print}</button> <button class="icon-btn" title="ทำสำเนา" data-dup="${p.id}" type="button">${ICON.copy}</button> <button class="icon-btn del" title="ลบ" data-del="${p.id}" type="button">${ICON.trash}</button></td></tr>`).join(''):`<tr><td colspan="9" class="empty">${q&&S.projects.length?`ไม่พบโครงการที่ตรงกับคำค้น “${esc(el._q)}” (มีทั้งหมด ${S.projects.length} โครงการ) <button class="btn sm" id="dashClear" type="button">ล้างคำค้นหา</button>`:'ยังไม่มีโครงการ'}</td></tr>`}</tbody>
     </table></div>${pager}
   </div>`;
-  {const dc=$('#dashClear');if(dc)dc.onclick=()=>{el._q='';el._pg=1;rDash()}}
+  $$('#dashClear,#dashClear2').forEach(dc=>dc.onclick=()=>{el._q='';el._pg=1;rDash()});
   $$('[data-pg]',el).forEach(b=>b.onclick=()=>{el._pg=+b.dataset.pg;rDash();el.querySelector('.card:has(.t.dash)')?.scrollIntoView({block:'start',behavior:'smooth'})});
   const qi=$('#dashQ');setTimeout(()=>{if(qi.value!==(el._q||'')){qi.value=el._q||''}},300);qi.oninput=()=>{el._q=qi.value;el._pg=1;const pos=qi.selectionStart;rDash();const n=$('#dashQ');n.focus();n.setSelectionRange(pos,pos)};
 }
