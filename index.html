@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">105</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">106</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='105',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='106',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -646,7 +646,7 @@ function rDash(){
 }
 document.addEventListener('click',e=>{
   const bs=e.target.closest('[data-booksync]');if(bs){bs.disabled=true;fetchBookings(null).then(j=>{toast('ดึงข้อมูลการจองแล้ว '+(j.bookings||[]).filter(x=>x.status!=='ยกเลิก').length+' รายการ');render()}).catch(er=>{bs.disabled=false;alert(er.message)});return}
-  const sp=e.target.closest('[data-signprint]');if(sp){cur=sp.dataset.signprint;save();reportSel='sign';go('report');return}
+  const sp=e.target.closest('[data-signprint]');if(sp){cur=sp.dataset.signprint;save();{const pp=S.projects.find(x=>x.id===cur);if(pp&&typeof ensureBookPushed==='function'&&bookOn()&&bookNeedsPush(pp)){const first=!bookOf(pp).pushed;ensureBookPushed(pp).then(()=>{if(first)toast('เปิดรับจองให้แล้ว — QR ในหนังสือใช้งานได้')}).catch(()=>{})}}reportSel='sign';go('report');return}
   const t=e.target.closest('[data-act],[data-open],[data-edit],[data-print],[data-dup],[data-del]');if(!t)return;
   if(t.dataset.open||t.dataset.edit){e.preventDefault();cur=t.dataset.open||t.dataset.edit;save();go(t.dataset.edit?'prep':'edit')}
   else if(t.dataset.print){cur=t.dataset.print;save();go('report')}
@@ -1609,7 +1609,10 @@ async function gasCall(params,post){const st=S.settings;const url=gasBase();if(!
   if(!j.ok)throw new Error(j.error||'เกิดข้อผิดพลาด');return j}
 async function pushBooking(p){const b=bookOf(p),w=bookWindow(p),st=S.settings;
   await gasCall({action:'upsertProject',project:{projectId:p.id,token:b.token,name:p.name||'',contractor:p.contractor||'',inviteNo:p.inviteNo||'',office:st.office||'',dates:w.dates,slotStart:st.slotStart||'09:00',slotEnd:st.slotEnd||'15:30',slotMinutes:num(st.slotMinutes)||30,docs:bookDocsList(),note:st.bookNote||'',secAmount:signAmounts(p).sec,stamp:signAmounts(p).stamp,duration:num(evOf(p).duration)||'',warrantyYears:warrantyOf(p),extraDays:num(st.secExtraDays??30),beneficiary:p.agency||st.agency||''}},true);
-  b.pushed=nowStr();b.pushedDates=bookSig(p);save()}
+  b.pushed=nowStr();b.pushedDates=bookSig(p);b.pushedToken=b.token;save()}
+/* ให้ลิงก์/QR ใช้ได้เสมอ: ส่งข้อมูลจองขึ้นระบบเมื่อยังไม่เคยส่ง หรือรหัสลิงก์/ช่วงวันเปลี่ยน */
+function bookNeedsPush(p){const b=bookOf(p);return !b.pushed||b.pushedToken!==b.token||b.pushedDates!==bookSig(p)}
+async function ensureBookPushed(p){if(bookOn()&&bookNeedsPush(p))await pushBooking(p)}
 function bookSig(p){return bookWindow(p).dates.join(',')+'|'+warrantyOf(p)+'|'+num(evOf(p).duration)+'|'+signAmounts(p).sec}
 function applyBookings(list,onlyId){const by={};list.forEach(x=>{if(x.status==='ยกเลิก')return;by[x.projectId]=x});
   S.projects.forEach(p=>{if(onlyId&&p.id!==onlyId)return;if(!p.book&&!by[p.id])return;const b=bookOf(p);const x=by[p.id]||null;b.booking=x;b.fetched=nowStr();
@@ -1640,12 +1643,12 @@ function bookCardHtml(p){if(!bookOn())return `<div class="s12 muted" style="font
     <div style="flex:1;min-width:260px;display:grid;gap:8px">
      <div><b>จองวันลงนามสัญญาออนไลน์</b> · จองได้ ${w.dates.length?`${D(w.dates[0])} – ${D(w.dates[w.dates.length-1])} (${w.dates.length} วันทำการ)`:'<span style="color:var(--danger)">ไม่มีวันที่จองได้</span>'} · เวลา ${esc(S.settings.slotStart||'09:00')}–${esc(S.settings.slotEnd||'15:30')} น. ช่วงละ ${esc(S.settings.slotMinutes||30)} นาที
       <div class="muted" style="font-size:13px">${w.assumed?'ยังไม่ได้กรอกวันที่บริษัทได้รับหนังสือ — ใช้วันที่หนังสือ/วันนี้ไปก่อน กรอกแล้วระบบจะอัปเดตช่วงวันให้':'นับ '+w.days+' วันทำการตั้งแต่วันที่ได้รับหนังสือ ('+D(w.base)+') ครบ '+D(w.end)}${w.sf&&w.sf>w.base?' · เริ่มได้หลังพ้นระยะอุทธรณ์ '+D(w.sf):''}</div></div>
-     <div class="row" style="gap:8px"><button class="btn pri sm" data-bk="push" type="button">${b.pushed?'อัปเดตลิงก์จอง':'เปิดรับจอง (ส่งข้อมูลไป Google Sheet)'}</button><button class="btn sm" data-bk="fetch" type="button">ดึงข้อมูลการจอง</button><button class="btn sm" data-bk="copy" type="button">คัดลอกลิงก์</button><a class="btn sm" href="${esc(url)}" target="_blank" rel="noopener">เปิดหน้าจอง</a><span id="bkMsg" class="muted" style="font-size:13px">${!b.pushed?'<span style="color:var(--danger)">ยังไม่ได้เปิดรับจอง — กดปุ่มก่อนส่งหนังสือ</span>':stale?'<span style="color:var(--danger)">ข้อมูลเปลี่ยน — กด “อัปเดตลิงก์จอง”</span>':'ส่งข้อมูลล่าสุด '+esc(b.pushed)}</span></div>
+     <div class="row" style="gap:8px"><button class="btn pri sm" data-bk="push" type="button">${b.pushed?'อัปเดตลิงก์จอง':'เปิดรับจอง (ส่งข้อมูลไป Google Sheet)'}</button><button class="btn sm" data-bk="fetch" type="button">ดึงข้อมูลการจอง</button><button class="btn sm" data-bk="copy" type="button">คัดลอกลิงก์</button><a class="btn sm" id="bkOpen" href="${esc(url)}" target="_blank" rel="noopener">เปิดหน้าจอง</a><span id="bkMsg" class="muted" style="font-size:13px">${!b.pushed?'<span style="color:var(--danger)">ยังไม่ได้เปิดรับจอง — ลิงก์/QR ยังใช้ไม่ได้ (ระบบเปิดให้เองเมื่อพิมพ์หนังสือเรียกลงนาม/คัดลอกลิงก์ หรือกดปุ่มเปิดรับจอง)</span>':stale?'<span style="color:var(--danger)">ข้อมูลเปลี่ยน — กด “อัปเดตลิงก์จอง”</span>':'ส่งข้อมูลล่าสุด '+esc(b.pushed)}</span></div>
      ${num(evOf(p).duration)?'':'<div style="color:var(--danger);font-size:13px">ยังไม่กรอก “ระยะเวลาดำเนินการ (วัน)” (การ์ดที่ 1) — บริษัทจะไม่เห็นระยะเวลาค้ำประกันสัญญา</div>'}
      ${bookingBox(p)}</div></div></div>`}
-function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textContent=t};{const ck=$('#bkChecked'),cb=$('[data-bk="confirm"]',el);if(ck&&cb)ck.onchange=()=>{cb.disabled=!ck.checked}}
+function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textContent=t};{const o=$('#bkOpen',el);if(o)o.onclick=ev=>{if(!bookNeedsPush(p))return;ev.preventDefault();const w=window.open('','_blank');ensureBookPushed(p).then(()=>{if(w)w.location.href=bookUrl(p);rerender()}).catch(e=>{if(w)w.close();alert(e.message)})}}{const ck=$('#bkChecked'),cb=$('[data-bk="confirm"]',el);if(ck&&cb)ck.onchange=()=>{cb.disabled=!ck.checked}}
   $$('[data-bk]',el).forEach(btn=>btn.onclick=async()=>{const a=btn.dataset.bk;const b=bookOf(p);
-    if(a==='copy'){try{await navigator.clipboard.writeText(bookUrl(p));msg('คัดลอกลิงก์แล้ว')}catch(e){prompt('คัดลอกลิงก์',bookUrl(p))}return}
+    if(a==='copy'){try{await ensureBookPushed(p)}catch(e){alert('ส่งข้อมูลเปิดรับจองไม่สำเร็จ: '+e.message+'\nลิงก์จะยังใช้ไม่ได้จนกว่าจะกด “เปิดรับจอง”')}try{await navigator.clipboard.writeText(bookUrl(p));msg('คัดลอกลิงก์แล้ว')}catch(e){prompt('คัดลอกลิงก์',bookUrl(p))}return}
     if(a==='cancel'&&!confirm('ยกเลิกการจองนี้? บริษัทจะต้องจองใหม่'))return;
     if(a==='confirm'){const m=bookMissing(b.booking);if(m.length&&!confirm('ยังไม่ได้แนบเอกสาร '+m.length+' รายการ:\n- '+m.map(d=>d.label).join('\n- ')+'\n\nยืนยันนัดต่อหรือไม่? (บริษัทยังแนบเอกสารที่ขาดได้ภายหลัง)'))return}
     btn.disabled=true;msg('กำลังเชื่อมต่อ…');
@@ -1654,7 +1657,7 @@ function bindBook(el,p,rerender){const msg=t=>{const m=$('#bkMsg');if(m)m.textCo
       else{const x=b.booking;if(!x)throw new Error('ยังไม่มีการจอง');const no=a==='confirm'?($('#bkNo')?.value||'').trim():'';const rr=await gasCall({action:a,bookingId:x.bookingId,contractNo:no||undefined},true);if(a!=='unconfirm')toast(rr.mailed?'ส่งอีเมลแจ้งบริษัทแล้ว ('+rr.email+')':'บันทึกแล้ว · ไม่ได้ส่งอีเมล (บริษัทไม่ได้ให้อีเมล หรือส่งไม่สำเร็จ)');if(a!=='confirm'&&x.confirmed==='Y'){p.contractNo='';p.contractDate=''}await fetchBookings(p)}
       rerender()}catch(e){btn.disabled=false;msg('');alert(e.message)}})}
 let bookAuto=null;
-function bookAutoPush(p){const b=p.book;if(!bookOn()||!b||!b.pushed)return;clearTimeout(bookAuto);bookAuto=setTimeout(()=>{if(b.pushedDates===bookSig(p))return;pushBooking(p).then(()=>{const m=$('#bkMsg');if(m)m.textContent='อัปเดตช่วงวันจองแล้ว '+b.pushed}).catch(()=>{})},900)}
+function bookAutoPush(p){const b=p.book;if(!bookOn()||!b||!b.pushed)return;clearTimeout(bookAuto);bookAuto=setTimeout(()=>{if(!bookNeedsPush(p))return;pushBooking(p).then(()=>{const m=$('#bkMsg');if(m)m.textContent='อัปเดตช่วงวันจองแล้ว '+b.pushed}).catch(()=>{})},900)}
 /* ---------- หนังสือรับรองผลงาน (หลังส่งมอบ/ตรวจรับงานแล้ว · ส่งมอบได้หลายงวด) ---------- */
 const CERT_TYPES=['งานก่อสร้างทาง','งานก่อสร้างสะพาน','งานบำรุงทาง','งานไฟฟ้าแสงสว่างและไฟสัญญาณจราจร','งานอำนวยความปลอดภัย','งานก่อสร้างอาคาร'];
 function isoAdd(iso,n){if(!iso)return '';const d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
