@@ -346,7 +346,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">85</span> · <span id="appDate">21 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">86</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -409,7 +409,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='85',APP_DATE='21 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='86',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2182,7 +2182,13 @@ function authBoot(){syncChip();
 const REQ_DEF={no:'',date:'',subject:'',to:'ผส.ทล.17   ผ่านหัวหน้าเจ้าหน้าที่',reason:'',buyMethod:'',hireMethod:'ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)',methodNote:'',authority:'สทล.17',days:'',evalDays:5,
   title:'',lastPrice:'ไม่เคยจ้าง',roundTo:'none',reqName:'',reqPos:'',acct:{plan:'',proj:'',cc:'',fund:'',act:'',budget:''},budgetStatus:'await',
   ctlName:'',ctlPos:'',ctlRole:'ผู้ควบคุมงบประมาณ',chkName:'',chkPos:'',aprName:'',aprPos:''};
-function reqOf(p){p.req=Object.assign(structuredClone(REQ_DEF),p.req||{});p.req.acct=Object.assign(structuredClone(REQ_DEF.acct),p.req.acct||{});if(!p.req.subject&&p.name)p.req.subject='ขออนุมัติซื้อ/จ้าง'+String(p.name).split(/\s+ทางหลวง/)[0];return p.req}
+function reqOf(p){p.req=Object.assign(structuredClone(REQ_DEF),p.req||{});p.req.acct=Object.assign(structuredClone(REQ_DEF.acct),p.req.acct||{});if(!p.req.subject&&p.name)p.req.subject='ขออนุมัติซื้อ/จ้าง'+String(p.name).split(/\s+ทางหลวง/)[0];reqAuthAuto(p);return p.req}
+/* เรียน / วงเงินอำนาจ ตามอำนาจอนุมัติ (ขั้นเตรียมการ หรือแนะนำตามวงเงิน) — เปลี่ยนให้เองเฉพาะเมื่อยังเป็นค่าอัตโนมัติ */
+const REQ_AUTH={region:{to:'ผส.ทล.17   ผ่านหัวหน้าเจ้าหน้าที่',authority:'สทล.17'},district:{to:'ผอ.ขท.กระบี่   ผ่านหัวหน้าเจ้าหน้าที่',authority:'ขท.กระบี่'}};
+function reqAuthKey(p){const R=p.prep||{};return R.authority||(typeof authSuggest==='function'?authSuggest(p):'region')}
+function reqAuthAuto(p){const r=p.req,A=REQ_AUTH[reqAuthKey(p)]||REQ_AUTH.region;const norm=x=>String(x||'').replace(/\s+/g,' ').trim();
+  const autoTo=[REQ_AUTH.region.to,REQ_AUTH.district.to].map(norm),autoAu=[REQ_AUTH.region.authority,REQ_AUTH.district.authority];
+  if(!norm(r.to)||autoTo.includes(norm(r.to)))r.to=A.to;if(!String(r.authority||'').trim()||autoAu.includes(String(r.authority).trim()))r.authority=A.authority}
 const r2=x=>Math.round(x*100)/100;
 function reqCalc(p){const R=reqOf(p);const rows=p.items.filter(i=>i.kind==='item').map((it,i)=>{const q=num(it.qty),u=it.est===''||it.est==null?null:num(it.est);return {it,no:i+1,q,u,tot:u===null?null:r2(q*u),mid:q?midOf(p,it)/100/q:0}});
   const sum=r2(rows.reduce((a,x)=>a+(x.tot||0),0));const bud=num(p.budget);const adj=R.roundTo==='budget'&&bud>0?r2(bud-sum):0;return {R,rows,sum,adj,grand:r2(sum+adj),missing:rows.filter(x=>x.u===null).length}}
