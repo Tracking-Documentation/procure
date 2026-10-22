@@ -1,6 +1,6 @@
 # สัญญาอนุญาตการใช้งาน (License)
 
-**ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา**
+**ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่ (Construction Contract Tracking & Documentation System · Krabi Highway District)**
 © 2026 Narama Woraklan · สงวนลิขสิทธิ์ (All rights reserved)
 ระบบปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา (BOQ) พัฒนาโดย Mr.Tharatep Thongbao  
 แนวคิดการพัฒนาต่อยอดเพื่อใช้งานให้ครบวงจร โดย นางสาวณรมา วรกลั่น

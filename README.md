@@ -1,4 +1,4 @@
-# ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา
+# ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่ (Construction Contract Tracking & Documentation System · Krabi Highway District)
 
 เปิดใช้งาน/ติดตั้งแอป: https://krabiprocure-hash.github.io/boq-nego/
 

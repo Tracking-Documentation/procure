@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ระบบพิจารณาผล BOQ</title>
+<title>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="application-name" content="ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่">
+<meta name="description" content="ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่ (Construction Contract Tracking & Documentation System · Krabi Highway District) — ตั้งแต่ขั้นเตรียมการ พิจารณาผล ต่อรองราคา ลงนามสัญญา จนถึงหนังสือรับรองผลงาน">
 <meta name="theme-color" content="#7a1f2b">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-r192.png">
@@ -12,7 +14,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="พิจารณาผล BOQ">
+<meta name="apple-mobile-web-app-title" content="งานจ้างก่อสร้าง ขท.กระบี่">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600&family=Sarabun:wght@400;500;600;700&display=swap">
@@ -330,8 +332,8 @@ body.exec .hdr{padding-bottom:12px}
         <svg width="34" height="34" viewBox="0 0 64 64"><rect x="12" y="6" width="34" height="46" rx="4" fill="#f8ecec" stroke="#7a1f2b" stroke-width="3"/><path d="M19 18h20M19 26h20M19 34h12" stroke="#7a1f2b" stroke-width="3" stroke-linecap="round"/><circle cx="45" cy="45" r="13" fill="#f3c623" stroke="#7a1f2b" stroke-width="2.5"/><path d="M45 37v14m-5-5 5 5 5-5" stroke="#7a1f2b" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="ttl">
-        <h1>ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา</h1>
-        <p>ตามหนังสือ กวจ. ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568 · ราคาต่อรองรวมเป็นจำนวนเต็ม ไม่ปรับลดค่าใช้จ่ายพิเศษและครุภัณฑ์</p>
+        <h1>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</h1>
+        <p title="ราคาต่อรองตามหนังสือ กวจ. ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568">Construction Contract Tracking &amp; Documentation System · Krabi Highway District</p>
       </div>
       <div class="hdr-actions">
         <button class="btn-lock" id="btnLock" type="button">🔑 ตั้งรหัสผ่าน</button>
@@ -360,7 +362,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">108</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">109</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -423,7 +425,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='108',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='109',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1902,9 +1904,9 @@ function manBookFlow(){const L=(who,c,items)=>`<div class="man-lane man-${c}"><d
   <div class="man-ar side">→</div>${L('บริษัท (ผู้ชนะ)','d',['สแกน QR / เปิดลิงก์','เลือกวันและเวลาลงนาม','กรอกผู้ติดต่อ (อีเมลรับแจ้งผล) และผู้ลงนามในสัญญา','เลือกรูปแบบหลักประกันสัญญา แนบเอกสาร แล้วส่งจอง (กลับมาแนบเอกสารเพิ่มภายหลังด้วยลิงก์เดิมได้)'])}
   <div class="man-ar side">→</div>${L('เจ้าหน้าที่','a',['กด “ดึงข้อมูลการจอง” ตรวจเอกสารที่แนบ','ยืนยันนัด (ใส่เลขที่สัญญาได้) — ระบบส่งอีเมลแจ้งบริษัท','ลงนามสัญญาตามวันนัด · ถ้าต้องเลื่อน กด “ยกเลิก” ให้บริษัทจองใหม่ด้วยลิงก์เดิม'])}</div>`}
 function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" class="man-h">${t}</h2>`;
- el.innerHTML=`<div class="row no-print" style="margin-bottom:14px"><div class="sp"><div class="muted" style="font-size:13px">คู่มือการใช้งาน</div><b style="font-size:18px">${esc(document.title.split(' - ')[0]||'ระบบพิจารณาผล')}</b></div><button class="btn blue" id="manPrint" type="button">${ICON.print} พิมพ์คู่มือ</button></div>
+ el.innerHTML=`<div class="row no-print" style="margin-bottom:14px"><div class="sp"><div class="muted" style="font-size:13px">คู่มือการใช้งาน</div><b style="font-size:18px">${esc('ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่')}</b></div><button class="btn blue" id="manPrint" type="button">${ICON.print} พิมพ์คู่มือ</button></div>
  <div class="card man"><div class="card-b">
- <div class="man-title"><b>คู่มือการใช้งานระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา</b><span>${esc(S.settings.office||'แขวงทางหลวงกระบี่')} · ${esc(S.settings.unit||'งานพัสดุและสัญญา')} · ฉบับระบบเวอร์ชัน ${APP_VER} (${APP_DATE})</span></div>
+ <div class="man-title"><b>คู่มือการใช้งานระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</b><i style="display:block;font-size:14px;color:var(--muted)">User Manual — Construction Contract Tracking &amp; Documentation System · Krabi Highway District</i><span>${esc(S.settings.office||'แขวงทางหลวงกระบี่')} · ${esc(S.settings.unit||'งานพัสดุและสัญญา')} · ฉบับระบบเวอร์ชัน ${APP_VER} (${APP_DATE})</span></div>
  <ol class="man-toc no-print">${[['flow','ผังการทำงานภาพรวม'],['start','เริ่มต้นใช้งาน'],['steps','ขั้นตอนทีละแท็บ'],['book','ระบบจองวันลงนามสัญญาออนไลน์'],['company','คู่มือฝั่งบริษัท (แนบไปกับหนังสือได้)'],['lock','การบันทึกและล็อกขั้นตอน'],['faq','ปัญหาที่พบบ่อย']].map(([a,t])=>`<li><a href="#man-${a}" data-manjump="${a}">${t}</a></li>`).join('')}</ol>
 
  ${H('flow','1. ผังการทำงานภาพรวม')}
@@ -2207,7 +2209,7 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
   if(!g){g=document.createElement('div');g.id='gate';document.body.appendChild(g)}
   let last='';try{last=localStorage.getItem(LS+'.lastUser')||''}catch(e){}
   g.innerHTML=`<form class="gate-card" autocomplete="on">
-   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา${EXEC?' · มุมมองผู้บริหาร (ดูอย่างเดียว)':''}</span></div></div>
+   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</span></div></div>
    <label class="f"><span>ชื่อผู้ใช้</span><input class="i" id="gUser" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(last)}" required></label>
    <label class="f"><span>รหัสผ่าน</span><input class="i" id="gPw" type="password" autocomplete="current-password" required></label>
    <div id="gErr" class="gate-err">${esc(msg||'')}</div>
