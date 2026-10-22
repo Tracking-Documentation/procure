@@ -360,7 +360,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">107</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">108</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -423,7 +423,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='107',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='108',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -854,7 +854,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan
    <label class="switch"><input type="checkbox" id="smMid" ${!num(p.midDeclared)||num(p.midDeclared)===d.grand?'checked':''}> ตั้ง “ราคากลางตาม ปร.5/ปร.6” = ${fmt(d.grand||d.midSum)} บาท${num(p.midDeclared)?` (ตอนนี้ ${fmt(p.midDeclared)})`:''}</label>
    ${pc.length?`<label class="switch"><input type="checkbox" id="smCm" ${O.price.members.some(x=>x.name)?'':'checked'}> ใส่คณะกรรมการกำหนดราคากลางจากไฟล์ (${esc(pc.map(x=>x.name).join(', '))})</label>`:''}
    ${(c=>c?`<div class="note ${c.ok?'ok':'bad'}" style="margin:0"><b>ตรวจรายการ ข้อมูลและผลงาน กับ SUMMARY:</b> ${c.ok?`ตรงกันทั้ง ${c.n} รายการ (ชื่อ ปริมาณ หน่วย ราคากลาง)`:`<b>ไม่ตรงกัน ${c.W.length} จุด</b> — ตรวจไฟล์ Excel ก่อนนำเข้า<br>${c.W.map(esc).join('<br>')}`}</div>`:'')(chk)}
-   ${plan?`<div class="note" style="margin:0"><b>แผ่น “ข้อมูลและผลงาน”</b>${plan.days?`<label class="switch"><input type="checkbox" id="smDays" ${!num(p.workDays)?'checked':''}> ระยะเวลาดำเนินการ = ${plan.days} วัน${num(p.workDays)?` (ตอนนี้ ${esc(p.workDays)})`:''}</label>`:''}${plan.planLine?`<label class="switch"><input type="checkbox" id="smPlan" ${!T.planLine?'checked':''}> แผนงาน/รหัสงาน (TOR): ${esc(plan.planLine)}</label>`:''}${plan.reason?`<label class="switch"><input type="checkbox" id="smWhy" ${!T.background&&!R0.reason?'checked':''}> เหตุผลและความจำเป็น → ข้อ ๑ ความเป็นมา (TOR) และเหตุที่ขออนุมัติ (4033)<br><span class="muted" style="font-size:12.5px">${esc(plan.reason.slice(0,160))}${plan.reason.length>160?'…':''}</span></label>`:''}${plan.km&&!p.km?`<label class="switch"><input type="checkbox" id="smKm" checked> กม.ดำเนินการ: ${esc(plan.km)}</label>`:''}${plan.millNote?`<label class="switch"><input type="checkbox" id="smMill" checked> หมายเหตุ MILLING → เอกสารแนบประกาศ/สัญญา: กองเก็บ ณ ${esc(plan.millAt||plan.millNote)}</label>`:''}</div>`:''}
+   ${plan?`<div class="note" style="margin:0"><b>แผ่น “ข้อมูลและผลงาน”</b>${plan.days?`<label class="switch"><input type="checkbox" id="smDays" ${!num(p.workDays)?'checked':''}> ระยะเวลาดำเนินการ = ${plan.days} วัน${num(p.workDays)?` (ตอนนี้ ${esc(p.workDays)})`:''}</label>`:''}${plan.planLine?`<label class="switch"><input type="checkbox" id="smPlan" ${!T.planLine?'checked':''}> แผนงาน/รหัสงาน (TOR): ${esc(plan.planLine)}</label>`:''}${plan.reason?`<label class="switch"><input type="checkbox" id="smWhy" ${!T.background&&!R0.reason?'checked':''}> เหตุผลและความจำเป็น → ข้อ ๑ ความเป็นมา (TOR) และเหตุที่ขออนุมัติซื้อ/จ้าง<br><span class="muted" style="font-size:12.5px">${esc(plan.reason.slice(0,160))}${plan.reason.length>160?'…':''}</span></label>`:''}${plan.km&&!p.km?`<label class="switch"><input type="checkbox" id="smKm" checked> กม.ดำเนินการ: ${esc(plan.km)}</label>`:''}${plan.millNote?`<label class="switch"><input type="checkbox" id="smMill" checked> หมายเหตุ MILLING → เอกสารแนบประกาศ/สัญญา: กองเก็บ ณ ${esc(plan.millAt||plan.millNote)}</label>`:''}</div>`:''}
    ${file&&central()?`<label class="switch"><input type="checkbox" id="smUp" checked> เก็บไฟล์ Excel นี้ไว้ในโครงการ (ขั้นเตรียมการ)</label>`:''}
    ${fs.length>1?`<div class="note" style="margin:0">ไฟล์นี้มี Factor ${fs.length} ค่า (${fs.join(', ')}) · ระบบแยกเป็นหมวดตาม Factor ให้</div>`:''}
    <div class="muted" style="font-size:13px">ราคากลางรายการใช้ตัวเลขจากไฟล์ตรงตัว (ปัดหน่วยละ 2 ตำแหน่งตามไฟล์) · รายการที่ไม่คิด Factor (เช่น ป้ายในงานก่อสร้าง) ไปอยู่หมวดค่าใช้จ่ายพิเศษฯ</div></div>`,
@@ -1362,7 +1362,7 @@ function papersToDocx(html){
   (B.media||[]).forEach(m=>{const bin=atob(m.src.split(',')[1]||'');const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);files.push(['word/media/'+m.name,u])});
   return zipStore(files)}
 function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
-  const L=[['req','บันทึกขออนุมัติซื้อจ้าง 4033',()=>repReq(p)],...ORD_REPORTS.map(x=>[x[0],x[1],()=>x[2](p)]),['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
+  const L=[['req','บันทึกขออนุมัติซื้อ/จ้าง',()=>repReq(p)],...ORD_REPORTS.map(x=>[x[0],x[1],()=>x[2](p)]),['nego','ใบขอต่อรองราคา',()=>repNego(p,r,b)],['letter','หนังสือขอต่อรองราคา',()=>repLetter(p,r)],['notice','แบบแจ้งผลผู้เสนอราคา',()=>repNotice(p)]];
   const map=EVMAP();
   evOf(p);EVAL_DOCS.forEach(([k,l])=>{if(evApplies(p,k))return;L.push([k,l,()=>map[k](p)])});
   L.push(['mid','แบบสรุปราคากลาง',()=>repMid(p,r,b)],['sign','หนังสือเรียกลงนามในสัญญา',()=>repSign(p)],['contract','แบบแนบท้ายสัญญา',()=>repContract(p,r,b)]);
@@ -2332,7 +2332,7 @@ function reqCalc(p){const R=reqOf(p);const rows=p.items.filter(i=>i.kind==='item
 function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const c=reqCalc(p),R=c.R;
   const T=(k,l,cls,o={})=>`<label class="f ${cls}"><span>${l}</span>${o.area?`<textarea class="i" rows="${o.rows||2}" data-rq="${k}">${esc(R[k])}</textarea>`:`<input class="i${o.r?' r':''}" data-rq="${k}" value="${esc(R[k])}" ${o.ph?`placeholder="${esc(o.ph)}"`:''}>`}</label>`;
   const A=(k,l)=>`<label class="f s2"><span>${l}</span><input class="i" data-ra="${k}" value="${esc(R.acct[k])}"></label>`;
-  el.innerHTML=`${curBar('บันทึกขออนุมัติซื้อ/จ้าง (แบบ 4033)',`<button class="btn" id="rqImp" type="button">⤒ นำเข้าไฟล์ 4033 (.xls)</button><button class="btn" data-goto="edit" type="button">${ICON.pen} แก้รายการ BOQ</button><button class="btn blue" id="rqPrint" type="button">${ICON.print} พิมพ์ / Word</button>`)}
+  el.innerHTML=`${curBar('บันทึกขออนุมัติซื้อ/จ้าง',`<button class="btn" id="rqImp" type="button">⤒ นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง (.xls)</button><button class="btn" data-goto="edit" type="button">${ICON.pen} แก้รายการ BOQ</button><button class="btn blue" id="rqPrint" type="button">${ICON.print} พิมพ์ / Word</button>`)}
   <div class="grid" style="gap:14px">
   <div class="card"><div class="card-h"><h2>ข้อมูลบันทึก</h2></div><div class="card-b grid g12">
     ${T('no','เลขที่','s3',{ph:'323/-/69/'})}<label class="f s3"><span>ลงวันที่ (ถ้ามี)</span><input class="i" type="date" data-rq="date" value="${esc(R.date)}"></label>${T('to','เรียน','s6')}
@@ -2349,7 +2349,7 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
    <div class="card-b muted" style="font-size:13.5px;padding-bottom:0">ชื่อรายการ หน่วย และจำนวน มาจากแท็บ “ข้อมูลโครงการ / BOQ” แก้ที่ใดที่หนึ่งก็เปลี่ยนตรงกัน · กรอกเฉพาะ <b>ราคาที่สืบทราบ/ประมาณได้ ต่อหน่วย</b> ที่นี่ (ราคาก่อนทำราคากลาง)</div>
    <div class="tbl-wrap"><table class="t dash"><thead><tr><th class="n">ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ราคาประมาณ/หน่วย</th><th class="n">รวม</th><th class="n"><a href="#" id="rqGoBoq2" title="แก้ราคากลางที่หน้า BOQ ราคากลาง" style="color:inherit">ราคากลาง/หน่วย ↗</a></th></tr></thead><tbody>
     ${c.rows.length?c.rows.map(x=>`<tr><td class="n">${x.no}</td><td style="min-width:260px">${escBr(x.it.name)}</td><td>${esc(x.it.unit)}</td><td class="n">${fmt(x.q,x.q%1?2:0)}</td>
-      <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null?'':fmt(x.u)}" inputmode="decimal" style="width:140px"></td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ 4033 หรือเพิ่มรายการในแท็บ “ข้อมูลโครงการ / BOQ”</td></tr>`}
+      <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null?'':fmt(x.u)}" inputmode="decimal" style="width:140px"></td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง หรือเพิ่มรายการในแท็บ “ข้อมูลโครงการ / BOQ”</td></tr>`}
     </tbody><tfoot><tr><td></td><td colspan="4"><b>รวมเป็นเงิน</b>${c.missing?` <span class="pill p-nego">ยังไม่กรอกราคา ${c.missing} รายการ</span>`:''}</td><td class="n"><b>${fmt(c.sum)}</b></td><td></td></tr>
      ${R.roundTo==='budget'?`<tr><td></td><td colspan="4">ปรับยอด</td><td class="n">${fmt(c.adj)}</td><td></td></tr><tr><td></td><td colspan="4"><b>รวมเป็นเงินทั้งสิ้น</b></td><td class="n"><b>${fmt(c.grand)}</b></td><td></td></tr>`:''}</tfoot></table></div></div>
   <div class="card"><div class="card-h"><h2>ผู้ลงนามและรหัสบัญชี</h2></div><div class="card-b grid g12">
