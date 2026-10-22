@@ -277,6 +277,18 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
   .paper{box-shadow:none;margin:0;width:auto;min-height:0;padding:10mm}
   .paper+.paper{break-before:page}
 }
+.man .card-b{display:block;line-height:1.75;font-size:15px}.man-title{text-align:center;margin-bottom:12px}.man-title b{display:block;font-family:var(--f-head);font-size:21px}.man-title span{color:var(--muted);font-size:13.5px}
+.man-h{font-family:var(--f-head);font-size:19px;margin:22px 0 8px;padding-bottom:4px;border-bottom:2px solid var(--brand,#7a1f2b)}.man-toc{columns:2;font-size:14.5px;background:var(--soft);border-radius:10px;padding:10px 10px 10px 30px;margin:0}
+.man-ol{padding-left:22px;margin:6px 0;display:grid;gap:4px}.man-t{width:100%;border-collapse:collapse;font-size:14px}.man-t th,.man-t td{border:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}.man-t th{background:var(--soft)}
+.man-flow{display:grid;gap:4px;max-width:760px;margin:8px auto}.man-ph{border:2px solid var(--mc);border-radius:12px;padding:8px 10px;background:color-mix(in srgb,var(--mc) 7%,transparent)}
+.man-phh{font-weight:700;color:var(--mc);font-size:14px;margin-bottom:6px}.man-st{background:var(--card,#fff);border:1px solid var(--line);border-radius:8px;padding:6px 10px;display:grid;gap:1px;position:relative}.man-st b{font-size:15.5px}.man-st span{font-size:13.5px;color:var(--muted)}
+.man-go{position:absolute;right:8px;top:6px;font-size:12px;padding:2px 10px;border-radius:999px;border:1px solid var(--line);background:var(--soft);cursor:pointer}
+.man-ar{text-align:center;color:var(--muted);line-height:1.1;font-size:15px}.man-ar.big{font-size:22px;color:var(--mc,#888)}
+.man-a{--mc:#7a1f2b}.man-b{--mc:#8a6d1a}.man-c{--mc:#1f5f8a}.man-d{--mc:#2c7a3f}.man-e{--mc:#6b4a8a}
+.man-swim{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:6px;align-items:start;margin:8px 0}.man-lane{border:2px solid var(--mc);border-radius:12px;padding:8px;display:grid;gap:3px}.man-lane .man-st span{color:inherit}.man-ar.side{align-self:center;font-size:24px}
+@media (max-width:760px){.man-swim{grid-template-columns:1fr}.man-ar.side{transform:rotate(90deg)}.man-toc{columns:1}}
+@media print{body.pman .view{display:none!important}body.pman #v-manual{display:block!important}body.pman .man{border:0;box-shadow:none}body.pman .man-st,body.pman .man-ph,body.pman .man-lane,body.pman .man-t tr{break-inside:avoid}body.pman .man-company,body.pman #man-book{break-before:page}body.pman .man-h{break-after:avoid}
+ body.pman .man .card-b{font-size:13pt}body.pman .man-ph,body.pman .man-lane{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:14mm}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 body.gated>*:not(#gate):not(#toast){display:none!important}
 #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
@@ -346,8 +358,9 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-sign" hidden></section>
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
+  <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">106</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">107</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +423,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='106',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='107',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -597,11 +610,11 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['prep','ขั้นเตรียมการ','check'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย / คู่มือ','book'],['set','ตั้งค่า','gear']];
+const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['prep','ขั้นเตรียมการ','check'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย','book'],['manual','คู่มือการใช้งาน','doc'],['set','ตั้งค่า','gear']];
 function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
 function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
+function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,manual:rManual,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -1862,11 +1875,106 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
    <div>ประกาศผลผู้ชนะแล้ว ยังไม่ลงนามสัญญา</div><div class="y">BOQ คลาดเคลื่อนจากแบบรูปรายการหรือไม่? ใช่ → คำนวณราคากลางใหม่ (ข้อ 1.2.4)</div>
    <div class="y">ราคาเสนอ ≤ ราคากลาง และ ≤ วงเงิน?</div><div class="g">ใช่ → ปรับลดทุกรายการ (1.2.2) → ต่อรองเพิ่มได้ → แนบท้ายสัญญา → ลงนาม (1.2.3)</div>
    <div class="y">สูงกว่าราคากลาง/วงเงิน → ต่อรองราคา</div><div class="g">ลดลงได้ → ปรับลดตามราคาที่ตกลง → ลงนาม</div><div class="r">ไม่ลด / ยังเกินวงเงิน → พิจารณายกเลิก</div></div></div>
-  <div class="card"><div class="card-h"><h2>คู่มือการใช้งานโดยย่อ</h2></div><div class="card-b"><ol style="margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px">
-   <li>แดชบอร์ด → สร้างโครงการใหม่ (หรือโหลดตัวอย่างเพื่อทดลอง)</li><li>กรอกข้อมูลโครงการ วงเงิน ราคากลางตาม ปร.5 และราคาที่ผู้ชนะเสนอ</li>
-   <li>ตั้งหมวดและ Factor F · ครุภัณฑ์ (VAT 1.07) และค่าใช้จ่ายพิเศษจะไม่ถูกปรับลด</li><li>วาง BOQ จาก Excel (ลำดับ | รายการ | หน่วย | จำนวน | ค่างานต้นทุน) แล้วตรวจยอดกับ ปร.5</li>
-   <li>หน้าต่อรองราคา → ตั้งราคาที่จะขอ เลือกราคาที่ลงตัว → บันทึกครั้งที่ต่อรอง</li><li>รายงาน → พิมพ์ใบขอต่อรองราคา ส่งผู้เสนอ</li><li>บันทึกผลการตอบกลับ → พิมพ์แบบสรุปราคากลางและแบบแนบท้ายสัญญา</li>
-   <li>ตั้งค่า → สำรองข้อมูลเป็นไฟล์เป็นระยะ</li></ol></div></div></div></div>`}
+  <div class="card"><div class="card-h"><h2>คู่มือการใช้งาน</h2></div><div class="card-b" style="font-size:14px">ผังการทำงาน ขั้นตอนทีละแท็บ ระบบจองวันลงนาม และคู่มือฝั่งบริษัท อยู่ที่แท็บ <b>คู่มือการใช้งาน</b> (พิมพ์ได้) <button class="btn sm" data-goto="manual" type="button">เปิดคู่มือ</button></div></div></div></div>`}
+
+/* ================= คู่มือการใช้งาน (ฝังในระบบ · พิมพ์ได้) ================= */
+const MAN_FLOW=[
+ {ph:'ก่อนประกาศ',c:'a',steps:[
+  ['prep','ขั้นเตรียมการ','แนบหนังสือเห็นชอบ เล่มแผน และไฟล์ Excel ราคากลาง (ดึง SUMMARY + ข้อมูลและผลงาน) · ร่าง TOR / ประกาศ / เอกสารประกวดราคา · เอกสารแนบประกาศ (รายละเอียดแนบท้าย, BOQ)'],
+  ['req','ขออนุมัติซื้อ/จ้าง','ทำบันทึกรายงานขอซื้อขอจ้าง เลือกอำนาจแขวง/เขตตามวงเงิน ระบบใส่ “เรียน” และวงเงินอำนาจให้'],
+  ['orders','คำสั่งแต่งตั้ง','คำสั่งกรรมการ TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน (รายชื่อดึงจากชีตเดิม เลือกจากดรอปลิสต์ได้)'],
+  ['edit','ข้อมูลโครงการ / BOQ','ข้อมูลโครงการ วงเงิน ราคากลาง วันที่อนุมัติราคากลาง/ร่าง TOR · หมวด Factor F · รายการ BOQ ราคากลาง']]},
+ {ph:'ประกาศและเสนอราคา (ในระบบ e-GP)',c:'b',steps:[
+  ['','ประกาศ / ยื่นข้อเสนอ / เปิดซอง','ดำเนินการในระบบ e-GP ตามปกติ แล้วนำผลมากรอกในแท็บถัดไป']]},
+ {ph:'หลังเปิดซอง',c:'c',steps:[
+  ['bid','ผู้เสนอราคา','กรอกรายชื่อและราคาที่เสนอ ระบบจัดลำดับและหาผู้ชนะ'],
+  ['eval','พิจารณาผล','กำหนดการ · คณะกรรมการ · การประชุม · ผลตรวจสอบเอกสาร · หลักประกันการเสนอราคา · บันทึกขออนุมัติถึงเขต (ถ้าเกินอำนาจแขวง)'],
+  ['nego','ต่อรองราคา','ตั้งราคาที่จะขอต่อรอง ระบบหาราคาที่ลงตัว · พิมพ์หนังสือ/ใบขอต่อรอง · บันทึกผลแต่ละครั้ง'],
+  ['result','ผลการปรับลดราคา','ตรวจผลปรับลดทุกรายการตาม ว 651 และความถูกต้องของยอดรวม']]},
+ {ph:'ทำสัญญา',c:'d',steps:[
+  ['sign','เรียกลงนามสัญญา','พิมพ์หนังสือเรียกลงนาม (มี QR จองวันออนไลน์) · ติดตามการจอง ยืนยันนัด · เอกสารแนบสัญญา (ผนวก 3)'],
+  ['report','รายงาน','รวมเอกสารทุกฉบับ พิมพ์ / ดาวน์โหลด Word ได้']]},
+ {ph:'หลังสัญญา',c:'e',steps:[
+  ['cert','รับรองผลงาน','หนังสือรับรองผลงาน ระยะเวลาสัญญา การส่งมอบงานหลายงวด']]}];
+function manFlowHtml(){return `<div class="man-flow">${MAN_FLOW.map((g,gi)=>`<div class="man-ph man-${g.c}"><div class="man-phh">${esc(g.ph)}</div>${g.steps.map(([k,t,d])=>`<div class="man-st">${k?`<button class="man-go no-print" data-goto="${k}" type="button">เปิด</button>`:''}<b>${esc(t)}</b><span>${esc(d)}</span></div>`).join('<div class="man-ar">↓</div>')}</div>`).join('<div class="man-ar big">↓</div>')}</div>`}
+function manBookFlow(){const L=(who,c,items)=>`<div class="man-lane man-${c}"><div class="man-phh">${who}</div>${items.map(x=>`<div class="man-st"><span>${x}</span></div>`).join('<div class="man-ar">↓</div>')}</div>`;
+ return `<div class="man-swim">${L('เจ้าหน้าที่','a',['กรอก “วันที่บริษัทได้รับหนังสือ” ในแท็บเรียกลงนามสัญญา (ระบบคำนวณช่วงวันจองให้ และต้องพ้นระยะอุทธรณ์)','พิมพ์หนังสือเรียกลงนามสัญญา — <b>ระบบเปิดรับจองให้อัตโนมัติ</b> QR ในหนังสือใช้ได้ทันที','ส่งหนังสือให้บริษัท (หรือกด “คัดลอกลิงก์” ส่งทางไลน์/อีเมล)'])}
+  <div class="man-ar side">→</div>${L('บริษัท (ผู้ชนะ)','d',['สแกน QR / เปิดลิงก์','เลือกวันและเวลาลงนาม','กรอกผู้ติดต่อ (อีเมลรับแจ้งผล) และผู้ลงนามในสัญญา','เลือกรูปแบบหลักประกันสัญญา แนบเอกสาร แล้วส่งจอง (กลับมาแนบเอกสารเพิ่มภายหลังด้วยลิงก์เดิมได้)'])}
+  <div class="man-ar side">→</div>${L('เจ้าหน้าที่','a',['กด “ดึงข้อมูลการจอง” ตรวจเอกสารที่แนบ','ยืนยันนัด (ใส่เลขที่สัญญาได้) — ระบบส่งอีเมลแจ้งบริษัท','ลงนามสัญญาตามวันนัด · ถ้าต้องเลื่อน กด “ยกเลิก” ให้บริษัทจองใหม่ด้วยลิงก์เดิม'])}</div>`}
+function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" class="man-h">${t}</h2>`;
+ el.innerHTML=`<div class="row no-print" style="margin-bottom:14px"><div class="sp"><div class="muted" style="font-size:13px">คู่มือการใช้งาน</div><b style="font-size:18px">${esc(document.title.split(' - ')[0]||'ระบบพิจารณาผล')}</b></div><button class="btn blue" id="manPrint" type="button">${ICON.print} พิมพ์คู่มือ</button></div>
+ <div class="card man"><div class="card-b">
+ <div class="man-title"><b>คู่มือการใช้งานระบบพิจารณาผล - ต่อรอง/ปรับลดราคา - เรียกลงนามสัญญา</b><span>${esc(S.settings.office||'แขวงทางหลวงกระบี่')} · ${esc(S.settings.unit||'งานพัสดุและสัญญา')} · ฉบับระบบเวอร์ชัน ${APP_VER} (${APP_DATE})</span></div>
+ <ol class="man-toc no-print">${[['flow','ผังการทำงานภาพรวม'],['start','เริ่มต้นใช้งาน'],['steps','ขั้นตอนทีละแท็บ'],['book','ระบบจองวันลงนามสัญญาออนไลน์'],['company','คู่มือฝั่งบริษัท (แนบไปกับหนังสือได้)'],['lock','การบันทึกและล็อกขั้นตอน'],['faq','ปัญหาที่พบบ่อย']].map(([a,t])=>`<li><a href="#man-${a}" data-manjump="${a}">${t}</a></li>`).join('')}</ol>
+
+ ${H('flow','1. ผังการทำงานภาพรวม')}
+ <p>ทำตามลำดับจากบนลงล่าง แต่ละกล่องคือแท็บในระบบ (กด “เปิด” เพื่อไปยังแท็บนั้น) · แดชบอร์ดและปฏิทินใช้ดูสถานะทุกโครงการ</p>
+ ${manFlowHtml()}
+
+ ${H('start','2. เริ่มต้นใช้งาน')}
+ <ol class="man-ol">
+  <li><b>เข้าสู่ระบบ</b> ด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ข้อมูลโครงการเก็บที่ระบบกลาง ทุกเครื่องเห็นข้อมูลเดียวกัน</li>
+  <li><b>เลือกโครงการ</b> จากแดชบอร์ด: คลิกชื่อโครงการเพื่อเปิดข้อมูลโครงการ หรือกดรูปดินสอเพื่อเปิด “ขั้นเตรียมการ” · ค้นหาด้วยชื่อ/เลขที่โครงการ/ผู้รับจ้าง/กม. ได้ (ถ้าจำนวนโครงการน้อยกว่าที่ควร ให้ดูว่ามีคำค้นค้างอยู่หรือไม่)</li>
+  <li><b>ซิงค์จากชีตติดตามเดิม</b> ระบบดึงชื่อโครงการ ID กม. วงเงิน อำนาจ และรายชื่อกรรมการ/ผู้ควบคุมงานให้อัตโนมัติทุก 5 นาที หรือกด “ซิงก์ข้อมูลจากชีตเดิม” ในแท็บคำสั่งแต่งตั้ง · แก้ในชีตเดิมแล้วในระบบเปลี่ยนตาม (ค่าที่ชีตไม่ได้เปลี่ยนจะไม่ทับค่าที่แก้ในระบบ)</li>
+  <li><b>ชื่อโครงการ</b> ระบบเติม “ระหว่าง กม. …” จากช่อง กม.ดำเนินการ ให้ (หลังชื่อตอน ก่อน จ./จังหวัด)</li>
+  <li><b>เวอร์ชันของระบบ</b> ดูที่บรรทัดล่างสุดของหน้า ถ้ามีการปรับปรุงแล้วยังเห็นเลขเดิม ให้รีเฟรชหน้า หรือรอประมาณ 10 นาที</li>
+ </ol>
+
+ ${H('steps','3. ขั้นตอนทีละแท็บ')}
+ <table class="man-t"><thead><tr><th style="width:20%">แท็บ</th><th>ทำอะไร</th><th style="width:28%">เอกสารที่ได้</th></tr></thead><tbody>
+  <tr><td>ขั้นเตรียมการ</td><td>① แนบหนังสือเห็นชอบ เล่มแผน แบบ · ② กด “แนบไฟล์ Excel และดึงข้อมูล” ระบบอ่านแผ่น SUMMARY (รายการ BOQ ราคากลาง กรรมการราคากลาง) และแผ่น “ข้อมูลและผลงาน” (ระยะเวลา กม. แผนงาน เหตุผลความจำเป็น หมายเหตุ MILLING) พร้อมตรวจรายการสองแผ่นให้ตรงกัน · ③ ตั้งค่า TOR (สาขางาน Plant ค่า K ค่าปรับ รับประกัน) · ④ เลือกหมายเหตุเอกสารแนบ (งานทาง/งานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า MILLING)</td><td>ร่าง TOR · ร่างประกาศ · ร่างเอกสารประกวดราคา · รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (พิมพ์/Excel)</td></tr>
+  <tr><td>ขออนุมัติซื้อ/จ้าง</td><td>เลือกอำนาจ: <b>แขวง</b> → เรียน ผอ.ขท.กระบี่ ผ่านหัวหน้าเจ้าหน้าที่ · <b>เขต</b> (เกิน 10 ล้าน) → เรียน ผส.ทล.17 ผ่านหัวหน้าเจ้าหน้าที่ · กรอกเหตุผล ระยะเวลา และรายการที่ต้องการ</td><td>บันทึกรายงานขอซื้อขอจ้าง</td></tr>
+  <tr><td>คำสั่งแต่งตั้ง</td><td>เลือกรายชื่อกรรมการจากดรอปลิสต์ แก้ข้อความในคำสั่งได้ · กรรมการพิจารณาผลแก้ที่นี่แล้วลิงก์ไปการ์ดพิจารณาผล · กรรมการตรวจรับ/ผู้ควบคุมงานดึงจากตาราง ป/ก/ค/ผช ในชีตเดิม</td><td>คำสั่ง TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน · บันทึกมอบหมาย</td></tr>
+  <tr><td>ข้อมูลโครงการ / BOQ</td><td>ตรวจข้อมูลโครงการ วงเงิน ราคากลาง ปร.5 · กรอกวันที่อนุมัติราคากลางและช่วงร่าง TOR · ตั้งหมวดและ Factor F (ครุภัณฑ์ VAT 1.07 และค่าใช้จ่ายพิเศษไม่ถูกปรับลด) · ตรวจรายการ BOQ</td><td>แบบสรุปราคากลาง (ว 651)</td></tr>
+  <tr><td>ผู้เสนอราคา</td><td>กรอกผู้ยื่นข้อเสนอและราคา ระบบจัดลำดับ</td><td>—</td></tr>
+  <tr><td>พิจารณาผล</td><td>กำหนดการ คณะกรรมการ การประชุม ผลตรวจสอบเอกสาร หลักประกันการเสนอราคา · วงเงินเกินอำนาจแขวง ทำบันทึกขออนุมัติถึงเขต</td><td>เอกสารพิจารณาผล · แบบแจ้งผลผู้เสนอราคา</td></tr>
+  <tr><td>ต่อรองราคา</td><td>ตั้งราคาที่จะขอ → เลือกราคาที่ลงตัวที่ระบบแนะนำ → บันทึกครั้งที่ต่อรอง → พิมพ์ส่งผู้เสนอ → บันทึกผลตอบกลับ</td><td>หนังสือขอต่อรองราคา · ใบขอต่อรองราคา</td></tr>
+  <tr><td>ผลการปรับลดราคา</td><td>ตรวจราคาปรับลดรายรายการและยอดรวม</td><td>แบบแนบท้ายสัญญา</td></tr>
+  <tr><td>เรียกลงนามสัญญา</td><td>กรอกเลข/วันที่หนังสือ วันที่บริษัทได้รับ · ติดตามและยืนยันการจองออนไลน์ (หัวข้อ 4) · เอกสารแนบสัญญา</td><td>หนังสือเรียกลงนามในสัญญา (มี QR) · ผนวก 3 · รายละเอียดแนบท้ายสัญญา</td></tr>
+  <tr><td>รับรองผลงาน</td><td>กรอกระยะเวลาสัญญา การส่งมอบ (หลายงวดได้) รายละเอียดผลงาน</td><td>หนังสือรับรองผลงาน</td></tr>
+  <tr><td>รายงาน</td><td>เลือกเอกสารที่ต้องการ พิมพ์ทีละฉบับหรือทั้งหมด · ดาวน์โหลดเป็น Word</td><td>เอกสารทุกฉบับข้างต้น</td></tr>
+  <tr><td>ข้อกฎหมาย</td><td>ผังการพิจารณา ว 651 · ว 124 (มูลค่าสุทธิ/ทุนจดทะเบียนตามวงเงิน) · ว 214 (การกำหนดผลงาน) · หลักประกันสัญญา</td><td>—</td></tr>
+ </tbody></table>
+
+ ${H('book','4. ระบบจองวันลงนามสัญญาออนไลน์')}
+ <p>บริษัทจองวันลงนามเองผ่าน QR ในหนังสือเรียกลงนาม · <b>ลิงก์ไม่มีวันหมดอายุ</b> เปิดได้ตลอด ส่วนวันที่ให้เลือกคือช่วงวันทำการที่ระบบคำนวณจากวันที่บริษัทได้รับหนังสือ (และพ้นระยะอุทธรณ์แล้ว) วันที่ผ่านไปแล้วจะหายจากรายการเอง</p>
+ ${manBookFlow()}
+ <ul class="man-ol"><li>ระบบ <b>เปิดรับจองอัตโนมัติ</b> เมื่อพิมพ์หนังสือเรียกลงนาม กดคัดลอกลิงก์ หรือกดเปิดหน้าจอง และอัปเดตให้เองเมื่อช่วงวันเปลี่ยน</li>
+ <li>ถ้าบริษัทแจ้งว่า “ลิงก์จองไม่ถูกต้อง” ให้เปิดแท็บเรียกลงนามสัญญาของโครงการนั้น กด “เปิดรับจอง / อัปเดตลิงก์จอง” หนึ่งครั้ง — QR เดิมใช้ได้ทันที ไม่ต้องพิมพ์หนังสือใหม่</li></ul>
+
+ <div class="man-company">${H('company','5. คู่มือฝั่งบริษัท: การจองวันลงนามสัญญาออนไลน์')}
+ <ol class="man-ol">
+  <li>สแกน QR Code ในหนังสือเรียกลงนามในสัญญา (หรือเปิดลิงก์ที่เจ้าหน้าที่ส่งให้) ด้วยโทรศัพท์หรือคอมพิวเตอร์</li>
+  <li><b>เลือกวันและเวลาลงนาม</b> — ช่วงเวลาที่มีผู้จองแล้วจะกดไม่ได้</li>
+  <li><b>กรอกผู้ติดต่อ</b> ชื่อ เบอร์โทรศัพท์ และอีเมล (ใช้รับแจ้งผลการยืนยันนัด)</li>
+  <li><b>กรอกผู้ลงนามในสัญญา</b> ชื่อ นามสกุล ตำแหน่ง</li>
+  <li><b>เลือกรูปแบบหลักประกันสัญญา</b> ระบบแสดงจำนวนเงินหลักประกันและอากรแสตมป์ให้</li>
+  <li><b>แนบเอกสาร</b> ตามรายการที่กำหนด (ไฟล์ละไม่เกิน 10 MB) แล้วกดส่งการจอง</li>
+  <li>รออีเมลยืนยันนัดจากเจ้าหน้าที่ · เปิดลิงก์เดิมเพื่อดูการจองหรือแนบเอกสารเพิ่มได้ตลอด</li>
+  <li>วันลงนาม นำหลักประกันสัญญาฉบับจริง ค่าอากรแสตมป์ และตรายางบริษัท (ถ้ามี) มาด้วย</li>
+ </ol>
+ <p class="muted">สอบถาม: ${esc(S.settings.office||'')} ${esc(S.settings.unit||'')} โทร ${esc(S.settings.tel||'')}</p></div>
+
+ ${H('lock','6. การบันทึกและล็อกขั้นตอน')}
+ <ul class="man-ol"><li>ข้อมูลที่กรอกบันทึกอัตโนมัติทันที แถบด้านบนของแต่ละแท็บบอกสถานะขั้นตอน</li>
+ <li>กด <b>💾 บันทึก</b> เมื่อขั้นตอนนั้นเสร็จ ระบบจะล็อกไม่ให้แก้โดยไม่ตั้งใจ (ยังดูและพิมพ์ได้)</li>
+ <li>ต้องการแก้ไข กด <b>แก้ไข</b> แล้วใส่รหัสผ่าน แก้เสร็จกดบันทึกอีกครั้ง</li>
+ <li>ผู้บริหาร (บัญชีดูอย่างเดียว) เห็นเฉพาะปฏิทินและสถานะ</li></ul>
+
+ ${H('faq','7. ปัญหาที่พบบ่อย')}
+ <table class="man-t"><thead><tr><th style="width:35%">อาการ</th><th>วิธีแก้</th></tr></thead><tbody>
+  <tr><td>แดชบอร์ดแสดงโครงการไม่ครบ</td><td>มีคำค้นค้างอยู่ กด “ล้างคำค้นหา”</td></tr>
+  <tr><td>ข้อมูลในชีตเดิมแก้แล้วยังไม่เปลี่ยน</td><td>กด “ซิงก์ข้อมูลจากชีตเดิม” ในแท็บคำสั่งแต่งตั้ง หรือรอรอบซิงค์อัตโนมัติ 5 นาที</td></tr>
+  <tr><td>ช่องกองเก็บ MILLING ว่าง / เป็นค่าเริ่มต้น</td><td>กด “ดึงจาก Excel (เลือกไฟล์)” ในการ์ดเอกสารแนบ แล้วเลือกไฟล์ Excel ราคากลาง</td></tr>
+  <tr><td>ตัวเลือกข้อกำหนดมาตรฐานไฟฟ้าขึ้นในงานทาง</td><td>ตั้ง “แบบหมายเหตุ” กลับเป็น อัตโนมัติ แล้วกด “ให้ระบบเลือกตาม BOQ”</td></tr>
+  <tr><td>บริษัทเปิดลิงก์จองแล้วขึ้น “ลิงก์จองไม่ถูกต้อง”</td><td>กด “เปิดรับจอง / อัปเดตลิงก์จอง” ในแท็บเรียกลงนามสัญญา</td></tr>
+  <tr><td>ขึ้น “ไม่ได้รับอนุญาตให้เข้าถึง: DriveApp”</td><td>เป็นข้อจำกัดของ Google Drive ตอนเปิดไฟล์ที่แนบไว้ ใช้ปุ่มเลือกไฟล์จากเครื่องแทน และแจ้งผู้ดูแลระบบ</td></tr>
+  <tr><td>ไม่เห็นการปรับปรุงล่าสุด</td><td>ดูเลขเวอร์ชันท้ายหน้า รีเฟรชหน้า หรือรอประมาณ 10 นาที</td></tr>
+  <tr><td>กลัวข้อมูลหาย</td><td>ตั้งค่า → สำรองข้อมูลเป็นไฟล์เป็นระยะ</td></tr>
+ </tbody></table>
+ </div></div>`;
+ $('#manPrint',el).onclick=()=>{document.body.classList.add('pman');try{window.print()}finally{setTimeout(()=>document.body.classList.remove('pman'),500)}};
+ $$('[data-manjump]',el).forEach(a=>a.onclick=e=>{e.preventDefault();const t=$('#man-'+a.dataset.manjump);if(t)t.scrollIntoView({behavior:'smooth'})})}
 
 /* ================= settings ================= */
 function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" style="gap:18px;max-width:900px">
