@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">96</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">97</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='96',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='97',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2684,9 +2684,11 @@ const N_LIGHT_STD={t:'การกำหนดแบบมาตรฐานง�
  'เพื่อป้องกันการขโมยสายไฟฟ้าในช่วงระหว่างเสาไฟฟ้าต่อเสาไฟฟ้าให้เทคอนกรีตหุ้ม 3 จุดที่บริเวณปิดหัวท้ายและตรงกลาง',
  'อุปกรณ์ไฟฟ้าทุกชนิดจะต้องใช้ตามมาตรฐานอุตสาหกรรม (มอก.)']};
 const ANX_REMARK_LIGHT='ตามข้อกำหนดมาตรฐานทั่วไปงานติดตั้งไฟฟ้าแสงสว่างบนทางหลวง';
-function anxOf(p){p.annex=Object.assign({kind:'',elec:null,mill:null,millAt:'',signer:'',witness1:'',witness2:''},p.annex||{});return p.annex}
+function anxOf(p){p.annex=Object.assign({kind:'',elec:null,lstd:null,mill:null,millAt:'',signer:'',witness1:'',witness2:''},p.annex||{});return p.annex}
 /* งานขูดไส (MILLING) — มีรายการ MILLING ใน BOQ ต้องระบุที่กองเก็บวัสดุ */
 const MILL_AT_DEF='ทางหลวงหมายเลข 4034 หมวดทางหลวงอ่าวนาง';
+/* ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10) — อัตโนมัติเมื่อเป็นงานไฟฟ้าและมีรายการเสา/ดวงโคม */
+function anxLstd(p){const A=anxOf(p);if(A.lstd!==null&&A.lstd!==undefined)return !!A.lstd;return anxKind(p)==='light'&&(p.items||[]).some(i=>i.kind==='item'&&/POLE|LAMP|LUMINAIRE|ดวงโคม|เสาไฟ/i.test(i.name||''))}
 function anxMill(p){const A=anxOf(p);if(A.mill!==null&&A.mill!==undefined)return !!A.mill;return (p.items||[]).some(i=>i.kind==='item'&&/MILLING|ขูดไส/i.test(i.name||''))}
 function anxMillNote(p){const A=anxOf(p);return `วัสดุงาน MILLING ให้ผู้รับจ้างดำเนินการขนส่งวัสดุผิวลาดยางเดิมที่ได้จากการขูดไส (MILLING) นำไปกองเก็บ ณ ${String(A.millAt||S.settings.millAt||MILL_AT_DEF).trim()} ให้เรียบร้อยเพื่อนำไปใช้ประโยชน์กับทางราชการต่อไป`}
 function anxKind(p){const A=anxOf(p);if(A.kind)return A.kind;return (p.type==='ไฟฟ้าแสงสว่าง'||/ไฟฟ้าแสงสว่าง|ไฟสัญญาณ/.test(p.name||''))?'light':'road'}
@@ -2696,7 +2698,7 @@ function anxSel(p){return /คัดเลือก/.test((p.req&&(p.req.hireMet
 function anxNotes(p,doc){const light=anxKind(p)==='light',el=anxElec(p);const ml=anxMill(p)?[anxMillNote(p)]:[];
   const pre=[`ใน${anxSel(p)}ครั้งนี้ไม่เป็นการผูกมัดว่ากรมทางหลวงจะต้องจ้างหรือลงนามในสัญญา`,'หากมีข้อขัดข้องหรือสาเหตุประการใดที่ทำให้กรมทางหลวงไม่อาจจ้างหรือลงนามในสัญญาได้ ผู้เสนอราคาให้ความยินยอมว่า จะไม่เรียกร้องค่าเสียหายใด ๆ จากทางราชการ'];
   if(light){if(doc==='annex')return [N_KM,N_TRAFFIC,N_PLAN,N_LOCAL,N_INSPECT,...(el?[N_ELEC1]:[]),N_SIGN,...ml];
-    return [...pre,N_KM,N_PLAN,N_LOCAL,N_TRAFFIC,N_INSPECT,N_PAY,N_DAMAGE,...ml,...(el?[N_ELEC1]:[]),N_LIGHT_STD]}
+    return [...pre,N_KM,N_PLAN,N_LOCAL,N_TRAFFIC,N_INSPECT,N_PAY,N_DAMAGE,...ml,...(el?[N_ELEC1]:[]),...(anxLstd(p)?[N_LIGHT_STD]:[])]}
   const base=[N_KM,N_PLAN,N_LOCAL,N_SIGN,...ml,...(el?['ถ้างานสัญญาดังกล่าว ปรากฏ'+N_ELEC1.replace(/^วงเงิน/,'วงเงิน'),N_ELEC2,N_ELEC3]:[])];
   return doc==='attach'?[...pre,...base]:base}
 function anxContract(p){const bk=(p.book&&p.book.booking)||{};return {no:p.contractNo||bk.contractNo||'',date:p.contractDate||bk.date||''}}
@@ -2796,13 +2798,14 @@ function anxCard(p,kinds,title){const A=anxOf(p);const con=kinds.includes('con')
   return `<div class="card" id="anxCard"><div class="card-h"><h2>${title}</h2></div><div class="card-b grid g12">
    <div class="s12 row" style="gap:10px;flex-wrap:wrap;margin:0">${ks.map(k=>{const [r,l,x]=ANX_DOCS[k];return `<span class="row" style="gap:4px;margin:0"><button class="btn sm" data-oprint="${r}" type="button">${ICON.print} ${l}</button>${x?`<button class="btn sm" data-axl="${k}" type="button">⤓ Excel</button>`:''}</span>`}).join('')}</div>
    <label class="f s4"><span>แบบหมายเหตุ</span><select class="i" data-anx="kind"><option value="" ${!A.kind?'selected':''}>อัตโนมัติ (${light?'งานไฟฟ้า':'งานทาง'})</option><option value="road" ${A.kind==='road'?'selected':''}>งานทาง/ก่อสร้างทั่วไป</option><option value="light" ${A.kind==='light'?'selected':''}>งานไฟฟ้าแสงสว่าง/ไฟสัญญาณ</option></select></label>
-   <div class="f s8"><span>&nbsp;</span><div class="row" style="gap:16px;flex-wrap:wrap;margin:0"><label class="switch"><input type="checkbox" data-anx="elec" ${anxElec(p)?'checked':''}> ใส่หมายเหตุเรื่องค่าธรรมเนียมการไฟฟ้า</label><label class="switch"><input type="checkbox" data-anx="mill" ${anxMill(p)?'checked':''}> ใส่หมายเหตุวัสดุงาน MILLING${(p.items||[]).some(i=>/MILLING|ขูดไส/i.test(i.name||''))?' (พบรายการ MILLING ใน BOQ)':''}</label></div></div>
+   <div class="f s8"><span>&nbsp;</span><div class="row" style="gap:16px;flex-wrap:wrap;margin:0">${[['elec','หมายเหตุค่าธรรมเนียมการไฟฟ้า',anxElec(p)],['mill','หมายเหตุวัสดุงาน MILLING',anxMill(p)],...(light?[['lstd','ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10)',anxLstd(p)]]:[])].map(([k,l,on])=>`<label class="switch"><input type="checkbox" data-anx="${k}" ${on?'checked':''}> ${l} <span class="muted" style="font-size:12px">${A[k]===null||A[k]===undefined?'(ระบบเลือกให้ตาม BOQ)':'(เลือกเอง)'}</span></label>`).join('')}${['elec','mill','lstd'].some(k=>A[k]!==null&&A[k]!==undefined)?'<button class="btn sm" data-anxauto type="button">ให้ระบบเลือกตาม BOQ</button>':''}</div></div>
    ${anxMill(p)?`<label class="f s12"><span>กองเก็บวัสดุ MILLING ณ</span><input class="i" data-anx="millAt" value="${esc(A.millAt||'')}" placeholder="${esc(S.settings.millAt||MILL_AT_DEF)}"></label>`:''}
    ${con?`<label class="f s4"><span>ผู้ลงนามฝ่ายผู้รับจ้าง (ว่าง = จากการจองลงนาม)</span><input class="i" data-anx="signer" value="${esc(A.signer||'')}" placeholder="${esc(anxSigner(Object.assign({},p,{annex:{}}))||'นาย/นาง/นางสาว ...')}"></label>`:''}
    ${con&&light?`<label class="f s4"><span>พยานคนที่ 1</span><input class="i" data-anx="witness1" value="${esc(A.witness1||'')}" placeholder="${esc(anxWit(Object.assign({},p,{annex:{}}))[0])}"></label><label class="f s4"><span>พยานคนที่ 2</span><input class="i" data-anx="witness2" value="${esc(A.witness2||'')}" placeholder="${esc(anxWit(Object.assign({},p,{annex:{}}))[1])}"></label>`:''}
    <div class="s12 muted" style="font-size:13px">รายการ ปริมาณ และหน่วย มาจาก BOQ ราคากลาง${con?' · ราคาในผนวก 3 = ราคาตามสัญญาหลังปรับลด (ตรงกับแบบแนบท้ายสัญญา)':''}${light?' · งานไฟฟ้ามีช่องหมายเหตุ “'+esc(ANX_REMARK_LIGHT)+'” และข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง':''} · ไฟล์ Excel ใช้ฟอนต์ TH SarabunIT๙ 16 แก้ไขต่อได้</div></div></div>`}
 function bindAnx(el,p){const A=anxOf(p);
-  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;touch(p);if(i.dataset.anx==='kind'||i.dataset.anx==='mill')render()}));
+  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;touch(p);if(['kind','mill','elec','lstd'].includes(i.dataset.anx))render()}));
+  $$('[data-anxauto]',el).forEach(b=>b.onclick=()=>{A.elec=null;A.mill=null;A.lstd=null;touch(p);render()});
   $$('[data-axl]',el).forEach(b=>b.onclick=async()=>{b.disabled=true;try{await anxXlsx(p,b.dataset.axl)}catch(e){alert(e.message)}finally{b.disabled=false}});
   $$('[data-oprint]',el).forEach(b=>{if(!b.onclick)b.onclick=()=>{reportSel=b.dataset.oprint;go('report')}})}
 /* ---------- อ่านแผ่น “ข้อมูลและผลงาน” ของไฟล์ราคากลาง ---------- */
