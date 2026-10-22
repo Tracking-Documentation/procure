@@ -346,7 +346,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">87</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">88</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -409,7 +409,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='87',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='88',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2540,7 +2540,16 @@ function torIndent(txt,lead){
   if(/^[-✓☐]/.test(txt))return 'ti:25mm';
   return lead?'ti:25mm':''}
 function torEsc(t){return esc(t).replace(/\t/g,'  ').replace(/ {3,}/g,'  ').replace(/\n/g,'<br>')}
-function torRuns(r,vals){return (r||[]).map(x=>{const [t,f]=typeof x==='string'?[x,0]:x;return [t.replace(/\{\{([A-Z_0-9]+)\}\}/g,(m,k)=>k in vals?vals[k]:''),f]})}
+/* ทุนจดทะเบียนขั้นต่ำตามวงเงิน — หนังสือ กค (กวจ) 0405.2/ว 124 ลว. 1 มี.ค. 2566 ข้อ 1.1.2 (ล้านบาท: [เพดานวงเงิน, ทุนขั้นต่ำ]) */
+const TOR_CAP=[[1,0],[5,1],[10,2],[20,3],[60,8],[150,20],[300,60],[500,100],[Infinity,200]];
+const TOR_W124='เป็นไปตามหนังสือคณะกรรมการวินิจฉัยปัญหาการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ ด่วนที่สุด ที่ กค (กวจ) 0405.2/ว 124 ลงวันที่ 1 มีนาคม 2566';
+function torCap(p){const mb=num(p.budget)/1e6;for(const [c,v] of TOR_CAP)if(mb<=c)return v;return 200}
+function torCapText(p){const v=torCap(p);return v?`ไม่ต่ำกว่า ${v} ล้านบาท`:'(มูลค่าการจัดซื้อจัดจ้างไม่เกิน 1 ล้านบาท ไม่ต้องกำหนดทุนจดทะเบียน)'}
+function torFix(t,p){
+  t=t.replace(/(ผู้ยื่นข้อเสนอต้องมีมูลค่าสุทธิของกิจการ)(\s*ดังนี้)?\s*$/,(m,a)=>`${a}  ${TOR_W124}  ดังนี้`);
+  t=t.replace(/(ทุนจดทะเบียนที่เรียกชำระมูลค่าหุ้นแล้ว\s*ณ\s*วันที่ยื่นข้อเสนอ)(\s*ไม่ต่ำกว่า\s*[0-9๐-๙]+\s*ล้านบาท)?/,(m,a)=>`${a}  ${torCapText(p)}`);
+  return t}
+function torRuns(r,vals,p){return (r||[]).map(x=>{const [t,f]=typeof x==='string'?[x,0]:x;let v=t.replace(/\{\{([A-Z_0-9]+)\}\}/g,(m,k)=>k in vals?vals[k]:'');if(p)v=torFix(v,p);return [v,f]})}
 /* เลขข้อนำหน้า + ช่องว่าง → กล่องเว้นระยะคงที่ (ไม่ให้การจัดชิดขอบไปถ่างช่องหลังเลขข้อ) */
 function torLabel(h){return h.replace(/^((?:<[bu]>)*)((?:[0-9๐-๙]+\.)+[0-9๐-๙]*|\((?:[0-9๐-๙.]+|[ก-ฮ])\)|[-✓])[ \u00a0]+/,(m,t,l)=>`${t}<span class="tlb">${l} </span>`)}
 function torHtmlRuns(R){return R.map(([t,f])=>{let h=torEsc(t);if(!h)return '';if(f&1)h=`<b>${h}</b>`;if(f&2)h=`<u>${h}</u>`;return h}).join('')}
@@ -2560,7 +2569,7 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
       else{const no=o.blk==='SECTION_310'?'๓.๑๐':o.blk==='SECTION_210'?'๒.๑๐':'';const L=no?torQual(p,no):torJV(p);
         L.filter(s=>!out.some(h=>h.includes(torEsc(s.slice(0,40))))).forEach((s,i)=>out.push(mk('tp',`text-indent:${no?'25mm':(i===0?'32mm':'25mm')}`,torLabel(torEsc(s)))))}
       empties=0;continue}
-    const R=torRuns(o.r,vals);let plain=R.map(x=>x[0]).join('');
+    const R=torRuns(o.r,vals,p);let plain=R.map(x=>x[0]).join('');
     if(o.bg&&String(torOf(p).background||'').trim()){out.push(mk('tp','text-indent:25mm'+(o.b?';margin-top:'+(o.b/20)+'pt':''),torEsc(torOf(p).background.trim())));empties=0;continue}
     if(!plain.trim()){if(++empties<=2)out.push(mk('tp e',''));continue}
     empties=0;
@@ -2601,7 +2610,7 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
     ${tx('approvedBy','ได้รับความเห็นชอบจาก','s6','เช่น สำนักบำรุงทาง')}${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
     <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
     <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea></label>
-    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
+    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
     ${W.length?`<div class="s12 note" style="margin:0">${W.map(esc).join('<br>')}</div>`:''}
    </div></div>`}
 function torMtBox(p){const T=torOf(p);const on=new Set(Array.isArray(T.maintainIds)?T.maintainIds:[]);
