@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">103</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">104</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='103',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='104',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -731,7 +731,7 @@ function rBoq(){const p=P();const b=$('#boqBody');let n=0;
     if(it.kind==='heading')return `<tr class="hd" data-iid="${it.id}"><td></td><td colspan="4"><input class="i" data-k="name" value="${esc(it.name)}" placeholder="หัวข้อ เช่น งานดิน / ค่าใช้จ่ายพิเศษตามข้อกำหนด" style="font-weight:600"></td><td><select class="i w-cat" data-k="catId">${catOpts(it.catId)}</select></td><td colspan="2" class="muted" style="font-size:12px">หัวข้อ</td><td class="act">${acts}</td></tr>`;
     n++;const fx=catOf(p,it.catId).kind!=='construction';
     return `<tr data-iid="${it.id}"><td class="n">${n}</td><td><textarea class="i" data-k="name" rows="${Math.min(4,Math.max(1,String(it.name).split('\n').length))}">${esc(it.name)}</textarea></td>
-    <td><input class="i w-unit" data-k="unit" value="${esc(it.unit)}"></td><td><input class="i r w-qty" data-k="qty" value="${esc(it.qty)}" inputmode="decimal"></td>
+    <td><input class="i w-unit" data-k="unit" value="${esc(it.unit)}"></td><td><input class="i r w-qty" data-k="qty" value="${it.qty===''||it.qty==null?'':esc(fQ(it.qty))}" inputmode="decimal"></td>
     <td><input class="i r w-cost" data-k="unitCost" value="${(p.costMode||'total')==='total'?(costBase(it)?fmt(costBase(it)):''):(it.unitCost||costBase(it)?fmt(hasTotal(it)&&num(it.qty)?costBase(it)/num(it.qty):num(it.unitCost)):'')}" inputmode="decimal"></td>
     <td><select class="i w-cat" data-k="catId">${catOpts(it.catId)}</select></td>
     <td><input class="i r w-mid" data-k="midOverride" value="${it.midOverride!==''&&it.midOverride!=null?fmt(num(it.midOverride)):''}" placeholder="${fS(midOf(p,it))}" data-mid="${it.id}" inputmode="decimal" title="ว่าง = คำนวณอัตโนมัติ" style="${midMismatch(p,it)?'border-color:var(--danger);border-width:2px':''}"></td>
@@ -743,7 +743,7 @@ function rBoq(){const p=P();const b=$('#boqBody');let n=0;
     else if(k==='midOverride')it.midOverride=e.target.value.trim()===''?'':num(e.target.value);else it[k]=e.target.value;
     if(e.target.tagName==='TEXTAREA')grow(e.target);
     touch(p);if(k==='catId'){rBoq();return}updMids()};
-  b.onchange=e=>{const k=e.target.dataset.k;if(k==='unitCost'||k==='midOverride'){const v=e.target.value.trim();e.target.value=v===''?'':fmt(num(v))}};
+  b.onchange=e=>{const k=e.target.dataset.k;if(k==='unitCost'||k==='midOverride'){const v=e.target.value.trim();e.target.value=v===''?'':fmt(num(v))}else if(k==='qty'){const v=e.target.value.trim();e.target.value=v===''?'':fQ(num(v))}};
   b.onclick=e=>{const tr=e.target.closest('[data-iid]');if(!tr)return;const i=p.items.findIndex(x=>x.id===tr.dataset.iid);
     const mv=e.target.closest('[data-mv]');if(mv){const j=i+ +mv.dataset.mv;if(j<0||j>=p.items.length)return;[p.items[i],p.items[j]]=[p.items[j],p.items[i]];touch(p);rBoq();return}
     if(e.target.closest('[data-rm]')){p.items.splice(i,1);touch(p);rBoq()}};
@@ -2764,7 +2764,8 @@ async function anxXlsx(p,kind){const X=await loadExcelJS();const wb=new X.Workbo
   const FONT={name:'TH SarabunIT๙',size:16};const thin={style:'thin'};const box={top:thin,left:thin,bottom:thin,right:thin};const light=anxKind(p)==='light';
   const cols={attach:light?[2,6,50,10,11,22]:[2,7,62,12,14],boqform:[2,7,52,10,9,14,16],con:[2,6,52,17,14,17]}[kind];ws.columns=cols.map(w=>({width:w}));
   const nc=cols.length,L=String.fromCharCode(64+nc);const est=(t,w)=>Math.max(1,Math.ceil(String(t||'').length/w));
-  const row=(vals,o={})=>{const r=ws.addRow(vals);for(let i=1;i<=nc;i++){const c=r.getCell(i);c.font=Object.assign({},FONT,o.bold?{bold:true}:{});c.alignment={vertical:'top',wrapText:true,...(o.al&&o.al[i-1]?{horizontal:o.al[i-1]}:{})};if(o.box&&i>=2)c.border=box}
+  const nf=v=>{const d=Math.min(3,(String(v).split('.')[1]||'').length);return d?'#,##0.'+'0'.repeat(Math.max(2,d)):'#,##0'};
+  const row=(vals,o={})=>{const r=ws.addRow(vals);for(let i=1;i<=nc;i++){const c=r.getCell(i);if(i>=3&&typeof c.value==='number'&&isFinite(c.value))c.numFmt=nf(c.value);c.font=Object.assign({},FONT,o.bold?{bold:true}:{});c.alignment={vertical:'top',wrapText:true,...(o.al&&o.al[i-1]?{horizontal:o.al[i-1]}:{})};if(o.box&&i>=2)c.border=box}
     if(o.merge)ws.mergeCells(`${o.merge}${r.number}:${L}${r.number}`);if(o.h)r.height=o.h;return r};
   const notes=list=>{row(['','หมายเหตุ'],{bold:true});list.forEach((n,i)=>{const add=(lab,t,ind)=>{const r=ws.addRow(['',lab,t]);r.getCell(2).font=FONT;r.getCell(2).alignment={vertical:'top',horizontal:'right'};const c=r.getCell(3);c.font=FONT;c.alignment={wrapText:true,vertical:'top',indent:ind||0};ws.mergeCells(`C${r.number}:${L}${r.number}`);r.height=22*est(t,90)};
     if(typeof n==='string')add(`${i+1}.`,n);else{add(`${i+1}.`,n.t);n.sub.forEach((s,j)=>add('',`${i+1}.${j+1}  ${s}`,2))}})};
