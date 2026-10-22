@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">104</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">105</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='104',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='105',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -679,6 +679,7 @@ function rEdit(){
      ${F('projectNo','เลขที่โครงการ (e-GP)',{cls:'s4'})}${F('legacyId','ID / รหัสงาน (ชีตติดตาม)',{cls:'s3'})}${F('agency','หน่วยงานเจ้าของโครงการ',{cls:'s5'})}
      ${F('division','หน่วยดำเนินการ',{cls:'s4'})}${F('km','กม.ดำเนินการ',{cls:'s4'})}${F('workDays','ระยะเวลาดำเนินการ (วัน)',{cls:'s4'})}
      ${F('budget','วงเงินงบประมาณ (บาท)',{cls:'s4',money:1})}${F('midDeclared','ราคากลางตามแบบ ปร.5/ปร.6 (ไว้ตรวจยอด)',{cls:'s4',money:1})}${F('offerPrice','ราคาตามคำเสนอของผู้ชนะ (บาท)',{cls:'s4',money:1,req:1})}
+     ${F('midApproveDate','อนุมัติราคากลางวันที่',{cls:'s4',type:'date'})}${F('torStart','ระยะเวลาร่าง TOR ตั้งแต่วันที่',{cls:'s4',type:'date'})}${F('torEnd','ร่าง TOR ถึงวันที่',{cls:'s4',type:'date'})}
      ${F('inviteNo','ประกาศประกวดราคาเลขที่',{cls:'s6'})}${F('inviteDate','ประกาศลงวันที่',{cls:'s6',type:'date'})}
      ${F('contractor','ชื่อผู้ชนะ / ผู้รับจ้าง',{cls:'s6'})}${F('announceDate','วันที่ประกาศผลผู้ชนะ',{cls:'s3',type:'date'})}${F('status','สถานะ',{cls:'s3',sel:['ร่าง','กำลังต่อรอง','ตกลงราคาแล้ว','ลงนามสัญญาแล้ว']})}
      ${F('contractNo','เลขที่สัญญา',{cls:'s4'})}${F('contractDate','วันที่ลงนามสัญญา',{cls:'s4',type:'date'})}${F('note','หมายเหตุ',{cls:'s4'})}
@@ -2860,7 +2861,7 @@ function planCheck(d,plan){if(!plan||!plan.items)return null;const nz=t=>String(
 const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
 const stepUnl=new Set();
 function stepHasData(p,t){const has=o=>!!o&&Object.values(o).some(v=>v!==''&&v!=null&&!(Array.isArray(v)&&!v.length)&&!(typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length));
-  switch(t){case 'prep':return has(p.prep)||!!(p.midApproveDate||p.torStart||p.torEnd);case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
+  switch(t){case 'prep':return has(p.prep);case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
     case 'nego':case 'result':return !!(p.rounds||[]).length;case 'sign':return has(p.sign);case 'cert':return has(p.cert);}return false}
 /* ชื่อโครงการ + "ระหว่าง กม. …" (แทรกหลังชื่อตอน ก่อน จ./จังหวัด) */
 function kmText(km){const t=String(km||'').replace(/กม\.?/g,' ');const re=/(\d+\+\d+)\s*(?:-|–|ถึง)\s*(\d+\+\d+)|(\d+\+\d+)/g;const L=[];let m;
@@ -2961,7 +2962,7 @@ function prepMini(p){const R=prepOf(p);const d=x=>x?thDate(x):'-';
   const ok=[!!(R.approveNo||R.approveDate),!!R.plan,!!R.draft,!!p.midApproveDate].filter(Boolean).length;
   return `<div class="note" style="margin:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span><b>ขั้นเตรียมการ</b> ${ok}/4 · เห็นชอบ ${esc(R.approveNo||'-')} ${R.approveDate?'ลว. '+esc(d(R.approveDate)):''} · แบบ ${R.plan?'✓':'—'} · ร่างขออนุมัติประกาศ ${R.draft?'✓':'—'} (${(R.authority||authSuggest(p))==='region'?'อำนาจเขต':'อำนาจแขวง'}) · อนุมัติราคากลาง ${esc(d(p.midApproveDate))}</span><button class="btn sm" data-goto="prep" type="button" style="margin-left:auto">แก้ที่แท็บขั้นเตรียมการ →</button></div>`}
 function rPrep(){const el=$('#v-prep');if(needProject(el))return;const p=P();
-  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${anxCard(p,['attach','boqform'],'เอกสารแนบประกาศ: รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (BOQ)')}${prepDatesCard(p)}</div>`;
+  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${anxCard(p,['attach','boqform'],'เอกสารแนบประกาศ: รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (BOQ)')}</div>`;
   bindPrep(el,p);bindTor(el,p);bindAnx(el,p);
   $$('[data-f]',el).forEach(inp=>inp.addEventListener(inp.type==='date'?'change':'input',()=>{p[inp.dataset.f]=inp.value;touch(p)}))}
 const PREP_FLABEL={approveFiles:'หนังสือเห็นชอบ',planFiles:'แบบ',bookFiles:'เล่มแผน',xlsFiles:'Excel ราคากลาง'};
