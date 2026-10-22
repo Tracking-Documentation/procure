@@ -347,7 +347,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-cert" hidden></section>
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">99</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">100</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -410,7 +410,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='99',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='100',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1498,7 +1498,7 @@ function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.
 /* ================= reports ================= */
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['req','ขออนุมัติซื้อ/จ้าง (4033)'],...ORD_REPORTS.map(x=>[x[0],x[1]]),['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแนบท้ายสัญญา'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
+  const segs=[['req','ขออนุมัติซื้อ/จ้าง'],...ORD_REPORTS.map(x=>[x[0],x[1]]),['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแนบท้ายสัญญา'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   el.innerHTML=`<div class="card no-print" style="margin-bottom:6px"><div class="card-b row">
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
@@ -2336,7 +2336,7 @@ function parse4033(rows){const S_=v=>String(v??'').trim();let h=-1,cEst=-1;
 function normName(s){return String(s||'').split('\n')[0].replace(/\s+/g,' ').trim().toUpperCase().slice(0,40)}
 function import4033Dialog(d,fname){const p=P();const has=!!p&&p.items.some(i=>i.kind==='item');const sum=r2(d.items.reduce((a,x)=>a+(x.tot??r2(x.qty*(x.est||0))),0));
   const ex=has?p.items.filter(i=>i.kind==='item'):[];const match=ex.length===d.items.length?ex.length:d.items.filter(x=>ex.some(e=>normName(e.name)===normName(x.name))).length;
-  const m=modal('นำเข้าบันทึกขออนุมัติซื้อ/จ้าง (4033)',`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">${esc(fname)}</div>
+  const m=modal('นำเข้าบันทึกขออนุมัติซื้อ/จ้าง',`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">${esc(fname)}</div>
     <div><b>${esc((d.title.join(' ')||d.req.subject||'').slice(0,160))}</b></div>
     <div>พบ <b>${d.items.length}</b> รายการ · รวม ${fmt(sum)}${d.adj?` · ปรับยอด ${fmt(d.adj)}`:''} · วงเงิน <b>${fmt(d.budget||d.grand||sum)}</b> บาท${d.sum!=null&&Math.abs(d.sum-sum)>0.01?` <span class="pill p-nego">ยอดรวมในไฟล์ ${fmt(d.sum)} ไม่ตรง</span>`:''}</div>
     <label class="f"><span>นำเข้าเป็น</span><select class="i" id="imMode">
