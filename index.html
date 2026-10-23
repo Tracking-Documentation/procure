@@ -367,7 +367,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">111</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">112</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -430,7 +430,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='111',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='112',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1955,7 +1955,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
  <table class="man-t"><thead><tr><th style="width:17%">แท็บ</th><th>ทำอะไร</th><th style="width:31%">เอกสารที่ได้</th></tr></thead><tbody>
   <tr><td>ขั้นเตรียมการ</td><td>① แนบหนังสือเห็นชอบ เล่มแผน แบบ · ② กด “แนบไฟล์ Excel และดึงข้อมูล” ระบบอ่านแผ่น SUMMARY (รายการ BOQ ราคากลาง กรรมการราคากลาง) และแผ่น “ข้อมูลและผลงาน” (ระยะเวลา กม. แผนงาน เหตุผลความจำเป็น หมายเหตุ MILLING) พร้อมตรวจรายการสองแผ่นให้ตรงกัน · ③ ตั้งค่า TOR (สาขางาน Plant ค่า K ค่าปรับ รับประกัน) · ④ เลือกหมายเหตุเอกสารแนบ (งานทาง/งานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า MILLING) · วงเงินตั้งแต่ 5 ล้าน ระบบเพิ่มเอกสารกำหนดคะแนนความเสียหายให้เอง</td><td>ร่าง TOR · ร่างประกาศ · ร่างเอกสารประกวดราคา · รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (พิมพ์/Excel) · เอกสารกำหนดคะแนนความเสียหาย (≥ 5 ล้าน)</td></tr>
   <tr><td>ขออนุมัติซื้อ/จ้าง</td><td>เลือกอำนาจ: <b>แขวง</b> → เรียน ผอ.ขท.กระบี่ ผ่านหัวหน้าเจ้าหน้าที่ · <b>เขต</b> (เกิน 10 ล้าน) → เรียน ผส.ทล.17 ผ่านหัวหน้าเจ้าหน้าที่ · กรอกเหตุผล ระยะเวลา และรายการที่ต้องการ</td><td>บันทึกรายงานขอซื้อขอจ้าง</td></tr>
-  <tr><td>คำสั่งแต่งตั้ง</td><td>เลือกรายชื่อกรรมการจากดรอปลิสต์ แก้ข้อความในคำสั่งได้ · กรรมการพิจารณาผลแก้ที่นี่แล้วลิงก์ไปการ์ดพิจารณาผล · กรรมการตรวจรับ/ผู้ควบคุมงานดึงจากตาราง ป/ก/ค/ผช ในชีตเดิม</td><td>คำสั่ง TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน · บันทึกมอบหมาย</td></tr>
+  <tr><td>คำสั่งแต่งตั้ง</td><td>เลือกรายชื่อกรรมการจากดรอปลิสต์ แก้ข้อความในคำสั่งได้ · กรรมการพิจารณาผลแก้ที่นี่แล้วลิงก์ไปการ์ดพิจารณาผล · กรรมการตรวจรับ/ผู้ควบคุมงานดึงจากตาราง ป/ก/ค/ผช ในชีตเดิม · มีคนเปลี่ยนตำแหน่ง กด “อัปเดตตำแหน่งบุคลากร”</td><td>คำสั่ง TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน · บันทึกมอบหมาย</td></tr>
   <tr><td>ข้อมูลโครงการ / BOQ</td><td>ตรวจข้อมูลโครงการ วงเงิน ราคากลาง ปร.5 · กรอกวันที่อนุมัติราคากลางและช่วงร่าง TOR · ตั้งหมวดและ Factor F (ครุภัณฑ์ VAT 1.07 และค่าใช้จ่ายพิเศษไม่ถูกปรับลด) · ตรวจรายการ BOQ</td><td>แบบสรุปราคากลาง (ว 651)</td></tr>
   <tr><td>ผู้เสนอราคา</td><td>กรอกผู้ยื่นข้อเสนอและราคา ระบบจัดลำดับ</td><td>—</td></tr>
   <tr><td>พิจารณาผล</td><td>กำหนดการ คณะกรรมการ การประชุม ผลตรวจสอบเอกสาร หลักประกันการเสนอราคา · วงเงินเกินอำนาจแขวง ทำบันทึกขออนุมัติถึงเขต</td><td>เอกสารพิจารณาผล · แบบแจ้งผลผู้เสนอราคา</td></tr>
@@ -2587,6 +2587,26 @@ function peopleAll(){const M=new Map();const add=(n,pos)=>{n=String(n||'').trim(
   (S.projects||[]).forEach(q=>{(q.committee||[]).forEach(m=>add(m.name,m.position));const O=q.orders;if(O)['inspect','tor','price'].forEach(k=>(O[k]&&O[k].members||[]).forEach(m=>add(m.name,m.position)));
     const L=q.legacy&&q.legacy.committees;if(L)Object.values(L).forEach(c=>(c&&c.members||[]).forEach(m=>add(m.name,m.position)))});
   return [...M.values()].sort((a,b)=>fName(a.name).localeCompare(fName(b.name),'th'))}
+/* ทำเนียบบุคลากร: แก้ตำแหน่ง (เช่น เลื่อนตำแหน่ง) แล้วอัปเดตตำแหน่งในคำสั่ง/คณะกรรมการของโครงการ */
+function posApply(q,M){let n=0;const fix=m=>{if(!m||!m.name)return;const v=M.get(fName(m.name));if(v!==undefined&&v!==(m.position||'')){m.position=v;n++}};
+  const O=q.orders;if(O)['inspect','tor','price'].forEach(k=>(O[k]&&O[k].members||[]).forEach(fix));(q.committee||[]).forEach(fix);if(n)touch(q);return n}
+function peopleDialog(p){const L=peopleAll();const lk=!!(p.saved&&p.saved.orders);
+  const m=modal('อัปเดตตำแหน่งบุคลากร',`<div class="grid" style="gap:10px">
+    <input class="i" id="ppQ" placeholder="ค้นหาชื่อ / ตำแหน่ง">
+    <div style="max-height:52vh;overflow:auto;border:1px solid var(--line);border-radius:10px"><table class="t" style="width:100%"><thead><tr><th>ชื่อ-สกุล</th><th style="width:52%">ตำแหน่ง (แก้ได้)</th></tr></thead><tbody>
+    ${L.map((x,i)=>`<tr data-pr="${esc((x.name+' '+x.position).toLowerCase())}"><td>${esc(x.name)}</td><td><input class="i" data-pi="${i}" value="${esc(x.position||'')}"></td></tr>`).join('')}</tbody></table></div>
+    <label class="switch"><input type="checkbox" id="ppCur" ${lk?'':'checked'}> ใช้ตำแหน่งใหม่กับคำสั่งและคณะกรรมการของโครงการนี้${lk?' <span class="muted" style="font-size:12px">(ขั้นคำสั่งแต่งตั้งบันทึกแล้ว — ติ๊กถ้าต้องการแก้)</span>':''}</label>
+    <label class="switch"><input type="checkbox" id="ppAll"> ใช้กับทุกโครงการที่ยังไม่บันทึกขั้นคำสั่งแต่งตั้ง <span class="muted" style="font-size:12px">(คำสั่งที่ออกไปแล้วคงตำแหน่งเดิม)</span></label>
+    <p class="muted" style="font-size:12.5px;margin:0">ตำแหน่งที่แก้ที่นี่ใช้เป็นค่าเริ่มต้นของดรอปลิสต์ทุกคำสั่ง · ซิงก์จากชีตเดิมจะไม่ทับ เว้นแต่แก้ตำแหน่งในชีต “รายชื่อกรรมการ” ภายหลัง</p></div>`,
+    `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">บันทึกตำแหน่ง</button>`);
+  const R=m.root;R.querySelector('#ppQ').oninput=e=>{const q=e.target.value.trim().toLowerCase();R.querySelectorAll('[data-pr]').forEach(tr=>tr.hidden=!!q&&!tr.dataset.pr.includes(q))};
+  R.querySelector('[data-mc]').onclick=m.close;
+  R.querySelector('[data-mo]').onclick=()=>{const st=S.settings;st.people=st.people||[];const M=new Map();let ch=0;
+    R.querySelectorAll('[data-pi]').forEach(inp=>{const x=L[+inp.dataset.pi];const v=inp.value.trim();if(v===(x.position||''))return;ch++;M.set(fName(x.name),v);
+      const e=st.people.find(y=>fName(y.name)===fName(x.name));if(e)e.position=v;else st.people.push({name:x.name,position:v})});
+    let n=0,pj=0;if(M.size){const T=new Set();if(R.querySelector('#ppCur').checked)T.add(p);if(R.querySelector('#ppAll').checked)S.projects.forEach(q=>{if(!(q.saved&&q.saved.orders))T.add(q)});
+      T.forEach(q=>{const k=posApply(q,M);if(k){n+=k;pj++}})}
+    save();m.close();render();toast(ch?`บันทึกตำแหน่ง ${ch} คน${n?` · อัปเดตในคำสั่ง ${n} รายการ (${pj} โครงการ)`:''}`:'ไม่มีการเปลี่ยนแปลง')}}
 function personSel(attr,val,list){val=String(val||'');const has=!val||list.some(x=>x.name===val);
   return `<select class="i psel" ${attr}><option value="">— เลือกรายชื่อ —</option>${has?'':`<option selected value="${esc(val)}">${esc(val)}</option>`}${list.map(x=>`<option value="${esc(x.name)}" ${x.name===val?'selected':''}>${esc(x.name)}${x.position?' — '+esc(x.position):''}</option>`).join('')}<option value="__new">+ พิมพ์ชื่อใหม่ (ไม่มีในรายการ)</option></select>`}
 /* เลือก "พิมพ์ชื่อใหม่" → เปลี่ยนเป็นช่องพิมพ์ คืนค่า true ถ้าสลับ */
@@ -2604,7 +2624,7 @@ function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P()
         <button class="btn sm" data-oadd="result" type="button">+ เพิ่มรายชื่อ</button>`
       :`${L.map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span>${personSel(`data-om="${k}:${i}:name"`,m.name,people)}<input class="i" data-om="${k}:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="${k}:${i}:role">${K.roles.map(r=>`<option ${r===m.role?'selected':''}>${r}</option>`).join('')}</select>${k==='inspect'&&!/ผู้ควบคุม/.test(m.role)?`<label class="switch" title="ผู้ได้รับมอบหมายออกตรวจ"><input type="radio" name="oinsp" data-oinsp="${i}" ${O.inspector===i?'checked':''}> ออกตรวจ</label>`:'<span></span>'}<button class="icon-btn del" data-odel="${k}:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
         <button class="btn sm" data-oadd="${k}" type="button">+ เพิ่มรายชื่อ</button>`}</div></div></div>`};
-  el.innerHTML=`${curBar('คำสั่งแต่งตั้งคณะกรรมการ',`${central()&&canEdit()?`<span class="muted" style="font-size:12.5px;align-self:center">${esc(lgInfoTxt())}</span><button class="btn ghost-brand" id="oLgSync2" type="button">↻ ซิงก์ข้อมูลจากชีตเดิม</button>`:''}<button class="btn" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
+  el.innerHTML=`${curBar('คำสั่งแต่งตั้งคณะกรรมการ',`${central()&&canEdit()?`<span class="muted" style="font-size:12.5px;align-self:center">${esc(lgInfoTxt())}</span><button class="btn ghost-brand" id="oLgSync2" type="button">↻ ซิงก์ข้อมูลจากชีตเดิม</button>`:''}${canEdit()?'<button class="btn" id="oPeople" type="button">👤 อัปเดตตำแหน่งบุคลากร</button>':''}<button class="btn" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
   <div class="grid" style="gap:14px">
    <div class="card"><div class="card-h"><h2>ผู้ลงนามคำสั่ง</h2></div><div class="card-b grid g12">
     <label class="f s6"><span>ผู้ลงนามคำสั่ง</span><select class="i" id="oSigner">${SG.map((s,i)=>`<option value="${i}" ${O.signer===i?'selected':''}>${esc(s.label||s.name)}</option>`).join('')}</select></label>
@@ -2625,7 +2645,7 @@ function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P()
   $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
   $('#oTplEdit').onclick=ordTplDialog;
   const pa=$('#oPullAssign');if(pa)pa.onclick=()=>{if(O.inspect.members.some(m=>m.name)&&!confirm('แทนที่รายชื่อคณะกรรมการตรวจรับ/ผู้ควบคุมงานที่มีอยู่ ด้วยรายชื่อจากตารางผู้รับผิดชอบเดิม?'))return;O.inspect.members=inspFromAssign(p);O.inspector=-1;R()};
-  $('#oLoad').onclick=inspLoadDialog;$$('#oLgSync,#oLgSync2',el).forEach(ls=>ls.onclick=async()=>{ls.disabled=true;await legacySync(true);rOrders()});
+  $('#oLoad').onclick=inspLoadDialog;if($('#oPeople',el))$('#oPeople',el).onclick=()=>peopleDialog(p);$$('#oLgSync,#oLgSync2',el).forEach(ls=>ls.onclick=async()=>{ls.disabled=true;await legacySync(true);rOrders()});
 }
 /* ภาระงานตรวจรับ/ควบคุมงานต่อคน (แบบแถวสรุปท้ายตารางเดิม) */
 function inspLoadDialog(){const roles=['ประธานกรรมการ','กรรมการ','ผู้ควบคุมงาน','ผู้ช่วยผู้ควบคุมงาน'];const M=new Map();
@@ -3078,7 +3098,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
@@ -3135,7 +3155,6 @@ function prepCard(p){const R=prepOf(p);const sug=authSuggest(p);const au=R.autho
    <div class="f s4"><span>แนบไฟล์หนังสือ</span><div class="fbox">${fileChips(R.approveFiles,'approveFiles')}<button class="btn sm" data-fup="approveFiles" type="button">+ แนบไฟล์</button></div></div>
    <div class="f s6"><span>เล่มแผน</span><div class="fbox">${fileChips(R.bookFiles,'bookFiles')}<button class="btn sm" data-fup="bookFiles" type="button">+ แนบเล่มแผน</button></div></div>
    <div class="f s6"><span>ไฟล์ Excel ราคากลาง (ดึงข้อมูลแผ่น SUMMARY และ ข้อมูลและผลงาน)</span><div class="fbox">${fileChips(R.xlsFiles,'xlsFiles')}<button class="btn sm" data-xup type="button">+ แนบไฟล์ Excel และดึงข้อมูล</button></div></div>
-   ${(R.links||[]).length?`<div class="s12 fbox"><span class="muted" style="font-size:13px">ไฟล์จากระบบเดิม:</span>${R.links.map(l=>`<a class="fchip lnk" href="${esc(l.url)}" target="_blank" rel="noopener" style="padding:2px 8px">🔗 ${esc(l.label)}</a>`).join('')}</div>`:''}
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="plan" ${R.plan?'checked':''}> <b>2. แบบ</b></label></div>
    <div class="f s12"><div class="fbox">${fileChips(R.planFiles,'planFiles')}<button class="btn sm" data-fup="planFiles" type="button">+ แนบไฟล์แบบ</button></div></div>
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="draft" ${R.draft?'checked':''}> <b>3. จัดทำร่างเพื่อขออนุมัติออกประกาศ</b></label></div>
@@ -3257,7 +3276,7 @@ function applyLegacy(d,mode){let a=0,u=0,ch=0;const emp=v=>v===''||v==null||v===
       p.items=lp.items.map(x=>({id:uid(),kind:'item',name:x.name,unit:x.unit,qty:x.qty,unitCost:x.cost,catId:cc.id,midOverride:'',fixed:false,std:x.std}))}
     if(isNew){p.updatedAt=nowStr();S.projects.push(p);a++;ch++}else{u++;if(JSON.stringify(p)!==before){p.updatedAt=nowStr();ch++}}});
   const st=S.settings;st.people=st.people||[];Object.entries(d.people).forEach(([nick,v])=>{const e=st.people.find(x=>x.nick===nick);
-    if(e){if(mode==='sync'){if(v.name)e.name=v.name;if(v.position)e.position=v.position}else{if(!e.name)e.name=v.name;if(!e.position)e.position=v.position}}else st.people.push({nick,name:v.name,position:v.position})});
+    if(e){if(mode==='sync'){if(v.name)e.name=v.name;if(v.position&&v.position!==e.lgPos)e.position=v.position;e.lgPos=v.position||''}else{if(!e.name)e.name=v.name;if(!e.position)e.position=v.position}}else st.people.push({nick,name:v.name,position:v.position,lgPos:v.position||''})});
   if(d.stds.length)st.dohStandards=d.stds;
   save();return {a,u,ch}}
 /* ซิงก์จากชีตเดิมผ่านเซิร์ฟเวอร์ (Code.gs → legacy.pull) อัตโนมัติทุก 5 นาที และเมื่อกดปุ่ม */
