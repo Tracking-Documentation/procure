@@ -367,7 +367,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">113</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">114</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -430,7 +430,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='113',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='114',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2509,6 +2509,8 @@ const ORD_KINDS={inspect:{t:'คณะกรรมการตรวจรับ
   tor:{t:'คณะกรรมการจัดทำแบบรูปรายการงานก่อสร้าง (TOR)',roles:['ประธานกรรมการ','กรรมการ']},
   price:{t:'คณะกรรมการกำหนดราคากลาง',roles:['ประธานกรรมการ','กรรมการ']},
   result:{t:'คณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',roles:['ประธานกรรมการ','กรรมการ','กรรมการและเลขานุการ']}};
+/* ผู้ลงนามคำสั่ง: same = คนเดียวกันทุกคำสั่ง (O.signer) · each = เลือกแยกรายคำสั่ง (O[k].signer) */
+function ordSignIdx(p,k){const O=ordersOf(p);if(O.signMode==='each'){const c=k==='result'?O.result:O[k];if(c&&c.signer!==undefined&&c.signer!==null&&c.signer!=='')return +c.signer}return +O.signer||0}
 function orderSigners(){return (S.settings.orderSigners&&S.settings.orderSigners.length)?S.settings.orderSigners:ORDER_SIGNERS_DEF}
 function ordersOf(p){if(!p.orders){const L=(p.legacy&&p.legacy.committees)||{};const mk=c=>({no:(c&&c.orderNo)||'',date:(c&&c.orderDate)||'',members:((c&&c.members)||[]).map((m,i)=>({name:m.name,position:m.position,role:i?'กรรมการ':'ประธานกรรมการ'}))});
     p.orders={signer:0,drafter:'',typist:'',inspect:mk(null),tor:mk(L.tor),price:mk(L.price),result:{no:(L.result&&L.result.orderNo)||'',date:(L.result&&L.result.orderDate)||''},inspector:-1}}
@@ -2552,7 +2554,7 @@ function ordTextBase(d,b,c,k){
   return {subj:'แต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',pre:['ตามระเบียบกระทรวงการคลังว่าด้วยจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๕๕, ข้อ ๕๖ และข้อ ๕๗ และคำสั่งกรมทางหลวง ที่ บ.๑/๑๒๔/๒๕๖๐ มอบอำนาจให้หัวหน้าส่วนราชการที่ดำเนินการจัดหาพัสดุด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) มีอำนาจในการแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',`จึงแต่งตั้งคณะกรรมการพิจารณาผลการประกวดราคาจ้าง ${d} วงเงินงบประมาณ ${b} รหัสงาน ${c} โดยมีองค์ประกอบและหน้าที่ดังนี้.-`,{h:'๑. องค์ประกอบ'}],
     post:[{h:'๒. หน้าที่'},'ดำเนินการตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.๒๕๖๐ ข้อ ๕๕ ข้อ ๕๖ ข้อ ๕๗ และข้อ ๕๘ ทั้งนี้ให้คณะกรรมการฯ ดำเนินการให้แล้วเสร็จภายใน ๕ วันทำการ นับถัดจากวันเสนอราคา']}}
 const fName=n=>String(n||'').trim().replace(/\s+/g,'  ');
-function repOrder(p,k){const O=ordersOf(p),c=k==='result'?O.result:O[k],T=ordText(p,k),F=letterFont(),sg=orderSigners()[O.signer]||orderSigners()[0];
+function repOrder(p,k){const O=ordersOf(p),c=k==='result'?O.result:O[k],T=ordText(p,k),F=letterFont(),sg=orderSigners()[ordSignIdx(p,k)]||orderSigners()[0];
   const L=ordMembers(p,k);const para=x=>typeof x==='string'?`<p>${x}</p>`:`<div class="oh">${esc(x.h)}</div>`;
   const out=`<div class="paper letter ord${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
    <img class="garuda" src="${GARUDA}" alt="ตราครุฑ">
@@ -2622,7 +2624,7 @@ const ORD_REPORTS=[['ord_inspect','คำสั่งตรวจรับ/ผ�
 function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P();const O=ordersOf(p);evOf(p);const SG=orderSigners();
   const people=peopleAll();const dup=(()=>{const a=ordMembers(p,'inspect').map(m=>fName(m.name)),b=ordMembers(p,'result').map(m=>fName(m.name));return [...new Set(b.filter(n=>n&&a.includes(n)))]})();
   const card=(k,step)=>{const K=ORD_KINDS[k],c=k==='result'?O.result:O[k],L=ordMembers(p,k);
-    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'&&central()&&canEdit()?`<button class="btn sm" id="oLgSync" type="button" title="${esc(lgInfoTxt())}">↻ ซิงก์ข้อมูลจากชีตเดิม</button>`:''}${k==='inspect'&&!central()&&inspFromAssign(p).length?`<button class="btn sm" id="oPullAssign" type="button">↻ ดึงจากตารางผู้รับผิดชอบเดิม</button>`:''}${k==='inspect'?`<button class="btn sm" id="oLoad" type="button">ภาระงานแต่ละคน</button>`:''}${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
+    return `<div class="card"><div class="card-h"><h2><span class="step">${step}</span>${esc(K.t)}</h2><span class="muted" style="font-size:12.5px">ผู้ลงนาม: ${esc((SG[ordSignIdx(p,k)]||SG[0]).label||(SG[ordSignIdx(p,k)]||SG[0]).name)}</span><button class="btn blue sm" data-oprint="ord_${k}" type="button">${ICON.print} พิมพ์คำสั่ง</button>${k==='inspect'&&central()&&canEdit()?`<button class="btn sm" id="oLgSync" type="button" title="${esc(lgInfoTxt())}">↻ ซิงก์ข้อมูลจากชีตเดิม</button>`:''}${k==='inspect'&&!central()&&inspFromAssign(p).length?`<button class="btn sm" id="oPullAssign" type="button">↻ ดึงจากตารางผู้รับผิดชอบเดิม</button>`:''}${k==='inspect'?`<button class="btn sm" id="oLoad" type="button">ภาระงานแต่ละคน</button>`:''}${k==='inspect'?`<button class="btn sm" data-oprint="insp_memo" type="button">${ICON.print} บันทึกมอบหมายออกตรวจ</button>`:''}</div><div class="card-b grid g12">
      <label class="f s6"><span>เลขที่คำสั่ง (พิมพ์เฉพาะเลข · ว่าง = เว้นไว้เขียน) → <b>ที่ ${esc(ordNo(c))}</b></span><input class="i" data-oc="${k}" data-ok="no" value="${esc(ordNum(c))}" placeholder="เช่น ๑๒๓"></label>
      <label class="f s3"><span>สั่ง ณ วันที่</span><input class="i" type="date" data-oc="${k}" data-ok="date" value="${esc(c.date)}"></label>
      <div class="s12">${k==='result'?`<div class="note" style="margin:0 0 8px;font-size:13.5px">รายชื่อชุดนี้เป็นชุดเดียวกับการ์ด “คณะกรรมการพิจารณาผล” ในแท็บพิจารณาผล · แก้ที่นี่หรือที่แท็บพิจารณาผลก็ได้ ข้อมูลเปลี่ยนทั้งสองที่ <button class="btn sm" data-goto="eval" type="button">ไปการ์ดพิจารณาผล →</button></div>${(p.committee||[]).map((m,i)=>`<div class="omr"><span class="muted">${i+1}.</span>${personSel(`data-om="result:${i}:name"`,m.name,people)}<input class="i" data-om="result:${i}:position" value="${esc(m.position)}" placeholder="ตำแหน่ง"><select class="i" data-om="result:${i}:role">${CM_ROLES.map(r=>`<option ${rNorm(r)===rNorm(m.role)?'selected':''}>${r}</option>`).join('')}</select><span></span><button class="icon-btn del" data-odel="result:${i}" type="button" title="ลบ">${ICON.trash}</button></div>`).join('')}
@@ -2632,14 +2634,17 @@ function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P()
   el.innerHTML=`${curBar('คำสั่งแต่งตั้งคณะกรรมการ',`${central()&&canEdit()?`<span class="muted" style="font-size:12.5px;align-self:center">${esc(lgInfoTxt())}</span><button class="btn ghost-brand" id="oLgSync2" type="button">↻ ซิงก์ข้อมูลจากชีตเดิม</button>`:''}${canEdit()?'<button class="btn" id="oPeople" type="button">👤 อัปเดตตำแหน่งบุคลากร</button>':''}<button class="btn" data-goto="report" type="button">${ICON.print} ไปหน้ารายงาน</button>`)}
   <div class="grid" style="gap:14px">
    <div class="card"><div class="card-h"><h2>ผู้ลงนามคำสั่ง</h2></div><div class="card-b grid g12">
-    <label class="f s6"><span>ผู้ลงนามคำสั่ง</span><select class="i" id="oSigner">${SG.map((s,i)=>`<option value="${i}" ${O.signer===i?'selected':''}>${esc(s.label||s.name)}</option>`).join('')}</select></label>
+    <div class="s12 row" style="gap:18px;flex-wrap:wrap;margin:0"><label class="switch"><input type="radio" name="oSignMode" value="same" ${O.signMode!=='each'?'checked':''}> ผู้ลงนามคนเดียวกันทุกคำสั่ง</label><label class="switch"><input type="radio" name="oSignMode" value="each" ${O.signMode==='each'?'checked':''}> เลือกผู้ลงนามแยกแต่ละคำสั่ง (เช่น วันที่ ผอ. ไม่อยู่)</label></div>
+    ${O.signMode==='each'?[['tor','คำสั่งกรรมการ TOR'],['price','คำสั่งกรรมการราคากลาง'],['result','คำสั่งกรรมการพิจารณาผล'],['inspect','คำสั่งตรวจรับ/ผู้ควบคุมงาน']].map(([k,l])=>`<label class="f s3"><span>${l}</span><select class="i" data-osign="${k}">${SG.map((s,i)=>`<option value="${i}" ${ordSignIdx(p,k)===i?'selected':''}>${esc(s.label||s.name)}</option>`).join('')}</select></label>`).join(''):`<label class="f s6"><span>ผู้ลงนามทุกคำสั่ง</span><select class="i" id="oSigner">${SG.map((s,i)=>`<option value="${i}" ${(+O.signer||0)===i?'selected':''}>${esc(s.label||s.name)}</option>`).join('')}</select></label>`}
     ${dup.length?`<div class="s12 note bad" style="margin:0">ชื่อซ้ำกันระหว่างคณะกรรมการตรวจรับกับคณะกรรมการพิจารณาผล: ${esc(dup.join(', '))}</div>`:''}
     ${people.length?'':'<div class="s12 muted" style="font-size:13px">ยังไม่มีรายชื่อบุคลากรให้เลือก · เลือก “พิมพ์ชื่อใหม่” ได้ หรือนำเข้าไฟล์ระบบติดตามเดิม</div>'}
    </div></div>
    ${card('tor',1)}${card('price',2)}${card('result',3)}${card('inspect',4)}
    <div class="card"><div class="card-h"><h2>ข้อความในคำสั่ง</h2><button class="btn sm" id="oTplEdit" type="button">✎ แก้ไขข้อความคำสั่ง</button></div><div class="card-b muted" style="font-size:13.5px">ข้อความในคำสั่งทั้ง 4 ชุดแก้ได้ที่ปุ่มนี้ · แก้ครั้งเดียวใช้กับทุกโครงการและทุกเครื่อง${S.settings.ordTpl&&Object.keys(S.settings.ordTpl).length?' · <b>มีการแก้ไขจากต้นฉบับแล้ว</b>':''}</div></div></div>`;
   const R=()=>{touch(p);rOrders()};
-  $('#oSigner').onchange=e=>{O.signer=+e.target.value;touch(p)};
+  if($('#oSigner'))$('#oSigner').onchange=e=>{O.signer=+e.target.value;touch(p);const y=window.scrollY;rOrders();window.scrollTo(0,y)};
+  $$('[name=oSignMode]',el).forEach(r=>r.onchange=()=>{O.signMode=r.value;if(r.value==='each')['tor','price','result','inspect'].forEach(k=>{const c=k==='result'?O.result:O[k];if(c&&(c.signer===undefined||c.signer===''))c.signer=+O.signer||0});touch(p);rOrders()});
+  $$('[data-osign]',el).forEach(sl=>sl.onchange=()=>{const k=sl.dataset.osign;(k==='result'?O.result:O[k]).signer=+sl.value;touch(p);const y=window.scrollY;rOrders();window.scrollTo(0,y)});
   $$('[data-oc]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{const k=i.dataset.oc;(k==='result'?O.result:O[k])[i.dataset.ok]=i.value;touch(p);const c=(k==='result'?O.result:O[k]);const lb=el.querySelector(`[data-oc="${k}"][data-ok="no"]`)?.closest('label')?.querySelector('span b');if(lb)lb.textContent='ที่ '+ordNo(c)}));
   const omH=ev=>{const i=ev.target;if(!i.dataset||!i.dataset.om)return;if(i.tagName==='SELECT'&&ev.type==='input')return;if(personSwap(i))return;const [k,ix,f]=i.dataset.om.split(':');const m=(k==='result'?p.committee:O[k].members)[+ix];if(!m)return;m[f]=i.value;
     if(f==='name'){const hit=people.find(x=>x.name===i.value.trim());if(hit&&(i.tagName==='SELECT'||!m.position)){m.position=hit.position;const pi=el.querySelector(`[data-om="${k}:${ix}:position"]`);if(pi)pi.value=hit.position}}touch(p)};
