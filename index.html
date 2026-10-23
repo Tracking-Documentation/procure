@@ -373,7 +373,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">127</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">128</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -436,7 +436,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='127',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='128',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -466,7 +466,7 @@ function newProject(){
   return {id:uid(),saved:{},createdAt:nowStr(),name:'',type:'ทาง',projectNo:'',agency:S.settings.agency,budget:0,midDeclared:0,offerPrice:0,contractor:'',
     announceDate:'',contractNo:'',contractDate:'',status:'ร่าง',note:'',
     categories:[{id:c1,name:'งานก่อสร้าง',kind:'construction',factor:1},{id:c2,name:'งานครุภัณฑ์จัดซื้อ',kind:'equipment',factor:1.07},{id:c3,name:'ค่าใช้จ่ายพิเศษตามข้อกำหนด',kind:'special',factor:1}],
-    items:[],rounds:[],basis:'auto',adjustPref:'auto',
+    items:[],rounds:[],basis:'auto',adjustPref:'auto',equipReduce:true,
     signers:structuredClone(S.settings.signers),updatedAt:nowStr()};
 }
 function sampleProject(){
@@ -503,10 +503,11 @@ function hasTotal(it){return it.costTotal!==null&&it.costTotal!==undefined&&it.c
 function costBase(it){return hasTotal(it)?num(it.costTotal):num(it.qty)*num(it.unitCost)} // baht
 function costOf(it){return Math.round(costBase(it)*100)}
 function midMismatch(p,it){if(!(it.midOverride!==''&&it.midOverride!=null&&String(it.midOverride).trim()!==''))return false;const f=num(catOf(p,it.catId).factor)||0;const calc=costBase(it)*f,ov=num(it.midOverride);return calc>0&&Math.abs(calc-ov)/ov>0.005}
-function isFixed(p,it){return catOf(p,it.catId).kind!=='construction'||!!it.fixed}
+function eqRed(p){return !!(p&&p.equipReduce)} // true = ปรับลดครุภัณฑ์ตามตัวอย่าง ว 651 (ไม่ปรับลดเฉพาะค่าใช้จ่ายพิเศษ)
+function isFixed(p,it){const k=catOf(p,it.catId).kind;return k==='special'||(k==='equipment'&&!eqRed(p))||!!it.fixed}
 function baseRows(p){let n=0;return p.items.filter(i=>i.kind==='item').map(it=>({it,no:++n,q:num(it.qty),m:midOf(p,it),fixed:isFixed(p,it),cat:catOf(p,it.catId)}))}
 function totals(p){const rows=baseRows(p);const sumM=rows.reduce((a,r)=>a+r.m,0);const sumF=rows.filter(r=>r.fixed).reduce((a,r)=>a+r.m,0);
-  const sumSpecial=rows.filter(r=>r.cat.kind==='special').reduce((a,r)=>a+r.m,0);const sumEquip=rows.filter(r=>r.cat.kind==='equipment').reduce((a,r)=>a+r.m,0);
+  const sumSpecial=rows.filter(r=>r.cat.kind==='special').reduce((a,r)=>a+r.m,0);const sumEquip=rows.filter(r=>r.cat.kind==='equipment'&&r.fixed).reduce((a,r)=>a+r.m,0);
   return {rows,sumM,sumF,sumA:sumM-sumF,sumSpecial,sumEquip,sumOtherFixed:sumF-sumSpecial-sumEquip}}
 
 function absorb(rows,r,prefId){ // rows: adjustable rows with integer q>0; r: integer baht to add (can be negative)
@@ -712,7 +713,7 @@ function rEdit(){
    </div></div>
    <div class="card"><div class="card-h"><h2><span class="step">2</span>หมวดงานและค่า Factor F / VAT</h2><button class="btn ghost-brand sm" id="addCat" type="button">+ เพิ่มหมวด</button></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ลำดับ</th><th>ชื่อหมวด</th><th>ประเภท</th><th class="n">Factor F / VAT</th><th>การปรับลด</th><th></th></tr></thead><tbody id="catBody"></tbody></table></div>
-     <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>หมวดครุภัณฑ์และค่าใช้จ่ายพิเศษจะคงราคากลางไว้ ไม่ถูกปรับลด</b></div></div>
+     <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>ค่าใช้จ่ายพิเศษตามข้อกำหนดคงราคากลางไว้ ไม่ถูกปรับลด (ว 651 ข้อ 1.2.2)</b>${`<div style="margin-top:8px"><label class="switch"><input type="checkbox" id="eqRed" ${eqRed(p)?'checked':''}> ปรับลดหมวดครุภัณฑ์จัดซื้อในอัตราร้อยละเดียวกับงานก่อสร้าง (ตามตัวอย่างแบบสรุปราคากลาง สิ่งที่ส่งมาด้วย 1 ของ ว 651)</label>${eqRed(p)?'':'<div style="color:var(--danger);margin-top:4px">ขณะนี้ครุภัณฑ์ไม่ถูกปรับลด (แนวปฏิบัติเดิม) · ตัวอย่างของ ว 651 ไม่ปรับลดเฉพาะค่าใช้จ่ายพิเศษตามข้อกำหนด</div>'}</div>`}</div></div>
    <div class="card" id="boqCard"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
      <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn sm" id="sumXl" type="button" title="ไฟล์คำนวณราคากลาง (.xlsm/.xlsx) ที่มีชีต SUMMARY">แนบไฟล์ราคากลาง (SUMMARY)</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
      <div class="card-b row" style="padding-block:10px;font-size:14px"><span>ช่องค่างานต้นทุนกรอกเป็น</span><div class="seg" id="costModeSeg"><button type="button" data-cm="total" class="${(p.costMode||'total')==='total'?'on':''}">ยอดรวมของรายการ</button><button type="button" data-cm="unit" class="${p.costMode==='unit'?'on':''}">ราคาต่อหน่วย</button></div><span class="muted" style="font-size:13px">เช่น เสา 83 ต้น ค่างานต้นทุนรวม 3,083,508.10 → เลือก “ยอดรวมของรายการ”</span></div>
@@ -734,6 +735,7 @@ function rEdit(){
   $('#addHead').onclick=()=>{p.items.push({id:uid(),kind:'heading',name:'',catId:p.categories[0]?.id});touch(p);rBoq()};
   $('#pasteXl').onclick=pasteDialog;$('#sumXl').onclick=summaryPick;
   $('#costModeSeg').onclick=e=>{const bt=e.target.closest('[data-cm]');if(!bt)return;p.costMode=bt.dataset.cm;touch(p);rEdit()};
+  {const eq=$('#eqRed');if(eq)eq.onchange=()=>{p.equipReduce=eq.checked;touch(p);rEdit()}}
   rCats();rBoq();rSign();sideSum();
 }
 el$('click','[data-goto]',(t)=>go(t.dataset.goto));
@@ -743,7 +745,7 @@ function rCats(){const p=P();const b=$('#catBody');
   b.innerHTML=p.categories.map((c,i)=>`<tr data-cid="${c.id}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(c.name)}"></td>
   <td><select class="i w-cat" data-c="kind" style="width:220px">${Object.entries(KIND).map(([k,l])=>`<option value="${k}" ${c.kind===k?'selected':''}>${l}</option>`).join('')}</select></td>
   <td class="n"><input class="i r" data-c="factor" value="${fmt(c.factor,4)}" style="width:110px" inputmode="decimal"></td>
-  <td>${c.kind==='construction'?'<span class="pill p-ok">ปรับลด</span>':'<span class="pill p-fix">ไม่ปรับลด</span>'}</td>
+  <td>${c.kind==='construction'||(c.kind==='equipment'&&eqRed(p))?'<span class="pill p-ok">ปรับลด</span>':'<span class="pill p-fix">ไม่ปรับลด</span>'}</td>
   <td><button class="icon-btn del" data-cdel type="button" title="ลบหมวด">${ICON.x}</button></td></tr>`).join('');
   b.oninput=e=>{const tr=e.target.closest('[data-cid]');const c=p.categories.find(x=>x.id===tr.dataset.cid);const k=e.target.dataset.c;
     if(k==='factor')c.factor=num(e.target.value);else if(k==='kind'){c.kind=e.target.value;if(c.kind==='equipment'&&(c.factor===1||!c.factor))c.factor=1.07;if(c.kind==='special')c.factor=1;rCats();rBoq()}else c.name=e.target.value;
@@ -756,7 +758,7 @@ function rBoq(){const p=P();const b=$('#boqBody');let n=0;
   const acts=`<button class="icon-btn" data-mv="-1" type="button" title="เลื่อนขึ้น">${ICON.up}</button><button class="icon-btn" data-mv="1" type="button" title="เลื่อนลง">${ICON.down}</button><button class="icon-btn del" data-rm type="button" title="ลบ">${ICON.x}</button>`;
   b.innerHTML=p.items.length?p.items.map(it=>{
     if(it.kind==='heading')return `<tr class="hd" data-iid="${it.id}"><td></td><td colspan="4"><input class="i" data-k="name" value="${esc(it.name)}" placeholder="หัวข้อ เช่น งานดิน / ค่าใช้จ่ายพิเศษตามข้อกำหนด" style="font-weight:600"></td><td><select class="i w-cat" data-k="catId">${catOpts(it.catId)}</select></td><td colspan="2" class="muted" style="font-size:12px">หัวข้อ</td><td class="act">${acts}</td></tr>`;
-    n++;const fx=catOf(p,it.catId).kind!=='construction';
+    n++;const fx=isFixed(p,{catId:it.catId});
     return `<tr data-iid="${it.id}"><td class="n">${n}</td><td><textarea class="i" data-k="name" rows="${Math.min(4,Math.max(1,String(it.name).split('\n').length))}">${esc(it.name)}</textarea></td>
     <td><input class="i w-unit" data-k="unit" value="${esc(it.unit)}"></td><td><input class="i r w-qty" data-k="qty" value="${it.qty===''||it.qty==null?'':esc(fQ(it.qty))}" inputmode="decimal"></td>
     <td><input class="i r w-cost" data-k="unitCost" value="${(p.costMode||'total')==='total'?(costBase(it)?fmt(costBase(it)):''):(it.unitCost||costBase(it)?fmt(hasTotal(it)&&num(it.qty)?costBase(it)/num(it.qty):num(it.unitCost)):'')}" inputmode="decimal"></td>
@@ -791,7 +793,7 @@ function sideSum(){const p=P();const box=$('#sideSum');if(!box)return;const t=to
    <div class="sumrow"><span>ราคากลางรวม</span><b>${fS(t.sumM)}</b></div>
    ${md?`<div class="sumrow"><span>ตรวจกับ ปร.5/ปร.6</span><b style="color:${midOk?'var(--ok-ink)':'var(--danger)'}">${midOk?(md!==t.sumM?'✓ ตรงกัน (รวมปรับยอด '+fmt(p.midAdjust)+')':'✓ ตรงกัน'):'ต่าง '+fS(t.sumM-md)}</b></div>`:''}
    <div class="sumrow"><span>ค่าใช้จ่ายพิเศษฯ (ไม่ลด)</span><b>${fS(t.sumSpecial)}</b></div>
-   <div class="sumrow"><span>ครุภัณฑ์จัดซื้อ (ไม่ลด)</span><b>${fS(t.sumEquip)}</b></div>
+   ${t.sumEquip?`<div class="sumrow"><span>ครุภัณฑ์จัดซื้อ (ไม่ลด)</span><b>${fS(t.sumEquip)}</b></div>`:''}
    ${t.sumOtherFixed?`<div class="sumrow"><span>รายการอื่นที่ติ๊กไม่ลด</span><b>${fS(t.sumOtherFixed)}</b></div>`:''}
    <div class="sumrow"><span>(1) ราคากลางส่วนที่ปรับลดได้</span><b>${fS(t.sumA)}</b></div>
    <div class="sumrow"><span>ราคาที่ใช้คำนวณ</span><b>${fmt(b.price)}</b></div>
@@ -1436,7 +1438,7 @@ function rNego(){
     <div class="y">2. ถ้าไม่ลงตัว ให้เลือกราคาที่ลงตัวใกล้ที่สุดที่ระบบแนะนำ เพื่อให้ยอดรวมเป็นจำนวนเต็ม และราคาต่อหน่วย × จำนวน ได้จำนวนเงินพอดี</div>
     <div>3. บันทึกเป็นการต่อรองครั้งใหม่ แล้วพิมพ์ “ใบขอต่อรองราคา” ส่งผู้เสนอ</div>
     <div class="g">4. ได้รับหนังสือยืนยัน → บันทึกผล → พิมพ์แบบแนบท้ายสัญญา</div>
-    <div class="r">ค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์คงราคากลางเสมอ ไม่ว่าจะต่อรองเท่าใด</div>
+    <div class="r">ค่าใช้จ่ายพิเศษตามข้อกำหนด${eqRed(p)?'':'และค่าครุภัณฑ์'}คงราคากลางเสมอ ไม่ว่าจะต่อรองเท่าใด</div>
   </div></aside></div>`;
   const tp=$('#tryP'),tpc=$('#tryPct');
   const upd=()=>{el._try=tp.value;tryOut(p,num(tp.value)||o)};
@@ -1501,13 +1503,13 @@ function resultBody(p,r,b){
     <div class="kpi"><div class="l">ผลต่าง (3)</div><div class="v">${fS(r.d3)}</div></div>
     <div class="kpi hl"><div class="l">อัตราร้อยละที่ปรับลด</div><div class="v">${fmt(r.pct)}</div><div class="s">ตัวคูณ = ${(1-r.pct/100).toFixed(4)}</div></div></div>
   <div class="card card-b calc3" style="margin-bottom:14px">
-    <div><h3>ราคากลางหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>${r.sumOtherFixed?`<div class="sumrow"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}<div class="sumrow tot"><span>(1)</span><b>${fS(r.d1)}</b></div></div>
+    <div><h3>ราคากลางหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="sumrow"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div>${r.sumEquip?`<div class="sumrow"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>`:''}${r.sumOtherFixed?`<div class="sumrow"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}<div class="sumrow tot"><span>(1)</span><b>${fS(r.d1)}</b></div></div>
     <div><h3>ราคาที่ใช้คำนวณหักรายการที่ไม่ปรับลด</h3><div class="sumrow"><span>${esc(b.label)}</span><b>${fS(r.T)}</b></div><div class="sumrow"><span><u>หัก</u> รายการที่ไม่ปรับลด</span><b>${fS(r.sumF)}</b></div><div class="sumrow tot"><span>(2)</span><b>${fS(r.d2)}</b></div></div>
     <div><h3>ผลต่างและอัตราร้อยละ</h3><div class="sumrow"><span>(1)</span><b>${fS(r.d1)}</b></div><div class="sumrow"><span><u>หัก</u> (2)</span><b>${fS(r.d2)}</b></div><div class="sumrow tot"><span>(3)</span><b>${fS(r.d3)}</b></div><div class="muted" style="font-size:13px;margin-top:8px">(3) ÷ (1) × 100 = ${r.pctRaw.toFixed(6)} → ใช้ ${fmt(r.pct)}</div></div>
   </div>
   <div class="card" style="margin-bottom:14px"><div class="card-h"><h2>ตรวจสอบความถูกต้อง</h2></div><div class="card-b"><ul class="checks two">
     <li><span class="ck ${okSum?'y':'n'}">${okSum?'✓':'✕'}</span><span>ผลรวมราคาที่ปรับลด ${fS(r.total)} ${okSum?'= ':'≠ '}${esc(b.label)} ${fS(r.T)}</span></li>
-    <li><span class="ck ${fixedOk?'y':'n'}">${fixedOk?'✓':'✕'}</span><span>ค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์ไม่ถูกปรับลด (คงราคากลาง ${fS(r.sumF)})</span></li>
+    <li><span class="ck ${fixedOk?'y':'n'}">${fixedOk?'✓':'✕'}</span><span>ค่าใช้จ่ายพิเศษตามข้อกำหนด${r.sumEquip?'และค่าครุภัณฑ์':''}ไม่ถูกปรับลด (คงราคากลาง ${fS(r.sumF)})</span></li>
     <li><span class="ck ${r.allInt?'y':'w'}">${r.allInt?'✓':'!'}</span><span>${r.step===100?(r.allInt?'ราคาต่อหน่วยของรายการที่ปรับลดเป็นจำนวนเต็มบาททุกรายการ':'มีรายการที่ราคาต่อหน่วยไม่เป็นจำนวนเต็ม'):(r.allInt?'ยอดรวมเป็นจำนวนเต็มบาท และราคาต่อหน่วย × จำนวน = จำนวนเงินพอดีทุกรายการ':'ยอดรวมมีเศษสตางค์ หรือมีรายการที่ราคาต่อหน่วย × จำนวน ไม่ตรงพอดี')}</span></li>
     <li><span class="ck ${noNeg?'y':'n'}">${noNeg?'✓':'✕'}</span><span>ไม่มีรายการติดลบ</span></li>
     ${r.adjusted.length?`<li><span class="ck w">*</span><span>ส่วนต่างจากการปัดเศษ ${fmt(r.adjusted.reduce((a,x)=>a+(x.dB||0)*x.q,0))} บาท ปรับใน ${esc(adjTxt)}</span></li>`:''}
@@ -1818,17 +1820,17 @@ function repMid(p,r,b){const cs=catSummary(p);
   <table class="pt" style="width:65%"><thead><tr><th style="width:56px">ลำดับที่</th><th>รายการ</th><th>หน่วย</th><th>ราคา</th></tr></thead><tbody><tr><td class="ct">1</td><td>${esc(b.label)}</td><td class="ct">บาท</td><td class="n">${fS(r.T)}</td></tr></tbody></table>
   <div class="calc">
    <div><div class="h">วิธีการคำนวณราคากลางหักรายการที่ไม่ปรับลด</div>
-     <div class="ln"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="ln"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div><div class="ln"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>${r.sumOtherFixed?`<div class="ln"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}
+     <div class="ln"><span>ราคากลาง</span><b>${fS(r.sumM)}</b></div><div class="ln"><span><u>หัก</u> ค่าใช้จ่ายพิเศษตามข้อกำหนด</span><b>${fS(r.sumSpecial)}</b></div>${r.sumEquip?`<div class="ln"><span><u>หัก</u> ค่าครุภัณฑ์จัดซื้อ</span><b>${fS(r.sumEquip)}</b></div>`:''}${r.sumOtherFixed?`<div class="ln"><span><u>หัก</u> รายการอื่นที่ไม่ปรับลด</span><b>${fS(r.sumOtherFixed)}</b></div>`:''}
      <div class="ln tt"><span>ผลต่างระหว่างราคากลางหักรายการที่ไม่ปรับลด (1)</span><b>${fS(r.d1)}</b></div></div>
    <div><div class="h">วิธีการคำนวณราคาตามคำเสนอฯ หักรายการที่ไม่ปรับลด</div>
-     <div class="ln"><span>${esc(b.label)}</span><b>${fS(r.T)}</b></div><div class="ln"><span><u>หัก</u> ค่าใช้จ่ายพิเศษและค่าครุภัณฑ์</span><b>${fS(r.sumF)}</b></div>
+     <div class="ln"><span>${esc(b.label)}</span><b>${fS(r.T)}</b></div><div class="ln"><span><u>หัก</u> ${r.sumEquip?'ค่าใช้จ่ายพิเศษและค่าครุภัณฑ์':'ค่าใช้จ่ายพิเศษตามข้อกำหนด'}</span><b>${fS(r.sumF)}</b></div>
      <div class="ln tt"><span>ผลต่างระหว่างราคาตามคำเสนอฯ หักรายการที่ไม่ปรับลด (2)</span><b>${fS(r.d2)}</b></div></div>
    <div><div class="h">ผลต่างระหว่างราคากลางกับราคาตามคำเสนอฯ</div>
      <div class="ln"><span>(1)</span><b>${fS(r.d1)}</b></div><div class="ln"><span><u>หัก</u> (2)</span><b>${fS(r.d2)}</b></div><div class="ln tt"><span>ผลต่าง (3)</span><b>${fS(r.d3)}</b></div></div>
    <div style="align-self:end"><div class="box"><span>ผลต่างตาม (3) เทียบกับ (1) คิดเป็นอัตราร้อยละ</span><b style="font-size:20px">${fmt(r.pct)}</b></div></div>
   </div>
   ${tableFull(p,r,'ราคาที่ปรับลดตามคำเสนอ (บาท)')}
-  <div class="rem">หมายเหตุ (*) ส่วนต่างจากการปัดเศษให้ปรับเพิ่ม/ลดในรายการใดรายการหนึ่ง ยกเว้นรายการค่าใช้จ่ายพิเศษตามข้อกำหนดและค่าครุภัณฑ์ ทั้งนี้วงเงินรวมต้องเท่ากับราคาที่ใช้คำนวณ</div>
+  <div class="rem">หมายเหตุ (*) ส่วนต่างนี้ให้ปรับเพิ่ม/ลดในรายการใดรายการหนึ่งได้ตามความเหมาะสม ยกเว้นรายการค่าใช้จ่ายพิเศษตามข้อกำหนด${r.sumEquip?'และค่าครุภัณฑ์':''} ทั้งนี้ วงเงินรวมของการปรับลดราคาจะต้องเท่ากับราคาตามคำเสนอของผู้ชนะการจัดซื้อจัดจ้าง</div>
   ${sigBlock(p)}</div>`}
 function tableFull(p,r,title){
   return `<table class="pt" style="font-size:13px"><thead><tr><th rowspan="2" style="width:40px">ที่</th><th rowspan="2" class="desc">รายการ</th><th rowspan="2">หน่วย</th><th rowspan="2">จำนวน</th><th colspan="3">ราคากลางงานก่อสร้าง (บาท)</th><th colspan="2">${esc(title)}</th></tr>
@@ -1873,9 +1875,18 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
   <h3>2. การยื่นข้อเสนอ (ข้อ 1.2.1)</h3><blockquote>ผู้ยื่นข้อเสนอกรอกใบเสนอราคาโดยไม่ต้องยื่น BOQ เป็นไฟล์ PDF</blockquote>
   <h3>3. การปรับลดราคา (ข้อ 1.2.2)</h3><blockquote>หน่วยงานเป็นผู้ปรับราคาทุกรายการใน BOQ โดยเทียบกับราคากลาง ตามแบบสรุปราคากลาง แล้วนำรายละเอียดที่ปรับลดไปเป็นเอกสารแนบท้ายสัญญา · <b>ค่าใช้จ่ายพิเศษตามข้อกำหนด ห้ามนำมาปรับลด</b></blockquote>
   <h3>4. การลงนามสัญญา (ข้อ 1.2.3)</h3><blockquote>แจ้งผู้ชนะมาลงนามในสัญญาภายในระยะเวลายืนราคา</blockquote>
-  <h3>5. BOQ คลาดเคลื่อนจากแบบรูปรายการ (ข้อ 1.2.4)</h3><blockquote>คำนวณราคากลางใหม่ก่อนปรับลด</blockquote>
+  <h3>5. BOQ คลาดเคลื่อนจากแบบรูปรายการ (ข้อ 1.2.4)</h3><blockquote>กรณี BOQ คลาดเคลื่อนไปจากแบบรูปรายการงานก่อสร้าง ทำให้ราคากลางต่ำหรือสูงเกินความเป็นจริง ให้คำนวณราคากลางใหม่ให้ถูกต้องเพื่อใช้เป็นราคาเปรียบเทียบ แล้ว<br>
+(1) ราคาผู้ชนะ<b>ต่ำกว่า</b>ราคากลางใหม่และต่ำกว่าวงเงิน → ปรับลดตามข้อ 1.2.2 และลงนามตามข้อ 1.2.3<br>
+(2) ราคาผู้ชนะ<b>สูงกว่า</b>ราคากลางใหม่และสูงกว่าวงเงิน → คณะกรรมการพิจารณาผลต่อรองราคา แล้ว<br>
+&nbsp;&nbsp;(2.1) ยอมลดต่ำกว่าราคากลางใหม่และต่ำกว่าวงเงิน → ข้อ 1.2.2 และ 1.2.3<br>
+&nbsp;&nbsp;(2.2) ยอมลดเท่ากับราคากลางและวงเงิน → ลงนามตามข้อ 1.2.3<br>
+&nbsp;&nbsp;(2.3) ไม่ยอมลด หรือลดแล้วยังสูงกว่าวงเงิน → <b>ยกเลิกการจัดซื้อจัดจ้างครั้งนั้น</b></blockquote>
+  <h3>6. การใช้บังคับ (ข้อ 2)</h3><blockquote>ใช้บังคับกับงานจ้างก่อสร้างที่หน่วยงานของรัฐประกาศผลผู้ชนะการจัดซื้อจัดจ้างหรือผู้ได้รับการคัดเลือกแล้ว แต่ยังมิได้ลงนามในสัญญา</blockquote>
+  <h3>7. สิ่งที่ส่งมาด้วย</h3><blockquote>(1) ตัวอย่างแบบสรุปราคากลางงานก่อสร้าง — ตาราง วิธีคำนวณ (1) ราคากลางหักค่าใช้จ่ายพิเศษ (2) ราคาเสนอหักค่าใช้จ่ายพิเศษ (3) = (1) − (2) และอัตราร้อยละ (3) ÷ (1) · ตัวอย่างงานอาคาร งานทาง สะพานและท่อเหลี่ยม และงานชลประทาน · กรณี 3 จังหวัดชายแดนภาคใต้ (และ 4 อำเภอสงขลา) มีคอลัมน์ “ราคากลางบวกเพิ่มร้อยละ 5” (ไม่ใช้กับ จ.กระบี่)<br>
+(2) ตัวอย่างแบบแสดงรายการ ปริมาณงาน และราคา : เอกสารแนบท้ายสัญญาจ้างก่อสร้าง — ระบุเลขที่สัญญา ลงวันที่ เลขที่โครงการ หน่วยงานเจ้าของโครงการ วงเงินงบประมาณ ราคากลาง วงเงินตามสัญญา ชื่อผู้รับจ้าง แล้วตารางราคาที่ปรับลดและราคาต่อหน่วย<br>
+หมายเหตุ (*) ส่วนต่างให้ปรับเพิ่ม/ลดในรายการใดรายการหนึ่งได้ตามความเหมาะสม ยกเว้นค่าใช้จ่ายพิเศษตามข้อกำหนด ทั้งนี้ วงเงินรวมต้องเท่ากับราคาตามคำเสนอของผู้ชนะ</blockquote>
   <h3>หลักการของระบบนี้</h3>
-  <p><b>รายการที่ไม่ปรับลด:</b> หมวดค่าใช้จ่ายพิเศษตามข้อกำหนด (ตาม ว 651) และหมวดครุภัณฑ์จัดซื้อ (ตามแนวปฏิบัติของหน่วยงาน) คงราคากลางไว้ทุกบาท รวมถึงรายการที่ติ๊ก “ไม่ลด” เอง</p>
+  <p><b>รายการที่ไม่ปรับลด:</b> ค่าใช้จ่ายพิเศษตามข้อกำหนดคงราคากลางไว้ทุกบาท (ข้อ 1.2.2) · <b>ครุภัณฑ์จัดซื้อปรับลดในอัตราร้อยละเดียวกับงานก่อสร้าง</b> ตามตัวอย่างแบบสรุปราคากลาง (สิ่งที่ส่งมาด้วย 1: โต๊ะ 2,140,000 → 2,106,402 บาท ที่อัตรา 1.57%) · โครงการเดิมที่บันทึกไว้ก่อนปรับปรุงยังคงครุภัณฑ์ไว้ตามแนวปฏิบัติเดิม เปลี่ยนได้ที่การ์ด “หมวดงานและค่า Factor F / VAT” · รายการที่ติ๊ก “ไม่ลด” เองก็จะคงราคากลาง</p>
   <p><b>อัตราร้อยละ:</b> (1) ราคากลางหักรายการที่ไม่ปรับลด · (2) ราคาที่ใช้คำนวณหักรายการที่ไม่ปรับลด · (3) = (1) − (2) · อัตรา = (3) ÷ (1) × 100 ตัดเศษเหลือทศนิยม 2 ตำแหน่ง</p>
   <p><b>การปัดเศษ (ค่าเริ่มต้น):</b> ราคาที่ขอต่อรองรวมเป็นจำนวนเต็มบาท · ราคาต่อหน่วยที่ปรับลด = ราคากลางรายการ × (1 − อัตรา) ÷ จำนวน ตัดเศษเหลือทศนิยม 2 ตำแหน่ง · จำนวนเงิน = ราคาต่อหน่วย × จำนวน · เปลี่ยนเป็น “ราคาต่อหน่วยเป็นจำนวนเต็มบาท” ได้ที่หน้าผลการปรับลดราคาหรือตั้งค่า</p>
   <p><b>ส่วนต่างปัดเศษ (*):</b> ปรับเข้ารายการเดียวก่อน (รายการที่เลือก หรือรายการที่ราคากลางสูงสุด) ถ้าหารไม่ลงตัวจึงกระจายไปรายการอื่นที่ปรับลดได้ ยอดรวมต้องเท่ากับราคาที่ใช้คำนวณพอดี</p>
