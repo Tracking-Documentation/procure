@@ -214,6 +214,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 .paper .sig{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18mm;text-align:center;break-inside:avoid}
 .paper .sig div{line-height:1.7}
 .paper .rem{font-size:13.5px;margin-top:10px}
+.esh{position:relative}.esh>img.esig{position:absolute;left:50%;bottom:.8em;transform:translateX(-50%);height:15mm;max-width:50mm;object-fit:contain;pointer-events:none;z-index:2}.esig-note{font-size:10.5px;color:#555;margin-top:8px;font-family:Sarabun,sans-serif}#esPrint{display:none}@media print{body.pes>*:not(#esPrint){display:none!important}body.pes #esPrint{display:block!important}}
 .paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
@@ -373,7 +374,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">128</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">129</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -436,7 +437,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='128',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='129',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1274,6 +1275,8 @@ class DocxBuilder{
   textRun(text,cs,f){if(!text)return '';return `<w:r>${runProps(cs,f)}<w:t xml:space="preserve">${xe(text)}</w:t></w:r>`}
   imgRun(el){const r=el.getBoundingClientRect();this.img=true;this.media=this.media||[];const src=el.getAttribute('src')||'';let m=this.media.find(x=>x.src===src);if(!m){const ext=(src.match(/^data:image\/(\w+)/)||[])[1]==='gif'?'gif':'png';m={src,id:'rIdImg'+(this.media.length+1),name:'image'+(this.media.length+1)+'.'+ext};this.media.push(m)}const cx=DX.emu(r.width),cy=DX.emu(r.height);this.nId=(this.nId||0)+1;
     return `<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${cx}" cy="${cy}"/><wp:docPr id="${this.nId}" name="Picture ${this.nId}"/><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${this.nId}" name="${m.name}"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${m.id}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${cx}" cy="${cy}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r>`}
+  anchorRun(el,f){const r=el.getBoundingClientRect(),h=el.parentNode.getBoundingClientRect();const k=f||1;const x=this.imgRun(el);const cx=DX.emu(r.width*k),cy=DX.emu(r.height*k);
+    return x.replace(/<wp:inline [^>]*><wp:extent cx="\d+" cy="\d+"\/>/,`<wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="${251659264+this.nId}" behindDoc="0" locked="0" layoutInCell="1" allowOverlap="1"><wp:simplePos x="0" y="0"/><wp:positionH relativeFrom="character"><wp:posOffset>${DX.emu((r.left-h.left)*k)}</wp:posOffset></wp:positionH><wp:positionV relativeFrom="line"><wp:posOffset>${DX.emu((r.top-h.top)*k)}</wp:posOffset></wp:positionV><wp:extent cx="${cx}" cy="${cy}"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:wrapNone/>`).replace(/<a:ext cx="\d+" cy="\d+"\/>/,`<a:ext cx="${cx}" cy="${cy}"/>`).replace('</wp:inline>','</wp:anchor>')}
   // returns xml for the children of `el` laid out inside a container whose content-left is `baseLeft` (px)
   blocks(el,f,baseLeft){const out=[];let cur=null;const cs=getComputedStyle(el);
     const leftOf=e=>{const r=e.getBoundingClientRect(),c=getComputedStyle(e);return r.left+parseFloat(c.paddingLeft)+parseFloat(c.borderLeftWidth||0)-baseLeft};
@@ -1283,6 +1286,7 @@ class DocxBuilder{
       if(node.nodeType===3){let t=node.nodeValue.replace(/\s+/g,' ');if(!cur||!cur.runs.length)t=t.replace(/^ /,'');if(t){ensure();cur.runs.push(this.textRun(t,pcs,f))}return}
       if(node.nodeType!==1)return;const e=node,c=getComputedStyle(e);if(c.display==='none')return;
       if(e.tagName==='BR'){ensure();cur.runs.push('<w:r><w:br/></w:r>');return}
+      if(e.tagName==='IMG'&&e.classList.contains('esig')){ensure();cur.runs.push(this.anchorRun(e,f));return}
       if(e.tagName==='IMG'){if(!c.display.startsWith('inline')){flush();const ctr=parseFloat(c.marginLeft)>0&&Math.abs(parseFloat(c.marginLeft)-parseFloat(c.marginRight))<3;out.push(`<w:p><w:pPr><w:spacing w:before="0" w:after="0"/>${ctr?'<w:jc w:val="center"/>':''}</w:pPr>${this.imgRun(e)}</w:p>`);return}ensure();cur.runs.push(this.imgRun(e));return}
       if(c.display==='inline-block'&&!e.textContent.trim()){ensure();const n=Math.max(1,Math.round(DX.pt(e.getBoundingClientRect().width)/4));cur.runs.push(this.textRun(' '.repeat(n),c,f));return}
       if(!c.display.startsWith('inline')){flush();out.push(this.element(e,f,baseLeft));return}
@@ -1359,7 +1363,7 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
   const cs=central.reduce((a,b)=>a+b.length,0);const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);
   return new Blob([...parts,...central,new Uint8Array(end.buffer)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
 function papersToDocx(html){
-  const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);
+  const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);ES.last=0;applyESign(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
   const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
@@ -1385,6 +1389,7 @@ function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
   return {L,err:r.errors.length?r.errors[0]:''}}
 function downloadWord(p,key){const {L}=wordDocsList(p);const d=L.find(x=>x[0]===key);if(!d)return;
   const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2]())}finally{S.settings.watermark=wmOld}
+  if(blob)esLog(p,'Word: '+d[1]);
   if(!blob){toast('ไม่มีข้อมูลสำหรับเอกสารนี้');return}
   const name=`${d[1]}_${String(p.inviteNo||p.projectNo||'').replace(/[\\/:*?"<>|]/g,'-')}.docx`;
   try{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}catch(e){toast('ดาวน์โหลดไม่ได้ในหน้านี้')}}
@@ -1533,6 +1538,7 @@ function rReport(){
      <div class="seg">${segs.map(([k,l])=>`<button class="${reportSel===k?'on':''}" data-rs="${k}" type="button">${l}</button>`).join('')}</div>
      <label class="switch"><input type="checkbox" id="tgSign" ${st.showSign?'checked':''}> ช่องลงนาม</label>
      <label class="switch"><input type="checkbox" id="tgWm" ${st.watermark?'checked':''}> คำว่า “ตัวอย่าง”</label>
+     ${canEdit()&&esReg().people.some(esActive)?`<label class="switch"><input type="checkbox" id="tgEs" ${ES.on&&ES.pid===p.id?'checked':''}> ลายเซ็นอิเล็กทรอนิกส์</label>`:''}${(p.esignLog||[]).length?'<button class="btn sm" id="esLogB" type="button">ประวัติลายเซ็น</button>':''}
      <span class="sp"></span><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div>
      <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>${reportSel==='eval'?evalPicker(p):''}
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
@@ -1541,6 +1547,10 @@ function rReport(){
   <div class="paper-wrap" id="printArea">${ORD_REPORTS.some(x=>x[0]===reportSel)?ORD_REPORTS.find(x=>x[0]===reportSel)[2](p):reportSel==='req'?repReq(p):(reportSel==='all'?repReq(p):'')+(r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
     (['nego','all'].includes(reportSel)?repNego(p,r,b):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(reportSel==='pack'?repNego(p,r,b):'')+(['notice','all'].includes(reportSel)?repNotice(p):'')+(['eval','all'].includes(reportSel)?repEval(p):'')+(['mid','all'].includes(reportSel)?repMid(p,r,b):'')+(['sign','all'].includes(reportSel)?repSign(p):'')+(['contract','all'].includes(reportSel)?repContract(p,r,b):'')+(['cert','all'].includes(reportSel)?repCertAll(p):''))}</div>`;
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
+  {const n=applyESign($('#printArea'));const box=document.createElement('div');if(ES.on&&ES.pid===p.id){box.className='note '+(n?(ES.reason==='urgent'?'warn':'ok'):'bad');box.style.marginTop='10px';
+    box.innerHTML=n?`<b>ใส่ลายเซ็นอิเล็กทรอนิกส์ ${n} จุด</b> — ${esc(ES_REASON[ES.reason])}${ES.detail?' · '+esc(ES.detail):''} · <a href="#" id="esEdit">เปลี่ยนเหตุผล/ผู้ลงนาม</a>`:'<b>เอกสารนี้ไม่มีชื่อผู้ที่ให้ความยินยอม</b> — ไม่ได้ใส่ลายเซ็น';el.querySelector('.card .card-b+.card-b').appendChild(box)}
+   const tg=$('#tgEs');const open=()=>esDialog(p,$('#printArea'),ok=>{if(ok){const u=me()||{};p.esignLog=(p.esignLog||[]).concat({at:nowStr(),by:u.name||u.username||'(เครื่องนี้)',act:'เปิดใช้ลายเซ็น',reason:ES.reason,detail:ES.detail,names:esPeopleOn().map(x=>x.name)}).slice(-300);touch(p)}rReport()});
+   if(tg)tg.onchange=()=>{if(tg.checked)open();else{ES.on=false;rReport()}};const ed=$('#esEdit');if(ed)ed.onclick=e=>{e.preventDefault();ES.on=false;rReport();open()};const lb=$('#esLogB');if(lb)lb.onclick=()=>esLogDialog(p)}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;rReport()});
   $$('[data-word]',el).forEach(x=>x.onclick=()=>downloadWord(p,x.dataset.word));
   $('#wAll').onclick=()=>{const ks=$$('[data-word]',el).map(x=>x.dataset.word);ks.forEach((k,i)=>setTimeout(()=>downloadWord(p,k),i*700));toast(`กำลังดาวน์โหลด ${ks.length} ไฟล์ (ถ้าเบราว์เซอร์ถามว่าอนุญาตให้ดาวน์โหลดหลายไฟล์ ให้กดอนุญาต)`)};
@@ -1549,7 +1559,7 @@ function rReport(){
   $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
   $('#tgWm').onchange=e=>{st.watermark=e.target.checked;save();rReport()};
   $('#basisSel2').onchange=e=>{p.basis=e.target.value;touch(p);rReport()};
-  $('#btnPrint').onclick=()=>{try{window.print()}catch(e){}};
+  $('#btnPrint').onclick=()=>{esLog(p,'พิมพ์/PDF: '+((segs.find(x=>x[0]===reportSel)||[])[1]||reportSel));try{window.print()}catch(e){}};
 }
 const wm=()=>S.settings.watermark?' wm':'';
 function belowPct(p){const m=totals(p).sumM,o=toS(p.offerPrice);return m&&o?Math.round((m-o)/m*10000)/100:0}
@@ -1891,6 +1901,10 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
   <p><b>การปัดเศษ (ค่าเริ่มต้น):</b> ราคาที่ขอต่อรองรวมเป็นจำนวนเต็มบาท · ราคาต่อหน่วยที่ปรับลด = ราคากลางรายการ × (1 − อัตรา) ÷ จำนวน ตัดเศษเหลือทศนิยม 2 ตำแหน่ง · จำนวนเงิน = ราคาต่อหน่วย × จำนวน · เปลี่ยนเป็น “ราคาต่อหน่วยเป็นจำนวนเต็มบาท” ได้ที่หน้าผลการปรับลดราคาหรือตั้งค่า</p>
   <p><b>ส่วนต่างปัดเศษ (*):</b> ปรับเข้ารายการเดียวก่อน (รายการที่เลือก หรือรายการที่ราคากลางสูงสุด) ถ้าหารไม่ลงตัวจึงกระจายไปรายการอื่นที่ปรับลดได้ ยอดรวมต้องเท่ากับราคาที่ใช้คำนวณพอดี</p>
   <p><b>ราคาที่ลงตัว:</b> บางราคาหารจำนวนหน่วยไม่ลงตัว (เช่น มีรายการที่ปรับลดได้รายการเดียว จำนวน 83 หน่วย) ระบบจะแนะนำราคารวมที่เป็นจำนวนเต็มและลงตัวใกล้ที่สุดให้เลือกใช้ในการต่อรอง</p>
+  <h2 style="font-size:22px;color:var(--tab-on);margin-top:28px">ลายมือชื่ออิเล็กทรอนิกส์</h2>
+  <p class="muted">พระราชบัญญัติว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ พ.ศ. 2544 มาตรา 9 · ระเบียบสำนักนายกรัฐมนตรีว่าด้วยงานสารบรรณ (ฉบับที่ 4) พ.ศ. 2564 · ใช้สรุปนี้ประกอบการทำงานเท่านั้น</p>
+  <h3>หลักทั่วไป (มาตรา 9)</h3><blockquote>กรณีกฎหมายกำหนดให้มีการลงลายมือชื่อ ให้ถือว่ามีการลงลายมือชื่อแล้ว ถ้า (1) ใช้วิธีการที่สามารถระบุตัวเจ้าของลายมือชื่อ และแสดงได้ว่าเจ้าของลายมือชื่อรับรองข้อความในข้อมูลอิเล็กทรอนิกส์นั้นว่าเป็นของตน และ (2) วิธีการนั้นเชื่อถือได้ เหมาะสมกับวัตถุประสงค์ หรือพิสูจน์ได้ว่าบรรลุผลตาม (1)</blockquote>
+  <p><b>ในระบบนี้:</b> ผู้ลงนามต้องลงนามใน “หนังสือให้ความยินยอม” ก่อน (ตั้งค่า → ลายมือชื่ออิเล็กทรอนิกส์) ใช้ได้ 2 กรณี คือ (ก) ทำสำเนาอิเล็กทรอนิกส์ของเอกสารที่ลงนามฉบับจริงแล้วแทนการสแกน (ข) กรณีเร่งด่วน/แก้ไขข้อผิดพลาดเล็กน้อยที่ไม่เปลี่ยนสาระสำคัญ ต้องระบุรายละเอียดและแจ้งผู้ลงนาม · ทุกครั้งที่พิมพ์หรือดาวน์โหลดพร้อมลายเซ็นจะบันทึกประวัติ (ผู้ดำเนินการ วัน เวลา เอกสาร เหตุผล) · เพิกถอนแล้วภาพลายเซ็นถูกลบทันที · <b>สัญญาและเอกสารที่ผูกพันบุคคลภายนอก ให้ลงลายมือชื่อในต้นฉบับเสมอ</b></p>
   <h2 style="font-size:22px;color:var(--tab-on);margin-top:28px">การกำหนดผลงานก่อสร้าง</h2>
   <p class="muted">หนังสือคณะกรรมการวินิจฉัยปัญหาการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ ด่วนที่สุด ที่ กค (กวจ) 0405.2/ว 214 ลงวันที่ 18 พฤษภาคม 2563 เรื่อง แนวทางปฏิบัติในการกำหนดคุณสมบัติของผู้ยื่นข้อเสนอ การกำหนดผลงาน การระบุคุณลักษณะเฉพาะของพัสดุหรือยี่ห้อของพัสดุ และการพิจารณาคุณสมบัติผู้ยื่นข้อเสนอของหน่วยงานของรัฐกรณีการกำหนดสิ่งที่ไม่ใช่สาระสำคัญ (แทนแนวทางเดิมตามหนังสือ ว 521 ลงวันที่ 30 ตุลาคม 2562)</p>
   <h3>ข้อ 1.1.2 ผู้ยื่นข้อเสนอต้องเป็นนิติบุคคล</h3><blockquote>การจ้างก่อสร้างที่มีวงเงินตั้งแต่ 1,000,000 บาทขึ้นไป ให้กำหนดว่าต้องเป็นนิติบุคคลตามกฎหมาย</blockquote>
@@ -2072,7 +2086,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
   <tr><td>บริษัทเปิดลิงก์จองแล้วขึ้น “ลิงก์จองไม่ถูกต้อง”</td><td>กด “เปิดรับจอง / อัปเดตลิงก์จอง” ในแท็บเรียกลงนามสัญญา</td></tr>
   <tr><td>ขึ้น “ไม่ได้รับอนุญาตให้เข้าถึง: DriveApp”</td><td>เป็นข้อจำกัดของ Google Drive ตอนเปิดไฟล์ที่แนบไว้ ใช้ปุ่มเลือกไฟล์จากเครื่องแทน และแจ้งผู้ดูแลระบบ</td></tr>
   <tr><td>ไม่เห็นการปรับปรุงล่าสุด</td><td>ดูเลขเวอร์ชันท้ายหน้า รีเฟรชหน้า หรือรอประมาณ 10 นาที</td></tr>
-  <tr><td>กลัวข้อมูลหาย</td><td>ตั้งค่า → สำรองข้อมูลเป็นไฟล์เป็นระยะ</td></tr>
+  <tr><td>กลัวข้อมูลหาย</td><td>ตั้งค่า → สำรองข้อมูลเป็นไฟล์เป็นระยะ</td></tr><tr><td>ไม่อยากสแกนเอกสารที่เซ็นแล้ว</td><td>ตั้งค่า → ลายมือชื่ออิเล็กทรอนิกส์ (พิมพ์หนังสือยินยอม → อัปโหลด/วาดลายเซ็น) แล้วที่หน้ารายงานติ๊ก “ลายเซ็นอิเล็กทรอนิกส์”</td></tr>
  </tbody></table>
  </div></div>`;
  manNoBreak(el);
@@ -2150,7 +2164,8 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   <div class="card"><div class="card-h"><h2>สำรองและกู้คืนข้อมูล</h2></div><div class="card-b grid">
    <p class="muted" style="margin:0">${central()?'ข้อมูลโครงการเก็บในระบบกลาง (Google Sheet) · ไฟล์สำรองยังมีประโยชน์ไว้เก็บเป็นหลักฐาน · นำเข้าในโหมดนี้จะเพิ่มเป็นโครงการใหม่เสมอ ไม่ลบของเดิม':'ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้เท่านั้น ถ้าล้างข้อมูลเบราว์เซอร์หรือเปลี่ยนเครื่อง ข้อมูลจะหาย ควรสำรองเป็นไฟล์ไว้'}</p>
    <div class="row"><button class="btn pri" id="bExport" type="button">ดาวน์โหลดไฟล์สำรอง (.json)</button><button class="btn" id="bCopy" type="button">คัดลอกข้อมูลสำรอง</button><button class="btn" id="bLegacy" type="button">นำเข้าจากระบบติดตามเดิม (.xlsx)</button>${central()?`<button class="btn" id="bLgSync" type="button">↻ ซิงก์จากชีตเดิมตอนนี้</button>`:''}</div>${central()?`<div class="row" style="gap:10px;flex-wrap:wrap;font-size:13.5px"><label class="switch"><input type="checkbox" id="lgAuto" ${st.legacyAuto!==false?'checked':''}> ซิงก์โครงการ ID คณะกรรมการ และผู้ควบคุมงาน จากชีต “สถานะโครงการจัดซื้อจัดจ้าง” อัตโนมัติ (ทุก 5 นาที)</label><span class="muted" id="lgInfo">${esc(lgInfoTxt())}</span>`:''}<button class="btn ghost-brand" id="bImport" type="button">นำเข้าจากไฟล์</button><button class="btn" id="bPasteImp" type="button">วางข้อมูลสำรอง</button></div>
-  </div></div></div>`;
+  </div></div>${esCard()}</div>`;
+  esBind();
   $('#sAgency').oninput=e=>{st.agency=e.target.value;save()};
   $$('[data-ss]').forEach(i=>i.oninput=()=>{st.signers[+i.dataset.ss][i.dataset.sk]=i.value;save()});
   {const sc=$('#signCopyCk');if(sc)sc.onchange=()=>{st.signCopy=sc.checked;save()}}
@@ -3644,7 +3659,113 @@ setInterval(()=>legacySync(false),60000);setTimeout(()=>legacySync(false),4000);
 
 
 /* expose core for testing */
-window.__boq={parsePlanSheet:(...a)=>parsePlanSheet(...a),bidList:p=>bidList(p),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
+/* ================= ลายมือชื่ออิเล็กทรอนิกส์ (ใช้แทนการสแกน / กรณีเร่งด่วน) ================= */
+const ES_REASON={orig:'ฉบับจริงลงลายมือชื่อแล้ว — ทำสำเนาอิเล็กทรอนิกส์แทนการสแกน',urgent:'กรณีเร่งด่วน / แก้ไขข้อผิดพลาดเล็กน้อยที่ไม่เปลี่ยนสาระสำคัญ'};
+let ES={pid:null,on:false,reason:'orig',detail:'',note:true,off:[],last:0};
+function esReg(){const st=S.settings;if(!st.esign||typeof st.esign!=='object')st.esign={people:[]};if(!Array.isArray(st.esign.people))st.esign.people=[];return st.esign}
+const esKey=n=>String(n||'').replace(/[()\s​.]/g,'').replace(/^(ว่าที่ร้อยตรีหญิง|ว่าที่ร้อยตรี|ว่าที่รตหญิง|ว่าที่รต|นางสาว|นส|นาง|นาย|ดร)/,'');
+const esToday=()=>new Date().toISOString().slice(0,10);
+function esActive(x){return !!(x&&x.img&&x.consentDate&&!x.revoked&&(!x.until||x.until>=esToday()))}
+function esStatus(x){if(x.revoked)return ['p-fix','เพิกถอนแล้ว '+thDate(x.revoked)];if(!x.consentDate)return ['p-draft','รอหนังสือยินยอม'];if(!x.img)return ['p-draft','ยังไม่มีภาพลายเซ็น'];if(x.until&&x.until<esToday())return ['p-fix','หมดอายุ '+thDate(x.until)];return ['p-ok','ใช้ได้']}
+function esAdmin(){return !central()||(me()&&me().role==='admin')}
+/* หาชื่อในวงเล็บ (หรือบรรทัดถัดจาก "ลงชื่อ") ใน .paper แล้ววางภาพลายเซ็นไว้เหนือชื่อ · dry=true แค่นับว่ามีใครบ้าง */
+function esScan(root,people,dry){const map=new Map();people.forEach(x=>{const k=esKey(x.name);if(k)map.set(k,x)});const found=new Set();let n=0;if(!root||!map.size)return {found,n};
+  root.querySelectorAll('.paper').forEach(pp=>{let hit=0;const w=document.createTreeWalker(pp,NodeFilter.SHOW_TEXT);const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    nodes.forEach(tn=>{if(!tn.nodeValue||tn.parentNode.closest('.esh,script,style'))return;const t=tn.nodeValue;const ms=[];const re=/\(([^()]{2,90})\)/g;let m;
+      while((m=re.exec(t))){const x=map.get(esKey(m[1]));if(x)ms.push([m.index,m[0].length,x])}
+      if(!ms.length){const x=map.get(esKey(t));if(x&&t.trim()){let pv=tn.previousSibling;if(pv&&pv.nodeName==='BR')pv=pv.previousSibling;if(pv&&/ลงชื่อ/.test(pv.textContent||''))ms.push([t.search(/\S/),t.trim().length,x])}}
+      ms.forEach(z=>found.add(esKey(z[2].name)));if(dry||!ms.length)return;
+      for(const [i,len,x] of ms.reverse()){const r=tn.splitText(i);r.splitText(len);const sp=document.createElement('span');sp.className='esh';const im=document.createElement('img');im.className='esig';im.src=x.img;im.alt='';sp.appendChild(im);r.parentNode.insertBefore(sp,r);sp.appendChild(r);n++;hit++}});
+    if(hit&&!dry&&ES.note){const d=document.createElement('div');d.className='esig-note';d.textContent=(ES.reason==='orig'?'สำเนาอิเล็กทรอนิกส์ · ต้นฉบับลงลายมือชื่อแล้ว':'ลงลายมือชื่ออิเล็กทรอนิกส์โดยความยินยอมของผู้ลงนาม')+' · '+toTH(nowStr());pp.appendChild(d)}});
+  return {found,n}}
+function esPeopleOn(){return esReg().people.filter(x=>esActive(x)&&!(ES.off||[]).includes(esKey(x.name)))}
+function applyESign(root){if(!ES.on||ES.pid!==cur)return 0;const r=esScan(root,esPeopleOn(),false);ES.last=r.n;return r.n}
+function esLog(p,act){if(!ES.on||ES.pid!==p.id||!ES.last)return;const u=me()||{};p.esignLog=(p.esignLog||[]).concat({at:nowStr(),by:u.name||u.username||'(เครื่องนี้)',act,doc:act.split(': ')[1]||'',reason:ES.reason,detail:ES.detail,names:esPeopleOn().map(x=>x.name)}).slice(-300);touch(p)}
+function esDialog(p,area,done){const act=esReg().people.filter(esActive);const {found}=esScan(area,act,true);const L=act.filter(x=>found.has(esKey(x.name)));
+  const pend=esReg().people.filter(x=>!esActive(x));
+  const m=modal('ใส่ลายมือชื่ออิเล็กทรอนิกส์',`<div class="grid" style="gap:12px">
+   ${L.length?`<div><b>ผู้ลงนามในเอกสารนี้ที่ให้ความยินยอมไว้แล้ว</b><div class="grid" style="gap:4px;margin-top:6px">${L.map(x=>`<label class="switch"><input type="checkbox" data-esn="${esc(esKey(x.name))}" ${(ES.off||[]).includes(esKey(x.name))?'':'checked'}> ${esc(x.name)} <img src="${x.img}" alt="" style="height:26px;vertical-align:middle;margin-left:6px"></label>`).join('')}</div></div>`
+     :`<div class="note warn">ไม่พบชื่อผู้ที่ให้ความยินยอมไว้ในเอกสารที่เลือก · ระบบวางลายเซ็นเฉพาะชื่อที่อยู่ในวงเล็บใต้บรรทัด “ลงชื่อ” และต้องสะกดตรงกับทะเบียน (ตั้งค่า → ลายมือชื่ออิเล็กทรอนิกส์)</div>`}
+   ${pend.length?`<div class="muted" style="font-size:12.5px">ยังใช้ไม่ได้: ${pend.map(x=>esc(x.name)+' ('+esStatus(x)[1]+')').join(' · ')}</div>`:''}
+   <div><b>เหตุผลการใช้</b>${Object.entries(ES_REASON).map(([k,l])=>`<label class="switch" style="display:flex;margin-top:6px"><input type="radio" name="esR" value="${k}" ${ES.reason===k?'checked':''}> ${l}</label>`).join('')}</div>
+   <label class="f"><span id="esDL">${ES.reason==='urgent'?'รายละเอียด (แก้ไขอะไร / เหตุที่เร่งด่วน) *':'อ้างอิงฉบับจริง (เลขที่ / วันที่ลงนาม) — ถ้ามี'}</span><textarea class="i" id="esD" rows="2">${esc(ES.detail)}</textarea></label>
+   <label class="switch" id="esTold" style="${ES.reason==='urgent'?'':'display:none'}"><input type="checkbox" id="esToldC"> แจ้งผู้ลงนามทราบแล้ว (หรือจะแจ้งโดยเร็วที่สุด) ตามเงื่อนไขในหนังสือยินยอม</label>
+   <label class="switch"><input type="checkbox" id="esNote" ${ES.note?'checked':''}> แสดงข้อความกำกับ “ลายมือชื่ออิเล็กทรอนิกส์” ท้ายเอกสาร (แนะนำ)</label>
+   <div class="muted" style="font-size:12.5px">ทุกครั้งที่พิมพ์หรือดาวน์โหลด Word พร้อมลายเซ็น ระบบจะบันทึกผู้ดำเนินการ วัน เวลา เอกสาร และเหตุผลไว้ในประวัติของโครงการ</div></div>`,
+   `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button" ${L.length?'':'disabled'}>ใส่ลายเซ็น</button>`);
+  const R=m.root;R.querySelectorAll('[name=esR]').forEach(x=>x.onchange=()=>{const u=x.value==='urgent';R.querySelector('#esDL').textContent=u?'รายละเอียด (แก้ไขอะไร / เหตุที่เร่งด่วน) *':'อ้างอิงฉบับจริง (เลขที่ / วันที่ลงนาม) — ถ้ามี';R.querySelector('#esTold').style.display=u?'':'none'});
+  R.querySelector('[data-mc]').onclick=()=>{m.close();done(false)};
+  R.querySelector('[data-mo]').onclick=()=>{const reason=R.querySelector('[name=esR]:checked').value,detail=R.querySelector('#esD').value.trim();
+    if(reason==='urgent'&&!detail)return toast('กรุณาระบุรายละเอียดกรณีเร่งด่วน');if(reason==='urgent'&&!R.querySelector('#esToldC').checked)return toast('กรุณายืนยันว่าแจ้งผู้ลงนามแล้ว');
+    const cb=[...R.querySelectorAll('[data-esn]')];if(!cb.some(x=>x.checked))return toast('เลือกผู้ลงนามอย่างน้อย 1 คน');
+    ES={pid:p.id,on:true,reason,detail,note:R.querySelector('#esNote').checked,off:cb.filter(x=>!x.checked).map(x=>x.dataset.esn),last:0};m.close();done(true)}}
+function esLogDialog(p){const L=(p.esignLog||[]).slice().reverse();modal('ประวัติการใช้ลายมือชื่ออิเล็กทรอนิกส์',L.length?`<div style="max-height:60vh;overflow:auto"><table class="t" style="width:100%;font-size:13px"><thead><tr><th>วัน เวลา</th><th>ผู้ดำเนินการ</th><th>การใช้</th><th>ผู้ลงนาม</th><th>เหตุผล</th></tr></thead><tbody>${L.map(x=>`<tr><td style="white-space:nowrap">${esc(x.at)}</td><td>${esc(x.by)}</td><td>${esc(x.act)}</td><td>${esc((x.names||[]).join(', '))}</td><td>${x.reason==='urgent'?'<b>เร่งด่วน</b>':'สำเนาฉบับจริง'}${x.detail?' — '+esc(x.detail):''}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">ยังไม่เคยใช้ลายเซ็นอิเล็กทรอนิกส์ในโครงการนี้</p>')}
+/* ---- ทะเบียนลายเซ็น (หน้าตั้งค่า) ---- */
+function esCard(){const R=esReg();const ad=esAdmin();
+  return `<div class="card" id="esCard"><div class="card-h"><h2>ลายมือชื่ออิเล็กทรอนิกส์</h2>${ad?'<button class="btn ghost-brand sm" id="esAdd" type="button">+ เพิ่มผู้ลงนาม</button>':''}</div><div class="card-b grid" style="gap:10px">
+   <p class="muted" style="margin:0;font-size:13px">ใช้แทนการสแกนเอกสารที่ลงนามฉบับจริงแล้ว หรือกรณีเร่งด่วน/แก้ไขเล็กน้อย · ผู้ลงนามต้องลงนามในหนังสือยินยอมก่อน (พิมพ์จากปุ่ม “หนังสือยินยอม”) แล้วนำตัวอย่างลายมือชื่อในกรอบมาอัปโหลดหรือให้เจ้าตัววาดเอง · ใช้งานที่หน้า “รายงาน” → ติ๊ก “ลายเซ็นอิเล็กทรอนิกส์”${ad?'':' · <b>เฉพาะผู้ดูแลระบบแก้ทะเบียนได้</b>'}</p>
+   ${R.people.length?`<div class="tbl-wrap"><table class="t" style="width:100%"><thead><tr><th>ชื่อ-สกุล / ตำแหน่ง</th><th>ลายเซ็น</th><th>หนังสือยินยอม</th><th>สถานะ</th><th></th></tr></thead><tbody>
+   ${R.people.map(x=>{const [c,l]=esStatus(x);return `<tr data-esid="${x.id}"><td>${ad?`<input class="i" data-ek="name" value="${esc(x.name)}" style="margin-bottom:4px"><input class="i" data-ek="position" value="${esc(x.position||'')}" placeholder="ตำแหน่ง">`:`${esc(x.name)}<div class="muted" style="font-size:12px">${esc(x.position||'')}</div>`}</td>
+     <td style="min-width:150px">${x.img?`<img src="${x.img}" alt="ลายเซ็น" style="height:40px;max-width:150px;object-fit:contain;background:#fff;border:1px dashed var(--line);border-radius:6px">`:'<span class="muted">—</span>'}${ad&&!x.revoked?`<div class="row" style="gap:4px;margin-top:4px"><button class="btn sm" data-eup type="button">อัปโหลด</button><button class="btn sm" data-edraw type="button">วาด</button></div>`:''}</td>
+     <td style="min-width:160px">${ad&&!x.revoked?`<label class="f"><span style="font-size:12px">วันที่ลงนามยินยอม</span><input class="i" type="date" data-ek="consentDate" value="${esc(x.consentDate||'')}"></label><label class="f"><span style="font-size:12px">ใช้ได้ถึง (ว่าง = จนกว่าจะเพิกถอน)</span><input class="i" type="date" data-ek="until" value="${esc(x.until||'')}"></label>`:`${x.consentDate?thDate(x.consentDate):'—'}${x.until?' – '+thDate(x.until):''}`}</td>
+     <td><span class="pill ${c}">${esc(l)}</span></td>
+     <td class="act" style="white-space:nowrap"><button class="btn sm" data-econ type="button">หนังสือยินยอม</button>${ad?(x.revoked?`<button class="icon-btn del" data-edel type="button" title="ลบออกจากทะเบียน">${ICON.x}</button>`:`<button class="btn sm danger" data-erev type="button">เพิกถอน</button>`):''}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="muted">ยังไม่มีผู้ลงนามในทะเบียน</div>'}
+   <input type="file" id="esFile" accept="image/*" hidden>
+  </div></div>`}
+function esBind(){const R=esReg();const card=$('#esCard');if(!card)return;const re=()=>{save();rSet()};const row=e=>R.people.find(x=>x.id===e.closest('[data-esid]')?.dataset.esid);
+  const add=$('#esAdd');if(add)add.onclick=()=>{const L=peopleAll();orderSigners().forEach(g=>{if(g.name&&!L.some(x=>esKey(x.name)===esKey(g.name)))L.push({name:g.name,position:g.position||''})});
+    const m=modal('เพิ่มผู้ลงนาม',`<div class="grid" style="gap:10px"><label class="f"><span>ชื่อ-สกุล (ตรงกับที่พิมพ์ในเอกสาร)</span><input class="i" id="esN" list="esNL" placeholder="นายสมชาย  ใจดี"><datalist id="esNL">${L.map(x=>`<option value="${esc(x.name)}">`).join('')}</datalist></label><label class="f"><span>ตำแหน่ง</span><input class="i" id="esP"></label></div>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">เพิ่ม</button>`);
+    const n=m.root.querySelector('#esN');n.oninput=()=>{const f=L.find(x=>esKey(x.name)===esKey(n.value));if(f&&!m.root.querySelector('#esP').value)m.root.querySelector('#esP').value=f.position||''};
+    m.root.querySelector('[data-mc]').onclick=m.close;m.root.querySelector('[data-mo]').onclick=()=>{const name=n.value.trim();if(!name)return toast('กรอกชื่อ');if(R.people.some(x=>!x.revoked&&esKey(x.name)===esKey(name)))return toast('มีชื่อนี้ในทะเบียนแล้ว');
+      R.people.push({id:uid(),name,position:m.root.querySelector('#esP').value.trim(),img:'',consentDate:'',until:'',revoked:'',addedBy:(me()||{}).username||'',addedAt:nowStr()});m.close();re()}};
+  card.oninput=e=>{const k=e.target.dataset.ek;if(!k)return;const x=row(e.target);if(!x)return;x[k]=e.target.value;save();if(k==='consentDate'||k==='until'){const td=e.target.closest('tr').querySelector('.pill');const [c,l]=esStatus(x);td.className='pill '+c;td.textContent=l}};
+  let upFor=null;$('#esFile').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f||!upFor)return;try{const d=await esFromFile(f);upFor.img=d;upFor.imgAt=nowStr();re();toast('บันทึกภาพลายเซ็นแล้ว')}catch(er){toast(er.message||'อ่านรูปไม่ได้')}};
+  card.onclick=e=>{const b=e.target.closest('button');if(!b)return;const x=row(b);if(!x)return;
+    if(b.hasAttribute('data-eup')){upFor=x;$('#esFile').click()}
+    else if(b.hasAttribute('data-edraw'))esDraw(x,d=>{x.img=d;x.imgAt=nowStr();re()});
+    else if(b.hasAttribute('data-econ'))esConsentPrint(x);
+    else if(b.hasAttribute('data-erev'))confirmBox(`เพิกถอนการใช้ลายมือชื่อของ ${x.name}? ภาพลายเซ็นจะถูกลบออกจากระบบทันที`,'เพิกถอน',()=>{x.revoked=esToday();x.img='';re()});
+    else if(b.hasAttribute('data-edel'))confirmBox(`ลบ ${x.name} ออกจากทะเบียน?`,'ลบ',()=>{R.people=R.people.filter(y=>y!==x);re()})}}
+/* รูป → พื้นใส ตัดขอบ ย่อสูงสุด 160px */
+function esLoadImg(src){return new Promise((ok,no)=>{const im=new Image();im.onload=()=>ok(im);im.onerror=()=>no(new Error('อ่านรูปไม่ได้'));im.src=src})}
+async function esFromFile(f){const url=URL.createObjectURL(f);try{return esClean(await esLoadImg(url),true)}finally{URL.revokeObjectURL(url)}}
+function esClean(src,whiteBg){const W=src.naturalWidth||src.width,H=src.naturalHeight||src.height;const sc=Math.min(1,1600/Math.max(W,H));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(W*sc));c.height=Math.max(1,Math.round(H*sc));const g=c.getContext('2d');g.drawImage(src,0,0,c.width,c.height);
+  const d=g.getImageData(0,0,c.width,c.height),a=d.data;let x0=c.width,y0=c.height,x1=-1,y1=-1;
+  for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const i=(y*c.width+x)*4;if(whiteBg){const l=0.299*a[i]+0.587*a[i+1]+0.114*a[i+2];const al=l>=205?0:l<=140?255:Math.round((205-l)/65*255);a[i+3]=Math.min(a[i+3],al)}if(a[i+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}}
+  if(x1<0)throw new Error('ไม่พบลายเส้นในรูป — ถ่ายบนกระดาษขาว ให้ลายเซ็นชัด');g.putImageData(d,0,0);
+  const pad=6;x0=Math.max(0,x0-pad);y0=Math.max(0,y0-pad);x1=Math.min(c.width-1,x1+pad);y1=Math.min(c.height-1,y1+pad);const cw=x1-x0+1,ch=y1-y0+1;const s2=Math.min(1,160/ch,520/cw);
+  const o=document.createElement('canvas');o.width=Math.round(cw*s2);o.height=Math.round(ch*s2);o.getContext('2d').drawImage(c,x0,y0,cw,ch,0,0,o.width,o.height);return o.toDataURL('image/png')}
+function esDraw(x,done){const m=modal('วาดลายเซ็น — '+x.name,`<div class="grid" style="gap:8px"><div class="muted" style="font-size:13px">ให้เจ้าของลายเซ็นวาดเองด้วยนิ้วหรือเมาส์ ใหญ่ ๆ เต็มกรอบ</div><canvas id="esCv" width="900" height="300" style="width:100%;max-width:600px;aspect-ratio:3/1;background:#fff;border:1px solid var(--line);border-radius:10px;touch-action:none;cursor:crosshair"></canvas></div>`,`<button class="btn" data-ecl type="button">ล้าง</button><button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">บันทึก</button>`);
+  const cv=m.root.querySelector('#esCv'),g=cv.getContext('2d');g.lineWidth=5;g.lineCap='round';g.lineJoin='round';g.strokeStyle='#14237a';let dn=false,any=false;
+  const pt=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height]};
+  cv.onpointerdown=e=>{dn=true;cv.setPointerCapture(e.pointerId);const [a,b]=pt(e);g.beginPath();g.moveTo(a,b)};cv.onpointermove=e=>{if(!dn)return;const [a,b]=pt(e);g.lineTo(a,b);g.stroke();any=true};cv.onpointerup=cv.onpointercancel=()=>dn=false;
+  m.root.querySelector('[data-ecl]').onclick=()=>{g.clearRect(0,0,cv.width,cv.height);any=false};m.root.querySelector('[data-mc]').onclick=m.close;
+  m.root.querySelector('[data-mo]').onclick=()=>{if(!any)return toast('ยังไม่ได้วาด');try{const d=esClean(cv,false);m.close();done(d)}catch(e){toast(e.message)}}}
+/* หนังสือให้ความยินยอม */
+function esConsentHtml(x){const st=S.settings;const F=letterFont();const dir=orderSigners()[0]||{};const sys='ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่';
+  const L=[`ข้าพเจ้า ${x.name||'......................................................'} ตำแหน่ง ${x.position||'......................................................'} สังกัด${st.office||'แขวงทางหลวงกระบี่'} ขอแสดงความยินยอมให้ใช้ภาพลายมือชื่อของข้าพเจ้าตามตัวอย่างท้ายหนังสือนี้ ซึ่งจัดเก็บไว้ใน “${sys}” เป็นลายมือชื่ออิเล็กทรอนิกส์ตามพระราชบัญญัติว่าด้วยธุรกรรมทางอิเล็กทรอนิกส์ พ.ศ. 2544 ในเอกสารงานจัดซื้อจัดจ้างที่จัดทำผ่านระบบดังกล่าว ภายใต้เงื่อนไข ดังนี้`,
+   '(1) ใช้ได้เฉพาะ (ก) การจัดทำสำเนาอิเล็กทรอนิกส์ของเอกสารที่ข้าพเจ้าได้ลงลายมือชื่อในต้นฉบับแล้ว เพื่อใช้แทนการสแกนเอกสาร และ (ข) กรณีเร่งด่วนหรือการแก้ไขข้อผิดพลาดเล็กน้อยซึ่งไม่เปลี่ยนแปลงสาระสำคัญของเอกสารที่ข้าพเจ้าได้ตรวจสอบหรือเห็นชอบไว้แล้ว โดยต้องแจ้งให้ข้าพเจ้าทราบก่อนหรือโดยเร็วที่สุด',
+   '(2) ห้ามใช้ในเอกสารที่ข้าพเจ้ายังมิได้ตรวจสอบหรือไม่เห็นชอบ ห้ามใช้ในสัญญาหรือเอกสารที่ก่อให้เกิดนิติสัมพันธ์กับบุคคลภายนอกโดยข้าพเจ้ามิได้ลงลายมือชื่อในต้นฉบับ และห้ามนำภาพลายมือชื่อไปใช้นอกระบบหรือเพื่อวัตถุประสงค์อื่น',
+   '(3) การใช้ทุกครั้งต้องบันทึกในระบบ โดยระบุผู้ดำเนินการ วัน เวลา เอกสาร และเหตุผล ซึ่งข้าพเจ้าขอตรวจสอบได้ตลอดเวลา',
+   '(4) ข้าพเจ้าขอเพิกถอนความยินยอมนี้ได้ทุกเมื่อโดยแจ้งเป็นลายลักษณ์อักษร และให้มีผลนับแต่วันที่แจ้ง ทั้งนี้ ให้ลบภาพลายมือชื่อออกจากระบบโดยเร็ว',
+   `(5) ความยินยอมนี้มีผลตั้งแต่วันที่ลงนาม${x.until?' จนถึงวันที่ '+thDate(x.until):' จนกว่าจะเพิกถอน หรือข้าพเจ้าพ้นจากตำแหน่งหรือย้ายสังกัด'}`];
+  const TH=s=>st.thaiDigits===false?s:toTH(s);
+  return `<div class="paper" style="font-family:${F.lf};font-size:${F.ls==='16pt'?'16pt':'12pt'};line-height:1.35;padding:20mm 20mm 15mm 30mm;min-height:296mm;box-sizing:border-box">
+   <div style="text-align:center;font-weight:700;font-size:1.1em">หนังสือให้ความยินยอมในการใช้ลายมือชื่ออิเล็กทรอนิกส์</div>
+   <div style="text-align:right;margin-top:10px">เขียนที่ ${esc(st.office||'แขวงทางหลวงกระบี่')}</div>
+   <div style="text-align:right">วันที่ ............ เดือน .............................. พ.ศ. ..............</div>
+   ${L.map((t,i)=>`<p style="margin:${i?2:12}px 0 0;text-indent:${i?'0':'2.5cm'};${i?'padding-left:2.5cm;':''}text-align:justify">${esc(TH(t))}</p>`).join('')}
+   <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div><b>ตัวอย่างลายมือชื่อ</b> (ลงนาม 2 ครั้งในกรอบ ด้วยปากกาหมึกน้ำเงินหรือดำ)<div style="display:grid;gap:6px;margin-top:4px"><div style="height:24mm;border:1px solid #000"></div><div style="height:24mm;border:1px solid #000"></div></div></div>
+    <div style="text-align:center;align-self:end">ลงชื่อ ..................................... ผู้ให้ความยินยอม<br>(${esc(x.name||'................................................')})<br>${esc(x.position||'')}
+     <div style="margin-top:16px">ลงชื่อ ..................................... พยาน<br>(................................................)</div></div></div>
+   <div style="margin-top:18px">ทราบ / อนุญาต</div>
+   <div style="text-align:center;margin-left:45%;margin-top:22px">ลงชื่อ .....................................<br>(${esc(fName(dir.name||st.director||'................................................'))})<br>${esc(dir.position||st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div>
+   <div style="font-size:.75em;margin-top:16px;color:#333">หมายเหตุ: เก็บต้นฉบับหนังสือนี้ไว้ที่งานพัสดุและสัญญา · ผู้ดูแลระบบนำภาพจากกรอบตัวอย่างลายมือชื่อขึ้นทะเบียนในระบบ</div></div>`}
+function esConsentPrint(x){let h=$('#esPrint');if(!h){h=document.createElement('div');h.id='esPrint';document.body.appendChild(h)}h.innerHTML=esConsentHtml(x);
+  document.body.classList.add('pes');setTimeout(()=>{try{window.print()}finally{setTimeout(()=>{document.body.classList.remove('pes');h.innerHTML=''},600)}},60)}
+
+window.__boq={es:()=>ES,esScan,parsePlanSheet:(...a)=>parsePlanSheet(...a),bidList:p=>bidList(p),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
 try{$('#appVer').textContent=APP_VER;$('#appDate').textContent=APP_DATE}catch(e){}
 load();applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}
