@@ -296,7 +296,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
 @media print{body.pman .view{display:none!important}body.pman #v-manual{display:block!important}body.pman .man{border:0;box-shadow:none}body.pman .man-st,body.pman .man-ph,body.pman .man-lane,body.pman .man-t tr{break-inside:avoid}body.pman .man-company,body.pman #man-book{break-before:page}body.pman .man-h{break-after:avoid}
  body.pman .man-ph,body.pman .man-lane{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:14mm}}
 .anx-t.dmg-t td{vertical-align:top;line-height:1.35}.anx-t.dmg-t th{line-height:1.3}
-.paper.bx .nw{white-space:nowrap}.paper.bx .bxp{margin:0;text-indent:12mm;text-align:justify}.paper.bx .bxl{text-align:left}.paper.bx{line-height:1.3;padding-top:12mm!important;padding-bottom:10mm!important}.paper.bx .anx-s1{margin-top:5mm}.anx-t.bx-t td{height:1.6em}
+.paper.bx .nw{white-space:nowrap}.paper.bx{position:relative;min-height:296.5mm;box-sizing:border-box;padding-bottom:34mm!important}.paper.bx .bx-sig{position:absolute;right:15mm;bottom:10mm;text-align:center;line-height:1.3}.paper.bx .bxp{margin:0;text-indent:12mm;text-align:justify}.paper.bx .bxl{text-align:left}.paper.bx{line-height:1.3;padding-top:12mm!important}.paper.bx .anx-s1{margin-top:5mm}.anx-t.bx-t td{height:1.6em}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 body.gated>*:not(#gate):not(#toast){display:none!important}
 #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
@@ -368,7 +368,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">118</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">119</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -431,7 +431,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='118',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='119',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2870,7 +2870,7 @@ const N_LIGHT_STD={t:'การกำหนดแบบมาตรฐานง�
  'เพื่อป้องกันการขโมยสายไฟฟ้าในช่วงระหว่างเสาไฟฟ้าต่อเสาไฟฟ้าให้เทคอนกรีตหุ้ม 3 จุดที่บริเวณปิดหัวท้ายและตรงกลาง',
  'อุปกรณ์ไฟฟ้าทุกชนิดจะต้องใช้ตามมาตรฐานอุตสาหกรรม (มอก.)']};
 const ANX_REMARK_LIGHT='ตามข้อกำหนดมาตรฐานทั่วไปงานติดตั้งไฟฟ้าแสงสว่างบนทางหลวง';
-function anxOf(p){p.annex=Object.assign({kind:'',elec:null,lstd:null,mill:null,dmg:null,millAt:'',signer:'',witness1:'',witness2:''},p.annex||{});return p.annex}
+function anxOf(p){const D={kind:'',elec:null,lstd:null,mill:null,dmg:null,millAt:'',signer:'',witness1:'',witness2:''};const A=p.annex=p.annex||{};for(const k in D)if(A[k]===undefined)A[k]=D[k];return A}
 /* งานขูดไส (MILLING) — มีรายการ MILLING ใน BOQ ต้องระบุที่กองเก็บวัสดุ */
 const MILL_AT_DEF='ทางหลวงหมายเลข 4034 หมวดทางหลวงอ่าวนาง';
 /* ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10) — อัตโนมัติเมื่อเป็นงานไฟฟ้าและมีรายการเสา/ดวงโคม */
@@ -2946,13 +2946,20 @@ function bidList(p){if(!window.TOR_TPL)return null;try{const h=repTor(p,'bid').r
 function bidNoOf(p,kw,fb){if(!window.TOR_TPL)loadTorTpl().then(()=>{if(tab==='report'||tab==='prep')render()}).catch(()=>{});const L=bidList(p);const x=L&&L.find(i=>kw.test(i.t));return x?x.no:fb||'๑.....'}
 function bidRef(p){const st=S.settings;let n=String(p.inviteNo||'').trim();const y=toTH(String((p.inviteDate?new Date(p.inviteDate+'T12:00:00'):new Date()).getFullYear()+543));
   if(!/e-/i.test(n))n='e-กบ.'+(n?toTH(n):'..........')+'/'+y;return {no:toTH(n),date:p.inviteDate?thDate(p.inviteDate):'........................'}}
+/* ผู้ลงนามมุมล่างขวาทุกแผ่น: A.bxSig (false=ไม่ใส่) · A.bxSigIdx (เลขในรายชื่อผู้ลงนามคำสั่ง / 'custom') */
+function bxSigLines(p){const A=anxOf(p);if(A.bxSig===false)return null;
+  if(A.bxSigIdx==='custom')return [`(${A.bxSigName||'..................................'})`,...String(A.bxSigPos||'').split('\n').map(x=>x.trim()).filter(Boolean)];
+  const L=orderSigners();const g=L[+A.bxSigIdx||0]||L[0]||{};return [`(${fName(g.name||S.settings.director||'')})`,g.position||S.settings.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',g.acting||''].filter(Boolean)}
+function bxSigHtml(p){const L=bxSigLines(p);return L?`<div class="bx-sig">${L.map(esc).join('<br>')}</div>`:''}
+function bxSheet(p,inner,extra=''){const F=letterFont();return `<div class="paper ev anx bx${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls};${extra}">${inner}${bxSigHtml(p)}</div>`}
 function bxPage(p,no,title,body,o={}){const F=letterFont();body=bxNB(body);title=bxNB(title||'');const st=S.settings;const r=bidRef(p);
+  if(body.includes('<!--PB-->')){const parts=body.split('<!--PB-->');return bxPage(p,no,title,parts[0],o)+parts.slice(1).map(x=>bxSheet(p,x)).join('')}
   return `<div class="paper ev anx bx${o.tight?' tight':''}${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
    <div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${no}</div>
    ${title?`<div class="c b">${title}</div>`:''}
    ${o.ref?`<div class="c" style="white-space:nowrap">${o.ref==='bid'?'ประกวดราคาจ้าง':'แนบท้ายประกาศประกวดราคาจ้าง'} เลขที่ ${esc(r.no)}  ลงวันที่ ${esc(r.date)}</div>${o.noDots?'':`<div class="c" style="margin-bottom:3mm">${'.'.repeat(70)}</div>`}`:''}
    ${body}
-   ${o.noSig?'':`<div class="anx-s1">(${esc(fName(st.director||''))})<br>${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div>`}</div>`}
+   ${bxSigHtml(p)}</div>`}
 const BX_NB=['จัดซื้อจัดจ้าง','ภาครัฐ','เจ้าหน้าที่','ดาวน์โหลด','แผ่นป้าย','รายละเอียด','ผู้รับจ้าง','ผู้ว่าจ้าง','กรมทางหลวง','แขวงทางหลวงกระบี่','ผู้ยื่นข้อเสนอ','ผู้เสนอราคา','ห้างหุ้นส่วน','บริษัทจำกัด','บริษัทมหาชนจำกัด','หุ้นส่วนผู้จัดการ','กรรมการผู้จัดการ','ผู้ถือหุ้นรายใหญ่','อิเล็กทรอนิกส์','ประกวดราคา','งานก่อสร้าง','หมายเลขโทรศัพท์','โทรศัพท์','ทะเบียน','จดทะเบียน','วงเงินสินเชื่อ','ผู้ประกอบการ','นิติบุคคล','บุคคลธรรมดา','ภาษีอากร','ประชาชน','ความชำรุดบกพร่อง','เทอร์โมพลาสติก','แอสฟัลต์คอนกรีต','โรงงาน','ผังเมือง','กรมโยธาธิการ','สัญญา','ลายลักษณ์อักษร','ครุภัณฑ์','ภายในประเทศ','ต่างประเทศ','จำนวนเงิน','ธนาคาร','เส้นทาง','ระยะเวลา','วิศวกรที่ปรึกษา','ส่วนราชการ','ผู้ควบคุมงาน','ชุมชนเมือง','จราจร','ผลประโยชน์','ประทุษร้าย','ทรัพย์สิน','ได้เปรียบ','ข้อเท็จจริง','คู่สัญญาฝ่ายผู้รับจ้าง'].sort((a,b)=>b.length-a.length);
 const BX_NB_RE=new RegExp('('+BX_NB.join('|')+')','g');
 function bxNB(h){return String(h).replace(/>([^<]+)</g,(m,t)=>'>'+t.replace(BX_NB_RE,'<span class="nw">$1</span>')+'<').replace(/^([^<]+)/,(m,t)=>t.replace(BX_NB_RE,'<span class="nw">$1</span>'))}
@@ -2966,7 +2973,7 @@ function repBxDef(p){const no=bidNoOf(p,/^บทนิยาม/,'๑.๖');
   bxP('(๒) มีความสัมพันธ์กันในเชิงทุน โดยผู้เป็นหุ้นส่วนในห้างหุ้นส่วนสามัญ หรือผู้เป็นหุ้นส่วนไม่จำกัดความรับผิดในห้างหุ้นส่วนจำกัด หรือผู้ถือหุ้นรายใหญ่ในบริษัทจำกัด หรือบริษัทมหาชนจำกัด เป็นหุ้นส่วนในห้างหุ้นส่วนสามัญหรือห้างหุ้นส่วนจำกัด หรือเป็นผู้ถือหุ้นรายใหญ่ในบริษัทจำกัด หรือบริษัทมหาชนจำกัด อีกรายหนึ่งหรือหลายรายที่เสนอราคาให้แก่กรมในการประกวดราคาอิเล็กทรอนิกส์ครั้งนี้'),
   bxP('คำว่า “ผู้ถือหุ้นรายใหญ่” ให้หมายความว่า ผู้ถือหุ้นซึ่งถือหุ้นเกินกว่าร้อยละยี่สิบห้าในกิจการนั้น หรือในอัตราอื่นตามที่คณะกรรมการว่าด้วยการพัสดุเห็นสมควรประกาศกำหนด สำหรับกิจการบางประเภทหรือบางขนาด'),
   bxP('(๓) มีความสัมพันธ์กันในลักษณะไขว้กันระหว่าง (๑) และ (๒) โดยผู้จัดการ หุ้นส่วนผู้จัดการ กรรมการผู้จัดการ ผู้บริหาร หรือผู้มีอำนาจในการดำเนินงานในกิจการของบุคคลธรรมดา หรือของนิติบุคคลรายหนึ่ง เป็นหุ้นส่วนในห้างหุ้นส่วนสามัญหรือห้างหุ้นส่วนจำกัด หรือเป็นผู้ถือหุ้นรายใหญ่ในบริษัทจำกัดหรือบริษัทมหาชนจำกัด อีกรายหนึ่งหรือหลายรายที่เข้าเสนอราคาให้แก่กรม ในการประกวดราคาอิเล็กทรอนิกส์ครั้งนี้ หรือในนัยกลับกัน'),
-  bxP('การดำรงตำแหน่ง การเป็นหุ้นส่วน หรือเข้าถือหุ้นดังกล่าวข้างต้นของคู่สมรส หรือบุตรที่ยังไม่บรรลุนิติภาวะของบุคคลใน (๑) (๒) หรือ (๓) ให้ถือว่าเป็นการดำรงตำแหน่งการเป็นหุ้นส่วน หรือการถือหุ้นของบุคคลดังกล่าว'),
+  '<!--PB-->'+bxP('การดำรงตำแหน่ง การเป็นหุ้นส่วน หรือเข้าถือหุ้นดังกล่าวข้างต้นของคู่สมรส หรือบุตรที่ยังไม่บรรลุนิติภาวะของบุคคลใน (๑) (๒) หรือ (๓) ให้ถือว่าเป็นการดำรงตำแหน่งการเป็นหุ้นส่วน หรือการถือหุ้นของบุคคลดังกล่าว'),
   bxP('ในกรณีบุคคลใดใช้ชื่อบุคคลอื่นเป็นผู้จัดการ หุ้นส่วนผู้จัดการ กรรมการผู้จัดการ ผู้บริหาร ผู้เป็นหุ้นส่วน หรือผู้ถือหุ้นโดยที่ตนเองเป็นผู้ใช้อำนาจในการบริหารที่แท้จริง หรือเป็นหุ้นส่วนหรือผู้ถือหุ้นที่แท้จริงของห้างหุ้นส่วน หรือบริษัทจำกัด หรือบริษัทมหาชนจำกัด แล้วแต่กรณี และห้างหุ้นส่วน หรือบริษัทจำกัด หรือบริษัทมหาชนจำกัดที่เกี่ยวข้อง ได้เสนอราคาให้แก่กรม ในการประกวดราคาอิเล็กทรอนิกส์คราวเดียวกัน ให้ถือว่าผู้เสนอราคาหรือผู้เสนองานนั้นมีความสัมพันธ์กันตาม (๑) (๒) หรือ (๓) แล้วแต่กรณี'),
   bxP('“การขัดขวางการแข่งขันราคาอย่างเป็นธรรม” หมายความว่า การที่ผู้เสนอราคารายหนึ่งหรือหลายรายกระทำการอย่างใด ๆ อันเป็นการขัดขวาง หรือเป็นอุปสรรคหรือไม่เปิดโอกาสให้มีการแข่งขันราคาอย่างเป็นธรรมในการเสนอราคาต่อกรม ไม่ว่าจะกระทำโดยการสมยอมกัน หรือโดยการให้ ขอให้หรือรับว่าจะให้ เรียก รับ หรือยอมจะรับเงินหรือทรัพย์สิน หรือประโยชน์อื่นใด หรือใช้กำลังประทุษร้าย หรือข่มขู่ว่าจะใช้กำลังประทุษร้าย หรือแสดงเอกสารอันเป็นเท็จ หรือกระทำการใดโดยทุจริต ทั้งนี้ โดยมีวัตถุประสงค์ที่จะแสวงหาประโยชน์ในระหว่างผู้เสนอราคาด้วยกันหรือเพื่อให้ประโยชน์แก่ผู้เสนอราคารายหนึ่งรายใดเป็นผู้มีสิทธิทำสัญญากับกรม หรือเพื่อหลีกเลี่ยงการแข่งขันราคาอย่างเป็นธรรม หรือเพื่อให้เกิดความได้เปรียบกรม โดยมิใช่เป็นไปในทางประกอบธุรกิจปกติ')].join(''),{ref:'bid'}))}
 /* --- ๑.๙ แผนการใช้พัสดุ/เหล็กที่ผลิตภายในประเทศ --- */
@@ -2984,7 +2991,7 @@ function repBxWork(p){const no=bidNoOf(p,/^แผนการทำงาน/,'�
   return thDig(bxPage(p,no,'เงื่อนไขการเสนอแผนการทำงาน',[
    bxP('ภายในกำหนดระยะเวลา ๑๕ วัน นับถัดจากวันลงนามในสัญญาผู้รับจ้างจะต้องจัดทำแผนการทำงานส่งให้ผู้ว่าจ้างตรวจสอบและแผนการทำงานดังกล่าวต้องได้รับความเห็นชอบจากผู้ว่าจ้างก่อนจึงจะลงมือทำงานได้'),
    bxP('แผนการทำงานจะต้องแสดงลำดับขั้นตอนและช่วงเวลาที่จะทำงานแต่ละรายการตามสัญญาให้ครบถ้วนชัดเจนและเป็นไปได้ โดยงานทั้งหมดต้องแล้วเสร็จบริบูรณ์ภายในกำหนดเวลาของสัญญา'),
-   bxP('ในกรณีมีความจำเป็นต้องปรับแผนการทำงานในระหว่างการทำงาน ผู้รับจ้างต้องเสนอแผนการทำงานที่ปรับใหม่แก่ผู้ว่าจ้างเพื่อให้ความเห็นชอบก่อนทุกครั้ง')].join(''),{ref:'ann'})+[1,2,3,4].map(i=>`<div class="paper ev anx bx${wm()}" style="--lf:${esc(letterFont().lf)};--ls:${letterFont().ls};padding:8mm"><div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${no} · ${['ตัวอย่างแบบการจัดทำแผนการทำงาน','ตัวอย่างวิธีการจัดทำแผนการทำงาน','ตัวอย่างการคำนวณและการประเมินการดำเนินการตามแผนการทำงาน กรณีระยะเวลาไม่เกิน ๑ ปี','ตัวอย่างการคำนวณและการประเมินการดำเนินการตามแผนการทำงาน กรณีระยะเวลาเกิน ๑ ปี'][i-1]}</div><img src="wplan-${i}.jpg" alt="ตัวอย่างแผนการทำงาน" style="width:100%;max-height:250mm;object-fit:contain;display:block;margin:2mm auto 0"><div class="anx-s1" style="margin-top:2mm">(${esc(fName(S.settings.director||''))})<br>${esc(S.settings.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div></div>`).join(''))}
+   bxP('ในกรณีมีความจำเป็นต้องปรับแผนการทำงานในระหว่างการทำงาน ผู้รับจ้างต้องเสนอแผนการทำงานที่ปรับใหม่แก่ผู้ว่าจ้างเพื่อให้ความเห็นชอบก่อนทุกครั้ง')].join(''),{ref:'ann'})+[1,2,3,4].map(i=>`<div class="paper ev anx bx${wm()}" style="--lf:${esc(letterFont().lf)};--ls:${letterFont().ls};padding:8mm"><div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${no} · ${['ตัวอย่างแบบการจัดทำแผนการทำงาน','ตัวอย่างวิธีการจัดทำแผนการทำงาน','ตัวอย่างการคำนวณและการประเมินการดำเนินการตามแผนการทำงาน กรณีระยะเวลาไม่เกิน ๑ ปี','ตัวอย่างการคำนวณและการประเมินการดำเนินการตามแผนการทำงาน กรณีระยะเวลาเกิน ๑ ปี'][i-1]}</div><img src="wplan-${i}.jpg" alt="ตัวอย่างแผนการทำงาน" style="width:100%;max-height:235mm;object-fit:contain;display:block;margin:2mm auto 0">${bxSigHtml(p)}</div>`).join(''))}
 /* --- ๑.๑๑ แบบหนังสือรับรองวงเงินสินเชื่อ (ปกติ + อิเล็กทรอนิกส์) --- */
 function bxCredit(el){return `<div style="display:flex;justify-content:space-between;margin-top:6mm"><span>เลขที่..............................</span><span>วันที่..........................................</span></div>
   <div style="margin:4mm 0 4mm 10mm">เรื่อง&nbsp;&nbsp;รับรองวงเงินสินเชื่อ</div>
@@ -3040,7 +3047,7 @@ function repBxSign(p){const no=bidNoOf(p,/แผ่นป้ายแสดง�
    bxL('๓.๑ งานก่อสร้างขนาดเล็ก (เช่น ถนน ๒ ช่องจราจร) และงานก่อสร้างในพื้นที่ชนบท แผ่นป้ายควรมีขนาดไม่เล็กกว่า ๑.๒๐ X ๒.๔๐ เมตร',1),
    bxL('๓.๒ งานก่อสร้างขนาดใหญ่ (เช่น ถนน ๔ ช่องจราจร ถนนตามผังเมืองรวมและถนนสายสำคัญ ๆ) งานก่อสร้างในเขตชุมชนเมือง แผ่นป้ายควรมีขนาดไม่เล็กกว่า ๒.๔๐ X ๔.๘๐ เมตร',1),
    bxP('๔. งานก่อสร้างที่เป็นการสร้างทางให้ติดตั้งแผ่นป้ายรายละเอียดงานก่อสร้างไว้ ณ จุดเริ่มต้นและจุดสิ้นสุดงานก่อสร้างอย่างน้อย ๒ จุด'),
-   bxP('๕. ให้ผู้รับจ้างนำ QR Code ที่หน่วยงานดาวน์โหลดจากระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์ (e-GP) ไปใส่ในแผ่นป้ายแสดงรายละเอียดเกี่ยวกับงานก่อสร้าง ตามแบบแผ่นป้ายของกรมโยธาธิการและผังเมืองที่แนบ')].join(''),{ref:'bid',noDots:1})+[1,2].map(i=>`<div class="paper ev anx bx${wm()}" style="--lf:${esc(letterFont().lf)};--ls:${letterFont().ls};padding:8mm"><div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${no} · แบบแผ่นป้าย${i===1?' (ขนาด ๑.๒๐ × ๒.๔๐ ม.)':' (ขนาด ๒.๔๐ × ๔.๘๐ ม.)'}</div><img src="sign-${i}.png" alt="แบบแผ่นป้าย" style="width:100%;max-height:255mm;object-fit:contain;display:block;margin:2mm auto 0"></div>`).join(''))}
+   bxP('๕. ให้ผู้รับจ้างนำ QR Code ที่หน่วยงานดาวน์โหลดจากระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์ (e-GP) ไปใส่ในแผ่นป้ายแสดงรายละเอียดเกี่ยวกับงานก่อสร้าง ตามแบบแผ่นป้ายของกรมโยธาธิการและผังเมืองที่แนบ')].join(''),{ref:'bid',noDots:1})+[1,2].map(i=>`<div class="paper ev anx bx${wm()}" style="--lf:${esc(letterFont().lf)};--ls:${letterFont().ls};padding:8mm"><div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${no} · แบบแผ่นป้าย${i===1?' (ขนาด ๑.๒๐ × ๒.๔๐ ม.)':' (ขนาด ๒.๔๐ × ๔.๘๐ ม.)'}</div><img src="sign-${i}.png" alt="แบบแผ่นป้าย" style="width:100%;max-height:235mm;object-fit:contain;display:block;margin:2mm auto 0">${bxSigHtml(p)}</div>`).join(''))}
 /* ชุดเอกสาร: [key, ชื่อปุ่ม, ฟังก์ชัน, เงื่อนไข] */
 const BX_DOCS=[['bx_def','บทนิยาม',repBxDef,()=>true],['bx_local','แผนการใช้พัสดุ/เหล็กในประเทศ',repBxLocal,()=>true],['bx_work','แผนการทำงาน (เงื่อนไข + ตัวอย่าง ว 124)',repBxWork,()=>true],
   ['bx_credit','แบบหนังสือรับรองวงเงินสินเชื่อ',repBxCredit,()=>true],['bx_warr','เงื่อนไขความชำรุดบกพร่อง',repBxWarranty,()=>true],
@@ -3078,19 +3085,17 @@ function dmgAuto(p){return num(p.budget)>=5e6}
 function dmgOn(p){const A=anxOf(p);return A.dmg===null||A.dmg===undefined?dmgAuto(p):!!A.dmg}
 /* เลขข้อในส่วนที่ ๑ ของเอกสารประกวดราคา (ไม่มีค่า K ข้อหลัง ๑.๔ เลื่อนขึ้น ๑ ข้อ) */
 function dmgNo(p){const n=(torPlant(p)?19:16)-(torOf(p).k?0:1);return bidNoOf(p,/คะแนนความเสียหาย/,toTH('1.'+n))}
-function repDamage(p){const F=letterFont();const st=S.settings;
-  const sig=`<div class="anx-s1">(${esc(fName(st.director||''))})<br>${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div>`;
-  const out=`<div class="paper ev anx dmg${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
-   <div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${dmgNo(p)}</div>
-   <div class="c b" style="margin-top:3mm">บัญชีเอกสารแนบท้าย<br>กำหนดคะแนนความเสียหาย<br>ตามหลักเกณฑ์การประเมินผลการปฏิบัติงานของผู้ประกอบการและคะแนนความเสียหาย<br>ตามข้อ ๑๙๐/๓</div>
-   <table class="anx-t dmg-t"><thead><tr><th style="width:9%">ที่</th><th>ความเสียหาย</th><th style="width:18%">คะแนน<br><span class="nw" style="white-space:nowrap">ความเสียหาย</span></th></tr></thead><tbody>
-   ${DMG_T1.map(r=>r.h?`<tr><td colspan="3" class="b">${r.h}</td></tr>`:`<tr><td class="c">${r[0]}</td><td style="padding-left:${(r[3]||0)*6+1.5}mm"${r[2]===''&&!r[3]?' colspan="2"':''}>${r[1]}</td>${r[2]===''&&!r[3]?'':`<td class="c">${r[2]}</td>`}</tr>`).join('')}
-   </tbody></table>
-   <div class="c b" style="margin-top:8mm;break-before:page">บัญชีเอกสารแนบท้าย<br>กำหนดคะแนนความเสียหายสะสม<br>และระยะเวลาการระงับการยื่นข้อเสนอ หรือทำสัญญาหรือข้อตกลงเป็นหนังสือ</div>
+function repDamage(p){const no=dmgNo(p);
+  const head=`<thead><tr><th style="width:9%">ที่</th><th>ความเสียหาย</th><th style="width:18%">คะแนน<br><span class="nw" style="white-space:nowrap">ความเสียหาย</span></th></tr></thead>`;
+  const row=r=>r.h?`<tr><td colspan="3" class="b">${r.h}</td></tr>`:`<tr><td class="c">${r[0]}</td><td style="padding-left:${(r[3]||0)*6+1.5}mm"${r[2]===''&&!r[3]?' colspan="2"':''}>${r[1]}</td>${r[2]===''&&!r[3]?'':`<td class="c">${r[2]}</td>`}</tr>`;
+  const cut1=DMG_T1.findIndex(r=>!r.h&&/^\(จ\)/.test(r[1])),cut2=DMG_T1.findIndex(r=>!r.h&&/^\(ข\) ผู้ประกอบการไม่เข้ามาดำเนินการแก้ไขความชำรุดบกพร่องให้ถูกต้อง/.test(r[1])),cut3=DMG_T1.findIndex(r=>!r.h&&r[0]==='(๕)');
+  const tb=rows=>`<table class="anx-t dmg-t">${head}<tbody>${rows.map(row).join('')}</tbody></table>`;
+  const p1=`<div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${no}</div>
+   <div class="c b" style="margin-top:3mm">บัญชีเอกสารแนบท้าย<br>กำหนดคะแนนความเสียหาย<br>ตามหลักเกณฑ์การประเมินผลการปฏิบัติงานของผู้ประกอบการและคะแนนความเสียหาย<br>ตามข้อ ๑๙๐/๓</div>${tb(DMG_T1.slice(0,cut1))}`;
+  const p4=`<div class="c b" style="margin-top:4mm">บัญชีเอกสารแนบท้าย<br>กำหนดคะแนนความเสียหายสะสม<br>และระยะเวลาการระงับการยื่นข้อเสนอ หรือทำสัญญาหรือข้อตกลงเป็นหนังสือ</div>
    <table class="anx-t dmg-t"><thead><tr><th style="width:9%">ที่</th><th style="width:36%">คะแนนความเสียหายสะสม</th><th>ระยะเวลา<br>การระงับการยื่นข้อเสนอ<br>หรือทำสัญญาหรือข้อตกลงเป็นหนังสือ</th></tr></thead><tbody>
-   ${DMG_T2.map(r=>`<tr><td class="c">${r[0]}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join('')}</tbody></table>
-   ${sig}</div>`;
-  return thDig(out)}
+   ${DMG_T2.map(r=>`<tr><td class="c">${r[0]}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join('')}</tbody></table>`;
+  return thDig(bxSheet(p,p1)+bxSheet(p,tb(DMG_T1.slice(cut1,cut2)))+bxSheet(p,tb(DMG_T1.slice(cut2,cut3)))+bxSheet(p,tb(DMG_T1.slice(cut3)))+bxSheet(p,p4))}
 ORD_REPORTS.push(['dmg','เอกสารกำหนดคะแนนความเสียหาย (วงเงิน ≥ 5 ล้าน)',p=>repDamage(p)],...BX_DOCS.map(d=>[d[0],'แนบประกวดราคา: '+d[1],p=>d[2](p)]),['bx_all','เอกสารแนบท้ายเอกสารประกวดราคา (ทั้งชุด)',p=>repBxAll(p)]);
 ORD_REPORTS.push(['attach','รายละเอียดแนบท้ายประกาศ',p=>repAttach(p)],['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',p=>repBoqForm(p)],['annex3_con','ผนวก 3 (แนบสัญญา)',p=>repAnnex3(p)],['condetail','รายละเอียดแนบท้ายสัญญา',p=>repConDetail(p)]);
 /* ---------- Excel (.xlsx) ด้วย ExcelJS ---------- */
@@ -3137,7 +3142,11 @@ const ANX_DOCS={attach:['attach','รายละเอียดแนบท้�
 function anxCard(p,kinds,title){const A=anxOf(p);const con=kinds.includes('con');const light=anxKind(p)==='light';
   const ks=kinds.filter(k=>(k!=='condetail'||light)&&(k!=='dmg'||dmgOn(p)));
   return `<div class="card" id="anxCard"><div class="card-h"><h2>${title}</h2></div><div class="card-b grid g12">
-   ${kinds.includes('attach')?`<div class="s12 row" style="gap:8px;flex-wrap:wrap;margin:0;align-items:center"><span class="muted" style="font-size:13px">เอกสารแนบท้ายเอกสารประกวดราคา:</span>${BX_DOCS.filter(d=>d[3](p)).map(d=>`<button class="btn sm" data-oprint="${d[0]}" type="button">${ICON.print} ${esc(d[1])}</button>`).join('')}<button class="btn sm blue" data-oprint="bx_all" type="button">${ICON.print} พิมพ์ทั้งชุด</button></div>`:''}
+   ${kinds.includes('attach')?`<div class="s12 row" style="gap:8px;flex-wrap:wrap;margin:0;align-items:center"><span class="muted" style="font-size:13px">เอกสารแนบท้ายเอกสารประกวดราคา:</span>${BX_DOCS.filter(d=>d[3](p)).map(d=>`<button class="btn sm" data-oprint="${d[0]}" type="button">${ICON.print} ${esc(d[1])}</button>`).join('')}<button class="btn sm blue" data-oprint="bx_all" type="button">${ICON.print} พิมพ์ทั้งชุด</button></div>
+   <div class="s12 row" style="gap:10px;flex-wrap:wrap;margin:0;align-items:end"><label class="switch" style="align-self:center"><input type="checkbox" data-anx="bxSig" ${A.bxSig!==false?'checked':''}> ลงนามมุมล่างขวาทุกแผ่น</label>
+   ${A.bxSig!==false?`<label class="f" style="min-width:260px"><span>ผู้ลงนาม</span><select class="i" data-anx="bxSigIdx">${orderSigners().map((g,i)=>`<option value="${i}" ${String(A.bxSigIdx||0)===String(i)?'selected':''}>${esc(g.label||g.name)}</option>`).join('')}<option value="custom" ${A.bxSigIdx==='custom'?'selected':''}>กำหนดเอง (เช่น รักษาราชการแทน)</option></select></label>
+   ${A.bxSigIdx==='custom'?`<label class="f" style="min-width:220px"><span>ชื่อ-สกุล</span><input class="i" data-anx="bxSigName" value="${esc(A.bxSigName||'')}" placeholder="นาย............"></label><label class="f" style="flex:1;min-width:260px"><span>ตำแหน่ง (ขึ้นบรรทัดใหม่ได้)</span><textarea class="i" rows="2" data-anx="bxSigPos" placeholder="วิศวกรโยธาชำนาญการพิเศษ&#10;รักษาราชการแทน ผู้อำนวยการแขวงทางหลวงกระบี่">${esc(A.bxSigPos||'')}</textarea></label>`:''}
+   <span class="muted" style="font-size:12.5px;align-self:center">→ ${esc((bxSigLines(p)||[]).join(' · '))}</span>`:''}</div>`:''}
    <div class="s12 row" style="gap:10px;flex-wrap:wrap;margin:0">${ks.map(k=>{const [r,l,x]=ANX_DOCS[k];return `<span class="row" style="gap:4px;margin:0"><button class="btn sm" data-oprint="${r}" type="button">${ICON.print} ${l}</button>${x?`<button class="btn sm" data-axl="${k}" type="button">⤓ Excel</button>`:''}</span>`}).join('')}</div>
    <label class="f s4"><span>แบบหมายเหตุ</span><select class="i" data-anx="kind"><option value="" ${!A.kind?'selected':''}>อัตโนมัติ (${light?'งานไฟฟ้า':'งานทาง'})</option><option value="road" ${A.kind==='road'?'selected':''}>งานทาง/ก่อสร้างทั่วไป</option><option value="light" ${A.kind==='light'?'selected':''}>งานไฟฟ้าแสงสว่าง/ไฟสัญญาณ</option></select></label>
    <div class="f s8"><span>&nbsp;</span><div class="row" style="gap:16px;flex-wrap:wrap;margin:0">${[['elec','หมายเหตุค่าธรรมเนียมการไฟฟ้า',anxElec(p)],['mill','หมายเหตุวัสดุงาน MILLING',anxMill(p)],...(light?[['lstd','ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10)',anxLstd(p)]]:[]),...(kinds.includes('dmg')?[['dmg','เอกสารกำหนดคะแนนความเสียหาย (ข้อ '+dmgNo(p)+')',dmgOn(p)]]:[])].map(([k,l,on])=>`<label class="switch"><input type="checkbox" data-anx="${k}" ${on?'checked':''}> ${l} <span class="muted" style="font-size:12px">${A[k]===null||A[k]===undefined?(k==='dmg'?'(ระบบเลือกตามวงเงิน: บังคับเมื่อ ≥ 5 ล้าน)':'(ระบบเลือกให้ตาม BOQ)'):'(เลือกเอง)'}</span></label>`).join('')}${['elec','mill','lstd','dmg'].some(k=>A[k]!==null&&A[k]!==undefined)?'<button class="btn sm" data-anxauto type="button">ให้ระบบเลือกตาม BOQ</button>':''}</div></div>
@@ -3158,7 +3167,7 @@ async function millFromXls(p,quiet){const f=(prepOf(p).xlsFiles||[]).slice(-1)[0
     else if(!quiet)alert(pl?'ไม่พบบรรทัด “หมายเหตุ … MILLING … ณ …” ในแผ่น “ข้อมูลและผลงาน” ของไฟล์ '+f.name:'ไม่พบแผ่น “ข้อมูลและผลงาน” ในไฟล์ '+f.name)}
   catch(e){if(!quiet)alert(e.message)}}
 function bindAnx(el,p){const A=anxOf(p);const mx=$('#anxMillXls',el);if(mx){mx.onclick=()=>millPickLocal(p);if(!A.millAt&&(prepOf(p).xlsFiles||[]).length&&!millTried.has(p.id)){millTried.add(p.id);millFromXls(p,true)}}
-  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.anx==='millAt')A.millSrc=0;touch(p);if(['kind','mill','elec','lstd','dmg'].includes(i.dataset.anx))render()}));
+  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.anx==='millAt')A.millSrc=0;touch(p);if(['kind','mill','elec','lstd','dmg','bxSig','bxSigIdx'].includes(i.dataset.anx))render()}));
   $$('[data-anxauto]',el).forEach(b=>b.onclick=()=>{A.elec=null;A.mill=null;A.lstd=null;A.dmg=null;touch(p);render()});
   $$('[data-axl]',el).forEach(b=>b.onclick=async()=>{b.disabled=true;try{await anxXlsx(p,b.dataset.axl)}catch(e){alert(e.message)}finally{b.disabled=false}});
   $$('[data-oprint]',el).forEach(b=>{if(!b.onclick)b.onclick=()=>{reportSel=b.dataset.oprint;go('report')}})}
