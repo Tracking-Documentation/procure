@@ -8,12 +8,16 @@
 Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system.  
 Concept and further development for end-to-end use by Miss Narama Woraklan.
 
-1. อนุญาตให้ใช้งาน ศึกษา และใช้ในงานราชการโดยไม่แสวงหากำไรได้ โดยต้องคงข้อความลิขสิทธิ์และเครดิตผู้พัฒนาไว้
-2. **ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร** ได้แก่ การขาย ให้เช่า เก็บค่าติดตั้งหรือค่าใช้งาน หรือนำไปรวมกับสินค้า/บริการที่มีค่าตอบแทน
-3. ห้ามนำไปแก้ไขแล้วเผยแพร่ต่อในนามผู้อื่น
+ระบบนี้ รวมถึงซอร์สโค้ด การออกแบบหน้าจอ แม่แบบเอกสาร และวิธีการคำนวณ เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537
+
+1. อนุญาตให้ใช้งานภายในหน่วยงานราชการโดยไม่แสวงหากำไร ตามที่ผู้พัฒนาอนุญาต โดยต้องคงข้อความลิขสิทธิ์และเครดิตผู้พัฒนาไว้ครบถ้วน
+2. **ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษรจากผู้พัฒนา** รวมถึงการขาย ให้เช่า เก็บค่าติดตั้งหรือค่าใช้งาน หรือนำไปรวมกับสินค้า/บริการที่มีค่าตอบแทน
+3. ห้ามนำไปแก้ไข แล้วเผยแพร่หรืออ้างเป็นผลงานในนามผู้อื่น
 4. ซอฟต์แวร์นี้ให้ไว้ "ตามสภาพ" ผู้ใช้ต้องตรวจสอบเอกสารและตัวเลขให้ถูกต้องตามระเบียบก่อนใช้งานจริง
 
-ขออนุญาตใช้เชิงพาณิชย์: ติดต่อผู้พัฒนา
+This system, including its source code, interface design, document templates and calculation methods, is the intellectual property of its developers and is protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.
+
+ขออนุญาตใช้งาน ดัดแปลง หรือเผยแพร่: ติดต่อผู้พัฒนา
 
 ---
 ส่วนประกอบจากบุคคลที่สาม: qrcode-generator © Kazuhiko Arase, MIT License (https://github.com/kazuhikoarase/qrcode-generator)
