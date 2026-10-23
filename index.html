@@ -295,6 +295,7 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
  body.pman .man-lane .man-st>span{font-size:12pt;color:#222}body.pman .man-ar{font-size:11pt}body.pman .man-ar.big{font-size:15pt}body.pman .man-ol{gap:2pt}body.pman .man-flow{max-width:none}}
 @media print{body.pman .view{display:none!important}body.pman #v-manual{display:block!important}body.pman .man{border:0;box-shadow:none}body.pman .man-st,body.pman .man-ph,body.pman .man-lane,body.pman .man-t tr{break-inside:avoid}body.pman .man-company,body.pman #man-book{break-before:page}body.pman .man-h{break-after:avoid}
  body.pman .man-ph,body.pman .man-lane{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:14mm}}
+.anx-t.dmg-t td{vertical-align:top;line-height:1.35}.anx-t.dmg-t th{line-height:1.3}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 body.gated>*:not(#gate):not(#toast){display:none!important}
 #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
@@ -366,7 +367,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">110</span> · <span id="appDate">22 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">111</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px">© 2026 Narama Woraklan · สงวนลิขสิทธิ์ · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต (Non-commercial use only)</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -429,7 +430,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='110',APP_DATE='22 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='111',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1875,6 +1876,24 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
   <h3>ข้อ 169 หน่วยงานของรัฐเป็นคู่สัญญา</h3><blockquote>ในกรณีที่หน่วยงานของรัฐเป็นผู้ยื่นข้อเสนอหรือเป็นคู่สัญญาไม่ต้องวางหลักประกัน</blockquote>
   <h3>ข้อ 170 การคืนหลักประกัน</h3><blockquote>ให้หน่วยงานของรัฐคืนหลักประกันให้แก่ผู้ยื่นข้อเสนอ คู่สัญญา หรือผู้ค้ำประกัน ตามหลักเกณฑ์ ดังนี้<br>(1) หลักประกันการเสนอราคาให้คืนให้แก่ผู้ยื่นข้อเสนอ หรือผู้ค้ำประกันภายใน 15 วัน นับถัดจากวันที่หัวหน้าหน่วยงานของรัฐได้พิจารณาเห็นชอบรายงานผลคัดเลือกผู้ชนะการซื้อหรือจ้างเรียบร้อยแล้ว เว้นแต่ผู้ยื่นข้อเสนอรายที่คัดเลือกไว้ซึ่งเสนอราคาต่ำสุดไม่เกิน 3 ราย ให้คืนได้ต่อเมื่อได้ทำสัญญาหรือข้อตกลง หรือผู้ยื่นข้อเสนอได้พ้นจากข้อผูกพันแล้ว<br>(2) หลักประกันสัญญาให้คืนให้แก่คู่สัญญา หรือผู้ค้ำประกันโดยเร็ว และอย่างช้าต้องไม่เกิน 15 วัน นับถัดจากวันที่คู่สัญญาพ้นจากข้อผูกพันตามสัญญาแล้ว<br>การจัดซื้อจัดจ้างที่ไม่ต้องมีการประกันเพื่อความชำรุดบกพร่องให้คืนหลักประกันให้แก่คู่สัญญาหรือผู้ค้ำประกันตามอัตราส่วนของพัสดุซึ่งหน่วยงานของรัฐได้รับมอบไว้แล้ว แต่ทั้งนี้จะต้องระบุไว้เป็นเงื่อนไขในเอกสารเชิญชวนและในสัญญาด้วย<br>การคืนหลักประกันที่เป็นหนังสือค้ำประกันของธนาคาร บริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์ ในกรณีที่ผู้ยื่นข้อเสนอหรือคู่สัญญาไม่มารับภายในกำหนดเวลาข้างต้น ให้รีบส่งต้นฉบับหนังสือค้ำประกันให้แก่ผู้ยื่นข้อเสนอหรือคู่สัญญา โดยทางไปรษณีย์ลงทะเบียนโดยเร็วพร้อมกับแจ้งให้ธนาคาร บริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์ ผู้ค้ำประกันทราบด้วย สำหรับหนังสือค้ำประกันอิเล็กทรอนิกส์ของธนาคารให้คืนแก่ธนาคารผู้ออกหนังสือค้ำประกันอิเล็กทรอนิกส์ผ่านทางระบบจัดซื้อจัดจ้างภาครัฐด้วยอิเล็กทรอนิกส์</blockquote>
   <h3>ข้อ 171 การแก้ไขสัญญาและหลักประกันลดลง</h3><blockquote>ในการทำสัญญาหากมีการแก้ไขสัญญาและมีผลทำให้วงเงินตามสัญญานั้นเปลี่ยนแปลงไปจากเดิมในกรณีเพิ่มขึ้น คู่สัญญาต้องนำหลักประกันสัญญามาวางเท่ากับวงเงินหลักประกันสัญญาที่ได้เพิ่มนั้น<br>ถ้าหลักประกันสัญญาที่คู่สัญญานำมามอบไว้เพื่อเป็นหลักประกันการปฏิบัติตามสัญญาลดลงหรือเสื่อมค่าลง หรือมีอายุไม่ครอบคลุมถึงความรับผิดของคู่สัญญาตลอดอายุสัญญา ไม่ว่าด้วยเหตุใด ๆ ก็ตาม รวมถึงส่งมอบงานล่าช้าเป็นเหตุให้ระยะเวลาแล้วเสร็จหรือวันครบกำหนดความรับผิดในความชำรุดบกพร่องตามสัญญาเปลี่ยนแปลงไป คู่สัญญาต้องหาหลักประกันใหม่หรือหลักประกันเพิ่มเติมให้มีจำนวนครบถ้วนตามมูลค่าที่กำหนดในสัญญามามอบให้ภายในระยะเวลาที่หน่วยงานของรัฐกำหนด</blockquote>
+  <h2 style="font-size:22px;color:var(--tab-on);margin-top:28px">การประเมินผลการปฏิบัติงานของผู้ประกอบการ</h2>
+  <p class="muted">ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ (ฉบับที่ 3) พ.ศ. 2569 · ราชกิจจานุเบกษา เล่ม 143 ตอนพิเศษ 169 ง ลงวันที่ 9 กรกฎาคม 2569 · ใช้บังคับตั้งแต่ 10 กรกฎาคม 2569 · แทนหมวด 7 ข้อ 190–191 เดิม</p>
+  <h3>ข้อ 190/1 เงื่อนไขต้องอยู่ในประกาศ</h3><blockquote>ให้พิจารณาความสามารถในการปฏิบัติงานให้แล้วเสร็จตามสัญญาของคู่สัญญาเป็นสำคัญ โดยตรวจสอบจากผลการปฏิบัติงานที่ผ่านมา <b>หน่วยงานของรัฐจะต้องกำหนดไว้ในประกาศและเอกสารเชิญชวน</b> เพื่อให้ผู้ประกอบการที่จะเข้ายื่นข้อเสนอทราบเงื่อนไขการประเมินผลการปฏิบัติงาน · ประเมินผ่านระบบ e-GP ตามวิธีการที่อธิบดีกรมบัญชีกลางกำหนด</blockquote>
+  <h3>ข้อ 190/2 ใช้บังคับกับ</h3><blockquote>(1) งานก่อสร้างที่มีมูลค่าสัญญาตั้งแต่ <b>5 ล้านบาท</b>ขึ้นไป ของกรมชลประทาน กรมเจ้าท่า <b>กรมทางหลวง</b> กรมทางหลวงชนบท กรมทรัพยากรน้ำ กรมโยธาธิการและผังเมือง และหน่วยงานอื่นที่ คกก.นโยบายฯ ประกาศ · (2) อาคารสูง อาคารขนาดใหญ่พิเศษ อาคารชุมนุมคน ทุกหน่วยงาน · (3) งานก่อสร้างทุกหน่วยงานที่มีมูลค่าสัญญาตั้งแต่ 1,000 ล้านบาท</blockquote>
+  <h3>ข้อ 190/3–190/4 เงื่อนไขและคะแนนความเสียหาย</h3><blockquote>ประเมิน 2 ช่วง คือ ระหว่างปฏิบัติงานตามสัญญา และระหว่างรับประกันความชำรุดบกพร่อง · คะแนนตามบัญชีเอกสารแนบท้าย:</blockquote>
+  <div class="tbl-wrap"><table class="t" style="max-width:720px"><thead><tr><th>เหตุ</th><th style="width:80px">คะแนน</th></tr></thead><tbody>
+   <tr><td>(1) ล่วงเลยกำหนดสัญญาและค่าปรับเกินร้อยละ 10 ของวงเงินค่าจ้าง</td><td>30</td></tr>
+   <tr><td>(2) ถูกบอกเลิกสัญญาตามมาตรา 103 วรรคหนึ่ง (2)</td><td>60</td></tr>
+   <tr><td>(3) ไม่เป็นไปตามหลักวิชาช่าง/ประมาทเลินเล่ออย่างร้ายแรง: (ก) มีผู้เสียชีวิต 60 · (ข) อันตรายสาหัส 30 · (ค) ทรัพย์สินเสียหาย สั่งหยุดงาน กระทบจราจร/สาธารณะ 10 · (ง) ทรัพย์สินเสียหาย สั่งหยุดงาน 5 · (จ) ไม่แก้ไขตามหนังสือแจ้ง 10 / เกิน 30 วัน 10 / ทุก 30 วันต่อมา 20</td><td>5–60</td></tr>
+   <tr><td>(4) ชำรุดบกพร่องกระทบโครงสร้างหลัก ไม่แก้ไข/ล่าช้า: (ก) 1 · (ข) 5 · ทุก 30 วันต่อมา 5 · (ค) 5 · (ง) หน่วยงานต้องแก้เอง/จ้างผู้อื่น 60</td><td>1–60</td></tr>
+   <tr><td>(5) ชำรุดบกพร่องไม่กระทบโครงสร้างหลัก: (ก) 5 · (ข) หน่วยงานต้องแก้เอง/จ้างผู้อื่น 60</td><td>5–60</td></tr></tbody></table></div>
+  <div class="tbl-wrap"><table class="t" style="max-width:560px;margin-top:8px"><thead><tr><th>คะแนนความเสียหายสะสม</th><th>ระงับการยื่นข้อเสนอ/ทำสัญญา</th></tr></thead><tbody>
+   <tr><td>1 – 9</td><td>–</td></tr><tr><td>10 – 29</td><td>30 วัน</td></tr><tr><td>30 – 59</td><td>90 วัน</td></tr><tr><td>60 – 119</td><td>180 วัน</td></tr><tr><td>120 – 179</td><td>360 วัน</td></tr><tr><td>180 – 239</td><td>540 วัน</td></tr><tr><td>≥ 240</td><td>720 วัน</td></tr></tbody></table></div>
+  <h3>ข้อ 190/5 ผู้ประเมิน</h3><blockquote>กรณี (2) (4) (5): <b>หัวหน้าเจ้าหน้าที่</b>เป็นผู้ประเมิน · กรณี (1) และ (3)(จ): <b>คณะกรรมการตรวจรับพัสดุ</b>ประเมินจากรายงานผู้ควบคุมงาน · กรณี (3)(ก)–(ง): ตั้ง<b>คณะกรรมการสอบข้อเท็จจริง</b> (ประธาน 1 + กรรมการอย่างน้อย 2 มีผู้ชำนาญการ/ผู้ทรงคุณวุฒิอย่างน้อย 1 คน) แล้วให้คณะกรรมการตรวจรับนำผลไปประเมิน · หัวหน้าเจ้าหน้าที่จัดทำแบบแจ้งการประเมินเสนอหัวหน้าหน่วยงานเห็นชอบ แล้ว<b>แจ้งผู้ประกอบการผ่านระบบ e-GP ภายในวันทำการถัดไป</b></blockquote>
+  <h3>ข้อ 190/6 การอุทธรณ์</h3><blockquote>ผู้ประกอบการอุทธรณ์ได้ภายใน <b>7 วันทำการ</b>นับแต่วันที่ได้รับแจ้งผ่าน e-GP · หน่วยงานพิจารณาให้แล้วเสร็จภายใน 7 วันทำการ · ไม่เห็นด้วยกับอุทธรณ์ ให้รายงานผู้มีอำนาจเหนือขึ้นไปหนึ่งชั้นภายใน 7 วันทำการ และพิจารณาภายใน 30 วัน (ขยายได้อีกไม่เกิน 30 วัน) · ผลสุดท้ายประกาศเผยแพร่ในระบบของกรมบัญชีกลางและหน่วยงาน</blockquote>
+  <h3>ข้อ 190/7–190/9 การระงับและการลบคะแนน</h3><blockquote>คะแนนสะสมเข้าเกณฑ์ถูกระงับตามบัญชีแนบท้าย นับถัดจากวันที่เข้าเกณฑ์ (คะแนนเพิ่มขึ้นให้หักวันที่ถูกระงับไปแล้วไม่เกิน 2 ปี) · ศาลพิพากษาถึงที่สุดว่าไม่ใช่ความผิดผู้ประกอบการ ให้แก้ไขคะแนน · กรมบัญชีกลางลบคะแนนเมื่อครบ 2 ปีนับถัดจากวันประกาศเผยแพร่</blockquote>
+  <h3>ข้อ 5–6 บทเฉพาะกาล</h3><blockquote>โครงการที่ประกาศ/มีหนังสือเชิญชวนก่อน 10 ก.ค. 2569 ดำเนินการตามขั้นตอนเดิม · สัญญาที่ลงนามก่อนนั้นและยังมีนิติสัมพันธ์ ให้นำหมวด 7 ใหม่มาใช้กรณีปฏิบัติงานไม่เป็นไปตามหลักวิชาช่าง/ประมาทเลินเล่ออย่างร้ายแรง ที่มีผู้เสียชีวิต อันตรายสาหัส ทรัพย์สินเสียหาย กระทบจราจรหรือประโยชน์สาธารณะ</blockquote>
+  <p><b>ในระบบนี้:</b> วงเงินงบประมาณตั้งแต่ 5 ล้านบาท ระบบจะ ① เพิ่มรายการ “เอกสารแนบท้ายกำหนดคะแนนความเสียหาย” ในข้อ 1 ของร่างเอกสารประกวดราคา (ข้อ ๑.๑๕ หรือ ๑.๑๘ กรณีมีโรงงานผสมแอสฟัลต์) ② เปิดให้พิมพ์ “เอกสารกำหนดคะแนนความเสียหาย” (บัญชีคะแนนความเสียหาย + ตารางระงับ ลงนามผู้อำนวยการ) ในการ์ดเอกสารแนบประกาศ แท็บขั้นเตรียมการ และในแท็บรายงาน · ร่างเอกสารประกวดราคาข้อ ๒.๔ และข้อ “การประเมินผลการปฏิบัติงานของผู้ประกอบการ” มีอยู่แล้ว · เลือกเปิด/ปิดเองได้ที่ช่องติ๊กในการ์ดเอกสารแนบ</p>
   </div>
   <div class="grid" style="gap:18px">
   <div class="card"><div class="card-h"><h2>ผังการพิจารณา</h2></div><div class="card-b flow">
@@ -1934,7 +1953,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
 
  ${H('steps','3. ขั้นตอนทีละแท็บ')}
  <table class="man-t"><thead><tr><th style="width:17%">แท็บ</th><th>ทำอะไร</th><th style="width:31%">เอกสารที่ได้</th></tr></thead><tbody>
-  <tr><td>ขั้นเตรียมการ</td><td>① แนบหนังสือเห็นชอบ เล่มแผน แบบ · ② กด “แนบไฟล์ Excel และดึงข้อมูล” ระบบอ่านแผ่น SUMMARY (รายการ BOQ ราคากลาง กรรมการราคากลาง) และแผ่น “ข้อมูลและผลงาน” (ระยะเวลา กม. แผนงาน เหตุผลความจำเป็น หมายเหตุ MILLING) พร้อมตรวจรายการสองแผ่นให้ตรงกัน · ③ ตั้งค่า TOR (สาขางาน Plant ค่า K ค่าปรับ รับประกัน) · ④ เลือกหมายเหตุเอกสารแนบ (งานทาง/งานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า MILLING)</td><td>ร่าง TOR · ร่างประกาศ · ร่างเอกสารประกวดราคา · รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (พิมพ์/Excel)</td></tr>
+  <tr><td>ขั้นเตรียมการ</td><td>① แนบหนังสือเห็นชอบ เล่มแผน แบบ · ② กด “แนบไฟล์ Excel และดึงข้อมูล” ระบบอ่านแผ่น SUMMARY (รายการ BOQ ราคากลาง กรรมการราคากลาง) และแผ่น “ข้อมูลและผลงาน” (ระยะเวลา กม. แผนงาน เหตุผลความจำเป็น หมายเหตุ MILLING) พร้อมตรวจรายการสองแผ่นให้ตรงกัน · ③ ตั้งค่า TOR (สาขางาน Plant ค่า K ค่าปรับ รับประกัน) · ④ เลือกหมายเหตุเอกสารแนบ (งานทาง/งานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า MILLING) · วงเงินตั้งแต่ 5 ล้าน ระบบเพิ่มเอกสารกำหนดคะแนนความเสียหายให้เอง</td><td>ร่าง TOR · ร่างประกาศ · ร่างเอกสารประกวดราคา · รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (พิมพ์/Excel) · เอกสารกำหนดคะแนนความเสียหาย (≥ 5 ล้าน)</td></tr>
   <tr><td>ขออนุมัติซื้อ/จ้าง</td><td>เลือกอำนาจ: <b>แขวง</b> → เรียน ผอ.ขท.กระบี่ ผ่านหัวหน้าเจ้าหน้าที่ · <b>เขต</b> (เกิน 10 ล้าน) → เรียน ผส.ทล.17 ผ่านหัวหน้าเจ้าหน้าที่ · กรอกเหตุผล ระยะเวลา และรายการที่ต้องการ</td><td>บันทึกรายงานขอซื้อขอจ้าง</td></tr>
   <tr><td>คำสั่งแต่งตั้ง</td><td>เลือกรายชื่อกรรมการจากดรอปลิสต์ แก้ข้อความในคำสั่งได้ · กรรมการพิจารณาผลแก้ที่นี่แล้วลิงก์ไปการ์ดพิจารณาผล · กรรมการตรวจรับ/ผู้ควบคุมงานดึงจากตาราง ป/ก/ค/ผช ในชีตเดิม</td><td>คำสั่ง TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน · บันทึกมอบหมาย</td></tr>
   <tr><td>ข้อมูลโครงการ / BOQ</td><td>ตรวจข้อมูลโครงการ วงเงิน ราคากลาง ปร.5 · กรอกวันที่อนุมัติราคากลางและช่วงร่าง TOR · ตั้งหมวดและ Factor F (ครุภัณฑ์ VAT 1.07 และค่าใช้จ่ายพิเศษไม่ถูกปรับลด) · ตรวจรายการ BOQ</td><td>แบบสรุปราคากลาง (ว 651)</td></tr>
@@ -1945,7 +1964,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
   <tr><td>เรียกลงนามสัญญา</td><td>กรอกเลข/วันที่หนังสือ วันที่บริษัทได้รับ · ติดตามและยืนยันการจองออนไลน์ (หัวข้อ 4) · เอกสารแนบสัญญา</td><td>หนังสือเรียกลงนามในสัญญา (มี QR) · ผนวก 3 · รายละเอียดแนบท้ายสัญญา</td></tr>
   <tr><td>รับรองผลงาน</td><td>กรอกระยะเวลาสัญญา การส่งมอบ (หลายงวดได้) รายละเอียดผลงาน</td><td>หนังสือรับรองผลงาน</td></tr>
   <tr><td>รายงาน</td><td>เลือกเอกสารที่ต้องการ พิมพ์ทีละฉบับหรือทั้งหมด · ดาวน์โหลดเป็น Word</td><td>เอกสารทุกฉบับข้างต้น</td></tr>
-  <tr><td>ข้อกฎหมาย</td><td>ผังการพิจารณา ว 651 · ว 124 (มูลค่าสุทธิ/ทุนจดทะเบียนตามวงเงิน) · ว 214 (การกำหนดผลงาน) · หลักประกันสัญญา</td><td>—</td></tr>
+  <tr><td>ข้อกฎหมาย</td><td>ผังการพิจารณา ว 651 · ว 124 (มูลค่าสุทธิ/ทุนจดทะเบียนตามวงเงิน) · ว 214 (การกำหนดผลงาน) · หลักประกันสัญญา · การประเมินผลการปฏิบัติงานของผู้ประกอบการ (ระเบียบ กค. ฉบับที่ 3 พ.ศ. 2569)</td><td>—</td></tr>
  </tbody></table>
 
  ${H('book','4. ระบบจองวันลงนามสัญญาออนไลน์')}
@@ -2681,7 +2700,7 @@ function torVals(p){const T=torOf(p),st=S.settings,bond=torBond(p),tm=ordMembers
     DIRECTOR_NAME:fName(st.director||''),DIRECTOR_POSITION:st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',APPROVED_BY:T.approvedBy||'.............................',DIRECTOR_DEPT:'',
     ITEM_COUNT:String(torItems(p).length),BID_BOND_FIGURE:bond?bond.fig:'',BID_BOND_WORDS:bond?bond.words:''};
   const n=torNums(p);for(const k in n)v[k]=String(n[k]);return v}
-function torConds(p){const pl=torPlant(p),k=!!torOf(p).k,b=!!torBond(p),mt=torOf(p).workType==='maintain';return {PLANT:pl,NO_PLANT:!pl,K:k,NO_K:!k,BID_BOND:b,NO_BID_BOND:!b,MAINTAIN:mt,CONSTRUCT:!mt}}
+function torConds(p){const pl=torPlant(p),k=!!torOf(p).k,b=!!torBond(p),mt=torOf(p).workType==='maintain';const dm=dmgOn(p);return {PLANT:pl,NO_PLANT:!pl,K:k,NO_K:!k,BID_BOND:b,NO_BID_BOND:!b,MAINTAIN:mt,CONSTRUCT:!mt,DMG_PLANT:dm&&pl,DMG_NO_PLANT:dm&&!pl}}
 /* จัดย่อหน้าตามเลขข้อ (ระดับ) แทนแท็บ/ช่องว่างในเทมเพลต */
 const TOR_NUM='[0-9๐-๙]+';
 function torIndent(txt,lead){
@@ -2767,7 +2786,7 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
     ${tx('approvedBy','ได้รับความเห็นชอบจาก','s6','เช่น สำนักบำรุงทาง')}${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
     <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
     <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea></label>
-    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
+    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ประเมินผลการปฏิบัติงานผู้ประกอบการ (ระเบียบ กค. ฉบับที่ ๓/๒๕๖๙): <b>${dmgOn(p)?'แนบเอกสารกำหนดคะแนนความเสียหาย ข้อ '+dmgNo(p):'ไม่บังคับ (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
     ${W.length?`<div class="s12 note" style="margin:0">${W.map(esc).join('<br>')}</div>`:''}
    </div></div>`}
 function torMtBox(p){const T=torOf(p);const on=new Set(Array.isArray(T.maintainIds)?T.maintainIds:[]);
@@ -2810,7 +2829,7 @@ const N_LIGHT_STD={t:'การกำหนดแบบมาตรฐานง�
  'เพื่อป้องกันการขโมยสายไฟฟ้าในช่วงระหว่างเสาไฟฟ้าต่อเสาไฟฟ้าให้เทคอนกรีตหุ้ม 3 จุดที่บริเวณปิดหัวท้ายและตรงกลาง',
  'อุปกรณ์ไฟฟ้าทุกชนิดจะต้องใช้ตามมาตรฐานอุตสาหกรรม (มอก.)']};
 const ANX_REMARK_LIGHT='ตามข้อกำหนดมาตรฐานทั่วไปงานติดตั้งไฟฟ้าแสงสว่างบนทางหลวง';
-function anxOf(p){p.annex=Object.assign({kind:'',elec:null,lstd:null,mill:null,millAt:'',signer:'',witness1:'',witness2:''},p.annex||{});return p.annex}
+function anxOf(p){p.annex=Object.assign({kind:'',elec:null,lstd:null,mill:null,dmg:null,millAt:'',signer:'',witness1:'',witness2:''},p.annex||{});return p.annex}
 /* งานขูดไส (MILLING) — มีรายการ MILLING ใน BOQ ต้องระบุที่กองเก็บวัสดุ */
 const MILL_AT_DEF='ทางหลวงหมายเลข 4034 หมวดทางหลวงอ่าวนาง';
 /* ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10) — อัตโนมัติเมื่อเป็นงานไฟฟ้าและมีรายการเสา/ดวงโคม */
@@ -2878,6 +2897,50 @@ function repConDetail(p){const F=letterFont();const C=anxContract(p),st=S.settin
    <p class="pi">รายละเอียดต่อท้ายหนังสือสัญญาฉบับนี้ ทั้งสองฝ่ายได้อ่านเข้าใจข้อความตลอดแล้ว เพื่อเป็นหลักฐานจึงได้ลงนามไว้เป็นสำคัญต่อหน้าพยาน</p>
    <div class="anx-s">${sig('ผู้ว่าจ้าง',fName(st.director||''))}${sig('ผู้รับจ้าง',sg)}${sig('พยาน',fName(W[0]))}${sig('พยาน',fName(W[1]))}</div></div>`;
   return thDig(out)}
+/* ระเบียบกระทรวงการคลังฯ (ฉบับที่ ๓) พ.ศ. ๒๕๖๙ — การประเมินผลการปฏิบัติงานของผู้ประกอบการ (หมวด ๗)
+   กรมทางหลวง: งานก่อสร้างมูลค่าสัญญาตั้งแต่ ๕ ล้านบาท ต้องแจ้งเงื่อนไขการประเมินไว้ในประกาศ/เอกสารเชิญชวน (ข้อ ๑๙๐/๑ ๑๙๐/๒) */
+const DMG_T1=[{h:'๑. ช่วงการปฏิบัติงานตามสัญญา'},
+ ['(๑)','ผู้ประกอบการปฏิบัติงานล่วงเลยระยะเวลาครบกำหนดตามสัญญาหรือข้อตกลงเป็นหนังสือและมีค่าปรับเกินร้อยละ ๑๐ ของวงเงินค่าจ้าง','๓๐'],
+ ['(๒)','ผู้ประกอบการถูกบอกเลิกสัญญา หรือข้อตกลงเป็นหนังสือตามมาตรา ๑๐๓ วรรคหนึ่ง (๒)','๖๐'],
+ ['(๓)','ผู้ประกอบการปฏิบัติงานไม่เป็นไปตามมาตรฐานของหลักวิชาช่างในงานก่อสร้าง หรือประมาทเลินเล่ออย่างร้ายแรง อันมีผลกระทบดังนี้',''],
+ ['','(ก) เหตุที่เกิดขึ้นมีผลกระทบทำให้มีบุคคลถึงแก่ความตาย','๖๐',1],
+ ['','(ข) เหตุที่เกิดขึ้นมีผลกระทบทำให้มีบุคคลได้รับอันตรายสาหัส','๓๐',1],
+ ['','(ค) เหตุที่เกิดขึ้นมีผลกระทบทำให้ทรัพย์สินเสียหายและหน่วยงานของรัฐได้สั่งหยุดการปฏิบัติงานไว้ชั่วคราว และส่งผลกระทบต่อการปฏิบัติงานตามแผนงานที่กำหนด ไม่ว่าทั้งหมดหรือบางส่วน และส่งผลกระทบต่อการจราจร หรือเกิดความเสียหายแก่ประโยชน์สาธารณะ','๑๐',1],
+ ['','(ง) เหตุที่เกิดขึ้นมีผลกระทบทำให้ทรัพย์สินเสียหายและหน่วยงานของรัฐได้สั่งหยุดการปฏิบัติงานไว้ชั่วคราว และส่งผลกระทบต่อการปฏิบัติงานตามแผนงานที่กำหนด ไม่ว่าทั้งหมดหรือบางส่วน','๕',1],
+ ['','(จ) กรณีปรากฏว่าผู้ประกอบการปฏิบัติงานไม่เป็นไปตามมาตรฐานของหลักวิชาช่างในงานก่อสร้าง หรือไม่ปฏิบัติตามมาตรฐานความปลอดภัยตามสัญญา','',1],
+ ['','๑) ผู้ประกอบการไม่ดำเนินการแก้ไขและปฏิบัติให้ถูกต้องตามสัญญาภายในระยะเวลาหน่วยงานของรัฐกำหนดตามหนังสือแจ้งให้แก้ไข','๑๐',2],
+ ['','๒) ผู้ประกอบการไม่ดำเนินการแก้ไขและปฏิบัติให้ถูกต้องตามสัญญาภายใน ๓๐ วัน นับถัดจากวันที่พ้นระยะเวลาตาม ๑)','๑๐',2],
+ ['','เมื่อพ้นระยะเวลาตาม ๒) ผู้ประกอบการไม่ดำเนินการแก้ไขและปฏิบัติให้ถูกต้องตามสัญญา ให้หน่วยงานของรัฐมีหนังสือแจ้งคะแนนความเสียหายทุก ๓๐ วัน','๒๐',2],
+ {h:'๒. ช่วงการรับประกันความชำรุดบกพร่อง'},
+ ['(๔)','ผู้ประกอบการไม่เข้ามาดำเนินการแก้ไขภายในระยะเวลาการรับประกันความชำรุดบกพร่อง หรือเข้าแก้ไขแต่ดำเนินการล่าช้าหรือไม่แล้วเสร็จ โดยความชำรุดบกพร่องกระทบต่อโครงสร้างหลักอันเกิดจากผู้ประกอบการใช้วัสดุที่ไม่ถูกต้อง หรือทำไว้ไม่เรียบร้อย หรือทำไม่ถูกต้องตามมาตรฐานแห่งหลักวิชาช่างในงานก่อสร้าง ดังนี้',''],
+ ['','(ก) ผู้ประกอบการไม่เข้าดำเนินการแก้ไขความชำรุดบกพร่องตามระยะเวลาที่กำหนดไว้ในสัญญา','๑',1],
+ ['','(ข) ผู้ประกอบการไม่เข้ามาดำเนินการแก้ไขความชำรุดบกพร่องให้ถูกต้องตามสัญญาภายใน ๓๐ วัน นับถัดจากวันที่พ้นระยะเวลาตาม (ก)','๕',1],
+ ['','เมื่อพ้นระยะเวลาตาม (ข) ผู้ประกอบการไม่เข้าดำเนินการแก้ไขความชำรุดบกพร่องให้ถูกต้องตามสัญญา ให้หน่วยงานของรัฐมีหนังสือแจ้งคะแนนความเสียหายทุก ๓๐ วัน','๕',1],
+ ['','(ค) ผู้ประกอบการเข้าดำเนินการแก้ไขความชำรุดบกพร่องแล้ว แต่ดำเนินการไม่แล้วเสร็จตามที่หน่วยงานของรัฐกำหนด','๕',1],
+ ['','(ง) ผู้ประกอบการไม่เข้ามาดำเนินการแก้ไขความชำรุดบกพร่อง หรือเข้าแก้ไขแต่ดำเนินการล่าช้าหรือไม่แล้วเสร็จ อันเป็นเหตุให้หน่วยงานของรัฐต้องดำเนินการแก้ไขความชำรุดบกพร่องนั้นเอง หรือจ้างผู้ประกอบการอื่นเพื่อดำเนินการแก้ไขงานนั้น','๖๐',1],
+ ['(๕)','ผู้ประกอบการไม่เข้ามาดำเนินการแก้ไขภายในระยะเวลาการรับประกันความชำรุดบกพร่อง หรือเข้าแก้ไขแต่ดำเนินการล่าช้าหรือไม่แล้วเสร็จ โดยความชำรุดบกพร่องไม่กระทบต่อโครงสร้างหลักอันเกิดจากผู้ประกอบการใช้วัสดุที่ไม่ถูกต้อง หรือทำไว้ไม่เรียบร้อย หรือทำไม่ถูกต้องตามมาตรฐานแห่งหลักวิชาช่างในงานก่อสร้าง ดังนี้',''],
+ ['','(ก) ผู้ประกอบการเข้าดำเนินการแก้ไขความชำรุดบกพร่องแล้ว แต่ดำเนินการไม่แล้วเสร็จตามที่หน่วยงานของรัฐกำหนด','๕',1],
+ ['','(ข) ผู้ประกอบการไม่เข้ามาดำเนินการแก้ไขความชำรุดบกพร่อง หรือเข้าแก้ไขแต่ดำเนินการล่าช้าหรือไม่แล้วเสร็จ อันเป็นเหตุให้หน่วยงานของรัฐต้องดำเนินการแก้ไขความชำรุดบกพร่องนั้นเอง หรือจ้างผู้ประกอบการอื่นเพื่อดำเนินการแก้ไขงานนั้นให้','๖๐',1]];
+const DMG_T2=[['๑','๑ - ๙','-'],['๒','๑๐ - ๒๙','๓๐ วัน'],['๓','๓๐ - ๕๙','๙๐ วัน'],['๔','๖๐ - ๑๑๙','๑๘๐ วัน'],['๕','๑๒๐ - ๑๗๙','๓๖๐ วัน'],['๖','๑๘๐ - ๒๓๙','๕๔๐ วัน'],['๗','≥ ๒๔๐','๗๒๐ วัน']];
+/* บังคับเมื่อวงเงินงบประมาณ ≥ 5 ล้านบาท (null = ระบบเลือกตามวงเงิน) */
+function dmgAuto(p){return num(p.budget)>=5e6}
+function dmgOn(p){const A=anxOf(p);return A.dmg===null||A.dmg===undefined?dmgAuto(p):!!A.dmg}
+/* เลขข้อในส่วนที่ ๑ ของเอกสารประกวดราคา (ไม่มีค่า K ข้อหลัง ๑.๔ เลื่อนขึ้น ๑ ข้อ) */
+function dmgNo(p){const n=(torPlant(p)?18:15)-(torOf(p).k?0:1);return toTH('1.'+n)}
+function repDamage(p){const F=letterFont();const st=S.settings;
+  const sig=`<div class="anx-s1">(${esc(fName(st.director||''))})<br>${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div>`;
+  const out=`<div class="paper ev anx dmg${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="c">เอกสารแนบท้ายเอกสารประกวดราคาอิเล็กทรอนิกส์ ข้อ ${dmgNo(p)}</div>
+   <div class="c b" style="margin-top:3mm">บัญชีเอกสารแนบท้าย<br>กำหนดคะแนนความเสียหาย<br>ตามหลักเกณฑ์การประเมินผลการปฏิบัติงานของผู้ประกอบการและคะแนนความเสียหาย<br>ตามข้อ ๑๙๐/๓</div>
+   <table class="anx-t dmg-t"><thead><tr><th style="width:9%">ที่</th><th>ความเสียหาย</th><th style="width:18%">คะแนน<br><span class="nw" style="white-space:nowrap">ความเสียหาย</span></th></tr></thead><tbody>
+   ${DMG_T1.map(r=>r.h?`<tr><td colspan="3" class="b">${r.h}</td></tr>`:`<tr><td class="c">${r[0]}</td><td style="padding-left:${(r[3]||0)*6+1.5}mm"${r[2]===''&&!r[3]?' colspan="2"':''}>${r[1]}</td>${r[2]===''&&!r[3]?'':`<td class="c">${r[2]}</td>`}</tr>`).join('')}
+   </tbody></table>
+   <div class="c b" style="margin-top:8mm;break-before:page">บัญชีเอกสารแนบท้าย<br>กำหนดคะแนนความเสียหายสะสม<br>และระยะเวลาการระงับการยื่นข้อเสนอ หรือทำสัญญาหรือข้อตกลงเป็นหนังสือ</div>
+   <table class="anx-t dmg-t"><thead><tr><th style="width:9%">ที่</th><th style="width:36%">คะแนนความเสียหายสะสม</th><th>ระยะเวลา<br>การระงับการยื่นข้อเสนอ<br>หรือทำสัญญาหรือข้อตกลงเป็นหนังสือ</th></tr></thead><tbody>
+   ${DMG_T2.map(r=>`<tr><td class="c">${r[0]}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join('')}</tbody></table>
+   ${sig}</div>`;
+  return thDig(out)}
+ORD_REPORTS.push(['dmg','เอกสารกำหนดคะแนนความเสียหาย (วงเงิน ≥ 5 ล้าน)',p=>repDamage(p)]);
 ORD_REPORTS.push(['attach','รายละเอียดแนบท้ายประกาศ',p=>repAttach(p)],['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',p=>repBoqForm(p)],['annex3_con','ผนวก 3 (แนบสัญญา)',p=>repAnnex3(p)],['condetail','รายละเอียดแนบท้ายสัญญา',p=>repConDetail(p)]);
 /* ---------- Excel (.xlsx) ด้วย ExcelJS ---------- */
 let EXJ_P=null;
@@ -2919,13 +2982,13 @@ async function anxXlsx(p,kind){const X=await loadExcelJS();const wb=new X.Workbo
     row(['','(ลงชื่อ)..........................................................ผู้รับจ้าง'],{merge:'B',al:{1:'center'}});row(['',`(${sg||'                                        '})`],{merge:'B',al:{1:'center'}})}
   const buf=await wb.xlsx.writeBuffer();const name=`${TITLE[kind]}_${String(p.legacyId||p.projectNo||p.name||'').slice(0,40).replace(/[\\/:*?"<>|]/g,'-')}.xlsx`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
-const ANX_DOCS={attach:['attach','รายละเอียดแนบท้ายประกาศ',1],boqform:['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',1],con:['annex3_con','ผนวก 3 บัญชีรายการก่อสร้าง',1],condetail:['condetail','รายละเอียดแนบท้ายสัญญา',0]};
+const ANX_DOCS={attach:['attach','รายละเอียดแนบท้ายประกาศ',1],boqform:['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',1],con:['annex3_con','ผนวก 3 บัญชีรายการก่อสร้าง',1],condetail:['condetail','รายละเอียดแนบท้ายสัญญา',0],dmg:['dmg','เอกสารกำหนดคะแนนความเสียหาย',0]};
 function anxCard(p,kinds,title){const A=anxOf(p);const con=kinds.includes('con');const light=anxKind(p)==='light';
-  const ks=kinds.filter(k=>k!=='condetail'||light);
+  const ks=kinds.filter(k=>(k!=='condetail'||light)&&(k!=='dmg'||dmgOn(p)));
   return `<div class="card" id="anxCard"><div class="card-h"><h2>${title}</h2></div><div class="card-b grid g12">
    <div class="s12 row" style="gap:10px;flex-wrap:wrap;margin:0">${ks.map(k=>{const [r,l,x]=ANX_DOCS[k];return `<span class="row" style="gap:4px;margin:0"><button class="btn sm" data-oprint="${r}" type="button">${ICON.print} ${l}</button>${x?`<button class="btn sm" data-axl="${k}" type="button">⤓ Excel</button>`:''}</span>`}).join('')}</div>
    <label class="f s4"><span>แบบหมายเหตุ</span><select class="i" data-anx="kind"><option value="" ${!A.kind?'selected':''}>อัตโนมัติ (${light?'งานไฟฟ้า':'งานทาง'})</option><option value="road" ${A.kind==='road'?'selected':''}>งานทาง/ก่อสร้างทั่วไป</option><option value="light" ${A.kind==='light'?'selected':''}>งานไฟฟ้าแสงสว่าง/ไฟสัญญาณ</option></select></label>
-   <div class="f s8"><span>&nbsp;</span><div class="row" style="gap:16px;flex-wrap:wrap;margin:0">${[['elec','หมายเหตุค่าธรรมเนียมการไฟฟ้า',anxElec(p)],['mill','หมายเหตุวัสดุงาน MILLING',anxMill(p)],...(light?[['lstd','ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10)',anxLstd(p)]]:[])].map(([k,l,on])=>`<label class="switch"><input type="checkbox" data-anx="${k}" ${on?'checked':''}> ${l} <span class="muted" style="font-size:12px">${A[k]===null||A[k]===undefined?'(ระบบเลือกให้ตาม BOQ)':'(เลือกเอง)'}</span></label>`).join('')}${['elec','mill','lstd'].some(k=>A[k]!==null&&A[k]!==undefined)?'<button class="btn sm" data-anxauto type="button">ให้ระบบเลือกตาม BOQ</button>':''}</div></div>
+   <div class="f s8"><span>&nbsp;</span><div class="row" style="gap:16px;flex-wrap:wrap;margin:0">${[['elec','หมายเหตุค่าธรรมเนียมการไฟฟ้า',anxElec(p)],['mill','หมายเหตุวัสดุงาน MILLING',anxMill(p)],...(light?[['lstd','ข้อกำหนดมาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง (ข้อย่อย 1–10)',anxLstd(p)]]:[]),...(kinds.includes('dmg')?[['dmg','เอกสารกำหนดคะแนนความเสียหาย (ข้อ '+dmgNo(p)+')',dmgOn(p)]]:[])].map(([k,l,on])=>`<label class="switch"><input type="checkbox" data-anx="${k}" ${on?'checked':''}> ${l} <span class="muted" style="font-size:12px">${A[k]===null||A[k]===undefined?(k==='dmg'?'(ระบบเลือกตามวงเงิน: บังคับเมื่อ ≥ 5 ล้าน)':'(ระบบเลือกให้ตาม BOQ)'):'(เลือกเอง)'}</span></label>`).join('')}${['elec','mill','lstd','dmg'].some(k=>A[k]!==null&&A[k]!==undefined)?'<button class="btn sm" data-anxauto type="button">ให้ระบบเลือกตาม BOQ</button>':''}</div></div>
    ${anxMill(p)?`<label class="f s9"><span>กองเก็บวัสดุ MILLING ณ ${A.millAt?(A.millSrc?'<span class="muted" style="font-size:12px">(จาก Excel แผ่นข้อมูลและผลงาน)</span>':''):'<span class="muted" style="font-size:12px">(ยังไม่กรอก — จะใช้ค่าเริ่มต้นที่แสดงจาง ๆ)</span>'}</span><input class="i" data-anx="millAt" value="${esc(A.millAt||'')}" placeholder="${esc(S.settings.millAt||MILL_AT_DEF)}"></label>
    <div class="f s3"><span>&nbsp;</span><button class="btn" type="button" id="anxMillXls" title="เลือกไฟล์ Excel ราคากลางจากเครื่อง ระบบอ่านบรรทัดหมายเหตุ MILLING ในแผ่นข้อมูลและผลงาน (ไม่อัปโหลด)">ดึงจาก Excel (เลือกไฟล์)</button></div>`:''}
    ${con?`<label class="f s4"><span>ผู้ลงนามฝ่ายผู้รับจ้าง (ว่าง = จากการจองลงนาม)</span><input class="i" data-anx="signer" value="${esc(A.signer||'')}" placeholder="${esc(anxSigner(Object.assign({},p,{annex:{}}))||'นาย/นาง/นางสาว ...')}"></label>`:''}
@@ -2943,8 +3006,8 @@ async function millFromXls(p,quiet){const f=(prepOf(p).xlsFiles||[]).slice(-1)[0
     else if(!quiet)alert(pl?'ไม่พบบรรทัด “หมายเหตุ … MILLING … ณ …” ในแผ่น “ข้อมูลและผลงาน” ของไฟล์ '+f.name:'ไม่พบแผ่น “ข้อมูลและผลงาน” ในไฟล์ '+f.name)}
   catch(e){if(!quiet)alert(e.message)}}
 function bindAnx(el,p){const A=anxOf(p);const mx=$('#anxMillXls',el);if(mx){mx.onclick=()=>millPickLocal(p);if(!A.millAt&&(prepOf(p).xlsFiles||[]).length&&!millTried.has(p.id)){millTried.add(p.id);millFromXls(p,true)}}
-  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.anx==='millAt')A.millSrc=0;touch(p);if(['kind','mill','elec','lstd'].includes(i.dataset.anx))render()}));
-  $$('[data-anxauto]',el).forEach(b=>b.onclick=()=>{A.elec=null;A.mill=null;A.lstd=null;touch(p);render()});
+  $$('[data-anx]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'?'change':'input',()=>{A[i.dataset.anx]=i.type==='checkbox'?i.checked:i.value;if(i.dataset.anx==='millAt')A.millSrc=0;touch(p);if(['kind','mill','elec','lstd','dmg'].includes(i.dataset.anx))render()}));
+  $$('[data-anxauto]',el).forEach(b=>b.onclick=()=>{A.elec=null;A.mill=null;A.lstd=null;A.dmg=null;touch(p);render()});
   $$('[data-axl]',el).forEach(b=>b.onclick=async()=>{b.disabled=true;try{await anxXlsx(p,b.dataset.axl)}catch(e){alert(e.message)}finally{b.disabled=false}});
   $$('[data-oprint]',el).forEach(b=>{if(!b.onclick)b.onclick=()=>{reportSel=b.dataset.oprint;go('report')}})}
 /* ---------- อ่านแผ่น “ข้อมูลและผลงาน” ของไฟล์ราคากลาง ---------- */
@@ -3086,7 +3149,7 @@ function prepMini(p){const R=prepOf(p);const d=x=>x?thDate(x):'-';
   const ok=[!!(R.approveNo||R.approveDate),!!R.plan,!!R.draft,!!p.midApproveDate].filter(Boolean).length;
   return `<div class="note" style="margin:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span><b>ขั้นเตรียมการ</b> ${ok}/4 · เห็นชอบ ${esc(R.approveNo||'-')} ${R.approveDate?'ลว. '+esc(d(R.approveDate)):''} · แบบ ${R.plan?'✓':'—'} · ร่างขออนุมัติประกาศ ${R.draft?'✓':'—'} (${(R.authority||authSuggest(p))==='region'?'อำนาจเขต':'อำนาจแขวง'}) · อนุมัติราคากลาง ${esc(d(p.midApproveDate))}</span><button class="btn sm" data-goto="prep" type="button" style="margin-left:auto">แก้ที่แท็บขั้นเตรียมการ →</button></div>`}
 function rPrep(){const el=$('#v-prep');if(needProject(el))return;const p=P();
-  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${anxCard(p,['attach','boqform'],'เอกสารแนบประกาศ: รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (BOQ)')}</div>`;
+  el.innerHTML=`${curBar('ขั้นเตรียมการ (ก่อนอนุมัติราคากลาง)',`<button class="btn" data-goto="req" type="button">ไปขออนุมัติซื้อ/จ้าง →</button>`)}<div class="grid" style="gap:14px">${prepCard(p)}${torCard(p)}${anxCard(p,['attach','boqform','dmg'],'เอกสารแนบประกาศ: รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (BOQ) · คะแนนความเสียหาย')}</div>`;
   bindPrep(el,p);bindTor(el,p);bindAnx(el,p);
   $$('[data-f]',el).forEach(inp=>inp.addEventListener(inp.type==='date'?'change':'input',()=>{p[inp.dataset.f]=inp.value;touch(p)}))}
 const PREP_FLABEL={approveFiles:'หนังสือเห็นชอบ',planFiles:'แบบ',bookFiles:'เล่มแผน',xlsFiles:'Excel ราคากลาง'};
@@ -3213,7 +3276,7 @@ setInterval(()=>legacySync(false),60000);setTimeout(()=>legacySync(false),4000);
 
 
 /* expose core for testing */
-window.__boq={parsePlanSheet:(...a)=>parsePlanSheet(...a),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
+window.__boq={parsePlanSheet:(...a)=>parsePlanSheet(...a),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
 try{$('#appVer').textContent=APP_VER;$('#appDate').textContent=APP_DATE}catch(e){}
 load();applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}
