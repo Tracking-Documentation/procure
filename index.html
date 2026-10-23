@@ -297,6 +297,11 @@ table.t tfoot td{font-weight:700;border-top:2px solid var(--line)}
  body.pman .man-ph,body.pman .man-lane{-webkit-print-color-adjust:exact;print-color-adjust:exact}@page{size:A4;margin:14mm}}
 .anx-t.dmg-t td{vertical-align:top;line-height:1.35}.anx-t.dmg-t th{line-height:1.3}
 .paper.bx .nw{white-space:nowrap}.paper.bx{position:relative;min-height:296.5mm;box-sizing:border-box;padding-bottom:34mm!important}.paper.bx .bx-sig{position:absolute;right:15mm;bottom:10mm;text-align:center;line-height:1.3}.paper.bx .bxp{margin:0;text-indent:12mm;text-align:justify}.paper.bx .bxl{text-align:left}.paper.bx{line-height:1.3;padding-top:12mm!important}.paper.bx .anx-s1{margin-top:5mm}.anx-t.bx-t td{height:1.6em}
+.paper.con{padding:15mm 18mm 15mm 28mm;position:relative}.paper.con .big{font-size:1.15em}.paper.con .cno{text-align:right;margin:2mm 0 4mm}.paper.con .cp{margin:0;text-align:justify;text-justify:inter-character}.paper.con .cp.l1{text-indent:15mm}.paper.con .cp.l2{text-indent:25mm}.paper.con .cp.l0{text-indent:15mm}.paper.con .cp.b{font-weight:700;margin-top:2mm}.paper.con .cp.l0.b{text-indent:15mm;margin-top:2.5mm}
+.paper.con .cv{white-space:normal}.paper.con .cmark{position:absolute;top:6mm;right:14mm;font-weight:700;font-size:1.4em;color:#c00;border:2px solid #c00;padding:0 4mm;border-radius:2mm}.paper.con .cmark.draft{color:#666;border-color:#666}
+.paper.con .csgs{display:grid;grid-template-columns:1fr 1fr;gap:10mm 6mm;margin-top:12mm;text-align:center;break-inside:avoid}.paper.con .csgs.two{gap:6mm}.paper.con .csg.l{text-align:left;margin:8mm 0 0 30mm}
+.paper.con .cvt{margin:4mm 0 0 0;border-collapse:collapse}.paper.con .cvt td{padding:1mm 4mm 1mm 0;vertical-align:top}.paper.con .cvt.r{margin-left:45%}.paper.con .cvt.w{width:100%}.paper.con .cvt.w td:last-child{text-align:right;white-space:nowrap}.paper.concover{border:0}
+.paper.con .cm{display:grid;grid-template-columns:9mm 1fr;margin:1.2mm 0;line-height:1.55}.paper.con .cvu{text-decoration:underline dotted;text-underline-offset:3px}.paper.con .crg{display:grid;grid-template-columns:1fr 60mm;margin:1mm 0 1mm 10mm}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 body.gated>*:not(#gate):not(#toast){display:none!important}
 #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
@@ -368,7 +373,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">124</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">125</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -431,7 +436,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='124',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='125',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1792,7 +1797,7 @@ function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div cla
   $('#ciReset').onclick=()=>confirmBox('คืนค่าชื่อรายการ ปริมาณ และจำนวนเงินทุกรายการตามแบบแนบท้ายสัญญา และลบรายการที่เพิ่มเอง?','คืนค่า',()=>{c.items={};c.extra=[];re()});
   $('#certPrint').onclick=()=>{reportSel='cert';go('report')}}
 function rSignTab(){const el=$('#v-sign');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
-  el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}<div style="margin-top:14px">${anxCard(p,['con','condetail'],'เอกสารแนบสัญญา: ผนวก 3 บัญชีรายการก่อสร้าง · รายละเอียดแนบท้ายสัญญา')}</div>`;bindAnx(el,p);
+  el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}<div style="margin-top:14px">${anxCard(p,['con','condetail'],'เอกสารแนบสัญญา: ผนวก 3 บัญชีรายการก่อสร้าง · รายละเอียดแนบท้ายสัญญา')}</div><div style="margin-top:14px">${conCard(p)}</div>`;bindAnx(el,p);bindCon(el,p);
   {const sg=p.sign||{},ap=p.announceDate?addWorkdays(p.announceDate,7):'';const di=el.querySelector('[data-sg="date"]');
    if(di&&ap&&sg.date&&sg.date<=ap)di.closest('.card-b')?.insertAdjacentHTML('afterbegin',`<div class="s12 note warn" style="margin:0 0 6px">หนังสือเรียกลงนามลงวันที่ ${thDate(sg.date)} ยังอยู่ในระยะอุทธรณ์ (ครบ ${thDate(ap)}) · เรียกลงนามได้ตั้งแต่ ${thDate(addWorkdays(p.announceDate,8))} · การ์ดสรุปภาพรวมจะยังนับโครงการนี้เป็น “ประกาศผู้ชนะแล้ว”</div>`)}
   $$('[data-sg]',el).forEach(i=>{i.oninput=()=>{p.sign=p.sign||{};p.sign[i.dataset.sg]=i.value;touch(p)};if(['received','date','days','warranty'].includes(i.dataset.sg))i.onchange=()=>{bookAutoPush(p);rSignTab()}});
@@ -1896,6 +1901,11 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
   <h3>ข้อ 4 การใช้บังคับ</h3><blockquote>คุณสมบัติ (ข้อ 1) ใช้กับประกาศ/ร่างประกาศที่เผยแพร่ตั้งแต่ 3 เมษายน 2566 · แนวทางเร่งรัด (ข้อ 2) ใช้กับสัญญาที่ลงนามจากการจัดซื้อจัดจ้างดังกล่าว</blockquote>
   <p><b>ในระบบนี้:</b> ร่าง TOR ข้อ ๓.๑๓ และร่างเอกสารประกวดราคาข้อ ๒.๑๓ อ้างหนังสือ ว 124 และใส่ทุนจดทะเบียนขั้นต่ำตามวงเงินงบประมาณของโครงการให้อัตโนมัติ (ระบุเฉพาะช่วงที่ตรงกับโครงการ ตามคู่มือกรมบัญชีกลาง)</p>
 
+  <h2 style="font-size:22px;color:var(--tab-on);margin-top:28px">แบบสัญญาจ้างก่อสร้าง (ฉบับใหม่)</h2>
+  <p class="muted">ประกาศคณะกรรมการนโยบายการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ เรื่อง แบบสัญญาเกี่ยวกับการจัดซื้อจัดจ้างตาม พ.ร.บ.ฯ (ฉบับที่ 3) ลงวันที่ 9 กันยายน 2569 · ราชกิจจานุเบกษา เล่ม 143 ตอนพิเศษ 229 ง 21 ก.ย. 2569 · <b>มีผล 22 กันยายน 2569</b></p>
+  <h3>สิ่งที่เปลี่ยน</h3><blockquote>ยกเลิกแบบสัญญาจ้างก่อสร้างตามประกาศ 7 ก.พ. 2561 และใช้แบบใหม่ (23 ข้อ) · <b>ข้อ 7</b> เพิ่มเหตุบอกเลิกสัญญา: ระหว่างทำงานจนถึงตรวจรับครั้งสุดท้าย เกิดความเสียหายอย่างร้ายแรงจากงานก่อสร้างถึงขนาดก่อภยันตรายต่อชีวิตหรือทรัพย์สินของประชาชนและ/หรือสาธารณสมบัติของแผ่นดิน อันเนื่องจากการปฏิบัติหรือละเว้นการปฏิบัติงานของผู้รับจ้าง · แก้ “ตกเป็นผู้ล้มละลาย” เป็น “ตกเป็นบุคคลล้มละลาย” · <b>ข้อ 5.6</b> รวมการคืนหลักประกันเงินล่วงหน้าตาม ว 1052 (2564) ไว้ในแบบแล้ว · เพิ่มแบบ (16) สัญญาจ้างงานบริการ (จ้างเหมาบริการบุคคลธรรมดา)</blockquote>
+  <h3>บทเฉพาะกาล</h3><blockquote>สัญญาที่ลงนามก่อน 22 ก.ย. 2569 ใช้แบบเดิมต่อไปได้ · ลงนามตั้งแต่ 22 ก.ย. 2569 ต้องใช้แบบใหม่</blockquote>
+  <p><b>ในระบบนี้:</b> แท็บเรียกลงนามสัญญา → การ์ด “แบบสัญญาจ้างก่อสร้าง” พิมพ์ปกสัญญา สัญญา (ข้อความตามแบบฉบับที่ 3 แบบราคาต่อหน่วย) บันทึกรายการทำสัญญา (พ.1-05) และทะเบียนรายการเอกสาร · เลือกสถานะ ร่าง (ส่งเขต/แขวงตรวจ) ต้นฉบับ หรือคู่ฉบับ</p>
   <h2 style="font-size:22px;color:var(--tab-on);margin-top:28px">แนวทางปฏิบัติภายหลังบอกเลิกสัญญา</h2>
   <p class="muted">หนังสือคณะกรรมการวินิจฉัยปัญหาการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ ด่วนที่สุด ที่ กค (กวจ) 0405.2/ว 755 ลงวันที่ 30 กันยายน 2569 เรื่อง แนวทางปฏิบัติการดำเนินการภายหลังหน่วยงานของรัฐบอกเลิกสัญญาซื้อหรือจ้างตาม พ.ร.บ.ฯ มาตรา 103 วรรคหนึ่ง (2) (3) หรือ (4) · <b>ยกเลิก ว 108 (25 มี.ค. 2563)</b></p>
   <h3>ข้อ 1 หลักประกันสัญญา</h3><blockquote>หลักประกันเป็นหนังสือค้ำประกัน → มีหนังสือแจ้งธนาคาร/บริษัทเงินทุนผู้ออกหนังสือค้ำประกันให้ชำระเงินเต็มจำนวนหลักประกัน พร้อมแนบสำเนาหนังสือบอกเลิกสัญญา <b>ภายใน 60 วัน</b> นับแต่วันที่ลูกหนี้ผิดนัด และให้ชำระ<b>ภายใน 15 วัน</b>นับถัดจากวันที่ได้รับหนังสือ · ถ้าไม่ชำระ ส่งเรื่องให้สำนักงานอัยการสูงสุดฟ้องคดี</blockquote>
@@ -2002,7 +2012,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
   <tr><td>พิจารณาผล</td><td>กำหนดการ คณะกรรมการ การประชุม ผลตรวจสอบเอกสาร หลักประกันการเสนอราคา · วงเงินเกินอำนาจแขวง ทำบันทึกขออนุมัติถึงเขต</td><td>เอกสารพิจารณาผล · แบบแจ้งผลผู้เสนอราคา</td></tr>
   <tr><td>ต่อรองราคา</td><td>ตั้งราคาที่จะขอ → เลือกราคาที่ลงตัวที่ระบบแนะนำ → บันทึกครั้งที่ต่อรอง → พิมพ์ส่งผู้เสนอ → บันทึกผลตอบกลับ</td><td>หนังสือขอต่อรองราคา · ใบขอต่อรองราคา</td></tr>
   <tr><td>ผลการปรับลดราคา</td><td>ตรวจราคาปรับลดรายรายการและยอดรวม</td><td>แบบแนบท้ายสัญญา</td></tr>
-  <tr><td>เรียกลงนามสัญญา</td><td>กรอกเลข/วันที่หนังสือ วันที่บริษัทได้รับ · ติดตามและยืนยันการจองออนไลน์ (หัวข้อ 4) · เอกสารแนบสัญญา</td><td>หนังสือเรียกลงนามในสัญญา (มี QR) · ผนวก 3 · รายละเอียดแนบท้ายสัญญา</td></tr>
+  <tr><td>เรียกลงนามสัญญา</td><td>กรอกเลข/วันที่หนังสือ วันที่บริษัทได้รับ · ติดตามและยืนยันการจองออนไลน์ (หัวข้อ 4) · เอกสารแนบสัญญา · แบบสัญญาจ้างก่อสร้าง (ร่าง/ต้นฉบับ/คู่ฉบับ) พร้อมปก บันทึกรายการทำสัญญา พ.1-05 และทะเบียนเอกสาร</td><td>หนังสือเรียกลงนามในสัญญา (มี QR) · ผนวก 3 · รายละเอียดแนบท้ายสัญญา</td></tr>
   <tr><td>รับรองผลงาน</td><td>กรอกระยะเวลาสัญญา การส่งมอบ (หลายงวดได้) รายละเอียดผลงาน</td><td>หนังสือรับรองผลงาน</td></tr>
   <tr><td>รายงาน</td><td>เลือกเอกสารที่ต้องการ พิมพ์ทีละฉบับหรือทั้งหมด · ดาวน์โหลดเป็น Word</td><td>เอกสารทุกฉบับข้างต้น</td></tr>
   <tr><td>ข้อกฎหมาย</td><td>ผังการพิจารณา ว 651 · ว 124 (มูลค่าสุทธิ/ทุนจดทะเบียนตามวงเงิน) · ว 214 (การกำหนดผลงาน) · หลักประกันสัญญา · การประเมินผลการปฏิบัติงานของผู้ประกอบการ (ระเบียบ กค. ฉบับที่ 3 พ.ศ. 2569) · QR Code บนแผ่นป้ายงานก่อสร้าง (ว 692)</td><td>—</td></tr>
@@ -3085,6 +3095,152 @@ const BX_DOCS=[['bx_def','บทนิยาม',repBxDef,()=>true],['bx_local',
   ['bx_sign','แนวทางติดตั้งแผ่นป้ายโครงการ',repBxSign,()=>true]];
 function repBxAll(p){const ok=BX_DOCS.filter(d=>d[3](p));return ok.map(d=>d[2](p)).join('')+(dmgOn(p)?repDamage(p):'')}
 
+/* ================= แบบสัญญาจ้างก่อสร้าง (ประกาศคณะกรรมการนโยบายฯ ฉบับที่ ๓ พ.ศ. ๒๕๖๙ มีผล ๒๒ ก.ย. ๒๕๖๙) =================
+   โหมด: draft = ร่าง (ส่งเขต/แขวงตรวจ ช่องที่ยังไม่มีข้อมูลเว้นจุด) · orig = ต้นฉบับ · copy = คู่ฉบับ */
+let CON_LOADING=null;
+function loadConTpl(){if(window.CONTRACT_TPL)return Promise.resolve(window.CONTRACT_TPL);if(CON_LOADING)return CON_LOADING;
+  CON_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='contract-tpl.js';s.onload=()=>ok(window.CONTRACT_TPL);s.onerror=()=>{CON_LOADING=null;no(new Error('โหลดแบบสัญญาไม่สำเร็จ'))};document.head.appendChild(s)});return CON_LOADING}
+const CON_ANNEX_DEF=`แบบแปลน|๑|ชุด
+เงื่อนไขการเสนอแผนการทำงาน|๑|หน้า
+บัญชีรายการก่อสร้าง (ซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)|๑|หน้า
+ใบเสนอราคา|๑|ชุด
+รายการงานและเงื่อนไขที่ผู้รับจ้างต้องรับผิดชอบในความชำรุดบกพร่องของงานจ้างหรือความเสียหายภายในกำหนดเวลา|๑|หน้า
+หลักเกณฑ์การพิจารณาคุณสมบัติผู้มีสิทธิ์เสนอราคางานก่อสร้างและบำรุงทาง ตามคำสั่งกรมทางหลวงที่ บ.๑/๑๕๑/๒๕๔๙ ลงวันที่ ๑๑ กันยายน ๒๕๔๙|๑|ชุด
+การจ้างช่วง|๑|หน้า
+แนวทางการพิจารณาขยายอายุสัญญาหรือการงดหรือลดค่าปรับงานจ้างเหมาของกรมทางหลวง (สิงหาคม ๒๕๖๑)|๑|ชุด
+แนวทางปฏิบัติในการติดตั้งแผ่นป้ายแสดงรายละเอียดเกี่ยวกับงานก่อสร้าง|๑|ชุด`;
+const CON_AUTH_DEF='ผู้รับมอบอำนาจจากอธิบดีกรมทางหลวง ตามคำสั่งกรมทางหลวงที่ บ.๑/๑๑๘/๒๕๖๐ สั่ง ณ วันที่ ๒๙ สิงหาคม ๒๕๖๐';
+const CON_PLACE_DEF='แขวงทางหลวงกระบี่|ปากน้ำ|เมืองกระบี่|กระบี่';
+const CON_CRAFT_FROM='คณะกรรมการกำหนดมาตรฐานและทดสอบฝีมือแรงงาน หรือสถาบันของทางราชการอื่น หรือสถาบันเอกชนที่ทางราชการรับรอง';
+function conOf(p){const D={mode:'draft',c7:'b',adv:'',advSec:'',direct:false,bank:'',branch:'',accName:'',accNo:'',
+  regAt:'',hqNo:'',road:'',tambon:'',amphoe:'',province:'',by:'',certNo:'',certDate:'',poaDate:'',bondType:'',bondBank:'',bondNo:'',bondDate:'',
+  siteTambon:'',siteAmphoe:'',siteProvince:'',planDays:'๑๕',bondDays:'๑๕',retPct:'๑๐',retMin:'',warrM:'',fixDays:'๑๕',subPct:'๑๐',ctrl:'',pay1:'๗',pay2:'๗',witness1:'',witness2:''};
+  const C=p.con=p.con||{};for(const k in D)if(C[k]===undefined)C[k]=D[k];return C}
+const conW=n=>{const t=bahtText(num(n)).replace(/บาทถ้วน$/,'').replace(/บาท.*$/,'');return t||'ศูนย์'};
+const conTH=v=>toTH(String(v??'').trim());
+const fmtB=v=>toTH(fmt(v)).replace(/\.๐๐$/,'.-');
+function conDates(p){const C=conOf(p);const sd=p.contractDate||(p.book&&p.book.booking&&p.book.booking.date)||'';const dur=num(evOf(p).duration);
+  if(!sd)return {sign:'',start:'',end:'',dur};const st=isoAdd(sd,1);return {sign:sd,start:st,end:dur?isoAdd(st,dur-1):'',dur}}
+function conParts(iso){if(!iso)return ['','',''];const d=new Date(iso+'T12:00:00');return [toTH(String(d.getDate())),TH_MONTH[d.getMonth()],toTH(String(d.getFullYear()+543))]}
+function conProvince(p){const m=String(p.name||'').match(/(?:จ\.|จังหวัด)\s*([^\s]+)\s*$/);return m?m[1]:''}
+function conAnnex(p){const L=String(S.settings.conAnnex||CON_ANNEX_DEF).split('\n').map(x=>x.trim()).filter(Boolean).map(x=>{const [t,n,u]=x.split('|');return {t,n:n||'๑',u:u||'ชุด'}});
+  if(torOf(p).k&&!L.some(x=>/ปรับราคา/.test(x.t)))L.push({t:'สูตรการปรับราคา (ค่า K)',n:'๑',u:'ชุด'});return L}
+function conVals(p){const C=conOf(p),st=S.settings;const fp=num(finalPrice(p));const A=signAmounts(p);const bk=(p.book&&p.book.booking)||{};const dd=conDates(p);const [sd,sm,sy]=conParts(dd.start),[ed,em,ey]=conParts(dd.end);
+  const fine=Math.round(fp*num(torOf(p).fineDaily||'0.10')/100*100)/100;const w=warrantyOf(p)||2;
+  const btype=C.bondType||bk.secType||(C.bondBank?'หนังสือค้ำประกันของ':'');const bond=[btype+(/ของ$/.test(btype)?C.bondBank:''),/ของ$/.test(btype)?'':C.bondBank,C.bondNo?'เลขที่ '+C.bondNo:'',C.bondDate?'ลงวันที่ '+thDate(C.bondDate):''].filter(Boolean).join(' ');
+  const adv=num(C.adv);const v=(x)=>x===''||x==null?'':String(x);
+  return {NO:v(p.contractNo&&toTH(p.contractNo)),WORK:v(p.name),PRICE:fp?fmtB(fp):'',PRICE_WORDS:fp?bahtText(fp):'',VAT:fp?fmtB(Math.round(fp*7/107*100)/100):'',VAT_WORDS:fp?bahtText(Math.round(fp*7/107*100)/100):'',
+    BOND_TYPE:bond,BOND_AMT:A.sec&&fp?fmtB(A.sec):'',BOND_WORDS:A.sec&&fp?bahtText(A.sec):'',BOND_PCT:'๕',BOND_PCTW:'ห้า',BOND_DAYS:conTH(C.bondDays),BOND_DAYSW:conW(arN(C.bondDays)),
+    BANK:C.bank,BRANCH:C.branch,ACCNAME:C.accName,ACCNO:C.accNo&&conTH(C.accNo),
+    ADV_AMT:adv&&fp?fmtB(Math.round(fp*adv)/100):'',ADV_WORDS:adv&&fp?bahtText(Math.round(fp*adv)/100):'',ADV_PCT:adv?conTH(adv):'',ADV_PCTW:adv?conW(adv):'',ADV_SEC:C.advSec,ADV_DED:adv?conTH(adv):'',ADV_DEDW:adv?conW(adv):'',
+    RET_PCT:conTH(C.retPct),RET_PCTW:conW(arN(C.retPct)),RET_MIN:C.retMin?fmtB(num(C.retMin)):'',RET_MINW:C.retMin?bahtText(num(C.retMin)):'',
+    PLAN_DAYS:conTH(C.planDays),PLAN_DAYSW:conW(arN(C.planDays)),START_DAYS:'',START_DAYSW:'',DONE_DAYS:dd.dur?conTH(dd.dur):'',DONE_DAYSW:dd.dur?conW(dd.dur):'',
+    S_D:sd,S_M:sm,S_Y:sy,E_D:ed,E_M:em,E_Y:ey,
+    W_Y:conTH(w),W_YW:conW(w),W_M:C.warrM?conTH(C.warrM):'-',W_MW:C.warrM?conW(arN(C.warrM)):'-',W_FIX:conTH(C.fixDays),W_FIXW:conW(arN(C.fixDays)),
+    SUB_PCT:conTH(C.subPct),SUB_PCTW:conW(arN(C.subPct)),FINE:fp?fmtB(fine):'',FINE_WORDS:fp?bahtText(fine):'',CTRL:C.ctrl?fmtB(num(C.ctrl)):'-',CTRL_WORDS:C.ctrl?bahtText(num(C.ctrl)):'-',
+    PAY1:conTH(C.pay1),PAY1W:conW(arN(C.pay1)),PAY2:conTH(C.pay2),PAY2W:conW(arN(C.pay2)),CRAFT_FROM:CON_CRAFT_FROM,CRAFT_PCT:'๑๐',CRAFT_PCTW:'สิบ',CRAFT1:'ช่างโยธา'}}
+function arN(v){return num(String(v||'').replace(/[๐-๙]/g,c=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(c)))}
+function conFill(t,V){return t.replace(/\{\{([A-Z0-9_]+)\|([^}]*)\}\}/g,(m,k,d)=>{const v=k==='_'?'':V[k];return v!==undefined&&v!==''?` <span class="cv">${esc(String(v))}</span> `:esc(d)}).replace(/\(\s+/g,'(').replace(/\s+\)/g,')').replace(/\)\(/g,') (').replace(/ {2,}/g,' ').replace(/(<\/span>)\(/g,'$1 (')}
+function conHeader(p){const C=conOf(p),st=S.settings;const [pl,pt,pa,pp]=String(st.conPlace||CON_PLACE_DEF).split('|');const [d,m,y]=conParts(conDates(p).sign);const bk=(p.book&&p.book.booking)||{};
+  const by=C.by||(bk.signerName?`${bk.signerName} ${bk.signerSurname||''}`.trim()+(bk.signerPosition?' '+bk.signerPosition:''):'');
+  const f=(v,dots)=>v?`<span class="cv">${esc(v)}</span>`:dots;
+  return `สัญญาฉบับนี้ทำขึ้น ณ ${esc(pl)} ตำบล${esc(pt)} อำเภอ${esc(pa)} จังหวัด${esc(pp)} เมื่อวันที่ ${f(d,'...........')} เดือน ${f(m,'.......................')} พ.ศ. ${f(y,'..........')} ระหว่าง กรมทางหลวง โดย ${esc(fName(st.director||''))} ${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')} ${esc(st.conAuth||CON_AUTH_DEF)} ซึ่งต่อไปในสัญญานี้เรียกว่า “ผู้ว่าจ้าง” ฝ่ายหนึ่ง กับ ${f(p.contractor,'..................................................')} ซึ่งจดทะเบียนเป็นนิติบุคคล ณ ${f(C.regAt,'..................................................................')} มีสำนักงานใหญ่อยู่เลขที่ ${f(C.hqNo&&toTH(C.hqNo),'...............')} ถนน${f(C.road,'....................')} ตำบล/แขวง${f(C.tambon,'....................')} อำเภอ/เขต${f(C.amphoe,'....................')} จังหวัด${f(C.province,'....................')} โดย ${f(by,'..................................................')} ผู้มีอำนาจลงนามผูกพันนิติบุคคลปรากฏตามหนังสือรับรองของสำนักงานทะเบียนหุ้นส่วนบริษัท ${f(C.certNo&&toTH(C.certNo),'....................')} ลงวันที่ ${f(C.certDate&&thDate(C.certDate),'..............................')}${C.poaDate||conOf(p).mode==='draft'?` (และหนังสือมอบอำนาจลงวันที่ ${f(C.poaDate&&thDate(C.poaDate),'..............................')})`:''} แนบท้ายสัญญานี้ ซึ่งต่อไปในสัญญานี้เรียกว่า “ผู้รับจ้าง” อีกฝ่ายหนึ่ง`}
+function repContract(p){const T=window.CONTRACT_TPL;if(!T){loadConTpl().then(()=>{if(tab==='report')render()}).catch(e=>toast(e.message));return '<div class="note">กำลังโหลดแบบสัญญา…</div>'}
+  const C=conOf(p),st=S.settings,V=conVals(p),adv=num(C.adv)>0,c7=C.c7==='a'?'a':'b';const F=letterFont();
+  const skip=new Set([3,22,32,33,34,35,36,37,38,39,47,48,55,56,57,58,122,123,...(c7==='a'?[67,68,69]:[62,63,64,65,66]),...(C.direct?[]:[31]),...(adv?[]:[41,42,43,44,45,46,49,50,51,52,53,54]),10,11,12,13,14,126,127,128,129,130,131,132,133]);
+  const out=[];const P=(t,l,b)=>out.push(`<p class="cp l${l}${b?' b':''}">${t}</p>`);
+  const pf={46:'๕.๓ ',52:'๕.๖ '};
+  for(const o of T){if(skip.has(o.i)){
+      if(o.i===3)P(conHeader(p),1);
+      if(o.i===10)conAnnex(p).forEach((a,j)=>P(`๒.${toTH(String(j+1))} ผนวก ${toTH(String(j+1))} ${esc(a.t)} จำนวน ${esc(a.n)} ${esc(a.u)}`,1));
+      if(o.i===41&&!adv)P('- ไม่มี -',1);
+      continue}
+    let t=o.t;if(o.i===0||o.i===1){out.push(`<div class="c b${o.i===1?' big':''}">${esc(t)}</div>`);continue}
+    if(o.i===2){out.push(`<div class="cno">${conFill(t,V)}</div>`);P(conHeader(p),1);continue}
+    t=t.replace(/^ข้อ ๔ \(ก\)/,'ข้อ ๔').replace(/^ข้อ ๗ \([กข]\)/,'ข้อ ๗').replace(/ข้อ ๔ \(ก\)/g,'ข้อ ๔').replace(/ข้อ ๕\.๓ \(ก\)/g,'ข้อ ๕.๓');
+    if(o.i===6)t=t.replace(/\{\{SITE\|[^}]*\}\}\s*ตำบล\/แขวง\{\{TAMBON\|[^}]*\}\}\s*อำเภอ\/เขต\{\{AMPHOE\|[^}]*\}\}\s*จังหวัด\{\{PROVINCE\|[^}]*\}\}/,`ตำบล{{TAMBON|....................}} อำเภอ{{AMPHOE|....................}} จังหวัด{{PROVINCE|....................}}`).replace(/\{\{WORK\|/,' {{WORK|')+'';
+    const V2=Object.assign({},V,{TAMBON:C.siteTambon,AMPHOE:C.siteAmphoe,PROVINCE:C.siteProvince||conProvince(p)});
+    if(o.i===40&&!adv){P(esc(t),0,1);continue}
+    const hd=/^ข้อ [๐-๙]+ /.test(t)&&t.length<90;P((pf[o.i]||'')+conFill(t,V2),hd?0:o.l,hd||o.b)}
+  const bk=(p.book&&p.book.booking)||{};const sg=anxSigner(p)||(bk.signerName?`${bk.signerName} ${bk.signerSurname||''}`.trim():'');const [w1,w2]=[C.witness1||anxWit(p)[0],C.witness2||anxWit(p)[1]];
+  const sgl=(role,name)=>`<div class="csg">(ลงชื่อ)......................................................${role}<br>(${esc(name||'......................................................')})</div>`;
+  out.push(`<div class="csgs">${sgl('ผู้ว่าจ้าง',fName(st.director||''))}${sgl('ผู้รับจ้าง',sg)}${sgl('พยาน',w1)}${sgl('พยาน',w2)}</div>`);
+  const mark=C.mode==='draft'?'<div class="cmark draft">ร่าง</div>':C.mode==='orig'?'<div class="cmark">ต้นฉบับ</div>':C.mode==='copy'?'<div class="cmark">คู่ฉบับ</div>':'';
+  return thDig(`<div class="paper ev con${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">${mark}${out.join('')}</div>`)}
+/* ปกสัญญา */
+function repConCover(p){const C=conOf(p),st=S.settings,F=letterFont();const dd=conDates(p);const fp=num(finalPrice(p));const V=conVals(p);
+  const I=ordMembers(p,'inspect').filter(m=>m.name);
+  return thDig(`<div class="paper ev con concover${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="c" style="margin-top:6mm"><img src="doh-seal.png" alt="" style="width:36mm;height:36mm;object-fit:contain"></div>
+   <div class="c b big" style="margin:8mm 0 6mm">สัญญาที่ ${esc(p.contractNo?toTH(p.contractNo):'....................')}</div>
+   <p class="cp l1" style="text-indent:0;text-align:center">${esc(p.name||'')}</p>
+   <table class="cvt"><tr><td>ผู้รับจ้าง</td><td>${esc(p.contractor||'....................')}</td></tr><tr><td>ผู้ว่าจ้าง</td><td>${esc(st.office||'แขวงทางหลวงกระบี่')}</td></tr></table>
+   <table class="cvt r"><tr><td>สัญญาลงวันที่</td><td>${dd.sign?thDate(dd.sign):'....................'}</td></tr><tr><td>เวลาทำการ</td><td>${dd.dur?toTH(String(dd.dur))+' วัน':'....... วัน'}<br>(นับตั้งแต่วันเริ่มงาน)</td></tr>
+   <tr><td>เริ่มงาน วันที่</td><td>${dd.start?thDate(dd.start):'....................'}</td></tr><tr><td>วันทำการเสร็จ</td><td>${dd.end?thDate(dd.end):'....................'}</td></tr>
+   <tr><td>ค่าก่อสร้างเป็นเงิน</td><td>${fp?toTH(fmt(fp))+' บาท':'.................... บาท'}</td></tr><tr><td>ค่าปรับวันละ</td><td>${fp?toTH(fmt(Math.round(fp*num(torOf(p).fineDaily||'0.10'))/100))+' บาท':'.................... บาท'}</td></tr></table>
+   <div class="b" style="margin-top:6mm">คณะกรรมการตรวจรับพัสดุ</div>
+   <table class="cvt w">${I.map((m,i)=>`<tr><td>${toTH(String(i+1))}. ${esc(m.name)} ${esc(m.position||'')}</td><td>${esc(m.role||'')}</td></tr>`).join('')||'<tr><td>(ยังไม่มีรายชื่อในคำสั่งแต่งตั้ง)</td><td></td></tr>'}</table></div>`)}
+/* บันทึกรายการทำสัญญา (พ.๑-๐๕) */
+function repConMemo(p){const C=conOf(p),st=S.settings,F=letterFont();const dd=conDates(p);const fp=num(finalPrice(p));const A=signAmounts(p);const bk=(p.book&&p.book.booking)||{};
+  const by=C.by||(bk.signerName?`${bk.signerName} ${bk.signerSurname||''}`.trim():'');const fine=num(finalPrice(p))*num(torOf(p).fineDaily||'0.10')/100;
+  const L=(n,t)=>`<div class="cm"><span>${n}.</span><span>${t}</span></div>`,dot=(v,len=30)=>v?`<u class="cvu">${esc(v)}</u>`:'.'.repeat(len);
+  return thDig(`<div class="paper ev con conmemo${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div style="text-align:right;line-height:1.2">พ.๑-๐๕<br>กรมทางหลวง<br>เริ่มใช้.......</div>
+   <div class="c b big" style="margin:4mm 0"><u>บันทึกรายการทำสัญญา</u></div>
+   <div class="c">สัญญาที่ ${dot(p.contractNo&&toTH(p.contractNo),20)} ลงวันที่ ${dot(dd.sign&&thDate(dd.sign))}</div>
+   ${L('๑','☑ ผู้รับจ้าง หรือ ☐ ผู้ขาย '+dot((p.contractor||'')+(by?' โดย'+by:''),60))}
+   ${L('๒','หน่วยงาน '+dot('กรมทางหลวง '+(st.office||'แขวงทางหลวงกระบี่'),40))}
+   ${L('๓','ผู้มีอำนาจอนุมัติ (ตำแหน่ง) '+dot(prepOf(p).authority==='region'?'ผู้อำนวยการสำนักงานทางหลวงที่ ๑๗':(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่'),40)+' อนุมัติเมื่อ '+dot(evOf(p).approveDate?thDate(evOf(p).approveDate):'',20))}
+   ${L('๔','จ้าง/ซื้อโดยวิธี '+dot('ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)',40))}
+   ${L('๕','ค่างานที่จะจ่ายจากงบประมาณปี พ.ศ. '+dot(toTH(String(fyNow())),8)+' '+dot(p.name,60)+' งบประมาณ '+dot(p.budget?toTH(fmt(p.budget))+' บาท':'',20))}
+   ${L('๖','ราคาคิดเป็นหน่วยละ ................... บาท รวมค่างาน '+dot(fp?toTH(fmt(fp)):'',20)+' บาท<br>เงินล่วงหน้า '+dot(num(C.adv)?toTH(String(C.adv)):'-',8)+' % เป็นเงิน '+dot(num(C.adv)&&fp?toTH(fmt(fp*num(C.adv)/100)):'-',15)+' บาท')}
+   ${L('๗','เงินจัดสรรตามหนังสือเลขที่ ............................. ลงวันที่ .............................')}
+   ${L('๘','ค.ร.ม. อนุมัติให้ผูกพันงบประมาณข้ามปี พ.ศ. ................ ถึง พ.ศ. ................ ตามหนังสือเลขที่ ................... ลงวันที่ ................... วงเงิน ................... บาท')}
+   ${L('๙','เงินประกันสัญญา '+dot(A.sec&&fp?toTH(fmt(A.sec)):'',15)+' บาท โดย<br>☐ เงินสด ................................... บาท<br>☐ เช็คธนาคาร .................................. เลขที่ ................... ลงวันที่ ...................<br>'+(C.bondNo?'☑ ':'☐ ')+'หนังสือค้ำประกันธนาคาร '+dot(C.bondBank,30)+' เลขที่ '+dot(C.bondNo&&toTH(C.bondNo),15)+' ลงวันที่ '+dot(C.bondDate&&thDate(C.bondDate),15)+'<br>☐ อื่น ๆ ...................................')}
+   ${L('๑๐','เงินค่าประกันผลงาน '+dot(conTH(C.retPct),6)+' % ของการจ่ายเงินค่างานแต่ละงวด')}
+   ${L('๑๑','☑ ค่าปรับผิดสัญญาจ้างวันละ '+dot(fp?toTH(fmt(fine)):'',15)+' บาท<br>☐ ค่าปรับผิดสัญญาซื้อ ............ % ต่อวัน ของราคาสิ่งของที่ยังไม่ได้รับมอบ')}
+   ${L('๑๒','วันเริ่มต้นสัญญาวันที่ '+dot(dd.start&&thDate(dd.start),25))}
+   ${L('๑๓','วันสิ้นสุดสัญญาวันที่ '+dot(dd.end&&thDate(dd.end),25)+' ( ระยะเวลาดำเนินการ '+dot(dd.dur?toTH(String(dd.dur)):'',5)+' วัน )')}
+   <div class="csgs two" style="margin-top:12mm"><div class="csg">(${esc(fName(st.director||''))})<br>${esc(st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่')}</div><div class="csg">ลงชื่อ.........................................ผู้บันทึก<br>(${esc(C.recorder||st.conRecorder||'......................................')})<br>${esc(C.recorderPos||st.conRecorderPos||'หัวหน้าเจ้าหน้าที่')}</div></div></div>`)}
+/* ทะเบียนรายการเอกสารประกอบการทำสัญญาจ้าง */
+function repConReg(p){const C=conOf(p),st=S.settings,F=letterFont();const dd=conDates(p);const bk=(p.book&&p.book.booking)||{};const by=C.by||(bk.signerName?`${bk.signerName} ${bk.signerSurname||''}`.trim():'');
+  const D=[['บันทึกรายการทำสัญญา','๑','หน้า'],['หนังสือค้ำประกันธนาคาร','๑','หน้า'],['หนังสือมอบอำนาจ',C.poaDate?'๑':'-','หน้า'],['เอกสารรับรองของทางราชการ','๑','ชุด'],['สัญญาจ้าง','','หน้า'],['ข้อกำหนดพิเศษ','-','ชุด'],['ข้อกำหนด หรือมาตรฐาน','','ชุด'],['แบบแปลน','๑','ชุด'],['เอกสารอื่น ๆ ประกอบ','','หน้า'],['ใบเสนอราคา','๑','ชุด']];
+  const sg=(t,n)=>`<div class="csg l">(ลงชื่อ)......................................................${t}<br>(${esc(n||'......................................................')})</div>`;
+  return thDig(`<div class="paper ev con conreg${wm()}" style="--lf:${esc(F.lf)};--ls:${F.ls}">
+   <div class="c b big">ทะเบียนรายการเอกสารประกอบการทำสัญญาจ้าง</div>
+   <div class="c b">สัญญาที่ ${esc(p.contractNo?toTH(p.contractNo):'..........................')} ลงวันที่ ${dd.sign?thDate(dd.sign):'..............................'}</div>
+   <p class="cp l1">ระหว่าง กรมทางหลวง ${esc(st.office||'แขวงทางหลวงกระบี่')} โดย${esc(fName(st.director||''))} ${esc(st.directorFull||'')} ${esc(st.conAuth||CON_AUTH_DEF)} ซึ่งต่อไปในสัญญานี้เรียกว่า “ผู้ว่าจ้าง” ฝ่ายหนึ่งกับ ${esc(p.contractor||'..........................')}${by?' โดย'+esc(by):''} เรียกว่า “ผู้รับจ้าง” อีกฝ่ายหนึ่ง ซึ่งได้ลงนามในสัญญาไว้ต่อกันเมื่อวันที่ ${dd.sign?thDate(dd.sign):'..............................'} ในการทำสัญญาดังกล่าว มีเอกสารประกอบการทำสัญญา ดังนี้.-</p>
+   ${D.map((x,i)=>`<div class="crg"><span>${toTH(String(i+1))}. ${x[0]}</span><span>จำนวน........${x[1]||'........'}........${x[2]}</span></div>`).join('')}
+   <p class="cp l0" style="text-indent:0">ได้จัดส่งเอกสารดังกล่าวแนบเรื่องไว้ถูกต้องครบถ้วนแล้ว</p>
+   ${sg('เจ้าหน้าที่ผู้รับผิดชอบในการทำสัญญา',C.officer||st.conOfficer||'')}<div class="c" style="margin:2mm 0">ตรวจสอบแล้วเอกสารถูกต้องครบถ้วนตามรายการข้างต้น</div>
+   ${sg('หพ.ขท.กระบี่',C.chief||st.conChief||'')}${sg('รอ.ขท.กระบี่',C.deputy||st.conDeputy||'')}${sg('ผอ.ขท.กระบี่',fName(st.director||''))}</div>`)}
+function repConAll(p){return repConCover(p)+repContract(p)+repConMemo(p)+repConReg(p)}
+function conCard(p){const C=conOf(p);const F=(k,l,ph='',cls='s3',type='text')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-con="${k}" value="${esc(C[k]||'')}" placeholder="${esc(ph)}"></label>`;const bk=(p.book&&p.book.booking)||{};
+  return `<div class="card" id="conCard"><div class="card-h"><h2>แบบสัญญาจ้างก่อสร้าง <span class="muted" style="font-size:13px;font-weight:400">(แบบตามประกาศฯ ฉบับที่ ๓ มีผล ๒๒ ก.ย. ๒๕๖๙)</span></h2></div><div class="card-b grid g12">
+   <div class="s12 row" style="gap:8px;flex-wrap:wrap;margin:0;align-items:center"><span class="muted" style="font-size:13px">พิมพ์:</span>${[['con_cover','ปกสัญญา'],['con_body','สัญญาจ้างก่อสร้าง'],['con_memo','บันทึกรายการทำสัญญา (พ.๑-๐๕)'],['con_reg','ทะเบียนรายการเอกสาร'],['con_all','ทั้งชุด']].map(([k,l])=>`<button class="btn sm${k==='con_all'?' blue':''}" data-oprint="${k}" type="button">${ICON.print} ${l}</button>`).join('')}</div>
+   <label class="f s3"><span>สถานะเอกสาร</span><select class="i" data-con="mode"><option value="draft" ${C.mode==='draft'?'selected':''}>ร่าง (ส่งเขต/แขวงตรวจ)</option><option value="orig" ${C.mode==='orig'?'selected':''}>ต้นฉบับ</option><option value="copy" ${C.mode==='copy'?'selected':''}>คู่ฉบับ</option><option value="none" ${C.mode==='none'?'selected':''}>ไม่พิมพ์ตราสถานะ</option></select></label>
+   <label class="f s5"><span>ข้อ ๗ กำหนดเวลา</span><select class="i" data-con="c7"><option value="b" ${C.c7!=='a'?'selected':''}>(ข) ระบุวันเริ่ม–วันแล้วเสร็จ (เริ่มวันถัดจากลงนาม)</option><option value="a" ${C.c7==='a'?'selected':''}>(ก) นับวันจากหนังสือแจ้งให้เริ่มงาน + เสนอแผนงาน</option></select></label>
+   ${F('adv','เงินล่วงหน้า (ร้อยละ · ว่าง = ไม่มี)','','s2')}${F('advSec','หลักประกันเงินล่วงหน้า','หนังสือค้ำประกันของธนาคาร...','s2')}
+   <div class="s12 muted" style="font-size:13px;margin-top:4px"><b>ผู้รับจ้าง (นิติบุคคล)</b> ${bk.signerName?'· ผู้ลงนามจากการจอง: '+esc(`${bk.signerName} ${bk.signerSurname||''} ${bk.signerPosition||''}`):''}</div>
+   ${F('regAt','จดทะเบียนเป็นนิติบุคคล ณ','สำนักงานทะเบียนหุ้นส่วนบริษัทจังหวัด... กรมพัฒนาธุรกิจการค้า กระทรวงพาณิชย์','s6')}${F('hqNo','สำนักงานใหญ่ เลขที่','','s2')}${F('road','ถนน','','s2')}${F('tambon','ตำบล/แขวง','','s2')}
+   ${F('amphoe','อำเภอ/เขต','','s3')}${F('province','จังหวัด','','s3')}${F('by','โดย (ผู้ลงนาม + ฐานะ)',bk.signerName?`${bk.signerName} ${bk.signerSurname||''} ผู้รับมอบอำนาจจาก...`:'นาย... กรรมการผู้จัดการ','s6')}
+   ${F('certNo','หนังสือรับรองบริษัท ที่','ตง.๐๐๒๖๑๖','s3')}${F('certDate','ลงวันที่','','s3','date')}${F('poaDate','หนังสือมอบอำนาจลงวันที่ (ถ้ามี)','','s3','date')}
+   <div class="s12 muted" style="font-size:13px;margin-top:4px"><b>หลักประกันสัญญา</b> (จำนวนเงิน = ร้อยละ ๕ จากการ์ดเรียกลงนาม)</div>
+   ${F('bondType','ประเภท',bk.secType||'หนังสือค้ำประกันของธนาคาร','s3')}${F('bondBank','ธนาคาร/สาขา','ธนาคารกรุงไทย จำกัด (มหาชน) ...','s4')}${F('bondNo','เลขที่','','s2')}${F('bondDate','ลงวันที่','','s3','date')}
+   <div class="s12 muted" style="font-size:13px;margin-top:4px"><b>สถานที่ก่อสร้าง</b></div>
+   ${F('siteTambon','ตำบล','','s4')}${F('siteAmphoe','อำเภอ','','s4')}${F('siteProvince','จังหวัด',conProvince(p),'s4')}
+   <details class="s12"><summary class="muted" style="cursor:pointer;font-size:13px">เงื่อนไขอื่นในสัญญา (ค่าเริ่มต้นตามเอกสารประกวดราคา — ตรวจให้ตรงกับที่แขวงใช้)</summary><div class="grid g12" style="margin-top:8px">
+    ${F('bondDays','ข้อ ๓ หาหลักประกันใหม่ภายใน (วัน)','','s3')}${F('retPct','ข้อ ๖ หักประกันผลงาน (ร้อยละ)','','s3')}${F('retMin','ข้อ ๖ ขอคืนเมื่อถูกหักไม่ต่ำกว่า (บาท)','','s3')}${F('planDays','ข้อ ๗ (ก) เสนอแผนงานภายใน (วัน)','','s3')}
+    ${F('warrM','ข้อ ๘ รับประกัน + เดือน','-','s3')}${F('fixDays','ข้อ ๘ แก้ไขภายใน (วัน)','','s3')}${F('subPct','ข้อ ๙ ค่าปรับจ้างช่วง (ร้อยละ)','','s3')}${F('ctrl','ข้อ ๑๗ ค่าควบคุมงานวันละ (บาท)','-','s3')}
+    ${F('pay1','ข้อ ๑๙ ชดใช้ภายใน (วัน)','','s3')}${F('pay2','ข้อ ๑๙ ชำระส่วนที่ขาดภายใน (วัน)','','s3')}${F('witness1','พยาน ๑',anxWit(p)[0],'s3')}${F('witness2','พยาน ๒',anxWit(p)[1],'s3')}
+    <label class="switch s12"><input type="checkbox" data-con="direct" ${C.direct?'checked':''}> ใส่วรรคโอนเงินเข้าบัญชีผู้รับจ้าง (Direct Payment)</label>
+    ${C.direct?F('bank','ธนาคาร','','s3')+F('branch','สาขา','','s3')+F('accName','ชื่อบัญชี','','s3')+F('accNo','เลขที่บัญชี','','s3'):''}
+   </div></details>
+   <details class="s12"><summary class="muted" style="cursor:pointer;font-size:13px">รายการผนวกแนบท้ายสัญญา (ข้อ ๒) — ใช้ทุกโครงการ</summary><textarea class="i" rows="9" id="conAnnex" style="width:100%;margin-top:6px">${esc(S.settings.conAnnex||CON_ANNEX_DEF)}</textarea><div class="muted" style="font-size:12px">หนึ่งบรรทัดต่อหนึ่งผนวก: ชื่อเอกสาร|จำนวน|หน่วย · มีค่า K ระบบเพิ่ม “สูตรการปรับราคา” ให้</div></details>
+   <div class="s12 muted" style="font-size:12.5px">ค่าปรับรายวัน = ร้อยละ ${esc(torOf(p).fineDaily||'0.10')} ของราคาค่าจ้าง (ตั้งที่การ์ด TOR) · ระยะเวลา/วันลงนาม/ราคา ดึงจากโครงการ · รายการผนวกแก้ได้ที่ตั้งค่า</div>
+  </div></div>`}
+function bindCon(el,p){const C=conOf(p);const ta=$('#conAnnex',el);if(ta)ta.oninput=()=>{S.settings.conAnnex=ta.value;save()};$$('[data-con]',el).forEach(i=>i.addEventListener(i.type==='checkbox'||i.tagName==='SELECT'||i.type==='date'?'change':'input',()=>{C[i.dataset.con]=i.type==='checkbox'?i.checked:i.value;touch(p);if(['direct'].includes(i.dataset.con))rSignTab()}))}
+
 /* ระเบียบกระทรวงการคลังฯ (ฉบับที่ ๓) พ.ศ. ๒๕๖๙ — การประเมินผลการปฏิบัติงานของผู้ประกอบการ (หมวด ๗)
    กรมทางหลวง: งานก่อสร้างมูลค่าสัญญาตั้งแต่ ๕ ล้านบาท ต้องแจ้งเงื่อนไขการประเมินไว้ในประกาศ/เอกสารเชิญชวน (ข้อ ๑๙๐/๑ ๑๙๐/๒) */
 const DMG_T1=[{h:'๑. ช่วงการปฏิบัติงานตามสัญญา'},
@@ -3127,6 +3283,7 @@ function repDamage(p){const no=dmgNo(p);
    ${DMG_T2.map(r=>`<tr><td class="c">${r[0]}</td><td class="c">${r[1]}</td><td class="c">${r[2]}</td></tr>`).join('')}</tbody></table>`;
   return thDig(bxSheet(p,p1)+bxSheet(p,tb(DMG_T1.slice(cut1,cut2)))+bxSheet(p,tb(DMG_T1.slice(cut2,cut3)))+bxSheet(p,tb(DMG_T1.slice(cut3)))+bxSheet(p,p4))}
 ORD_REPORTS.push(['dmg','เอกสารกำหนดคะแนนความเสียหาย (วงเงิน ≥ 5 ล้าน)',p=>repDamage(p)],...BX_DOCS.map(d=>[d[0],'แนบประกวดราคา: '+d[1],p=>d[2](p)]),['bx_all','เอกสารแนบท้ายเอกสารประกวดราคา (ทั้งชุด)',p=>repBxAll(p)]);
+ORD_REPORTS.push(['con_cover','ปกสัญญา',p=>repConCover(p)],['con_body','สัญญาจ้างก่อสร้าง',p=>repContract(p)],['con_memo','บันทึกรายการทำสัญญา (พ.๑-๐๕)',p=>repConMemo(p)],['con_reg','ทะเบียนรายการเอกสารประกอบการทำสัญญา',p=>repConReg(p)],['con_all','ชุดสัญญาจ้างก่อสร้าง',p=>repConAll(p)]);
 ORD_REPORTS.push(['attach','รายละเอียดแนบท้ายประกาศ',p=>repAttach(p)],['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',p=>repBoqForm(p)],['annex3_con','ผนวก 3 (แนบสัญญา)',p=>repAnnex3(p)],['condetail','รายละเอียดแนบท้ายสัญญา',p=>repConDetail(p)]);
 /* ---------- Excel (.xlsx) ด้วย ExcelJS ---------- */
 let EXJ_P=null;
