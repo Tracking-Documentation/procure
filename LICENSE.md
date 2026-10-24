@@ -2,11 +2,8 @@
 
 **ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่ (Construction Contract Tracking & Documentation System · Krabi Highway District)**
 © 2026 Narama Woraklan · สงวนลิขสิทธิ์ (All rights reserved)
-ระบบปรับลดราคาในแบบแสดงรายการ ปริมาณงาน และราคา (BOQ) พัฒนาโดย Mr.Tharatep Thongbao  
-แนวคิดการพัฒนาต่อยอดเพื่อใช้งานให้ครบวงจร โดย นางสาวณรมา วรกลั่น
-
-Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system.  
-Concept and further development for end-to-end use by Miss Narama Woraklan.
+พัฒนาโดย นางสาวณรมา วรกลั่น แขวงทางหลวงกระบี่  
+Developed by Miss Narama Woraklan · Krabi Highway District
 
 ระบบนี้ รวมถึงซอร์สโค้ด การออกแบบหน้าจอ แม่แบบเอกสาร และวิธีการคำนวณ เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537
 
@@ -15,7 +12,7 @@ Concept and further development for end-to-end use by Miss Narama Woraklan.
 3. ห้ามนำไปแก้ไข แล้วเผยแพร่หรืออ้างเป็นผลงานในนามผู้อื่น
 4. ซอฟต์แวร์นี้ให้ไว้ "ตามสภาพ" ผู้ใช้ต้องตรวจสอบเอกสารและตัวเลขให้ถูกต้องตามระเบียบก่อนใช้งานจริง
 
-This system, including its source code, interface design, document templates and calculation methods, is the intellectual property of its developers and is protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.
+This system, including its source code, interface design, document templates and calculation methods, is the intellectual property of its developer and is protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.
 
 ขออนุญาตใช้งาน ดัดแปลง หรือเผยแพร่: ติดต่อผู้พัฒนา
 

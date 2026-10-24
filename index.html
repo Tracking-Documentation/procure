@@ -228,6 +228,30 @@ details.rp-x{margin:0 0 10px}details.rp-x>summary{cursor:pointer;color:var(--mut
 .rp-prev{background:color-mix(in srgb,var(--line) 45%,var(--bg));border-radius:14px;padding:16px 10px;overflow:auto}
 @media (max-width:980px){.rp{grid-template-columns:1fr}.rp-nav{position:static;max-height:46vh}}
 @media print{.app-header,main.wrap,#printArea,#modalRoot{zoom:1!important}.rp{display:block}.rp-prev{background:none;padding:0;overflow:visible}}
+/* ---- sidebar layout ---- */
+.menu-tg{flex:none;display:none;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:10px;width:44px;height:40px;padding:10px;cursor:pointer;flex-direction:column;justify-content:space-between}.menu-tg span{display:block;height:2.5px;border-radius:2px;background:#fff}
+.tab-g{font-family:var(--f-head);font-size:12px;letter-spacing:.03em;color:rgba(255,255,255,.62);padding:14px 12px 4px;white-space:nowrap}
+.pagebar{display:flex;align-items:center;gap:12px;padding:18px 0 14px;margin-bottom:14px;border-bottom:1px solid var(--line)}.pagebar .pi{width:40px;height:40px;border-radius:10px;background:var(--soft);color:var(--tab-on);display:grid;place-items:center;flex:none}.pagebar .pi svg{width:22px;height:22px}
+.pagebar small{display:block;color:var(--muted);font-size:12.5px}.pagebar h2{font-size:21px;color:var(--tab-on);line-height:1.25}
+@media (min-width:1000px){
+ body{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;margin:0}.rp{grid-template-columns:270px minmax(0,1fr)}
+ .app-header{position:sticky;top:0;height:calc(100vh / var(--uiz,1.15));overflow-y:auto;width:262px;background:linear-gradient(180deg,var(--brand2),var(--brand) 55%,#5e1620);scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.25) transparent}
+ .app-header>.wrap{max-width:none;padding:18px 12px 14px;display:flex;flex-direction:column;min-height:100%;box-sizing:border-box}
+ .hdr{flex-direction:column;align-items:flex-start;gap:10px;padding:0 4px 6px}.ttl{min-width:0}.ttl h1{font-size:16.5px;line-height:1.35}.ttl p{font-size:11.5px;line-height:1.4}
+ .tabs{flex-direction:column;flex-wrap:nowrap!important;overflow:visible;padding:4px 0 0;gap:2px}
+ .tab{border-radius:10px;padding:9px 12px!important;width:100%;font-size:14.5px;white-space:normal;text-align:left;line-height:1.3}.tab.on{background:var(--bg);color:var(--tab-on)}
+ .app-header .hdr-actions{margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.18);flex-direction:column;align-items:stretch;gap:8px}
+ .app-header .hdr-actions>*{justify-content:center;text-align:center}.app-header .hdr-actions .fz{align-self:center}.app-header .chip-off{font-size:12px;border-radius:10px}
+ main.wrap{max-width:none;width:100%;box-sizing:border-box;padding-left:26px;padding-right:26px}
+}
+@media (max-width:999.98px){
+ .menu-tg{display:flex;margin-left:auto}.hdr{flex-wrap:nowrap;padding-block:12px}.ttl{min-width:0}.ttl h1{font-size:15.5px}.ttl p{display:none}.logo{width:42px;height:42px}
+ .app-header .tabs,.app-header .hdr-actions{display:none}
+ body.menu-open .app-header .tabs{display:flex;flex-direction:column;flex-wrap:nowrap;overflow:visible;padding:0 0 8px}body.menu-open .app-header .tab{border-radius:10px;width:100%}
+ body.menu-open .app-header .hdr-actions{display:flex;padding:8px 0 14px;border-top:1px solid rgba(255,255,255,.18)}
+ .pagebar{padding-top:12px}
+}
+@media print{body{display:block!important}.pagebar{display:none!important}}
 .paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
@@ -353,25 +377,26 @@ body.exec .hdr{padding-bottom:12px}
 <header class="app-header">
   <div class="wrap">
     <div class="hdr">
-      <div class="logo" aria-hidden="true">
-        <svg width="34" height="34" viewBox="0 0 64 64"><rect x="12" y="6" width="34" height="46" rx="4" fill="#f8ecec" stroke="#7a1f2b" stroke-width="3"/><path d="M19 18h20M19 26h20M19 34h12" stroke="#7a1f2b" stroke-width="3" stroke-linecap="round"/><circle cx="45" cy="45" r="13" fill="#f3c623" stroke="#7a1f2b" stroke-width="2.5"/><path d="M45 37v14m-5-5 5 5 5-5" stroke="#7a1f2b" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="logo" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="9" width="36" height="46" rx="5" fill="#fff" stroke="#7a1f2b" stroke-width="3.2"/><rect x="19.5" y="4.5" width="17" height="9.5" rx="2.6" fill="#f8ecec" stroke="#7a1f2b" stroke-width="2"/><path d="M16 24l3.6 3.6 6.4-7.4M16 38l3.6 3.6 6.4-7.4" stroke="#2e8b3e" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M30.5 24.5h9.5M30.5 38.5h5" stroke="#7a1f2b" stroke-width="3" stroke-linecap="round"/><circle cx="46" cy="47" r="12.5" fill="#f3c623" stroke="#b8860b" stroke-width="2.2"/><circle cx="46" cy="47" r="9" fill="none" stroke="#d9a90f" stroke-width="1.2"/><path d="M42.3 41.3h4.6a2.9 2.9 0 0 1 0 5.8h-4.6zM42.3 47.1h5.3a2.95 2.95 0 0 1 0 5.9h-5.3z" fill="none" stroke="#5a3d00" stroke-width="2.1" stroke-linejoin="round"/><path d="M45.3 38.6v17" stroke="#5a3d00" stroke-width="2" stroke-linecap="round"/></svg></div>
       <div class="ttl">
         <h1>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</h1>
         <p title="ราคาต่อรองตามหนังสือ กวจ. ด่วนที่สุด ที่ กค (กวจ) 0405.3/ว 651 ลงวันที่ 26 กันยายน 2568">Construction Contract Tracking &amp; Documentation System · Krabi Highway District</p>
       </div>
+      <button class="menu-tg" id="menuTg" type="button" aria-label="เปิดเมนู" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="เมนูหลัก"></nav>
       <div class="hdr-actions">
         <button class="btn-lock" id="btnLock" type="button">🔑 ตั้งรหัสผ่าน</button>
         <button class="btn-install" id="btnInstall" type="button">⤓ ติดตั้งแอป</button>
         <span class="fz" role="group" aria-label="ขนาดตัวอักษร"><button type="button" id="fzDn" title="ตัวอักษรเล็กลง">ก−</button><button type="button" id="fzUp" title="ตัวอักษรใหญ่ขึ้น">ก+</button></span>
         <span class="chip-off" id="netChip">ใช้งานออฟไลน์ได้ · ข้อมูลอยู่ในเครื่องนี้</span>
       </div>
-    </div>
-    <nav class="tabs" id="tabs" aria-label="เมนูหลัก"></nav>
+
   </div>
 </header>
 
 <main class="wrap">
+  <div class="pagebar no-print" id="pageBar"></div>
   <section class="view" id="v-dash"></section>
   <section class="view" id="v-prep" hidden></section>
   <section class="view" id="v-req" hidden></section>
@@ -388,7 +413,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Thanks to Mr. Tharatep Thongbao for creating the original Bill of Quantities (BOQ) price-reduction system · Concept and further development for end-to-end use by Miss Narama Woraklan (Version <span id="appVer">130</span> · <span id="appDate">23 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">131</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developers, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -451,7 +476,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='130',APP_DATE='23 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='131',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -639,8 +664,13 @@ function decision(p){
 }
 
 /* ================= tabs ================= */
-const TABS=[['dash','แดชบอร์ด','dash'],['cal','ปฏิทิน','cal'],['prep','ขั้นเตรียมการ','check'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','ข้อมูลโครงการ / BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ข้อกฎหมาย','book'],['manual','คู่มือการใช้งาน','doc'],['set','ตั้งค่า','gear']];
-function renderTabs(){$('#tabs').innerHTML=TABS.map(([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`).join('')}
+const TABS=[['dash','ภาพรวมโครงการ','dash'],['cal','ปฏิทิน','cal'],['prep','ขั้นเตรียมการ','check'],['req','ขออนุมัติซื้อ/จ้าง','doc'],['orders','คำสั่งแต่งตั้ง','users'],['edit','โครงการและ BOQ','edit'],['bid','ผู้เสนอราคา','users'],['eval','พิจารณาผล','check'],['nego','ต่อรองราคา','nego'],['result','ผลการปรับลดราคา','calc'],['sign','เรียกลงนามสัญญา','sign'],['cert','รับรองผลงาน','award'],['report','รายงาน','print'],['legal','ระเบียบที่เกี่ยวข้อง','book'],['manual','คู่มือการใช้งาน','doc'],['set','ตั้งค่า','gear']];
+const TAB_G=[['ติดตามงาน',['dash','cal']],['เตรียมการและขออนุมัติ',['prep','req','orders','edit']],['พิจารณาผลและต่อรองราคา',['bid','eval','nego','result']],['สัญญา',['sign','cert']],['เอกสารและอื่น ๆ',['report','legal','manual','set']]];
+function renderTabs(){const T=k=>TABS.find(x=>x[0]===k);const btn=([k,l,i])=>`<button class="tab ${tab===k?'on':''}" data-tab="${k}" type="button">${ICON[i]}<span>${l}</span></button>`;const used=new Set(TAB_G.flatMap(g=>g[1]));
+  $('#tabs').innerHTML=TAB_G.map(([g,ks])=>`<div class="tab-g">${g}</div>`+ks.map(T).filter(Boolean).map(btn).join('')).join('')+TABS.filter(x=>!used.has(x[0])).map(btn).join('');
+  const cur=T(tab),grp=(TAB_G.find(g=>g[1].includes(tab))||[''])[0],pb=$('#pageBar');if(pb&&cur)pb.innerHTML=`<span class="pi">${ICON[cur[2]]}</span><div><small>${esc(grp)}</small><h2>${esc(cur[1])}</h2></div>`;
+  document.body.classList.remove('menu-open');const mt=$('#menuTg');if(mt)mt.setAttribute('aria-expanded','false')}
+document.addEventListener('click',e=>{if(e.target.closest('#menuTg')){const o=document.body.classList.toggle('menu-open');e.target.closest('#menuTg').setAttribute('aria-expanded',String(o))}});
 function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
 function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,manual:rManual,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
@@ -1787,7 +1817,7 @@ function repCertDetail(p){const st=S.settings,c=certOf(p);const rows=certRows(p)
   ${ds.length>1?`<div style="margin-top:6mm;font-weight:600">การส่งมอบและตรวจรับงาน</div><table class="pt" style="margin-top:4px"><thead><tr><th style="width:60px">งวดที่</th><th>วันที่ส่งมอบงาน</th><th>วันที่ตรวจรับงาน</th><th style="width:150px">จำนวนเงิน (บาท)</th></tr></thead><tbody>${ds.map((d,i)=>`<tr><td class="ct">${i+1}${i===ds.length-1?' (สุดท้าย)':''}</td><td class="ct">${D(d.deliver)}</td><td class="ct">${D(d.inspect)}</td><td class="n">${fmt(num(d.amount))}</td></tr>`).join('')}<tr class="tot"><td colspan="3" class="n">รวม</td><td class="n">${fmt(certDelTotal(p))}</td></tr></tbody></table>`:''}
   <div style="margin:16mm 0 0 50%;text-align:center">(${esc(st.director||'..............................')})<br>${esc(st.directorFull||st.directorPos||'')}</div></div>`}
 function repCertAll(p){return repCertLetter(p)+repCert(p)+repCertDetail(p)}
-function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
+function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากภาพรวมโครงการก่อน</div></div>';return}
   const c=certOf(p),{start,end}=certDates(p);const v=certValue(p),dt=certDelTotal(p),amt=certAmount(p),rt=certRowsTotal(p);const rows=certRows(p);
   const F=(k,l,type='text',cls='s3',ph='')=>`<label class="f ${cls}"><span>${l}</span><input class="i" type="${type}" data-ct="${k}" value="${esc(c[k]||'')}" placeholder="${esc(ph)}"></label>`;
   const warn=[];if(!p.contractNo||!p.contractDate)warn.push('ยังไม่มีเลขที่สัญญาหรือวันที่ลงนามสัญญา — กรอกที่หน้าข้อมูลโครงการ');
@@ -1834,7 +1864,7 @@ function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div cla
   $('#amAdd').onclick=()=>{c.amends.push({});re()};$('#dlAdd').onclick=()=>{c.dels.push({});re()};
   $('#ciReset').onclick=()=>confirmBox('คืนค่าชื่อรายการ ปริมาณ และจำนวนเงินทุกรายการตามแบบแนบท้ายสัญญา และลบรายการที่เพิ่มเอง?','คืนค่า',()=>{c.items={};c.extra=[];re()});
   $('#certPrint').onclick=()=>{reportSel='cert';go('report')}}
-function rSignTab(){const el=$('#v-sign');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากแดชบอร์ดก่อน</div></div>';return}
+function rSignTab(){const el=$('#v-sign');const p=P();if(!p){el.innerHTML='<div class="card"><div class="card-b empty">เลือกโครงการจากภาพรวมโครงการก่อน</div></div>';return}
   el.innerHTML=`<div class="muted" style="font-size:13px;margin:0 0 10px">${esc(p.name||'(ยังไม่ตั้งชื่อ)')} · ${esc(p.contractor||'-')}</div>${signCard(p)}<div style="margin-top:14px">${anxCard(p,['con','condetail'],'เอกสารแนบสัญญา: ผนวก 3 บัญชีรายการก่อสร้าง · รายละเอียดแนบท้ายสัญญา')}</div><div style="margin-top:14px">${conCard(p)}</div>`;bindAnx(el,p);bindCon(el,p);
   {const sg=p.sign||{},ap=p.announceDate?addWorkdays(p.announceDate,7):'';const di=el.querySelector('[data-sg="date"]');
    if(di&&ap&&sg.date&&sg.date<=ap)di.closest('.card-b')?.insertAdjacentHTML('afterbegin',`<div class="s12 note warn" style="margin:0 0 6px">หนังสือเรียกลงนามลงวันที่ ${thDate(sg.date)} ยังอยู่ในระยะอุทธรณ์ (ครบ ${thDate(ap)}) · เรียกลงนามได้ตั้งแต่ ${thDate(addWorkdays(p.announceDate,8))} · การ์ดสรุปภาพรวมจะยังนับโครงการนี้เป็น “ประกาศผู้ชนะแล้ว”</div>`)}
@@ -2019,7 +2049,7 @@ const MAN_FLOW=[
   ['prep','ขั้นเตรียมการ','แนบหนังสือเห็นชอบ เล่มแผน และไฟล์ Excel ราคากลาง (ดึง SUMMARY + ข้อมูลและผลงาน) · ร่าง TOR / ประกาศ / เอกสารประกวดราคา · เอกสารแนบประกาศ (รายละเอียดแนบท้าย, BOQ)'],
   ['req','ขออนุมัติซื้อ/จ้าง','ทำบันทึกรายงานขอซื้อขอจ้าง เลือกอำนาจแขวง/เขตตามวงเงิน ระบบใส่ “เรียน” และวงเงินอำนาจให้'],
   ['orders','คำสั่งแต่งตั้ง','คำสั่งกรรมการ TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน (รายชื่อดึงจากชีตเดิม เลือกจากดรอปลิสต์ได้)'],
-  ['edit','ข้อมูลโครงการ / BOQ','ข้อมูลโครงการ วงเงิน ราคากลาง วันที่อนุมัติราคากลาง/ร่าง TOR · หมวด Factor F · รายการ BOQ ราคากลาง']]},
+  ['edit','โครงการและ BOQ','ข้อมูลโครงการ วงเงิน ราคากลาง วันที่อนุมัติราคากลาง/ร่าง TOR · หมวด Factor F · รายการ BOQ ราคากลาง']]},
  {ph:'ประกาศและเสนอราคา (ในระบบ e-GP)',c:'b',steps:[
   ['','ประกาศ / ยื่นข้อเสนอ / เปิดซอง','ดำเนินการในระบบ e-GP ตามปกติ แล้วนำผลมากรอกในแท็บถัดไป']]},
  {ph:'หลังเปิดซอง',c:'c',steps:[
@@ -2038,7 +2068,7 @@ function manBookFlow(){const L=(who,c,items)=>`<div class="man-lane man-${c}"><d
   <div class="man-ar side">→</div>${L('บริษัท (ผู้ชนะ)','d',['สแกน QR / เปิดลิงก์','เลือกวันและเวลาลงนาม','กรอกผู้ติดต่อ (อีเมลรับแจ้งผล) และผู้ลงนามในสัญญา','เลือกรูปแบบหลักประกันสัญญา แนบเอกสาร แล้วส่งจอง (กลับมาแนบเอกสารเพิ่มภายหลังด้วยลิงก์เดิมได้)'])}
   <div class="man-ar side">→</div>${L('เจ้าหน้าที่','a',['กด “ดึงข้อมูลการจอง” ตรวจเอกสารที่แนบ','ยืนยันนัด (ใส่เลขที่สัญญาได้) — ระบบส่งอีเมลแจ้งบริษัท','ลงนามสัญญาตามวันนัด · ถ้าต้องเลื่อน กด “ยกเลิก” ให้บริษัทจองใหม่ด้วยลิงก์เดิม'])}</div>`}
 /* กันคำไทยถูกตัดกลางคำ (เบราว์เซอร์ไม่รู้จักคำทับศัพท์/คำประสม) */
-const MAN_NB=['แขวงทางหลวงกระบี่','หัวหน้าเจ้าหน้าที่','หลักประกันการเสนอราคา','หลักประกันสัญญา','ทุนจดทะเบียน','ใบแจ้งปริมาณงานและราคา','เอกสารประกวดราคา','รายละเอียด','แดชบอร์ด','ดรอปลิสต์','หลักประกัน','ตอบกลับ','ผู้ควบคุมงาน','ราคากลาง','ขั้นเตรียมการ','คณะกรรมการ','ผู้เสนอราคา','อัตโนมัติ','เจ้าหน้าที่','ระบบกลาง','อากรแสตมป์','ลงนามสัญญา','ดาวน์โหลด','ข้อมูลและผลงาน','ทุกเครื่อง','ระยะเวลา','หมดอายุ','รีเฟรช','เวอร์ชัน','พิจารณาผล','ต่อรองราคา','ปรับลด','วงเงิน','เลขที่สัญญา','ล่างสุด','ประมาณ','อุทธรณ์','โทรศัพท์','คอมพิวเตอร์','ผู้รับจ้าง','ผู้ยื่นข้อเสนอ','ค่าธรรมเนียม','การไฟฟ้า','รับรองผลงาน','ส่งมอบ','ผู้ดูแล','รหัสผ่าน','ชื่อผู้ใช้','ไฟล์ Excel','ร่าง TOR','ปฏิทิน','คำค้นหา','คำค้น','ซิงก์','ชีตเดิม','แท็บ','ลิงก์','คัดลอก','ยืนยันนัด','ผู้ลงนาม','ตรายาง','บริษัท','ครุภัณฑ์','ค่าใช้จ่ายพิเศษ','สถานะ','ผู้บริหาร','ปัญหา','วิธีแก้'].sort((a,b)=>b.length-a.length);
+const MAN_NB=['แขวงทางหลวงกระบี่','หัวหน้าเจ้าหน้าที่','หลักประกันการเสนอราคา','หลักประกันสัญญา','ทุนจดทะเบียน','ใบแจ้งปริมาณงานและราคา','เอกสารประกวดราคา','รายละเอียด','ภาพรวมโครงการ','ดรอปลิสต์','หลักประกัน','ตอบกลับ','ผู้ควบคุมงาน','ราคากลาง','ขั้นเตรียมการ','คณะกรรมการ','ผู้เสนอราคา','อัตโนมัติ','เจ้าหน้าที่','ระบบกลาง','อากรแสตมป์','ลงนามสัญญา','ดาวน์โหลด','ข้อมูลและผลงาน','ทุกเครื่อง','ระยะเวลา','หมดอายุ','รีเฟรช','เวอร์ชัน','พิจารณาผล','ต่อรองราคา','ปรับลด','วงเงิน','เลขที่สัญญา','ล่างสุด','ประมาณ','อุทธรณ์','โทรศัพท์','คอมพิวเตอร์','ผู้รับจ้าง','ผู้ยื่นข้อเสนอ','ค่าธรรมเนียม','การไฟฟ้า','รับรองผลงาน','ส่งมอบ','ผู้ดูแล','รหัสผ่าน','ชื่อผู้ใช้','ไฟล์ Excel','ร่าง TOR','ปฏิทิน','คำค้นหา','คำค้น','ซิงก์','ชีตเดิม','แท็บ','ลิงก์','คัดลอก','ยืนยันนัด','ผู้ลงนาม','ตรายาง','บริษัท','ครุภัณฑ์','ค่าใช้จ่ายพิเศษ','สถานะ','ผู้บริหาร','ปัญหา','วิธีแก้'].sort((a,b)=>b.length-a.length);
 const MAN_NB_RE=new RegExp('('+MAN_NB.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g');
 function manNoBreak(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement&&!n.parentElement.closest('.nw,script,style,button')&&MAN_NB_RE.test(n.nodeValue)?(MAN_NB_RE.lastIndex=0,NodeFilter.FILTER_ACCEPT):(MAN_NB_RE.lastIndex=0,NodeFilter.FILTER_REJECT)});
   const L=[];while(w.nextNode())L.push(w.currentNode);
@@ -2050,13 +2080,13 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
  <ol class="man-toc no-print">${[['flow','ผังการทำงานภาพรวม'],['start','เริ่มต้นใช้งาน'],['steps','ขั้นตอนทีละแท็บ'],['book','ระบบจองวันลงนามสัญญาออนไลน์'],['company','คู่มือฝั่งบริษัท (แนบไปกับหนังสือได้)'],['lock','การบันทึกและล็อกขั้นตอน'],['faq','ปัญหาที่พบบ่อย']].map(([a,t])=>`<li><a href="#man-${a}" data-manjump="${a}">${t}</a></li>`).join('')}</ol>
 
  ${H('flow','1. ผังการทำงานภาพรวม')}
- <p>ทำตามลำดับจากบนลงล่าง แต่ละกล่องคือแท็บในระบบ (กด “เปิด” เพื่อไปยังแท็บนั้น) · แดชบอร์ดและปฏิทินใช้ดูสถานะทุกโครงการ</p>
+ <p>ทำตามลำดับจากบนลงล่าง แต่ละกล่องคือแท็บในระบบ (กด “เปิด” เพื่อไปยังแท็บนั้น) · ภาพรวมโครงการและปฏิทินใช้ดูสถานะทุกโครงการ</p>
  ${manFlowHtml()}
 
  ${H('start','2. เริ่มต้นใช้งาน')}
  <ol class="man-ol">
   <li><b>เข้าสู่ระบบ</b> ด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ข้อมูลโครงการเก็บที่ระบบกลาง ทุกเครื่องเห็นข้อมูลเดียวกัน</li>
-  <li><b>เลือกโครงการ</b> จากแดชบอร์ด: คลิกชื่อโครงการเพื่อเปิดข้อมูลโครงการ หรือกดรูปดินสอเพื่อเปิด “ขั้นเตรียมการ” · ค้นหาด้วยชื่อ/เลขที่โครงการ/ผู้รับจ้าง/กม. ได้ (ถ้าจำนวนโครงการน้อยกว่าที่ควร ให้ดูว่ามีคำค้นค้างอยู่หรือไม่)</li>
+  <li><b>เลือกโครงการ</b> จากภาพรวมโครงการ: คลิกชื่อโครงการเพื่อเปิดข้อมูลโครงการ หรือกดรูปดินสอเพื่อเปิด “ขั้นเตรียมการ” · ค้นหาด้วยชื่อ/เลขที่โครงการ/ผู้รับจ้าง/กม. ได้ (ถ้าจำนวนโครงการน้อยกว่าที่ควร ให้ดูว่ามีคำค้นค้างอยู่หรือไม่)</li>
   <li><b>ซิงค์จากชีตติดตามเดิม</b> ระบบดึงชื่อโครงการ ID กม. วงเงิน อำนาจ และรายชื่อกรรมการ/ผู้ควบคุมงานให้อัตโนมัติทุก 5 นาที หรือกด “ซิงก์ข้อมูลจากชีตเดิม” ในแท็บคำสั่งแต่งตั้ง · แก้ในชีตเดิมแล้วในระบบเปลี่ยนตาม (ค่าที่ชีตไม่ได้เปลี่ยนจะไม่ทับค่าที่แก้ในระบบ)</li>
   <li><b>ชื่อโครงการ</b> ระบบเติม “ระหว่าง กม. …” จากช่อง กม.ดำเนินการ ให้ (หลังชื่อตอน ก่อน จ./จังหวัด)</li>
   <li><b>เวอร์ชันของระบบ</b> ดูที่บรรทัดล่างสุดของหน้า ถ้ามีการปรับปรุงแล้วยังเห็นเลขเดิม ให้รีเฟรชหน้า หรือรอประมาณ 10 นาที</li>
@@ -2067,7 +2097,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
   <tr><td>ขั้นเตรียมการ</td><td>① แนบหนังสือเห็นชอบ เล่มแผน แบบ · ② กด “แนบไฟล์ Excel และดึงข้อมูล” ระบบอ่านแผ่น SUMMARY (รายการ BOQ ราคากลาง กรรมการราคากลาง) และแผ่น “ข้อมูลและผลงาน” (ระยะเวลา กม. แผนงาน เหตุผลความจำเป็น หมายเหตุ MILLING) พร้อมตรวจรายการสองแผ่นให้ตรงกัน · ③ ตั้งค่า TOR (สาขางาน Plant ค่า K ค่าปรับ รับประกัน) · ④ เลือกหมายเหตุเอกสารแนบ (งานทาง/งานไฟฟ้า ค่าธรรมเนียมการไฟฟ้า MILLING) · วงเงินตั้งแต่ 5 ล้าน ระบบเพิ่มเอกสารกำหนดคะแนนความเสียหายให้เอง</td><td>ร่าง TOR · ร่างประกาศ · ร่างเอกสารประกวดราคา · รายละเอียดแนบท้ายประกาศ · ใบแจ้งปริมาณงานและราคา (พิมพ์/Excel) · เอกสารกำหนดคะแนนความเสียหาย (≥ 5 ล้าน) · เอกสารแนบท้ายเอกสารประกวดราคาทั้งชุด (บทนิยาม แผนการใช้พัสดุ/เหล็ก แผนการทำงาน หนังสือรับรองวงเงินสินเชื่อ ความชำรุดบกพร่อง เอกสารโรงงานผสมแอสฟัลต์ แผ่นป้ายโครงการ+QR)</td></tr>
   <tr><td>ขออนุมัติซื้อ/จ้าง</td><td>เลือกอำนาจ: <b>แขวง</b> → เรียน ผอ.ขท.กระบี่ ผ่านหัวหน้าเจ้าหน้าที่ · <b>เขต</b> (เกิน 10 ล้าน) → เรียน ผส.ทล.17 ผ่านหัวหน้าเจ้าหน้าที่ · กรอกเหตุผล ระยะเวลา และรายการที่ต้องการ</td><td>บันทึกรายงานขอซื้อขอจ้าง</td></tr>
   <tr><td>คำสั่งแต่งตั้ง</td><td>เลือกรายชื่อกรรมการจากดรอปลิสต์ แก้ข้อความในคำสั่งได้ · กรรมการพิจารณาผลแก้ที่นี่แล้วลิงก์ไปการ์ดพิจารณาผล · กรรมการตรวจรับ/ผู้ควบคุมงานดึงจากตาราง ป/ก/ค/ผช ในชีตเดิม · มีคนเปลี่ยนตำแหน่ง กด “อัปเดตตำแหน่งบุคลากร”</td><td>คำสั่ง TOR · ราคากลาง · พิจารณาผล · ตรวจรับ/ผู้ควบคุมงาน · บันทึกมอบหมาย</td></tr>
-  <tr><td>ข้อมูลโครงการ / BOQ</td><td>ตรวจข้อมูลโครงการ วงเงิน ราคากลาง ปร.5 · กรอกวันที่อนุมัติราคากลางและช่วงร่าง TOR · ตั้งหมวดและ Factor F (ครุภัณฑ์ VAT 1.07 และค่าใช้จ่ายพิเศษไม่ถูกปรับลด) · ตรวจรายการ BOQ</td><td>แบบสรุปราคากลาง (ว 651)</td></tr>
+  <tr><td>โครงการและ BOQ</td><td>ตรวจข้อมูลโครงการ วงเงิน ราคากลาง ปร.5 · กรอกวันที่อนุมัติราคากลางและช่วงร่าง TOR · ตั้งหมวดและ Factor F (ครุภัณฑ์ VAT 1.07 และค่าใช้จ่ายพิเศษไม่ถูกปรับลด) · ตรวจรายการ BOQ</td><td>แบบสรุปราคากลาง (ว 651)</td></tr>
   <tr><td>ผู้เสนอราคา</td><td>กรอกผู้ยื่นข้อเสนอและราคา ระบบจัดลำดับ</td><td>—</td></tr>
   <tr><td>พิจารณาผล</td><td>กำหนดการ คณะกรรมการ การประชุม ผลตรวจสอบเอกสาร หลักประกันการเสนอราคา · วงเงินเกินอำนาจแขวง ทำบันทึกขออนุมัติถึงเขต</td><td>เอกสารพิจารณาผล · แบบแจ้งผลผู้เสนอราคา</td></tr>
   <tr><td>ต่อรองราคา</td><td>ตั้งราคาที่จะขอ → เลือกราคาที่ลงตัวที่ระบบแนะนำ → บันทึกครั้งที่ต่อรอง → พิมพ์ส่งผู้เสนอ → บันทึกผลตอบกลับ</td><td>หนังสือขอต่อรองราคา · ใบขอต่อรองราคา</td></tr>
@@ -2105,7 +2135,7 @@ function rManual(){const el=$('#v-manual');const H=(id,t)=>`<h2 id="man-${id}" c
 
  ${H('faq','7. ปัญหาที่พบบ่อย')}
  <table class="man-t"><thead><tr><th style="width:35%">อาการ</th><th>วิธีแก้</th></tr></thead><tbody>
-  <tr><td>แดชบอร์ดแสดงโครงการไม่ครบ</td><td>มีคำค้นค้างอยู่ กด “ล้างคำค้นหา”</td></tr>
+  <tr><td>ภาพรวมโครงการแสดงโครงการไม่ครบ</td><td>มีคำค้นค้างอยู่ กด “ล้างคำค้นหา”</td></tr>
   <tr><td>ข้อมูลในชีตเดิมแก้แล้วยังไม่เปลี่ยน</td><td>กด “ซิงก์ข้อมูลจากชีตเดิม” ในแท็บคำสั่งแต่งตั้ง หรือรอรอบซิงค์อัตโนมัติ 5 นาที</td></tr>
   <tr><td>ช่องกองเก็บ MILLING ว่าง / เป็นค่าเริ่มต้น</td><td>กด “ดึงจาก Excel (เลือกไฟล์)” ในการ์ดเอกสารแนบ แล้วเลือกไฟล์ Excel ราคากลาง</td></tr>
   <tr><td>ตัวเลือกข้อกำหนดมาตรฐานไฟฟ้าขึ้นในงานทาง</td><td>ตั้ง “แบบหมายเหตุ” กลับเป็น อัตโนมัติ แล้วกด “ให้ระบบเลือกตาม BOQ”</td></tr>
@@ -2495,10 +2525,10 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
   <div class="card"><div class="card-h"><h2>รายการ (ชุดเดียวกับ BOQ)</h2>
     <label class="switch" style="margin-left:auto"><input type="checkbox" id="rqRound" ${R.roundTo==='budget'?'checked':''}> ปรับยอดให้เท่าวงเงินงบประมาณ</label>
     <button class="btn sm" id="rqUseMid" type="button">ใช้ราคากลางต่อหน่วยเป็นราคาประมาณ</button><button class="btn sm" id="rqSum" type="button" title="ไฟล์คำนวณราคากลาง (.xlsm/.xlsx) ที่มีชีต SUMMARY">แนบไฟล์ราคากลาง (SUMMARY)</button><button class="btn ghost-brand sm" id="rqGoBoq" type="button">ไปหน้า BOQ ราคากลาง →</button></div>
-   <div class="card-b muted" style="font-size:13.5px;padding-bottom:0">ชื่อรายการ หน่วย และจำนวน มาจากแท็บ “ข้อมูลโครงการ / BOQ” แก้ที่ใดที่หนึ่งก็เปลี่ยนตรงกัน · กรอกเฉพาะ <b>ราคาที่สืบทราบ/ประมาณได้ ต่อหน่วย</b> ที่นี่ (ราคาก่อนทำราคากลาง)</div>
+   <div class="card-b muted" style="font-size:13.5px;padding-bottom:0">ชื่อรายการ หน่วย และจำนวน มาจากแท็บ “โครงการและ BOQ” แก้ที่ใดที่หนึ่งก็เปลี่ยนตรงกัน · กรอกเฉพาะ <b>ราคาที่สืบทราบ/ประมาณได้ ต่อหน่วย</b> ที่นี่ (ราคาก่อนทำราคากลาง)</div>
    <div class="tbl-wrap"><table class="t dash"><thead><tr><th class="n">ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ราคาประมาณ/หน่วย</th><th class="n">รวม</th><th class="n"><a href="#" id="rqGoBoq2" title="แก้ราคากลางที่หน้า BOQ ราคากลาง" style="color:inherit">ราคากลาง/หน่วย ↗</a></th></tr></thead><tbody>
     ${c.rows.length?c.rows.map(x=>`<tr><td class="n">${x.no}</td><td style="min-width:260px">${escBr(x.it.name)}</td><td>${esc(x.it.unit)}</td><td class="n">${fmt(x.q,x.q%1?2:0)}</td>
-      <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null?'':fmt(x.u)}" inputmode="decimal" style="width:140px"></td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง หรือเพิ่มรายการในแท็บ “ข้อมูลโครงการ / BOQ”</td></tr>`}
+      <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null?'':fmt(x.u)}" inputmode="decimal" style="width:140px"></td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง หรือเพิ่มรายการในแท็บ “โครงการและ BOQ”</td></tr>`}
     </tbody><tfoot><tr><td></td><td colspan="4"><b>รวมเป็นเงิน</b>${c.missing?` <span class="pill p-nego">ยังไม่กรอกราคา ${c.missing} รายการ</span>`:''}</td><td class="n"><b>${fmt(c.sum)}</b></td><td></td></tr>
      ${R.roundTo==='budget'?`<tr><td></td><td colspan="4">ปรับยอด</td><td class="n">${fmt(c.adj)}</td><td></td></tr><tr><td></td><td colspan="4"><b>รวมเป็นเงินทั้งสิ้น</b></td><td class="n"><b>${fmt(c.grand)}</b></td><td></td></tr>`:''}</tfoot></table></div></div>
   <div class="card"><div class="card-h"><h2>ผู้ลงนามและรหัสบัญชี</h2></div><div class="card-b grid g12">
@@ -3460,7 +3490,7 @@ function planCheck(d,plan){if(!plan||!plan.items)return null;const nz=t=>String(
   return {ok:!W.length,W,n:A.length}}
 
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
-const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'ข้อมูลโครงการ / BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
+const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'โครงการและ BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
 const stepUnl=new Set();
 function stepHasData(p,t){const has=o=>!!o&&Object.values(o).some(v=>v!==''&&v!=null&&!(Array.isArray(v)&&!v.length)&&!(typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length));
   switch(t){case 'prep':return has(p.prep);case 'req':return has(p.req);case 'edit':return !!(p.name||(p.items||[]).length);case 'bid':return !!(p.bidders||[]).length;case 'eval':return has(p.ev);
@@ -3511,7 +3541,7 @@ if(EXEC){document.body.classList.add('exec');const h=$('.hdr .ttl h1');if(h)h.in
 rPrep=(o=>function(){o.apply(this,arguments);stepBar()})(rPrep);rReq=(o=>function(){o.apply(this,arguments);stepBar()})(rReq);rOrders=(o=>function(){o.apply(this,arguments);stepBar()})(rOrders);rEdit=(o=>function(){o.apply(this,arguments);stepBar()})(rEdit);rBid=(o=>function(){o.apply(this,arguments);stepBar()})(rBid);rEval=(o=>function(){o.apply(this,arguments);stepBar()})(rEval);
 rNego=(o=>function(){o.apply(this,arguments);stepBar()})(rNego);rResult=(o=>function(){o.apply(this,arguments);stepBar()})(rResult);rSignTab=(o=>function(){o.apply(this,arguments);stepBar()})(rSignTab);rCert=(o=>function(){o.apply(this,arguments);stepBar()})(rCert);
 
-/* ================= สรุปภาพรวมตามขั้นตอน (แดชบอร์ด + ผู้บริหาร) ================= */
+/* ================= สรุปภาพรวมตามขั้นตอน (ภาพรวมโครงการ + ผู้บริหาร) ================= */
 let ovSel='';
 function projStage(p){const t=todayISO(),e=p.ev||{},sg=p.sign||{},bk=p.book&&p.book.booking;const le=d=>d&&d<=t;
   if(le(p.contractDate)||p.status==='ลงนามสัญญาแล้ว')return 'signed';
