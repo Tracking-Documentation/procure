@@ -415,7 +415,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">132</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">133</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -478,7 +478,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='132',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='133',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -707,7 +707,7 @@ function rDash(){
     <div class="tbl-wrap"><table class="t dash">
       <thead><tr><th>โครงการ</th><th class="n">วงเงินงบประมาณ</th><th class="n">ราคากลาง</th><th class="n">ราคาเสนอ</th><th class="n">ราคาตกลง/ต่อรอง</th><th class="n">% ปรับลด</th><th>สถานะ</th><th>ปรับปรุงล่าสุด</th><th class="n">จัดการ</th></tr></thead>
       <tbody>${shown.length?shown.map(({p,t,fin,r,cp})=>`<tr>
-        <td style="min-width:280px"><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')} · ${esc(p.contractor||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div></td>
+        <td style="min-width:280px"><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div>${p.contractor?`<div class="muted" style="font-size:13px">🏢 ${esc(p.contractor)}</div>`:''}</td>
         <td class="n">${fmt(p.budget)}</td><td class="n">${fS(t.sumM)}</td><td class="n">${fmt(p.offerPrice)}</td>
         <td class="n"><b>${fmt(fin)}</b><div class="muted" style="font-size:12px">${cp!==null?'ราคาที่ตกลง':'ต่อรองล่าสุด'}</div></td>
         <td class="n">${r.errors.length?'-':fmt(r.pct)}</td><td>${statusPill(p.status)}${meetingConflicts(p).length?' <span class="pill p-nego" title="เวลาประชุมชนกับโครงการอื่น">⚠ เวลาประชุมชน</span>':''}</td><td class="muted" style="white-space:nowrap">${esc(p.updatedAt||'')}</td>
