@@ -158,6 +158,25 @@ function setPw_(user, pw) {
   user.hash = hashPw_(pw, user.salt);
   user.ver = String((+user.ver || 0) + 1);
 }
+/**
+ * กู้รหัสผ่านผู้ดูแลระบบ (กรณีลืมรหัส) — รันจากหน้าแก้ไข Apps Script เท่านั้น ไม่มีทางเรียกจากเว็บ
+ * วิธีใช้: เปิด Apps Script ของชีตระบบ → ด้านบนเลือกฟังก์ชัน resetAdminPassword → กด "เรียกใช้"
+ *          → ดูรหัสชั่วคราวในช่อง "บันทึกการดำเนินการ" → เข้าสู่ระบบแล้วเปลี่ยนรหัสผ่านทันที
+ * ทำได้เฉพาะเจ้าของบัญชี Google ที่ติดตั้งสคริปต์ · ทุกเครื่องที่ล็อกอินบัญชีนั้นไว้จะถูกออกจากระบบ
+ * RESET_USER = ชื่อผู้ใช้ที่จะกู้ (ว่าง = ผู้ดูแลระบบทุกบัญชี)
+ */
+const RESET_USER = '';
+function resetAdminPassword() {
+  const L = users_().filter(u => u.role === 'admin' && (!RESET_USER || normUser_(u.username) === normUser_(RESET_USER)));
+  if (!L.length) { Logger.log('ไม่พบบัญชีผู้ดูแลระบบ'); return; }
+  L.forEach(u => {
+    const tmp = 'Tmp-' + Utilities.getUuid().replace(/-/g, '').slice(0, 10);
+    setPw_(u, tmp); u.active = 'Y'; write_('users', u);
+    Logger.log('ชื่อผู้ใช้: ' + u.username + '   รหัสผ่านชั่วคราว: ' + tmp);
+  });
+  CacheService.getScriptCache().removeAll(L.map(u => 'fail:' + normUser_(u.username)));
+  Logger.log('เข้าสู่ระบบด้วยรหัสชั่วคราว แล้วเปลี่ยนรหัสผ่านทันที (ปุ่มชื่อผู้ใช้ในแอป → เปลี่ยนรหัสผ่าน)');
+}
 function makeToken_(u) {
   const payload = [normUser_(u.username), u.ver, Date.now() + SESSION_DAYS * 864e5].join('|');
   const p64 = b64_(Utilities.newBlob(payload).getBytes());

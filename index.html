@@ -439,7 +439,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">147</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">148</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -502,7 +502,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='147',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='148',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2455,6 +2455,7 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
    <div id="gErr" class="gate-err">${esc(msg||'')}</div>
    <button class="btn pri" id="gGo" type="submit" style="width:100%">เข้าสู่ระบบ</button>
    <p class="muted gate-note">ข้อมูลโครงการใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ยังไม่มีบัญชีหรือลืมรหัสผ่าน ติดต่อผู้ดูแลระบบ</p>
+   <details class="muted" style="font-size:12.5px;margin-top:6px"><summary>ลืมรหัสผ่าน?</summary><div style="margin-top:4px;line-height:1.6">• <b>ผู้ใช้ทั่วไป</b> แจ้งผู้ดูแลระบบให้ตั้งรหัสใหม่ (ตั้งค่า → บัญชีผู้ใช้ → ปุ่ม “รหัส”) แล้วเปลี่ยนเป็นรหัสของตัวเองหลังเข้าสู่ระบบ<br>• <b>ผู้ดูแลระบบ</b> ให้ผู้ดูแลระบบอีกคนตั้งรหัสให้ หรือเจ้าของบัญชี Google ที่ติดตั้งระบบ เปิด Apps Script → เลือกฟังก์ชัน <code>resetAdminPassword</code> → เรียกใช้ → นำรหัสชั่วคราวจากบันทึกการดำเนินการมาเข้าสู่ระบบ แล้วเปลี่ยนรหัสทันที<br>• ระบบไม่มีการส่งรหัสทางอีเมลหรือตั้งคำถามกู้รหัส เพื่อไม่ให้มีช่องทางให้ผู้อื่นเดารหัสได้</div></details>
    <details class="gate-srv" id="gInit"><summary>ตั้งค่าครั้งแรก: สร้างบัญชีผู้ดูแลระบบ</summary><p class="muted" style="font-size:12.5px;margin:6px 0">ใช้ครั้งเดียวตอนเริ่มระบบ · กรอกชื่อผู้ใช้และรหัสผ่านที่ต้องการด้านบน (อย่างน้อย 6 ตัว) แล้วใส่รหัสเจ้าหน้าที่ (ADMIN_KEY ใน Code.gs) และชื่อ-สกุล</p><input class="i" id="gKey" type="password" placeholder="ADMIN_KEY" autocomplete="off"><input class="i" id="gName" placeholder="ชื่อ-สกุล"></details>
    ${SRV_BAKED?'':`<details class="gate-srv"><summary>เซิร์ฟเวอร์</summary><input class="i" id="gSrv" value="${esc(srvUrl())}" placeholder="https://script.google.com/macros/s/…/exec"></details>`}
   </form>`;
