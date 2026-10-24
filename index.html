@@ -421,7 +421,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">138</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">139</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -484,7 +484,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='138',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='139',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2842,7 +2842,7 @@ function ordTplDialog(){if(!canEdit())return toast('บัญชีนี้ด�
 let TOR_LOADING=null;
 function loadTorTpl(){if(window.TOR_TPL)return Promise.resolve(window.TOR_TPL);if(TOR_LOADING)return TOR_LOADING;
   TOR_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='tor-tpl.js';s.onload=()=>ok(window.TOR_TPL);s.onerror=()=>{TOR_LOADING=null;no(new Error('โหลดแม่แบบ TOR ไม่ได้'))};document.head.appendChild(s)});return TOR_LOADING}
-const TOR_DEF={workType:'road',useRecord:false,recordAmt:'',maintainTypes:'',plant:null,k:false,warranty:'2',fineSub:'10',fineDaily:'0.10',approvedBy:'',planLine:'',hwy:'',background:'',standards:''};
+const TOR_DEF={workType:'road',otherQual:'',otherJV:'',useRecord:false,recordAmt:'',maintainTypes:'',plant:null,k:false,warranty:'2',fineSub:'10',fineDaily:'0.10',approvedBy:'',planLine:'',hwy:'',background:'',standards:''};
 /* ประเภทงานบำรุงทางที่จดทะเบียนกับกรมทางหลวง (เลขประเภทตามตารางกรม) */
 const TOR_MT=[['1','งานฉาบผิวทางแบบ Chip Seal'],['2','งานฉาบผิวทางแบบ Slurry Seal'],['3','งานเสริมผิวทางแบบ Cold Mixed Asphalt'],['4','งานเสริมผิวทางแบบ Hot Mixed Asphalt'],['5','งานบำรุงทางแบบ Hot Mix In-Place Recycling'],['6','งานบูรณะทางแบบ Pavement In-Place Recycling'],
   ['7','งานจัดทำเครื่องหมายจราจรบนผิวทาง ด้วยวัสดุเทอร์โมพลาสติก (Thermoplastic)'],['8','งานจัดทำเครื่องหมายจราจรบนผิวทาง ด้วยสีจราจร (Traffic Paint)'],['9','งานก่อสร้างสะพานลอยคนเดินข้าม'],
@@ -2860,7 +2860,7 @@ const TOR_STD_ALWAYS=['คู่มือเครื่องหมายคว
 function torClass(p){const T=torOf(p);const mb=num(p.budget)/1e6;if(!mb)return '';const t=TOR_CLASS[T.workType]||TOR_CLASS.road;for(const [c,l] of t)if(mb<=c)return l;return 'ชั้นพิเศษ'}
 /* ผลงานก่อสร้างประเภทเดียวกัน — ไม่เกินร้อยละ 50 ของวงเงินงบประมาณ (ว 214 ลว. 18 พ.ค. 2563 ข้อ 1.1.4) ว่าง = ใช้ร้อยละ 50 */
 function torRecAmt(p){const T=torOf(p);return num(T.recordAmt)||Math.floor(num(p.budget)*0.5)}
-function torMode(p){const T=torOf(p);return T.workType==='maintain'?'maintain':(T.useRecord&&torRecAmt(p)?'record':'class')}
+function torMode(p){const T=torOf(p);if(T.workType==='other')return 'other';return T.workType==='maintain'?'maintain':(T.useRecord&&torRecAmt(p)?'record':'class')}
 function torBond(p){const b=num(p.budget);if(b/1e6<5)return null;const a=Math.round(b*0.05);return {fig:a.toLocaleString('en-US')+'.-',words:'เงิน'+bahtText(a)}}
 function torHwy(p){const T=torOf(p);if(T.hwy)return T.hwy;const m=String(p.name||'').match(/ทางหลวงหมายเลข\s*(\d+)\s*(ตอน(?:ควบคุม\s*\d+\s*ตอน)?\s*.+?)?(?=\s+(?:ระหว่าง|จ\.|ปริมาณ|กม\.)|$)/);return m?(m[1]+(m[2]?'  '+m[2].trim():'')):''}
 function torPlant(p){const T=torOf(p);if(T.plant!==null&&T.plant!==undefined)return !!T.plant;return (p.items||[]).some(i=>i.kind==='item'&&/ASPHALT|แอสฟัลต์/i.test(i.name||''))}
@@ -2871,11 +2871,13 @@ function torNums(p){const bond=torBond(p)?1:0,k=torOf(p).k?1:0;const c=5+bond,re
   return {N_CRITERIA:c,N_CONTRACT:c+1,N_PAYMENT:c+2,N_PENALTY:c+3,N_WARRANTY:c+4,N_ADVANCE:c+5,N_RETENTION:c+6,N_RESERVED:res,N_K:res+1,N_CRAFT:cr,N_LAW:cr+1,N_EVAL:cr+2,N_G_CONTRACT:1+bond,N_G_ADVANCE:2+bond,N_G_RETENTION:3+bond}}
 function torMoney(a){a=Math.round(num(a));return {fig:a.toLocaleString('en-US')+'.-',words:'เงิน'+bahtText(a)}}
 function torQual(p,no){const T=torOf(p),m=torMode(p);
+  if(m==='other')return String(T.otherQual||'').split(/\n+/).map(x=>x.trim()).filter(Boolean).map((x,i)=>(i?'':no+'  ')+x).concat(String(T.otherQual||'').trim()?[]:[no+'  ..................................................']);
   if(m==='maintain')return [no+'  ผู้ยื่นข้อเสนอต้องเป็นผู้ที่ผ่านการคัดเลือกผู้มีคุณสมบัติเบื้องต้นในการจ้างของกรมทางหลวง โดยเป็นผู้ได้รับการจดทะเบียนเป็นผู้รับเหมา งานบำรุงทางประเภท '+(torMtText(p)||'.......')+' และต้องไม่ขาดคุณสมบัติตามเงื่อนไขในการจดทะเบียนผู้รับเหมากับกรมทางหลวง'];
   if(m==='record'){const x=torMoney(torRecAmt(p));return [no+'  ผู้ยื่นข้อเสนอต้องมีผลงานก่อสร้างประเภทเดียวกันกับงานที่ประกวดราคาจ้างก่อสร้างในวงเงินไม่น้อยกว่า  '+x.fig+' บาท  ('+x.words+')  และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ  หรือหน่วยงานเอกชนที่กรมเชื่อถือ  โดยจะต้องมีหนังสือรับรองผลงานจาก  ผู้ว่าจ้าง  และต้องเป็นผลงานที่แล้วเสร็จ   มีการตรวจรับงานงวดสุดท้ายแล้ว']}
   return [no+'  ผู้ยื่นข้อเสนอต้องเป็นผู้ประกอบการที่ขึ้นทะเบียนงานก่อสร้าง สาขา'+(TOR_BRANCH[T.workType]||TOR_BRANCH.road)+' ไม่น้อยกว่า'+(torClass(p)||'.......')+' ประเภทหลักเกณฑ์คุณสมบัติ เฉพาะอื่นๆ ไว้กับกรมบัญชีกลาง']}
 function torJV(p){const T=torOf(p),m=torMode(p);let mid='';
   if(m==='maintain')mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องเป็นผู้ประกอบการที่ขึ้นทะเบียนงานบำรุงทางประเภทที่ '+(torMtText(p)||'.......')+' และต้องไม่ขาดคุณสมบัติตามเงื่อนไขในการจดทะเบียนผู้รับเหมากับกรมทางหลวง  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
+  else if(m==='other')mid=String(T.otherJV||'').trim()||'กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  ผู้เข้าร่วมค้าหลักจะต้องมีคุณสมบัติตามที่กำหนดข้างต้น  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
   else if(m==='record'){const x=torMoney(torRecAmt(p));mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องมีผลงานก่อสร้างประเภทเดียวกันกับงานที่ประกวดราคาจ้างก่อสร้างในวงเงินไม่น้อยกว่า '+x.fig+'บาท  ('+x.words+')  และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ  หรือหน่วยงานเอกชนที่กรมเชื่อถือ  โดยจะต้องมีหนังสือรับรองผลงานจากผู้ว่าจ้าง  และต้องเป็นผลงานที่แล้วเสร็จ  มีการตรวจรับงานงวดสุดท้ายแล้ว  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีผลงานก่อสร้างตามที่กำหนดข้างต้นหรือไม่ก็ได้'}
   return ['(๓)  งานก่อสร้างที่ขึ้นทะเบียนไว้กรมบัญชีกลางตามสาขางานก่อสร้างที่คณะกรรมการราคากลางและขึ้นทะเบียนผู้ประกอบการกำหนด',mid,'สำหรับข้อตกลงฯ ที่ไม่ได้กำหนดให้ผู้เข้าร่วมค้ารายใดเป็นผู้เข้าร่วมหลัก ผู้เข้าร่วมค้าทุกรายจะต้องมีคุณสมบัติครบถ้วนตามเงื่อนไขที่กำหนดไว้ในเอกสารเชิญชวน'].filter(Boolean)}
 function torVals(p){const T=torOf(p),st=S.settings,bond=torBond(p),tm=ordMembers(p,'tor');const ch=tm[0]||{},m1=tm[1]||{},m2=tm[2]||{};const dots='..............................';
@@ -2951,7 +2953,8 @@ function torWarn(p){const T=torOf(p),w=[];const mb=num(p.budget)/1e6;
   if(!num(p.budget))w.push('ยังไม่ได้กรอกวงเงินงบประมาณ');
   else if(torMode(p)==='class'&&mb<5)w.push('วงเงินต่ำกว่า 5 ล้านบาท อ้างชั้นผู้ประกอบการไม่ได้ — ติ๊ก “กำหนดผลงานย้อนหลัง” แทน');
   if(T.workType==='maintain'&&!torMtText(p))w.push('ยังไม่ได้เลือกประเภทงานบำรุงทาง');
-  if(T.useRecord&&T.workType!=='maintain'&&num(T.recordAmt)>num(p.budget)*0.5+0.001)w.push(`วงเงินผลงาน ${fmt(T.recordAmt)} บาท เกินร้อยละ 50 ของวงเงินงบประมาณ (${fmt(num(p.budget)*0.5)} บาท) — ว 214 กำหนดได้ไม่เกินร้อยละ 50`);
+  if(T.workType==='other'&&!String(T.otherQual||'').trim())w.push('ยังไม่ได้พิมพ์คุณสมบัติผู้ยื่นข้อเสนอ (อื่น ๆ)');
+  if(T.useRecord&&T.workType!=='maintain'&&T.workType!=='other'&&num(T.recordAmt)>num(p.budget)*0.5+0.001)w.push(`วงเงินผลงาน ${fmt(T.recordAmt)} บาท เกินร้อยละ 50 ของวงเงินงบประมาณ (${fmt(num(p.budget)*0.5)} บาท) — ว 214 กำหนดได้ไม่เกินร้อยละ 50`);
   if(!torItems(p).length)w.push('ยังไม่มีรายการ BOQ (ตารางข้อ ๔.๑ จะว่าง)');
   if(!ordMembers(p,'tor').some(m=>m.name))w.push('ยังไม่มีรายชื่อคณะกรรมการจัดทำ TOR (แท็บคำสั่งแต่งตั้ง)');
   if(!p.workDays&&!(p.legacy&&p.legacy.duration))w.push('ยังไม่ได้กรอกระยะเวลาดำเนินการ (วัน) ในข้อมูลโครงการ');
@@ -2962,17 +2965,18 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
   return `<div class="card" id="torCard"><div class="card-h"><h2><span class="step">1</span>ร่างขอบเขตของงาน (TOR) · ประกาศ · เอกสารประกวดราคา</h2>
     <button class="btn blue sm" data-oprint="tor_scope" type="button">${ICON.print} ร่าง TOR</button><button class="btn sm" data-oprint="tor_ann" type="button">${ICON.print} ร่างประกาศ</button><button class="btn sm" data-oprint="tor_bid" type="button">${ICON.print} ร่างเอกสารประกวดราคา</button></div>
    <div class="card-b grid g12">
-    <label class="f s4"><span>สาขางาน / คุณสมบัติผู้ยื่นข้อเสนอ</span><select class="i" data-tv="workType">${[['road','งานก่อสร้างทาง'],['bridge','งานก่อสร้างสะพาน'],['special','งานก่อสร้างทางและสะพานพิเศษ'],['maintain','งานบำรุงทาง (จดทะเบียนกับกรมทางหลวง)']].map(([k,l])=>`<option value="${k}" ${T.workType===k?'selected':''}>${l}</option>`).join('')}</select></label>
-    ${T.workType==='maintain'?'<div class="s8"></div>':`<div class="f s4"><span>&nbsp;</span>${ck('useRecord','กำหนดผลงานย้อนหลัง (แทนชั้นผู้ประกอบการ)',T.useRecord)}</div>`}
+    <label class="f s4"><span>สาขางาน / คุณสมบัติผู้ยื่นข้อเสนอ</span><select class="i" data-tv="workType">${[['road','งานก่อสร้างทาง'],['bridge','งานก่อสร้างสะพาน'],['special','งานก่อสร้างทางและสะพานพิเศษ'],['maintain','งานบำรุงทาง (จดทะเบียนกับกรมทางหลวง)'],['other','อื่น ๆ (พิมพ์คุณสมบัติ/ผลงานเอง)']].map(([k,l])=>`<option value="${k}" ${T.workType===k?'selected':''}>${l}</option>`).join('')}</select></label>
+    ${T.workType==='other'?`<label class="f s8"><span>คุณสมบัติผู้ยื่นข้อเสนอ (ข้อความในร่าง TOR / เอกสารประกวดราคา ต่อจากเลขข้อ) · ขึ้นบรรทัดใหม่ = ย่อหน้าใหม่</span><textarea class="i" rows="4" data-tv="otherQual" placeholder="เช่น ผู้ยื่นข้อเสนอต้องมีผลงานก่อสร้างประเภท...... ในวงเงินไม่น้อยกว่า ...... บาท และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ ...">${esc(T.otherQual||'')}</textarea></label>
+     <label class="f s12"><span>กรณีกิจการร่วมค้า (ผู้เข้าร่วมค้าหลัก) · ว่าง = ใช้ข้อความมาตรฐาน “ต้องมีคุณสมบัติตามที่กำหนดข้างต้น”</span><textarea class="i" rows="2" data-tv="otherJV">${esc(T.otherJV||'')}</textarea></label>`:T.workType==='maintain'?'<div class="s8"></div>':`<div class="f s4"><span>&nbsp;</span>${ck('useRecord','กำหนดผลงานย้อนหลัง (แทนชั้นผู้ประกอบการ)',T.useRecord)}</div>`}
     ${T.workType==='maintain'?torMtBox(p):''}
-    ${T.workType!=='maintain'?(T.useRecord?`<label class="f s4"><span>วงเงินผลงานไม่น้อยกว่า (บาท) · ไม่เกิน 50% (ว 214) · ว่าง = 50%</span><input class="i r" data-tv="recordAmt" data-money value="${num(T.recordAmt)?fmt(T.recordAmt):''}" placeholder="${fmt(num(p.budget)*0.5)}"></label>`:'<div class="s4"></div>'):''}
+    ${T.workType!=='maintain'&&T.workType!=='other'?(T.useRecord?`<label class="f s4"><span>วงเงินผลงานไม่น้อยกว่า (บาท) · ไม่เกิน 50% (ว 214) · ว่าง = 50%</span><input class="i r" data-tv="recordAmt" data-money value="${num(T.recordAmt)?fmt(T.recordAmt):''}" placeholder="${fmt(num(p.budget)*0.5)}"></label>`:'<div class="s4"></div>'):''}
     <div class="s12 row" style="gap:16px;flex-wrap:wrap;margin:0">${ck('plant','ต้องมีโรงงานผสมแอสฟัลต์ (Plant)',torPlant(p))}${ck('k','มีการปรับราคาค่างานก่อสร้าง (ค่า K)',T.k)}</div>
     <label class="f s3"><span>รับประกันความชำรุดบกพร่อง (ปี)</span><select class="i" data-tv="warranty">${['1','2','3','5'].map(y=>`<option ${String(T.warranty)===y?'selected':''}>${y}</option>`).join('')}</select></label>
     ${tx('fineSub','ค่าปรับจ้างช่วง (ร้อยละ)','s3')}${tx('fineDaily','ค่าปรับรายวัน (ร้อยละ)','s3')}${tx('hwy','ทางหลวงหมายเลข (ข้อ ๑ ความเป็นมา)','s3',torHwy(p))}
     ${tx('approvedBy','ได้รับความเห็นชอบจาก','s6','เช่น สำนักบำรุงทาง')}${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
     <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
     <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea></label>
-    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ประเมินผลการปฏิบัติงานผู้ประกอบการ (ระเบียบ กค. ฉบับที่ ๓/๒๕๖๙): <b>${dmgOn(p)?'แนบเอกสารกำหนดคะแนนความเสียหาย ข้อ '+dmgNo(p):'ไม่บังคับ (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
+    <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':torMode(p)==='other'?'กำหนดเอง (อื่น ๆ)':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ประเมินผลการปฏิบัติงานผู้ประกอบการ (ระเบียบ กค. ฉบับที่ ๓/๒๕๖๙): <b>${dmgOn(p)?'แนบเอกสารกำหนดคะแนนความเสียหาย ข้อ '+dmgNo(p):'ไม่บังคับ (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
     ${W.length?`<div class="s12 note" style="margin:0">${W.map(esc).join('<br>')}</div>`:''}
    </div></div>`}
 function torMtBox(p){const T=torOf(p);const on=new Set(Array.isArray(T.maintainIds)?T.maintainIds:[]);
