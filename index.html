@@ -415,7 +415,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">135</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">136</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -478,7 +478,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='135',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='136',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -545,7 +545,8 @@ function hasTotal(it){return it.costTotal!==null&&it.costTotal!==undefined&&it.c
 function costBase(it){return hasTotal(it)?num(it.costTotal):num(it.qty)*num(it.unitCost)} // baht
 function costOf(it){return Math.round(costBase(it)*100)}
 function midMismatch(p,it){if(!(it.midOverride!==''&&it.midOverride!=null&&String(it.midOverride).trim()!==''))return false;const f=num(catOf(p,it.catId).factor)||0;const calc=costBase(it)*f,ov=num(it.midOverride);return calc>0&&Math.abs(calc-ov)/ov>0.005}
-function eqRed(p){return !!(p&&p.equipReduce)} // true = ปรับลดครุภัณฑ์ตามตัวอย่าง ว 651 (ไม่ปรับลดเฉพาะค่าใช้จ่ายพิเศษ)
+function eqMigrate(){let n=0;(S.projects||[]).forEach(p=>{if(p.equipReduce===undefined&&(p.status==='ลงนามสัญญาแล้ว'||p.contractNo)&&p.items&&p.items.some(i=>i.kind==='item'&&catOf(p,i.catId).kind==='equipment')){p.equipReduce=false;n++}});return n}
+function eqRed(p){return !!p&&p.equipReduce!==false} // ครุภัณฑ์ปรับลดได้ตาม ว 651 · false เฉพาะโครงการที่ลงนามสัญญาไปแล้วก่อนปรับปรุง (คงตัวเลขเดิม)
 function isFixed(p,it){const k=catOf(p,it.catId).kind;return k==='special'||(k==='equipment'&&!eqRed(p))||!!it.fixed}
 function baseRows(p){let n=0;return p.items.filter(i=>i.kind==='item').map(it=>({it,no:++n,q:num(it.qty),m:midOf(p,it),fixed:isFixed(p,it),cat:catOf(p,it.catId)}))}
 function totals(p){const rows=baseRows(p);const sumM=rows.reduce((a,r)=>a+r.m,0);const sumF=rows.filter(r=>r.fixed).reduce((a,r)=>a+r.m,0);
@@ -675,7 +676,7 @@ function renderTabs(){const T=k=>TABS.find(x=>x[0]===k);const btn=([k,l,i])=>`<b
 document.addEventListener('click',e=>{if(e.target.closest('#menuTg')){const o=document.body.classList.toggle('menu-open');e.target.closest('#menuTg').setAttribute('aria-expanded',String(o))}});
 function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
-function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,manual:rManual,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
+function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(canEdit()&&eqMigrate())nk++;if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,manual:rManual,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
 function curBar(title,extra=''){const p=P();return `<div class="row" style="margin-bottom:14px"><div class="sp" style="min-width:0"><div class="muted" style="font-size:13px">${esc(title)}</div><div style="font-family:var(--f-head);font-weight:500;font-size:16px">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra}</div>`}
 
@@ -760,7 +761,7 @@ function rEdit(){
    </div></div>
    <div class="card"><div class="card-h"><h2><span class="step">2</span>หมวดงานและค่า Factor F / VAT</h2><button class="btn ghost-brand sm" id="addCat" type="button">+ เพิ่มหมวด</button></div>
      <div class="tbl-wrap"><table class="t boq"><thead><tr><th>ลำดับ</th><th>ชื่อหมวด</th><th>ประเภท</th><th class="n">Factor F / VAT</th><th>การปรับลด</th><th></th></tr></thead><tbody id="catBody"></tbody></table></div>
-     <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>ค่าใช้จ่ายพิเศษตามข้อกำหนดคงราคากลางไว้ ไม่ถูกปรับลด (ว 651 ข้อ 1.2.2)</b>${`<div style="margin-top:8px"><label class="switch"><input type="checkbox" id="eqRed" ${eqRed(p)?'checked':''}> ปรับลดหมวดครุภัณฑ์จัดซื้อในอัตราร้อยละเดียวกับงานก่อสร้าง (ตามตัวอย่างแบบสรุปราคากลาง สิ่งที่ส่งมาด้วย 1 ของ ว 651)</label>${eqRed(p)?'':'<div style="color:var(--danger);margin-top:4px">ขณะนี้ครุภัณฑ์ไม่ถูกปรับลด (แนวปฏิบัติเดิม) · ตัวอย่างของ ว 651 ไม่ปรับลดเฉพาะค่าใช้จ่ายพิเศษตามข้อกำหนด</div>'}</div>`}</div></div>
+     <div class="card-b muted" style="font-size:13px;padding-top:10px">งานก่อสร้างคูณ Factor F ตามตารางของโครงการ · ครุภัณฑ์จัดซื้อคูณ 1.07 (VAT) · ค่าใช้จ่ายพิเศษตามข้อกำหนดคูณ 1.0000 · <b>ค่าใช้จ่ายพิเศษตามข้อกำหนดคงราคากลางไว้ ไม่ถูกปรับลด (ว 651 ข้อ 1.2.2) · ครุภัณฑ์จัดซื้อปรับลดในอัตราเดียวกับงานก่อสร้าง</b>${p.equipReduce===false?`<div style="margin-top:8px;color:var(--danger)">โครงการนี้ลงนามสัญญาก่อนปรับปรุงระบบ จึงคงการคำนวณเดิม (ครุภัณฑ์ไม่ปรับลด) · <button class="btn sm" id="eqRed" type="button">เปลี่ยนเป็นปรับลดครุภัณฑ์</button></div>`:''}</div></div>
    <div class="card" id="boqCard"><div class="card-h"><h2><span class="step">3</span>รายการ BOQ ราคากลาง</h2>
      <button class="btn sm" id="addHead" type="button">+ หัวข้อ</button><button class="btn ghost-brand sm" id="addItem" type="button">+ รายการ</button><button class="btn sm" id="sumXl" type="button" title="ไฟล์คำนวณราคากลาง (.xlsm/.xlsx) ที่มีชีต SUMMARY">แนบไฟล์ราคากลาง (SUMMARY)</button><button class="btn pri sm" id="pasteXl" type="button">วางจาก Excel</button></div>
      <div class="card-b row" style="padding-block:10px;font-size:14px"><span>ช่องค่างานต้นทุนกรอกเป็น</span><div class="seg" id="costModeSeg"><button type="button" data-cm="total" class="${(p.costMode||'total')==='total'?'on':''}">ยอดรวมของรายการ</button><button type="button" data-cm="unit" class="${p.costMode==='unit'?'on':''}">ราคาต่อหน่วย</button></div><span class="muted" style="font-size:13px">เช่น เสา 83 ต้น ค่างานต้นทุนรวม 3,083,508.10 → เลือก “ยอดรวมของรายการ”</span></div>
@@ -782,14 +783,14 @@ function rEdit(){
   $('#addHead').onclick=()=>{p.items.push({id:uid(),kind:'heading',name:'',catId:p.categories[0]?.id});touch(p);rBoq()};
   $('#pasteXl').onclick=pasteDialog;$('#sumXl').onclick=summaryPick;
   $('#costModeSeg').onclick=e=>{const bt=e.target.closest('[data-cm]');if(!bt)return;p.costMode=bt.dataset.cm;touch(p);rEdit()};
-  {const eq=$('#eqRed');if(eq)eq.onchange=()=>{p.equipReduce=eq.checked;touch(p);rEdit()}}
+  {const eq=$('#eqRed');if(eq)eq.onclick=()=>{delete p.equipReduce;touch(p);rEdit()}}
   rCats();rBoq();rSign();sideSum();
 }
 el$('click','[data-goto]',(t)=>go(t.dataset.goto));
 function el$(ev,sel,fn){document.addEventListener(ev,e=>{const t=e.target.closest(sel);if(t)fn(t,e)})}
 const KIND={construction:'งานก่อสร้าง (Factor F)',equipment:'ครุภัณฑ์จัดซื้อ (VAT)',special:'ค่าใช้จ่ายพิเศษตามข้อกำหนด'};
 function rCats(){const p=P();const b=$('#catBody');
-  b.innerHTML=p.categories.map((c,i)=>`<tr data-cid="${c.id}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(c.name)}"></td>
+  b.innerHTML=p.categories.map((c,i)=>`<tr data-cid="${c.id}"><td class="n">${i+1}</td><td><input class="i" data-c="name" value="${esc(c.name)}" style="min-width:200px"></td>
   <td><select class="i w-cat" data-c="kind" style="width:220px">${Object.entries(KIND).map(([k,l])=>`<option value="${k}" ${c.kind===k?'selected':''}>${l}</option>`).join('')}</select></td>
   <td class="n"><input class="i r" data-c="factor" value="${fmt(c.factor,4)}" style="width:110px" inputmode="decimal"></td>
   <td>${c.kind==='construction'||(c.kind==='equipment'&&eqRed(p))?'<span class="pill p-ok">ปรับลด</span>':'<span class="pill p-fix">ไม่ปรับลด</span>'}</td>
@@ -1954,7 +1955,7 @@ function rLegal(){$('#v-legal').innerHTML=`<div class="two"><div class="card car
 (2) ตัวอย่างแบบแสดงรายการ ปริมาณงาน และราคา : เอกสารแนบท้ายสัญญาจ้างก่อสร้าง — ระบุเลขที่สัญญา ลงวันที่ เลขที่โครงการ หน่วยงานเจ้าของโครงการ วงเงินงบประมาณ ราคากลาง วงเงินตามสัญญา ชื่อผู้รับจ้าง แล้วตารางราคาที่ปรับลดและราคาต่อหน่วย<br>
 หมายเหตุ (*) ส่วนต่างให้ปรับเพิ่ม/ลดในรายการใดรายการหนึ่งได้ตามความเหมาะสม ยกเว้นค่าใช้จ่ายพิเศษตามข้อกำหนด ทั้งนี้ วงเงินรวมต้องเท่ากับราคาตามคำเสนอของผู้ชนะ</blockquote>
   <h3>หลักการของระบบนี้</h3>
-  <p><b>รายการที่ไม่ปรับลด:</b> ค่าใช้จ่ายพิเศษตามข้อกำหนดคงราคากลางไว้ทุกบาท (ข้อ 1.2.2) · <b>ครุภัณฑ์จัดซื้อปรับลดในอัตราร้อยละเดียวกับงานก่อสร้าง</b> ตามตัวอย่างแบบสรุปราคากลาง (สิ่งที่ส่งมาด้วย 1: โต๊ะ 2,140,000 → 2,106,402 บาท ที่อัตรา 1.57%) · โครงการเดิมที่บันทึกไว้ก่อนปรับปรุงยังคงครุภัณฑ์ไว้ตามแนวปฏิบัติเดิม เปลี่ยนได้ที่การ์ด “หมวดงานและค่า Factor F / VAT” · รายการที่ติ๊ก “ไม่ลด” เองก็จะคงราคากลาง</p>
+  <p><b>รายการที่ไม่ปรับลด:</b> ค่าใช้จ่ายพิเศษตามข้อกำหนดคงราคากลางไว้ทุกบาท (ข้อ 1.2.2) · <b>ครุภัณฑ์จัดซื้อปรับลดในอัตราร้อยละเดียวกับงานก่อสร้าง</b> ตามตัวอย่างแบบสรุปราคากลาง (สิ่งที่ส่งมาด้วย 1: โต๊ะ 2,140,000 → 2,106,402 บาท ที่อัตรา 1.57%) · โครงการที่ลงนามสัญญาไปแล้วก่อนปรับปรุงคงตัวเลขเดิมไว้ · รายการที่ติ๊ก “ไม่ลด” เองก็จะคงราคากลาง</p>
   <p><b>อัตราร้อยละ:</b> (1) ราคากลางหักรายการที่ไม่ปรับลด · (2) ราคาที่ใช้คำนวณหักรายการที่ไม่ปรับลด · (3) = (1) − (2) · อัตรา = (3) ÷ (1) × 100 ตัดเศษเหลือทศนิยม 2 ตำแหน่ง</p>
   <p><b>การปัดเศษ (ค่าเริ่มต้น):</b> ราคาที่ขอต่อรองรวมเป็นจำนวนเต็มบาท · ราคาต่อหน่วยที่ปรับลด = ราคากลางรายการ × (1 − อัตรา) ÷ จำนวน ตัดเศษเหลือทศนิยม 2 ตำแหน่ง · จำนวนเงิน = ราคาต่อหน่วย × จำนวน · เปลี่ยนเป็น “ราคาต่อหน่วยเป็นจำนวนเต็มบาท” ได้ที่หน้าผลการปรับลดราคาหรือตั้งค่า</p>
   <p><b>ส่วนต่างปัดเศษ (*):</b> ปรับเข้ารายการเดียวก่อน (รายการที่เลือก หรือรายการที่ราคากลางสูงสุด) ถ้าหารไม่ลงตัวจึงกระจายไปรายการอื่นที่ปรับลดได้ ยอดรวมต้องเท่ากับราคาที่ใช้คำนวณพอดี</p>
@@ -3831,7 +3832,7 @@ function esConsentPrint(x){let h=$('#esPrint');if(!h){h=document.createElement('
 window.__boq={es:()=>ES,esScan,parsePlanSheet:(...a)=>parsePlanSheet(...a),bidList:p=>bidList(p),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
 try{$('#appVer').textContent=APP_VER;$('#appDate').textContent=APP_DATE}catch(e){}
-load();applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}
+load();try{if(eqMigrate())save()}catch(e){}applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}
 {const inst=$('#btnInstall').onclick;$('#btnInstall').onclick=()=>{if(central())return authOk()?inst():showGate();if(!pwRec()){toast('ตั้งรหัสผ่านก่อนติดตั้งแอป');setPwDialog();return}askPw('ติดตั้งแอป','กรอกรหัสผ่านเพื่อติดตั้งแอป',()=>inst())}}
 $('#btnLock').onclick=()=>{if(central())return authOk()?accountDialog():showGate();if(!pwRec())return setPwDialog();if(isLocked())return unlockThen();setUnlocked(false);toast('ล็อกแล้ว · ดูและพิมพ์ได้ แก้ไขต้องใส่รหัสผ่าน')};
 lockUI();authBoot();
