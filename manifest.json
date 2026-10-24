@@ -7,7 +7,7 @@
   "scope": "./",
   "display": "standalone",
   "display_override": ["window-controls-overlay","standalone"],
-  "background_color": "#f6f2f1",
+  "background_color": "#fbecef",
   "theme_color": "#7a1f2b",
   "icons": [
     {"src":"icon-r192.png","sizes":"192x192","type":"image/png","purpose":"any"},
