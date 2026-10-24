@@ -265,6 +265,12 @@ body:not(.exec) .pagebar{padding-top:12px}
 @media print{body{display:block!important}.pagebar{display:none!important}}
 body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding-bottom:12px}body.exec .hdr{flex:1;min-width:260px;padding-bottom:0}body.exec .menu-tg,body.exec #tabs{display:none!important}body.exec .app-header .hdr-actions{display:flex!important}
 @media (max-width:640px){body.exec .ttl h1{font-size:15px}body.exec .ttl p{display:none}body.exec .app-header .hdr-actions{width:100%;justify-content:flex-end}.ovgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.ov{padding:10px 6px}}
+.paper.cmp{width:297mm;min-height:209mm;padding:12mm 10mm 10mm;box-sizing:border-box;page:land;font-family:var(--lf,"TH SarabunIT๙","Sarabun",sans-serif);font-size:var(--ls,16pt);line-height:1.2}
+.cmp-h{text-align:center;font-weight:700;margin-bottom:4mm}.cmp-h .t{font-size:1.25em;margin-bottom:1mm}.cmp-h u{text-decoration:none;border-bottom:1px dotted #000}.cmp-pg{text-align:right;font-size:.8em;margin-bottom:1mm}
+.cmp-t{width:100%;border-collapse:collapse;table-layout:fixed}.cmp-t th,.cmp-t td{border:1px solid #000;padding:.4mm 1mm;vertical-align:top}.cmp-t td.n.b{padding-right:.4mm;letter-spacing:-.1px}.cmp-t th{font-weight:700;text-align:center;vertical-align:middle;font-size:.95em}
+.cmp-t tbody td{border-top:0;border-bottom:0;white-space:nowrap;overflow:hidden}.cmp-t tbody td.d{white-space:normal}.cmp-t tbody tr.end td{border-bottom:1px solid #000;height:3mm}.cmp-t td.n{text-align:right}.cmp-t td.c{text-align:center}.cmp-t td.s{text-align:left;padding-left:.6mm}.cmp-t td.b{padding-right:.3mm}.cmp-t th.fm{font-weight:600;line-height:1.15}
+@media print{.paper.cmp{width:297mm!important;height:209mm;min-height:0!important;padding:12mm 10mm 10mm!important;page:land}}
+@media screen{#printArea .paper{zoom:var(--pz,1)}}
 .paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
@@ -426,7 +432,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">143</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">144</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -489,7 +495,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='143',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='144',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1423,14 +1429,15 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
 function papersToDocx(html){
   const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);ES.last=0;applyESign(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
-  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
+  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx|cmp)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
   const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
     return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
   host.remove();
   const mg=pad.map(v=>Math.max(567,DX.tw(v)));
   const font='TH SarabunIT๙';
-  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="${mg[0]}" w:right="${mg[1]}" w:bottom="${mg[2]}" w:left="${mg[3]}" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const land=papers.every(x=>x.classList.contains('land'));
+  const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>${body}<w:sectPr>${land?'<w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/>':'<w:pgSz w:w="11906" w:h="16838"/>'}<w:pgMar w:top="${mg[0]}" w:right="${mg[1]}" w:bottom="${mg[2]}" w:left="${mg[3]}" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
   const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${font}" w:hAnsi="${font}" w:eastAsia="${font}" w:cs="${font}"/><w:sz w:val="32"/><w:szCs w:val="32"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="th-TH"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="60" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="60" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>`;
   const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdSt" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>${(B.media||[]).map(m=>`<Relationship Id="${m.id}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/${m.name}"/>`).join('')}</Relationships>`;
   const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="png" ContentType="image/png"/><Default Extension="gif" ContentType="image/gif"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>`;
@@ -1588,8 +1595,8 @@ function resultBody(p,r,b){
 function rowsWithHeads(p,r){const out=[];let i=0;for(const it of p.items){if(it.kind==='heading'){if(it.name)out.push({head:it.name})}else out.push(r.rows[i++])}return out}
 
 /* ================= reports ================= */
-const RP_G=[['ขั้นเตรียมการ (TOR / เอกสารประกวดราคา)','#2f6fd6',k=>/^(tor_|bx_|attach$|boqform$|dmg$)/.test(k)],['ขออนุมัติซื้อ/จ้าง','#0f8f86',k=>k==='req'],['คำสั่งแต่งตั้ง','#7b4bc4',k=>/^ord_|^insp_memo$/.test(k)],['พิจารณาผล','#b7791f',k=>k==='eval'||k==='notice'],['ต่อรองราคา','#d9622b',k=>k==='nego'||k==='letter'||k==='pack'],['ผลการปรับลดราคา','#2e8b3e',k=>k==='mid'],['เรียกลงนามสัญญา','#b0283b',k=>/^(sign|contract|annex3_con|condetail|con_)/.test(k)],['รับรองผลงาน','#4b6584',k=>/^cert/.test(k)]];
-const RP_ORDER={eval:0,notice:1,nego:0,letter:1,sign:0,contract:1,annex3_con:2,condetail:3,con_cover:4,con_body:5,con_memo:6,con_reg:7,con_all:8};
+const RP_G=[['ขั้นเตรียมการ (TOR / เอกสารประกวดราคา)','#2f6fd6',k=>/^(tor_|bx_|attach$|boqform$|dmg$)/.test(k)],['ขออนุมัติซื้อ/จ้าง','#0f8f86',k=>k==='req'],['คำสั่งแต่งตั้ง','#7b4bc4',k=>/^ord_|^insp_memo$/.test(k)],['พิจารณาผล','#b7791f',k=>k==='eval'||k==='notice'||k==='cmp'],['ต่อรองราคา','#d9622b',k=>k==='nego'||k==='letter'||k==='pack'],['ผลการปรับลดราคา','#2e8b3e',k=>k==='mid'],['เรียกลงนามสัญญา','#b0283b',k=>/^(sign|contract|annex3_con|condetail|con_)/.test(k)],['รับรองผลงาน','#4b6584',k=>/^cert/.test(k)]];
+const RP_ORDER={cmp:-1,eval:0,notice:1,nego:0,letter:1,sign:0,contract:1,annex3_con:2,condetail:3,con_cover:4,con_body:5,con_memo:6,con_reg:7,con_all:8};
 function rpGroups(segs){const G=RP_G.map(([t,c],i)=>({t,c,n:i+1,items:[]}));const other={t:'อื่น ๆ',c:'#6b6b6b',n:G.length+1,items:[]};
   segs.forEach(x=>{if(x[0]==='all')return;const i=RP_G.findIndex(g=>g[2](x[0]));(i>=0?G[i]:other).items.push(x)});
   G.forEach(g=>g.items.sort((a,b)=>(RP_ORDER[a[0]]??50)-(RP_ORDER[b[0]]??50)));
@@ -1616,7 +1623,7 @@ function rReport(){
     (['nego','all'].includes(reportSel)?repNego(p,r,b):'')+(['letter','pack','all'].includes(reportSel)?repLetter(p,r):'')+(reportSel==='pack'?repNego(p,r,b):'')+(['notice','all'].includes(reportSel)?repNotice(p):'')+(['eval','all'].includes(reportSel)?repEval(p):'')+(['mid','all'].includes(reportSel)?repMid(p,r,b):'')+(['sign','all'].includes(reportSel)?repSign(p):'')+(['contract','all'].includes(reportSel)?repContract(p,r,b):'')+(['cert','all'].includes(reportSel)?repCertAll(p):''))}</div></div></div></div>`;
   {const q=$('#rpQ');const fl=()=>{const v=q.value.trim().toLowerCase();el._q=q.value;$$('.rp-g',el).forEach(g=>{let n=0;g.querySelectorAll('.rp-it').forEach(b=>{const ok=!v||b.dataset.q.includes(v);b.hidden=!ok;if(ok)n++});g.hidden=!n})};q.oninput=fl;fl();
    $('#rpWord').ontoggle=e=>{el._w=e.target.open};const on=$('.rp-it.on',el),nv=$('.rp-nav',el);if(on&&nv&&!el._sc){nv.scrollTop=Math.max(0,on.offsetTop-nv.clientHeight/3)}el._sc=0}
-  {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}'}
+  {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}';setTimeout(()=>{const P2=$$('#printArea .paper');if(P2.length&&P2.every(x=>x.classList.contains('land')))ps.textContent='@page{size:A4 landscape;margin:0}'},0)}
   {const n=applyESign($('#printArea'));const box=document.createElement('div');if(ES.on&&ES.pid===p.id){box.className='note '+(n?(ES.reason==='urgent'?'warn':'ok'):'bad');box.style.marginTop='10px';
     box.innerHTML=n?`<b>ใส่ลายเซ็นอิเล็กทรอนิกส์ ${n} จุด</b> — ${esc(ES_REASON[ES.reason])}${ES.detail?' · '+esc(ES.detail):''} · <a href="#" id="esEdit">เปลี่ยนเหตุผล/ผู้ลงนาม</a>`:'<b>เอกสารนี้ไม่มีชื่อผู้ที่ให้ความยินยอม</b> — ไม่ได้ใส่ลายเซ็น';el.querySelector('.card .card-b+.card-b').appendChild(box)}
    const tg=$('#tgEs');const open=()=>esDialog(p,$('#printArea'),ok=>{if(ok){const u=me()||{};p.esignLog=(p.esignLog||[]).concat({at:nowStr(),by:u.name||u.username||'(เครื่องนี้)',act:'เปิดใช้ลายเซ็น',reason:ES.reason,detail:ES.detail,names:esPeopleOn().map(x=>x.name)}).slice(-300);touch(p)}rReport()});
@@ -3417,6 +3424,35 @@ function repDamage(p){const no=dmgNo(p);
 ORD_REPORTS.push(['dmg','เอกสารกำหนดคะแนนความเสียหาย (วงเงิน ≥ 5 ล้าน)',p=>repDamage(p)],...BX_DOCS.map(d=>[d[0],'แนบประกวดราคา: '+d[1],p=>d[2](p)]),['bx_all','เอกสารแนบท้ายเอกสารประกวดราคา (ทั้งชุด)',p=>repBxAll(p)]);
 ORD_REPORTS.push(['con_cover','ปกสัญญา',p=>repConCover(p)],['con_body','สัญญาจ้างก่อสร้าง',p=>repContract(p)],['con_memo','บันทึกรายการทำสัญญา (พ.๑-๐๕)',p=>repConMemo(p)],['con_reg','ทะเบียนรายการเอกสารประกอบการทำสัญญา',p=>repConReg(p)],['con_all','ชุดสัญญาจ้างก่อสร้าง',p=>repConAll(p)]);
 ORD_REPORTS.push(['attach','รายละเอียดแนบท้ายประกาศ',p=>repAttach(p)],['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',p=>repBoqForm(p)],['annex3_con','ผนวก 3 (แนบสัญญา)',p=>repAnnex3(p)],['condetail','รายละเอียดแนบท้ายสัญญา',p=>repConDetail(p)]);
+/* ================= บัญชีเปรียบเทียบราคา (แนวนอน A4) ================= */
+function cmpFirm(n){n=String(n||'').trim();let m;
+  if((m=n.match(/^บริษัท\s*(.+?)\s*จำกัด\s*\(มหาชน\)$/)))return 'บมจ. '+m[1];
+  if((m=n.match(/^บริษัท\s*(.+?)\s*จำกัด$/)))return 'บจก. '+m[1];
+  if((m=n.match(/^ห้างหุ้นส่วนจำกัด\s*(.+)$/)))return 'หจก. '+m[1];
+  if((m=n.match(/^ห้างหุ้นส่วนสามัญ\s*(.+)$/)))return 'หสม. '+m[1];return n}
+function cmpBS(v){v=num(v);if(!v)return ['',''];const t=v.toFixed(2).split('.');return [Number(t[0]).toLocaleString('en-US')+'.',t[1]]}
+function repCompare(p){const e=evOf(p);const B=(p.bidders||[]).filter(b=>b&&(b.name||num(b.price)));const t=totals(p);const mid=t.sumM?t.sumM/100:num(p.midDeclared);
+  const PER=B.length<=2?2:3;const chunks=[];for(let i=0;i<Math.max(1,B.length);i+=PER)chunks.push(B.slice(i,i+PER));
+  const items=(p.items||[]).filter(i=>i.kind==='item');
+  const pname=String(p.name||'').trim();
+  const D2=iso=>{const x=thDateParts(iso);return x?`${x.d}  ${x.m}  ${x.y}`:'..............................'};
+  const head=`<div class="cmp-h"><div class="t">บัญชีเปรียบเทียบราคา</div>
+    <div>ประกาศประกวดราคาที่ <u>&nbsp;${esc(p.inviteNo||'....................')}&nbsp;</u> เมื่อวันที่ <u>&nbsp;${D2(p.inviteDate||e.pubStart)}&nbsp;</u></div>
+    <div>เสนอราคาวันที่ <u>&nbsp;${D2(e.submitDate)}&nbsp;</u> เวลา <u>&nbsp;${esc(String(e.submitTime||'..........').replace(/\s*น\.\s*ถึง\s*/,' - '))}&nbsp;</u></div></div>`;
+  return chunks.map((C,ci)=>{const pad=PER-C.length;const cols=C.concat(Array(pad).fill(null));
+    const money=(v,cls='')=>{const [b,s2]=cmpBS(v);return `<td class="n b ${cls}">${b}</td><td class="n s ${cls}">${s2}</td>`};
+    const blank=()=>`<td class="b"></td><td class="s"></td>`;
+    const nameLines=[pname+(items.length?' ตามรายละเอียดดังต่อไปนี้':'')];
+    let body=`<tr><td></td><td></td><td></td><td class="d"><b>${esc(nameLines[0])}</b></td>${blank()}${money(p.budget)}${money(mid)}${cols.map(b=>b?money(b.price):blank()).join('')}</tr>`;
+    items.forEach((it,ix)=>{const L=String(it.name||'').split('\n');body+=`<tr><td class="c">${ix+1}</td><td class="n">${fQ(num(it.qty))}</td><td class="c">${esc(it.unit||'')}</td><td class="d">${esc(L[0])}</td>${blank()}${blank()}${blank()}${cols.map(()=>blank()).join('')}</tr>`+
+      L.slice(1).map(l=>`<tr><td></td><td></td><td></td><td class="d">${esc(l)}</td>${blank()}${blank()}${blank()}${cols.map(()=>blank()).join('')}</tr>`).join('')});
+    const F=letterFont();return `<div class="paper cmp land${wm()}" style="--lf:${F.lf};--ls:${F.ls==='16pt'?'15pt':'11.5pt'}">${head}${chunks.length>1?`<div class="cmp-pg">แผ่นที่ ${ci+1}/${chunks.length} · ผู้เสนอราคาลำดับที่ ${ci*PER+1}–${ci*PER+C.length} จาก ${B.length} ราย</div>`:''}
+     <table class="cmp-t"><colgroup><col style="width:11mm"><col style="width:16mm"><col style="width:14mm"><col><col style="width:13mm"><col style="width:8mm"><col style="width:26mm"><col style="width:8mm"><col style="width:26mm"><col style="width:8mm">${cols.map(()=>'<col style="width:26mm"><col style="width:8mm">').join('')}</colgroup>
+     <thead><tr><th rowspan="3">ลำดับ<br>ที่</th><th rowspan="2">จำนวน</th><th rowspan="3">หน่วย</th><th rowspan="3">รายการ</th><th colspan="2" rowspan="2">ราคาเดิม</th><th colspan="2" rowspan="2">วงเงินงบประมาณ</th><th colspan="2" rowspan="2">ราคากลาง</th><th colspan="${PER*2}">รายชื่อผู้เสนอราคา</th></tr>
+      <tr>${cols.map(b=>`<th colspan="2" class="fm">${b?esc(cmpFirm(b.name)):''}</th>`).join('')}</tr>
+      <tr><th>ต้องการ</th>${Array(3+PER).fill('<th>บาท</th><th>สต.</th>').join('')}</tr></thead>
+     <tbody>${body}<tr class="end"><td></td><td></td><td></td><td></td>${Array(3+PER).fill('<td></td><td></td>').join('')}</tr></tbody></table></div>`}).join('')}
+ORD_REPORTS.push(['cmp','บัญชีเปรียบเทียบราคา',p=>repCompare(p)]);
 /* ---------- Excel (.xlsx) ด้วย ExcelJS ---------- */
 let EXJ_P=null;
 function loadExcelJS(){if(window.ExcelJS)return Promise.resolve(window.ExcelJS);if(EXJ_P)return EXJ_P;
@@ -3879,7 +3915,8 @@ function fitTable(t){if(t.closest('.paper,.rp-prev,.modal')||t.classList.contain
     const tx=td.textContent.trim(),ctl=!!td.querySelector('input,select,textarea,button,img,.pill');td.classList.toggle('stk-e',!tx&&!ctl);td.classList.toggle('stk-no',c===0&&span===1&&!ctl&&/^\d{1,4}\.?$/.test(tx));
     const wide=span>=Math.max(2,n-2)||(c===wi&&span===1)||!!td.querySelector('textarea');td.classList.toggle('stk-w',wide);td.style.flexBasis=wide?'':Math.max(70,Math.min(260,(W[c]||120)*(span>1?1:1)))+'px';c+=span})});
   t.classList.add('stk')}
-function fitTables(){$$('.view:not([hidden]) .tbl-wrap>table').forEach(fitTable)}
+function fitTables(){$$('.view:not([hidden]) .tbl-wrap>table').forEach(fitTable);fitPapers()}
+function fitPapers(){const pv=$('#v-report:not([hidden]) .rp-prev');if(!pv)return;const W=pv.clientWidth-24;$$('#printArea .paper',pv).forEach(x=>{x.style.removeProperty('--pz');const w=x.offsetWidth;if(w>W&&W>200)x.style.setProperty('--pz',(W/w).toFixed(4))})}
 {let fq=0;const sch=()=>{if(fq)return;fq=requestAnimationFrame(()=>{fq=0;try{fitTables()}catch(e){}})};addEventListener('resize',sch);new MutationObserver(sch).observe(document.querySelector('main.wrap'),{childList:true,subtree:true})}
 /* ระเบียบ กค. ข้อ 26 วรรคสาม: ห้ามแต่งตั้งกรรมการพิจารณาผลเป็นกรรมการตรวจรับพัสดุในการจัดซื้อจัดจ้างครั้งเดียวกัน */
 function commDup(p){if(!p)return [];const ev=new Map();(p.committee||[]).forEach(m=>{if(m&&m.name&&esKey(m.name))ev.set(esKey(m.name),m)});const O=p.orders||{};
