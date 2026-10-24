@@ -415,7 +415,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">136</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">137</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -478,7 +478,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='136',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='137',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3546,19 +3546,27 @@ rNego=(o=>function(){o.apply(this,arguments);stepBar()})(rNego);rResult=(o=>func
 
 /* ================= สรุปภาพรวมตามขั้นตอน (ภาพรวมโครงการ + ผู้บริหาร) ================= */
 let ovSel='';
-function projStage(p){const t=todayISO(),e=p.ev||{},sg=p.sign||{},bk=p.book&&p.book.booking;const le=d=>d&&d<=t;
-  if(le(p.contractDate)||p.status==='ลงนามสัญญาแล้ว')return 'signed';
-  if(p.contractNo||(bk&&bk.confirmed==='Y'&&bk.contractNo))return 'cno';
+function projStage(p){return projStageX(p).s}
+/* ขั้นตอนล่าสุด + ข้อมูลที่ทำให้อยู่ขั้นนั้น (ใช้แสดงเหตุผลในรายการสรุป) */
+function projStageX(p){const t=todayISO(),e=p.ev||{},sg=p.sign||{},bk=p.book&&p.book.booking;const le=d=>d&&d<=t;const R=(s,why)=>({s,why});const d=x=>thDate(x)||x;
+  if(p.status==='ลงนามสัญญาแล้ว')return R('signed','สถานะโครงการ = ลงนามสัญญาแล้ว');
+  if(le(p.contractDate))return R('signed','วันที่ลงนามสัญญา '+d(p.contractDate));
+  if(p.contractNo)return R('cno','เลขที่สัญญา '+p.contractNo);
+  if(bk&&bk.confirmed==='Y'&&bk.contractNo)return R('cno','ยืนยันการจองพร้อมเลขที่สัญญา '+bk.contractNo);
   const apEnd=p.announceDate?addWorkdays(p.announceDate,7):'';
-  if(le(sg.date)&&(!apEnd||(t>apEnd&&sg.date>apEnd)))return 'call';
-  if(p.announceDate&&le(p.announceDate))return t>apEnd?'appeal':'win';
-  if(le(e.m1&&e.m1.date)||le(e.summaryDate))return 'eval';
-  if(le(e.submitDate)||le(e.openDate)||(p.bidders||[]).length)return 'bid';
-  if(le(e.pubStart)||le(p.inviteDate))return 'pub';
-  if(le(p.torEnd)&&p.torEnd<t)return 'tordone';
-  if(le(p.torStart))return 'tor';
-  if(le(p.midApproveDate))return 'mid';
-  return 'none'}
+  if(p.announceDate&&le(sg.date)&&t>apEnd&&sg.date>apEnd)return R('call','วันที่หนังสือเรียกลงนามสัญญา '+d(sg.date));
+  if(p.announceDate&&le(p.announceDate))return t>apEnd?R('appeal','ประกาศผู้ชนะ '+d(p.announceDate)+' · ครบอุทธรณ์ '+d(apEnd)):R('win','ประกาศผู้ชนะ '+d(p.announceDate));
+  if(le(e.m1&&e.m1.date))return R('eval','วันประชุมพิจารณาผลครั้งที่ 1 '+d(e.m1.date));
+  if(le(e.summaryDate))return R('eval','วันที่สรุปผลพิจารณา '+d(e.summaryDate));
+  if((p.bidders||[]).length)return R('bid','มีรายชื่อผู้เสนอราคา '+p.bidders.length+' ราย');
+  if(le(e.openDate))return R('bid','วันเปิดซองเสนอราคา '+d(e.openDate));
+  if(le(e.submitDate))return R('bid','วันยื่นข้อเสนอ '+d(e.submitDate));
+  if(le(e.pubStart))return R('pub','วันเริ่มประกาศ '+d(e.pubStart));
+  if(le(p.inviteDate))return R('pub','วันที่ประกาศเชิญชวน '+d(p.inviteDate));
+  if(le(p.torEnd)&&p.torEnd<t)return R('tordone','ร่าง TOR เสร็จ '+d(p.torEnd));
+  if(le(p.torStart))return R('tor','เริ่มร่าง TOR '+d(p.torStart));
+  if(le(p.midApproveDate))return R('mid','อนุมัติราคากลาง '+d(p.midApproveDate));
+  return R('none','')}
 const OV_STAGES=[['mid','💰','อนุมัติราคากลางแล้ว'],['tor','✏️','กำลังร่าง TOR'],['tordone','📝','ร่าง TOR แล้ว'],['pub','📢','ออกประกาศแล้ว'],['bid','💵','เสนอราคาแล้ว'],['eval','⚖️','พิจารณาผลแล้ว'],['win','🏆','ประกาศผู้ชนะแล้ว'],['appeal','🔔','ครบอุทธรณ์แล้ว'],['call','📞','เรียกลงนามสัญญา'],['cno','📑','ออกเลขสัญญา'],['signed','✍️','ลงนามสัญญาแล้ว']];
 function overviewCard(){const by={};S.projects.forEach(p=>{const s=projStage(p);(by[s]=by[s]||[]).push(p)});
   const sel=ovSel&&by[ovSel]?ovSel:'';const lab=Object.fromEntries(OV_STAGES.map(x=>[x[0],x[2]]));lab.none='ยังไม่เริ่ม';
@@ -3566,7 +3574,7 @@ function overviewCard(){const by={};S.projects.forEach(p=>{const s=projStage(p);
   return `<div class="card ovcard" id="ovCard" style="margin-bottom:18px"><div class="card-h"><h2>สรุปภาพรวม</h2><span class="muted" style="font-size:13px">ทั้งหมด ${S.projects.length} โครงการ · นับตามขั้นตอนล่าสุดที่ถึงแล้ว · กดการ์ดเพื่อดูรายชื่อ</span></div>
    <div class="card-b"><div class="ovgrid">${OV_STAGES.map(([k,ic,l])=>`<button class="ov ov-${k} ${sel===k?'on':''}" data-ov="${k}" type="button"><span class="ovl">${ic} ${esc(l)}</span><b>${(by[k]||[]).length}</b></button>`).join('')}
      ${by.none?`<button class="ov ov-none ${sel==='none'?'on':''}" data-ov="none" type="button"><span class="ovl">⏳ ยังไม่เริ่ม</span><b>${by.none.length}</b></button>`:''}</div>
-   ${sel?`<div class="ovlist"><div class="ovlh">${esc(lab[sel])} · ${list.length} โครงการ</div>${list.map(p=>`<div class="ovi"><b>${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</b><span class="muted">${esc([p.inviteNo,p.contractor,p.contractNo?'สัญญา '+p.contractNo:''].filter(Boolean).join(' · '))}</span></div>`).join('')}</div>`:''}</div></div>`}
+   ${sel?`<div class="ovlist"><div class="ovlh">${esc(lab[sel])} · ${list.length} โครงการ</div>${list.map(p=>`<div class="ovi"><b>${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</b><span class="muted">${esc([p.inviteNo,p.contractor,p.contractNo?'สัญญา '+p.contractNo:''].filter(Boolean).join(' · '))}</span>${(w=>w?`<span style="font-size:12.5px;color:var(--warn-ink,#8a6d00)">อยู่ขั้นนี้เพราะ: ${esc(w)}</span>`:'')(projStageX(p).why)}</div>`).join('')}</div>`:''}</div></div>`}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-ov]');if(!b)return;ovSel=ovSel===b.dataset.ov?'':b.dataset.ov;const c=$('#ovCard');if(c)c.outerHTML=overviewCard()});
 
 /* ================= ขั้นเตรียมการ: เห็นชอบ / แบบ / ร่างขออนุมัติออกประกาศ (ก่อนอนุมัติราคากลาง) ================= */
