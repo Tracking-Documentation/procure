@@ -266,9 +266,9 @@ body:not(.exec) .pagebar{padding-top:12px}
 body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding-bottom:12px}body.exec .hdr{flex:1;min-width:260px;padding-bottom:0}body.exec .menu-tg,body.exec #tabs{display:none!important}body.exec .app-header .hdr-actions{display:flex!important}
 @media (max-width:640px){body.exec .ttl h1{font-size:15px}body.exec .ttl p{display:none}body.exec .app-header .hdr-actions{width:100%;justify-content:flex-end}.ovgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.ov{padding:10px 6px}}
 .paper.cmp{width:297mm;min-height:209mm;padding:12mm 10mm 10mm;box-sizing:border-box;page:land;font-family:var(--lf,"TH SarabunIT๙","Sarabun",sans-serif);font-size:var(--ls,16pt);line-height:1.2}
-.cmp-h{text-align:center;font-weight:700;margin-bottom:4mm}.cmp-h .t{font-size:1.25em;margin-bottom:1mm}.cmp-h u{text-decoration:none;border-bottom:1px dotted #000}.cmp-pg{text-align:right;font-size:.8em;margin-bottom:1mm}
-.cmp-t{width:100%;border-collapse:collapse;table-layout:fixed}.cmp-t th,.cmp-t td{border:1px solid #000;padding:.4mm 1mm;vertical-align:top}.cmp-t td.n.b{padding-right:.4mm;letter-spacing:-.1px}.cmp-t th{font-weight:700;text-align:center;vertical-align:middle;font-size:.95em}
-.cmp-t tbody td{border-top:0;border-bottom:0;white-space:nowrap;overflow:hidden}.cmp-t tbody td.d{white-space:normal}.cmp-t tbody tr.end td{border-bottom:1px solid #000;height:3mm}.cmp-t td.n{text-align:right}.cmp-t td.c{text-align:center}.cmp-t td.s{text-align:left;padding-left:.6mm}.cmp-t td.b{padding-right:.3mm}.cmp-t th.fm{font-weight:600;line-height:1.15}
+.cmp-h{text-align:center;font-weight:700;margin-bottom:4mm}.cmp-h .t{font-size:1.25em;margin-bottom:1mm}.cmp-h u{text-decoration:none;border-bottom:1px dotted #000}.cmp-pg{text-align:right;margin-bottom:1mm}
+.cmp-t{width:100%;border-collapse:collapse;table-layout:fixed}.cmp-t th,.cmp-t td{border:1px solid #000;padding:.4mm 1mm;vertical-align:top}.cmp-t td.n.b{padding-right:.4mm;letter-spacing:-.1px}.cmp-t th{font-weight:700;text-align:center;vertical-align:middle;font-size:1em;line-height:1.15}
+.cmp-t tbody td{border-top:0;border-bottom:0;white-space:nowrap}.cmp-t tbody td.d{white-space:normal}.cmp-t tbody tr.end td{border-bottom:1px solid #000;height:3mm}.cmp-t td.n{text-align:right}.cmp-t td.c{text-align:center}.cmp-t td.s{text-align:left;padding-left:.6mm}.cmp-t td.b{padding-right:.3mm}.cmp-t th.fm{font-weight:600;line-height:1.15}
 @media print{.paper.cmp{width:297mm!important;height:209mm;min-height:0!important;padding:12mm 10mm 10mm!important;page:land}}
 @media screen{#printArea .paper{zoom:var(--pz,1)}#printArea .paper.fk{zoom:calc(var(--pz,1) * var(--fk,1))}}
 @media print{#printArea .paper.fk{zoom:var(--fk,1)}}
@@ -276,6 +276,8 @@ body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:1
 #printArea .paper.fk.letter{height:calc(296mm / var(--fk))!important}#printArea .paper.fk.cmp{height:calc(209mm / var(--fk))!important}#printArea .paper.fk.bx{min-height:calc(296.5mm / var(--fk))!important}
 #printArea .paper.fm{padding:calc(var(--mt) / var(--fk,1)) calc(var(--mr) / var(--fk,1)) calc(var(--mb) / var(--fk,1)) calc(var(--ml) / var(--fk,1))!important}
 .pgset{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;padding:10px 0 2px}.pgset label.f{min-width:0}.pgset .mm{display:flex;gap:6px;align-items:flex-end}.pgset .mm input{width:64px}
+.paper.p16{font-family:var(--lf);font-size:var(--ls);line-height:1.3}.paper.p16 table.pt,.paper.p16 .calc,.paper.p16 .rem{font-size:1em!important}.paper.p16 h2{font-size:1.15em}.paper.p16.land{width:297mm;min-height:209mm;page:land;box-sizing:border-box;padding:12mm 12mm 10mm}
+@media print{.paper.p16.land{width:297mm!important;padding:12mm 12mm 10mm!important;page:land}}
 .paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
@@ -299,7 +301,7 @@ body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:1
 .ev .ag{display:grid;grid-template-columns:20mm 1fr;margin-top:2mm}.ev .spk{display:grid;grid-template-columns:25mm 1fr}
 .ev .msig{display:grid;grid-template-columns:1fr 1fr;text-align:center;margin-top:14mm;break-inside:avoid}
 .ev table.et.sec td{overflow-wrap:break-word}
-.ev table.et{width:100%;border-collapse:collapse;font-size:.88em}.ev .et th,.ev .et td{border:1px solid #000;padding:1mm 2mm;vertical-align:top}.ev .et th{text-align:center;vertical-align:middle}.ev .et .c{text-align:center}.ev .sm{font-weight:400;font-size:.85em}
+.ev table.et{width:100%;border-collapse:collapse;font-size:1em}.ev .et th,.ev .et td{border:1px solid #000;padding:1mm 2mm;vertical-align:top}.ev .et th{text-align:center;vertical-align:middle}.ev .et .c{text-align:center}.ev .sm{font-weight:400;font-size:1em}
 .paper.notice{width:210mm;min-height:297mm;padding:17mm 11mm 10mm 12.5mm;font-family:var(--lf);font-size:var(--ls);line-height:1.4;box-sizing:border-box}
 .notice .ttl{text-align:center;font-weight:700}
 .notice .att{text-align:right}
@@ -310,7 +312,7 @@ body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:1
 .notice .sg{margin:14mm 0 0 auto;width:95mm;text-align:center;line-height:1.7}
 .notice .cb{display:inline-block;margin-right:5mm;white-space:nowrap}
 .paper .nrem{font-size:11px;line-height:1.4;display:grid;grid-template-columns:auto 1fr;column-gap:6px}.paper .nrem ol{margin:0;padding-left:16px}
-.paper.rq{font-family:var(--lf);font-size:var(--ls);line-height:1.35;padding:12mm 12mm 12mm 15mm;box-sizing:border-box}.rq table.rqt,.rq table.rqa{font-size:.875em}.rq p{margin:0}.rq .ind{text-indent:12mm}.rq .rqh{display:flex;justify-content:space-between}
+.paper.rq{font-family:var(--lf);font-size:var(--ls);line-height:1.35;padding:12mm 12mm 12mm 15mm;box-sizing:border-box}.rq table.rqt,.rq table.rqa{font-size:1em}.rq p{margin:0}.rq .ind{text-indent:12mm}.rq .rqh{display:flex;justify-content:space-between}
 .rq .rqtop{position:relative;min-height:22mm;margin-bottom:2mm}.rq .rqdoh{text-align:center;font-size:1.25em;font-weight:700;line-height:1.3;padding-top:5mm}.rq .rqform{position:absolute;right:0;top:0;font-size:.875em;line-height:1.3;text-align:left}
 .rq table.rqt td{padding:1px 4px}.rq table.rqt td:nth-child(4){overflow-wrap:break-word}.rq table.rqa{margin-top:4mm}.rq table.rqa td,.rq table.rqa th{border:1px solid var(--paper-line)}
 .rq .rqsg{display:inline-block;text-align:left;white-space:nowrap}.rq .rqsg .c{text-align:center}
@@ -388,7 +390,7 @@ body.exec .hdr{padding-bottom:12px}
 .ord .osg{margin-left:55mm;width:100mm;text-align:center}.ord .odr{margin-top:auto;padding-top:6mm;text-align:right;font-size:.8em;line-height:1.25}
 .olist{margin:1mm 0 2mm 12mm}.oli{display:grid;grid-template-columns:8mm 1fr auto;column-gap:3mm;text-align:left}.oli>span:last-child{white-space:nowrap}
 .imemo .isgs{display:grid;grid-template-columns:1fr 1fr;gap:8mm 6mm;margin-top:10mm;break-inside:avoid}.imemo .isg{text-align:center;line-height:1.5}
-.imemo .inote{font-size:.85em;margin-top:8mm;line-height:1.35}.imemo .idots{border-bottom:1px dotted #000;height:9mm}
+.imemo .inote{font-size:1em;margin-top:8mm;line-height:1.35}.imemo .idots{border-bottom:1px dotted #000;height:9mm}
 .omr{display:grid;grid-template-columns:22px 1.3fr 1.6fr 1fr auto 34px;gap:8px;align-items:center;margin-bottom:6px}.omr.ro{display:block;font-size:14.5px;padding:4px 0}
 @media (max-width:760px){.omr{grid-template-columns:22px 1fr 1fr}.omr>select,.omr>label,.omr>button,.omr>span:empty{grid-column:auto}}
 .ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
@@ -437,7 +439,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">145</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">146</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -500,7 +502,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='145',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='146',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1431,10 +1433,10 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
     central.push(new Uint8Array(ch.buffer),nb);off+=30+nb.length+d.length}
   const cs=central.reduce((a,b)=>a+b.length,0);const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);
   return new Blob([...parts,...central,new Uint8Array(end.buffer)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
-function papersToDocx(html,cfg){const K=pgK(cfg);
+function papersToDocx(html,cfg,key){const K=pgK(cfg,key);
   const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);ES.last=0;applyESign(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
-  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx|cmp)\b/.test(p.className);const factorOf=p=>(official(p)?(F.ls==='16pt'?1:4/3):4/3)*K;
+  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx|cmp|p16)\b/.test(p.className);const factorOf=p=>(official(p)?(F.ls==='16pt'?1:4/3):4/3)*K;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
   const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
     return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
@@ -1458,7 +1460,7 @@ function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
   L.push(['certLetter','หนังสือนำส่งหนังสือรับรองผลงาน',()=>repCertLetter(p)],['cert','หนังสือรับรองผลงาน',()=>repCert(p)],['certDetail','รายละเอียดผลงานก่อสร้าง',()=>repCertDetail(p)]);
   return {L,err:r.errors.length?r.errors[0]:''}}
 function downloadWord(p,key){const {L}=wordDocsList(p);const d=L.find(x=>x[0]===key);if(!d)return;
-  const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2](),(S.settings.pageCfg||{})[key])}finally{S.settings.watermark=wmOld}
+  const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2](),(S.settings.pageCfg||{})[key],key)}finally{S.settings.watermark=wmOld}
   if(blob)esLog(p,'Word: '+d[1]);
   if(!blob){toast('ไม่มีข้อมูลสำหรับเอกสารนี้');return}
   const name=`${d[1]}_${String(p.inviteNo||p.projectNo||'').replace(/[\\/:*?"<>|]/g,'-')}.docx`;
@@ -1616,18 +1618,18 @@ function rReport(){
   <div class="rp-main" style="min-width:0;--gc:${cg.c}">
   <div class="card no-print" style="margin-bottom:10px;border-top:4px solid ${cg.c}"><div class="card-b row">
      <div class="rp-cur"><span class="tag">${esc(cg.n+'. '+cg.t)}</span><span>${esc(cl)}</span></div>
-     <span class="sp"></span><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div><div class="card-b row" style="padding-top:0">
+     <span class="sp"></span><button class="btn" id="btnXlsx" type="button" title="ดาวน์โหลดเอกสารนี้เป็นไฟล์ Excel">⤓ Excel</button><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div><div class="card-b row" style="padding-top:0">
      <label class="switch"><input type="checkbox" id="tgSign" ${st.showSign?'checked':''}> ช่องลงนาม</label>
      <label class="switch"><input type="checkbox" id="tgWm" ${st.watermark?'checked':''}> คำว่า “ตัวอย่าง”</label>
      ${canEdit()&&esReg().people.some(esActive)?`<label class="switch"><input type="checkbox" id="tgEs" ${ES.on&&ES.pid===p.id?'checked':''}> ลายเซ็นอิเล็กทรอนิกส์</label>`:''}${(p.esignLog||[]).length?'<button class="btn sm" id="esLogB" type="button">ประวัติลายเซ็น</button>':''}</div>
      <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>${reportSel==='eval'?evalPicker(p):''}
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
-     <details class="rp-x" id="pgSet" style="margin-top:8px" ${el._pg2?'open':''}><summary>📄 ตั้งค่าหน้ากระดาษ / ขนาดตัวอักษร (เอกสารนี้)${(c=>c&&(num(c.fs)&&num(c.fs)!==100||c.m)?' · <b style="color:var(--tab-on)">กำหนดเอง'+(num(c.fs)&&num(c.fs)!==100?' ตัวอักษร '+num(c.fs)+'%':'')+(c.m?' ขอบ '+[c.t,c.r,c.b,c.l].map(num).join('/')+' มม.':'')+'</b>':'')((st.pageCfg||{})[reportSel])}</summary>
-      <div class="pgset"><label class="f"><span>ขนาดตัวอักษร</span><select class="i" id="pgFs" style="width:150px">${[80,85,90,95,100,105,110,115,120].map(v=>`<option value="${v}" ${(num(((st.pageCfg||{})[reportSel]||{}).fs)||100)===v?'selected':''}>${v===100?'ตามแบบ (100%)':v+'%'}</option>`).join('')}</select></label>
+     <details class="rp-x" id="pgSet" style="margin-top:8px" ${el._pg2?'open':''}><summary>📄 ตั้งค่าหน้ากระดาษ / ขนาดตัวอักษร (เอกสารนี้)${(c=>c&&(pgK(c)!==1||c.m)?' · <b style="color:var(--tab-on)">กำหนดเอง'+(pgK(c)!==1?' ตัวอักษร '+Math.round(pgK(c)*pgBase(reportSel)*2)/2+' pt':'')+(c.m?' ขอบ '+[c.t,c.r,c.b,c.l].map(num).join('/')+' มม.':'')+'</b>':'')((st.pageCfg||{})[reportSel])}</summary>
+      <div class="pgset"><label class="f"><span>ขนาดตัวอักษร (พอยต์)</span><select class="i" id="pgFs" style="width:190px">${(()=>{const b=pgBase(reportSel),c=(st.pageCfg||{})[reportSel]||{};const cur=num(c.pt)||(num(c.fs)?Math.round(b*num(c.fs)/100*2)/2:b);return [12,13,14,15,16,17,18,20].concat(cur).filter((v,i,a)=>a.indexOf(v)===i).sort((x,y)=>x-y).map(v=>`<option value="${v}" ${cur===v?'selected':''}>${v} pt${v===b?' (ตามแบบ)':''}</option>`).join('')})()}</select></label>
        <label class="switch" style="margin-bottom:8px"><input type="checkbox" id="pgM" ${((st.pageCfg||{})[reportSel]||{}).m?'checked':''}> กำหนดระยะขอบเอง</label>
        <div class="mm" id="pgMM">${[['t','บน'],['b','ล่าง'],['l','ซ้าย'],['r','ขวา']].map(([k,l])=>`<label class="f"><span>${l} (มม.)</span><input class="i r" data-pgm="${k}" inputmode="decimal" value="${esc(String(((st.pageCfg||{})[reportSel]||{})[k]??''))}"></label>`).join('')}</div>
        <button class="btn sm" id="pgReset" type="button">คืนค่าตามแบบ</button></div>
-      <div class="muted" style="font-size:12.5px">ตั้งแยกเป็นรายเอกสาร ใช้กับทุกโครงการ · มีผลกับพรีวิว การพิมพ์/PDF และไฟล์ Word · ขนาดกระดาษ A4 (แนวตั้ง/แนวนอนตามแบบเอกสาร) · ตัวอักษรเล็กลงช่วยให้เอกสารยาวพอดีหน้า</div></details>
+      <div class="muted" style="font-size:12.5px">เอกสารทุกฉบับใช้ 16 pt (ปกสัญญา 18 pt) ตามแบบ · เปลี่ยนเฉพาะเอกสารนี้ได้ ใช้กับทุกโครงการ · มีผลกับพรีวิว การพิมพ์/PDF และไฟล์ Word · กระดาษ A4 (แนวตั้ง/แนวนอนตามแบบเอกสาร)</div></details>
      <details class="rp-x" style="margin-top:8px"><summary>เคล็ดลับการพิมพ์</summary><div class="muted" style="font-size:12.5px">ถ้ากระดาษมีวันที่/ชื่อเว็บที่หัวหรือท้ายหน้า: ในหน้าต่างพิมพ์ กด “การตั้งค่าเพิ่มเติม” แล้วเอาเครื่องหมายออกจาก “ส่วนหัวและส่วนท้าย” และตั้ง “ระยะขอบ” เป็น “ค่าเริ่มต้น” (ตั้งครั้งเดียว Chrome จะจำไว้) · ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></details></div></div>
   <details class="rp-x no-print" id="rpWord" ${el._w?'open':''}><summary>⤓ ดาวน์โหลดเป็นไฟล์ Word (แยกไฟล์)</summary>${wordPanel(p)}</details>
   <div class="rp-prev"><div class="paper-wrap" id="printArea">${ORD_REPORTS.some(x=>x[0]===reportSel)?ORD_REPORTS.find(x=>x[0]===reportSel)[2](p):reportSel==='req'?repReq(p):(reportSel==='all'?repReq(p):'')+(r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
@@ -1640,7 +1642,7 @@ function rReport(){
     const mm=$('#pgMM');const p0=$('#printArea .paper');const dm=p0?(()=>{const cs=getComputedStyle(p0),f=num(p0.style.getPropertyValue('--fk'))||1;const mmv=v=>Math.round(parseFloat(v)*f*25.4/96);return {t:mmv(cs.paddingTop),r:mmv(cs.paddingRight),b:mmv(cs.paddingBottom),l:mmv(cs.paddingLeft)}})():{};
     $$('[data-pgm]',el).forEach(i=>{if(i.value==='')i.placeholder=String(dm[i.dataset.pgm]??'')});mm.style.opacity=$('#pgM').checked?1:.5;
     let pend=0;const done=()=>{save();if(pend)return;pend=1;setTimeout(()=>{pend=0;if(tab==='report')rReport()},0)};
-    $('#pgFs').onchange=e=>{cfg().fs=+e.target.value;done()};
+    $('#pgFs').onchange=e=>{const c=cfg();delete c.fs;c.pt=+e.target.value;if(c.pt===pgBase(reportSel))delete c.pt;done()};
     $('#pgM').onchange=e=>{const c=cfg();c.m=e.target.checked;if(c.m)['t','r','b','l'].forEach(k=>{if(c[k]===undefined||c[k]==='')c[k]=dm[k]??15});done()};
     $$('[data-pgm]',el).forEach(i=>i.onchange=()=>{const c=cfg();c[i.dataset.pgm]=num(i.value);if(!c.m)c.m=true;done()});
     $('#pgReset').onclick=()=>{if(st.pageCfg)delete st.pageCfg[reportSel];done()}}}
@@ -1656,6 +1658,8 @@ function rReport(){
   $('#tgSign').onchange=e=>{st.showSign=e.target.checked;save();rReport()};
   $('#tgWm').onchange=e=>{st.watermark=e.target.checked;save();rReport()};
   $('#basisSel2').onchange=e=>{p.basis=e.target.value;touch(p);rReport()};
+  {const bx=$('#btnXlsx');if(bx&&!$('#printArea table'))bx.hidden=true}
+  $('#btnXlsx').onclick=()=>{esLog(p,'Excel: '+cl);downloadXlsx(p,reportSel,cl)};
   $('#btnPrint').onclick=()=>{esLog(p,'พิมพ์/PDF: '+((segs.find(x=>x[0]===reportSel)||[])[1]||reportSel));try{window.print()}catch(e){}};
 }
 const wm=()=>S.settings.watermark?' wm':'';
@@ -1851,7 +1855,7 @@ function repCert(p){const st=S.settings,F=letterFont(),c=certOf(p);const firm=p.
   return thDig(body(false)+(st.signCopy!==false?body(true):''))}
 function repCertDetail(p){const st=S.settings,c=certOf(p);const rows=certRows(p);let n=0;const tot=rows.filter(x=>!x.head&&!x.off).reduce((a,x)=>a+x.amt,0);
   const ds=c.dels.filter(d=>d.deliver||d.inspect||num(d.amount));
-  return `<div class="paper${wm()}"><h2 style="font-size:16pt">รายละเอียดผลงานก่อสร้าง</h2><div class="c" style="margin-bottom:2mm">${esc(p.name)}</div><div class="c">สัญญาที่ ${esc(p.contractNo||'....................')} ลงวันที่ ${D(p.contractDate)}</div>
+  return `<div class="paper p16${wm()}" style="${p16v()}"><h2 style="font-size:1.1em">รายละเอียดผลงานก่อสร้าง</h2><div class="c" style="margin-bottom:2mm">${esc(p.name)}</div><div class="c">สัญญาที่ ${esc(p.contractNo||'....................')} ลงวันที่ ${D(p.contractDate)}</div>
   <table class="pt" style="margin-top:10px"><thead><tr><th style="width:50px">ลำดับที่</th><th class="desc" style="width:auto">รายการ</th><th style="width:90px">ปริมาณงาน</th><th style="width:70px">หน่วย</th><th style="width:150px">รวมเป็นเงิน (บาท)</th></tr></thead><tbody>
    ${rows.map(x=>x.head?`<tr class="hd"><td></td><td colspan="4">${esc(x.head)}</td></tr>`:x.off?'':`<tr><td class="ct">${++n}</td><td>${escBr(x.name)}</td><td class="n">${fQ(x.q)}</td><td class="ct">${esc(x.unit)}</td><td class="n">${fmt(x.amt)}</td></tr>`).join('')}
    <tr class="tot"><td colspan="4" class="n">รวมเป็นเงินที่ต้องจ่ายจริงทั้งสิ้น</td><td class="n">${fmt(tot)}</td></tr></tbody></table>
@@ -1917,7 +1921,7 @@ const SIG_DUTY=['ผู้ปรับลด','ผู้ตรวจสอบ'];
 function sigDuty(x,i){return x&&x.duty!==undefined?String(x.duty).trim():(SIG_DUTY[i]||'')}
 function catSummary(p){return p.categories.map(c=>{const its=p.items.filter(i=>i.kind==='item'&&i.catId===c.id);return {c,cost:its.reduce((a,i)=>a+costOf(i),0),mid:its.reduce((a,i)=>a+midOf(p,i),0)}}).filter(x=>x.mid||x.c.kind!=='construction'||true)}
 function repMid(p,r,b){const cs=catSummary(p);
-  return `<div class="paper${wm()}"><h2>แบบสรุปราคากลางงานก่อสร้าง${esc(p.type&&p.type!=='อื่นๆ'?p.type:'')}</h2>
+  return `<div class="paper p16 land${wm()}" style="${p16v()}"><h2>แบบสรุปราคากลางงานก่อสร้าง${esc(p.type&&p.type!=='อื่นๆ'?p.type:'')}</h2>
   <div class="c">โครงการ ${esc(p.name)} งบประมาณ ${fmt(p.budget)} บาท เลขที่โครงการ ${esc(p.projectNo)}</div>
   <div style="margin-top:8px"><b>ตาราง :</b> สรุปราคากลางโครงการงานก่อสร้าง</div>
   <table class="pt"><thead><tr><th style="width:56px">ลำดับที่</th><th>รายการ</th><th style="width:60px">หน่วย</th><th>ค่างานต้นทุน</th><th>Factor F / Vat</th><th>ราคากลาง</th></tr></thead><tbody>
@@ -1952,7 +1956,7 @@ function repNego(p,r,b){const rn=b.key.startsWith('r:')?p.rounds.findIndex(x=>'r
     const ls=String(x.it.name||'').split('\n');
     return `<tr><td class="ct">${x.no}</td><td>${esc(ls[0])}</td><td class="ct">${esc(x.it.unit)}</td><td class="n">${fmt(x.q,3)}</td><td class="n">${fS(costOf(x.it))}</td><td class="n">${fmt(x.cat.factor,4)}</td><td class="n">${fS(x.m)}</td><td class="n"${sh}>${fS(x.line)}</td><td class="n"${sh}>${fmt(x.uDisp)}</td></tr>`+
       ls.slice(1).map(l=>`<tr><td></td><td>${esc(l)}</td><td></td><td></td><td></td><td></td><td></td><td${sh}></td><td${sh}></td></tr>`).join('')}).join('');
-  return `<div class="paper nego${wm()}"><h2>ตารางการขอต่อรองราคา${rn?` ครั้งที่ ${rn}`:''}</h2>
+  return `<div class="paper nego p16 land${wm()}" style="${p16v()}"><h2>ตารางการขอต่อรองราคา${rn?` ครั้งที่ ${rn}`:''}</h2>
   <div style="margin:8px 0 4px;font-weight:600">${esc(p.name)}</div>
   <div style="display:grid;grid-template-columns:170px 160px auto;gap:2px 0;margin-bottom:8px"><span>เลขที่โครงการ :</span><span class="n" style="text-align:right">${esc(p.projectNo)}</span><span></span>
    <span>งบประมาณ &nbsp;&nbsp;:</span><span style="text-align:right">${fmt(p.budget)}</span><span>&nbsp;บาท</span>
@@ -2358,8 +2362,9 @@ if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)){
   navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{reg.update();document.addEventListener('visibilitychange',()=>{if(!document.hidden)reg.update()})}).catch(()=>{})}
 
 /* fit the negotiation sheet onto one page when printing */
-function fitPrint(){const mm=96/25.4;$$('#printArea .paper.nego').forEach(el=>{el.style.zoom='';
-  const W=190,H=297-20-8;const ow=el.style.width,op=el.style.padding;el.style.width=W+'mm';el.style.padding='0';
+function p16v(){const F=letterFont();return `--lf:${F.lf.replace(/"/g,"'")};--ls:${F.ls}`}
+function fitPrint(){const mm=96/25.4;$$('#printArea .paper.nego').forEach(el=>{el.style.zoom='';if(el.classList.contains('fk'))return;const L=el.classList.contains('land');
+  const W=L?277:190,H=L?210-20-8:297-20-8;const ow=el.style.width,op=el.style.padding;el.style.width=W+'mm';el.style.padding='0';
   const h=el.scrollHeight/mm;el.style.width=ow;el.style.padding=op;if(h>H&&H/h>=0.8)el.style.zoom=(H/h).toFixed(3)})}
 function unfitPrint(){$$('#printArea .paper.nego').forEach(el=>el.style.zoom='')}
 let _docTitle='';addEventListener('beforeprint',()=>{_docTitle=document.title;document.title=' ';fitPrint()});addEventListener('afterprint',()=>{if(_docTitle)document.title=_docTitle;unfitPrint()});
@@ -3451,8 +3456,8 @@ function cmpFirm(n){n=String(n||'').trim();let m;
   if((m=n.match(/^ห้างหุ้นส่วนจำกัด\s*(.+)$/)))return 'หจก. '+m[1];
   if((m=n.match(/^ห้างหุ้นส่วนสามัญ\s*(.+)$/)))return 'หสม. '+m[1];return n}
 function cmpBS(v){v=num(v);if(!v)return ['',''];const t=v.toFixed(2).split('.');return [Number(t[0]).toLocaleString('en-US')+'.',t[1]]}
-function repCompare(p){const e=evOf(p);const B=(p.bidders||[]).filter(b=>b&&(b.name||num(b.price)));const t=totals(p);const mid=t.sumM?t.sumM/100:num(p.midDeclared);
-  const PER=B.length<=2?2:3;const chunks=[];for(let i=0;i<Math.max(1,B.length);i+=PER)chunks.push(B.slice(i,i+PER));
+function repCompare(p){const e=evOf(p);const B=bidRank(p).filter(b=>b&&(b.name||num(b.price)));const t=totals(p);const mid=t.sumM?t.sumM/100:num(p.midDeclared);
+  const PER=B.length<=3?3:2;const chunks=[];for(let i=0;i<Math.max(1,B.length);i+=PER)chunks.push(B.slice(i,i+PER));
   const items=(p.items||[]).filter(i=>i.kind==='item');
   const pname=String(p.name||'').trim();
   const D2=iso=>{const x=thDateParts(iso);return x?`${x.d}  ${x.m}  ${x.y}`:'..............................'};
@@ -3466,10 +3471,10 @@ function repCompare(p){const e=evOf(p);const B=(p.bidders||[]).filter(b=>b&&(b.n
     let body=`<tr><td></td><td></td><td></td><td class="d"><b>${esc(nameLines[0])}</b></td>${blank()}${money(p.budget)}${money(mid)}${cols.map(b=>b?money(b.price):blank()).join('')}</tr>`;
     items.forEach((it,ix)=>{const L=String(it.name||'').split('\n');body+=`<tr><td class="c">${ix+1}</td><td class="n">${fQ(num(it.qty))}</td><td class="c">${esc(it.unit||'')}</td><td class="d">${esc(L[0])}</td>${blank()}${blank()}${blank()}${cols.map(()=>blank()).join('')}</tr>`+
       L.slice(1).map(l=>`<tr><td></td><td></td><td></td><td class="d">${esc(l)}</td>${blank()}${blank()}${blank()}${cols.map(()=>blank()).join('')}</tr>`).join('')});
-    const F=letterFont();return `<div class="paper cmp land${wm()}" style="--lf:${F.lf};--ls:${F.ls==='16pt'?'15pt':'11.5pt'}">${head}${chunks.length>1?`<div class="cmp-pg">แผ่นที่ ${ci+1}/${chunks.length} · ผู้เสนอราคาลำดับที่ ${ci*PER+1}–${ci*PER+C.length} จาก ${B.length} ราย</div>`:''}
-     <table class="cmp-t"><colgroup><col style="width:11mm"><col style="width:16mm"><col style="width:14mm"><col><col style="width:13mm"><col style="width:8mm"><col style="width:26mm"><col style="width:8mm"><col style="width:26mm"><col style="width:8mm">${cols.map(()=>'<col style="width:26mm"><col style="width:8mm">').join('')}</colgroup>
-     <thead><tr><th rowspan="3">ลำดับ<br>ที่</th><th rowspan="2">จำนวน</th><th rowspan="3">หน่วย</th><th rowspan="3">รายการ</th><th colspan="2" rowspan="2">ราคาเดิม</th><th colspan="2" rowspan="2">วงเงินงบประมาณ</th><th colspan="2" rowspan="2">ราคากลาง</th><th colspan="${PER*2}">รายชื่อผู้เสนอราคา</th></tr>
-      <tr>${cols.map(b=>`<th colspan="2" class="fm">${b?esc(cmpFirm(b.name)):''}</th>`).join('')}</tr>
+    return `<div class="paper cmp land${wm()}" style="${p16v()}">${head}${chunks.length>1?`<div class="cmp-pg">แผ่นที่ ${ci+1}/${chunks.length} · ผู้เสนอราคาลำดับที่ ${ci*PER+1}–${ci*PER+C.length} จาก ${B.length} ราย (เรียงจากราคาต่ำไปสูง)</div>`:''}
+     <table class="cmp-t"><colgroup><col style="width:13mm"><col style="width:18mm"><col style="width:16mm"><col><col style="width:15mm"><col style="width:8mm"><col style="width:30mm"><col style="width:8mm"><col style="width:30mm"><col style="width:8mm">${cols.map(()=>'<col style="width:30mm"><col style="width:8mm">').join('')}</colgroup>
+     <thead><tr><th rowspan="3">ลำดับที่</th><th rowspan="2">จำนวน</th><th rowspan="3">หน่วย</th><th rowspan="3">รายการ</th><th colspan="2" rowspan="2">ราคาเดิม</th><th colspan="2" rowspan="2">วงเงินงบประมาณ</th><th colspan="2" rowspan="2">ราคากลาง</th><th colspan="${PER*2}">รายชื่อผู้เสนอราคา</th></tr>
+      <tr>${cols.map(b=>`<th colspan="2" class="fm">${b?`<span style="font-weight:400">ลำดับที่ ${b.rank}</span><br>`+esc(cmpFirm(b.name)):''}</th>`).join('')}</tr>
       <tr><th>ต้องการ</th>${Array(3+PER).fill('<th>บาท</th><th>สต.</th>').join('')}</tr></thead>
      <tbody>${body}<tr class="end"><td></td><td></td><td></td><td></td>${Array(3+PER).fill('<td></td><td></td>').join('')}</tr></tbody></table></div>`}).join('')}
 ORD_REPORTS.push(['cmp','บัญชีเปรียบเทียบราคา',p=>repCompare(p)]);
@@ -3513,6 +3518,40 @@ async function anxXlsx(p,kind){const X=await loadExcelJS();const wb=new X.Workbo
     row(['','(ลงชื่อ)..........................................................ผู้รับจ้าง'],{merge:'B',al:{1:'center'}});row(['',`(${sg||'                                        '})`],{merge:'B',al:{1:'center'}})}
   const buf=await wb.xlsx.writeBuffer();const name=`${TITLE[kind]}_${String(p.legacyId||p.projectNo||p.name||'').slice(0,40).replace(/[\\/:*?"<>|]/g,'-')}.xlsx`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+/* เอกสารใดก็ได้ในหน้ารายงาน → Excel (ข้อความ + ตารางพร้อมเซลล์ผสาน เส้นตาราง ตัวเลขมีจุลภาค) */
+async function papersToXlsx(html,title){const X=await loadExcelJS();const wb=new X.Workbook();
+  const host=document.createElement('div');host.style.cssText='position:absolute;left:-30000px;top:0;';host.innerHTML=html;document.body.appendChild(host);
+  try{const papers=[...host.querySelectorAll('.paper')];if(!papers.length)throw new Error('ไม่มีเอกสาร');const used=new Set();
+    const FONT={name:'TH SarabunIT๙',size:16};const thin={style:'thin'};const box={top:thin,left:thin,bottom:thin,right:thin};
+    const numOf=t=>{const m=String(t).trim();if(!/^-?\d{1,3}(,\d{3})*(\.\d+)?$|^-?\d+(\.\d+)?$/.test(m))return null;if(/^0\d/.test(m))return null;const v=Number(m.replace(/,/g,''));return isFinite(v)?{v,d:(m.split('.')[1]||'').length}:null};
+    papers.forEach((pp,pi)=>{let nm=(title+(papers.length>1?' '+(pi+1):'')).replace(/[\\/*?:\[\]]/g,'-').slice(0,31);while(used.has(nm))nm=nm.slice(0,28)+'~'+pi;used.add(nm);
+      const land=pp.classList.contains('land');const ws=wb.addWorksheet(nm,{pageSetup:{paperSize:9,orientation:land?'landscape':'portrait',fitToPage:true,fitToWidth:1,fitToHeight:0,margins:{left:0.5,right:0.4,top:0.5,bottom:0.5,header:0.2,footer:0.2}}});
+      const tables=[...pp.querySelectorAll('table')].filter(t=>!t.parentElement.closest('table'));
+      const gridOf=t=>{const G=[];[...t.rows].forEach((r,ri)=>{let c=0;G[ri]=G[ri]||[];[...r.cells].forEach(td=>{while(G[ri][c])c++;const cs=td.colSpan||1,rs=td.rowSpan||1;for(let i=0;i<rs;i++)for(let j=0;j<cs;j++){(G[ri+i]=G[ri+i]||[])[c+j]=(i||j)?1:td}c+=cs})});return G};
+      let NC=1,W=[],NEED=[];tables.forEach(t=>{const G=gridOf(t);NC=Math.max(NC,...G.map(r=>r.length));G.forEach(r=>r.forEach((td,ci)=>{if(td&&td!==1&&(td.colSpan||1)===1){W[ci]=Math.max(W[ci]||0,td.offsetWidth);const tx=td.innerText.trim();if(numOf(tx)||/^[\d,.]+$/.test(tx))NEED[ci]=Math.max(NEED[ci]||0,tx.length*1.15+2)}}))});
+      const pw=pp.clientWidth||800;if(NC===1)W=[pw];const sum=W.reduce((a,b)=>a+(b||60),0)||1;
+      ws.columns=Array.from({length:NC},(_,i)=>({width:Math.max(3,NEED[i]||0,Math.round((W[i]||60)/sum*(land?150:100)))}));
+      const totW=ws.columns.reduce((a,c)=>a+c.width,0);let R=1;
+      const textRow=(t,al,bold)=>{const r=ws.getRow(R);const c=r.getCell(1);c.value=t;c.font=Object.assign({},FONT,bold?{bold:true}:{});c.alignment={wrapText:true,vertical:'top',horizontal:al};if(NC>1)ws.mergeCells(R,1,R,NC);r.height=Math.max(22,Math.ceil(t.length/(totW*0.75))*22);R++};
+      const putTable=t=>{const G=gridOf(t);const start=R;G.forEach((row,ri)=>{row.forEach((td,ci)=>{if(!td||td===1)return;const txt=td.innerText.replace(/ /g,' ').trim();const cell=ws.getCell(start+ri,ci+1);const cs=getComputedStyle(td);const head=td.tagName==='TH';
+          const nv=head||td.classList.contains('s')?null:numOf(txt);if(nv){cell.value=nv.v;cell.numFmt=nv.d?'#,##0.'+'0'.repeat(nv.d):'#,##0'}else cell.value=txt;
+          cell.font=Object.assign({},FONT,(head||+cs.fontWeight>=600)?{bold:true}:{});cell.alignment={wrapText:true,vertical:head?'middle':'top',horizontal:head?'center':nv||cs.textAlign==='right'?'right':cs.textAlign==='center'?'center':'left'};
+          const rs=td.rowSpan||1,csn=td.colSpan||1;if(rs>1||csn>1){try{ws.mergeCells(start+ri,ci+1,start+ri+rs-1,ci+csn)}catch(e){}}
+          if(head)cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFECECEC'}}});
+        const r=ws.getRow(start+ri);let lines=1;row.forEach((td,ci)=>{if(td&&td!==1){const w=(ws.columns[ci]&&ws.columns[ci].width||10)*(td.colSpan||1);lines=Math.max(lines,td.innerText.split('\n').reduce((a,l)=>a+Math.max(1,Math.ceil(l.length/Math.max(3,w*0.5))),0))}});r.height=Math.min(409,lines*23)});
+        for(let ri=0;ri<G.length;ri++)for(let ci=0;ci<NC&&ci<Math.max(...G.map(r=>r.length));ci++)ws.getCell(start+ri,ci+1).border=box;R=start+G.length+1};
+      const walk=el=>{[...el.children].forEach(ch=>{const cs=getComputedStyle(ch);if(cs.display==='none'||ch.classList.contains('esig-note'))return;if(ch.tagName==='TABLE'){putTable(ch);return}if(ch.querySelector('table')){walk(ch);return}if(ch.tagName==='IMG')return;
+        const al=cs.textAlign==='center'?'center':(cs.textAlign==='right'||cs.textAlign==='end')?'right':'left';const bold=+cs.fontWeight>=600||/^H\d$/.test(ch.tagName);
+        if(/grid|flex/.test(cs.display)&&ch.children.length>1){const rows=new Map();[...ch.children].forEach(k=>{const tx=(k.innerText||'').replace(/\s+/g,' ').trim();if(!tx)return;const y=Math.round(k.getBoundingClientRect().top/4);rows.set(y,(rows.get(y)?rows.get(y)+'  ':'')+tx)});[...rows.keys()].sort((a,b)=>a-b).forEach(y=>textRow(rows.get(y),al,bold));return}
+        String(ch.innerText||'').replace(/ /g,' ').split('\n').map(x=>x.replace(/\s+$/,'')).filter(x=>x.trim()).forEach(x=>textRow(x,al,bold))})};
+      walk(pp)});
+    const buf=await wb.xlsx.writeBuffer();return new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+  finally{host.remove()}}
+async function downloadXlsx(p,key,label){const ANX={attach:'attach',boqform:'boqform',annex3_con:'con'};
+  try{toast('กำลังสร้างไฟล์ Excel…');if(ANX[key])return await anxXlsx(p,ANX[key]);
+    const html=$('#printArea').innerHTML;const blob=await papersToXlsx(html,label||'เอกสาร');const name=`${label||'เอกสาร'}_${String(p.inviteNo||p.projectNo||'').replace(/[\\/:*?"<>|]/g,'-')}.xlsx`;
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+  catch(e){toast(e.message||'สร้างไฟล์ Excel ไม่ได้')}}
 const ANX_DOCS={attach:['attach','รายละเอียดแนบท้ายประกาศ',1],boqform:['boqform','ใบแจ้งปริมาณงานและราคา (BOQ)',1],con:['annex3_con','ผนวก 3 บัญชีรายการก่อสร้าง',1],condetail:['condetail','รายละเอียดแนบท้ายสัญญา',0],dmg:['dmg','เอกสารกำหนดคะแนนความเสียหาย',0]};
 function anxCard(p,kinds,title){const A=anxOf(p);const con=kinds.includes('con');const light=anxKind(p)==='light';
   const ks=kinds.filter(k=>(k!=='condetail'||light)&&(k!=='dmg'||dmgOn(p)));
@@ -3936,8 +3975,9 @@ function fitTable(t){if(t.closest('.paper,.rp-prev,.modal')||t.classList.contain
     const wide=span>=Math.max(2,n-2)||(c===wi&&span===1)||!!td.querySelector('textarea');td.classList.toggle('stk-w',wide);td.style.flexBasis=wide?'':Math.max(70,Math.min(260,(W[c]||120)*(span>1?1:1)))+'px';c+=span})});
   t.classList.add('stk')}
 function fitTables(){$$('.view:not([hidden]) .tbl-wrap>table').forEach(fitTable);fitPapers()}
-function pgK(c){const k=c&&num(c.fs)?num(c.fs)/100:1;return Math.min(1.4,Math.max(0.6,k))}
-function pgApply(){const c=(S.settings.pageCfg||{})[reportSel];const k=pgK(c);$$('#printArea .paper').forEach(x=>{x.classList.toggle('fk',k!==1);x.style.setProperty('--fk',String(k));x.style.setProperty('--pw',x.classList.contains('land')?'297mm':'210mm');
+function pgBase(key){return key==='con_cover'?18:16}
+function pgK(c,key){key=key||reportSel;const b=pgBase(key);const pt=c&&num(c.pt)?num(c.pt):(c&&num(c.fs)?b*num(c.fs)/100:b);return Math.min(1.5,Math.max(0.6,pt/b))}
+function pgApply(){const c=(S.settings.pageCfg||{})[reportSel];const k=pgK(c,reportSel);$$('#printArea .paper').forEach(x=>{x.classList.toggle('fk',k!==1);x.style.setProperty('--fk',String(k));x.style.setProperty('--pw',x.classList.contains('land')?'297mm':'210mm');
   const m=!!(c&&c.m);x.classList.toggle('fm',m);if(m)['t','r','b','l'].forEach(z=>x.style.setProperty('--m'+z,num(c[z])+'mm'))})}
 function fitPapers(){const pv=$('#v-report:not([hidden]) .rp-prev');if(!pv)return;const W=pv.clientWidth-24;$$('#printArea .paper',pv).forEach(x=>{x.style.removeProperty('--pz');const w=x.offsetWidth*(x.classList.contains('fk')?num(x.style.getPropertyValue('--fk'))||1:1);if(w>W&&W>200)x.style.setProperty('--pz',(W/w).toFixed(4))})}
 {let fq=0;const sch=()=>{if(fq)return;fq=requestAnimationFrame(()=>{fq=0;try{fitTables()}catch(e){}})};addEventListener('resize',sch);new MutationObserver(sch).observe(document.querySelector('main.wrap'),{childList:true,subtree:true})}
