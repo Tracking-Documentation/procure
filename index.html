@@ -75,7 +75,13 @@ button,input,select,textarea{font:inherit;color:inherit}
 .calg .cd:nth-child(7n+1){border-left:0}.calg .cd.off{background:var(--bg)}.calg .cd.out{opacity:.45}
 .calg .cd .dn{font-size:13px;font-variant-numeric:tabular-nums;display:flex;justify-content:space-between;gap:4px}.calg .cd .dn small{color:var(--danger);font-size:11px;text-align:right;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .calg .cd.today .dn b{background:var(--brand);color:#fff;border-radius:999px;padding:0 7px}
-.ev1{font-size:12px;line-height:1.3;border-radius:5px;padding:2px 5px;border-left:3px solid;cursor:pointer;overflow:hidden;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;background:var(--soft)}.ttl .nw{white-space:nowrap}table.dfit{table-layout:fixed;width:100%;min-width:0}table.dfit td{overflow-wrap:break-word}.dl{display:flex;justify-content:space-between;gap:8px;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums}.dl small{color:var(--muted);font-size:12.5px}.dl+.dl{margin-top:3px}.acts2{display:grid;grid-template-columns:repeat(2,32px);gap:5px;justify-content:end}@media (max-width:1180px){table.dfit,table.dfit tbody,table.dfit tr,table.dfit td{display:block;width:auto!important}table.dfit thead,table.dfit colgroup{display:none}table.dfit tr{border-bottom:1px solid var(--line);padding:6px 0}table.dfit td{border:0!important;padding:4px 12px!important;text-align:left}.acts2{grid-template-columns:repeat(4,32px);justify-content:start}}table.t td .pill{white-space:nowrap}
+.ev1{font-size:12px;line-height:1.3;border-radius:5px;padding:2px 5px;border-left:3px solid;cursor:pointer;overflow:hidden;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;background:var(--soft)}.ttl .nw{white-space:nowrap}
+table.stk,table.stk>tbody,table.stk>tfoot{display:block;width:100%!important;min-width:0!important}table.stk>thead,table.stk>colgroup{display:none}
+table.stk>tbody>tr,table.stk>tfoot>tr{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 12px;padding:12px 14px;border-bottom:1px solid var(--line)}
+table.stk>tbody>tr>td,table.stk>tfoot>tr>td{display:block;flex:1 1 auto;min-width:0;max-width:100%;border:0!important;padding:0!important;text-align:left;box-sizing:border-box}
+table.stk>tbody>tr>td[data-l]:not([data-l=""])::before,table.stk>tfoot>tr>td[data-l]:not([data-l=""])::before{content:attr(data-l);display:block;font-size:12px;font-weight:400;color:var(--muted);margin-bottom:3px;white-space:nowrap}
+table.stk>tbody>tr>td.stk-w{flex:1 1 calc(100% - 64px)!important}table.stk td.stk-e{display:none!important}table.stk td.stk-no{flex:0 0 auto!important;min-width:30px;font-weight:700;color:var(--tab-on);align-self:flex-start;padding-top:4px!important}table.stk td.stk-no::before{display:none!important}table.stk td{background:transparent!important}table.stk tr.adj{background:color-mix(in srgb,var(--accent) 16%,transparent)}table.stk tr.hd{background:var(--soft)}table.stk tr.hd td.stk-w{font-weight:600}table.stk td.act,table.stk td:last-child:has(.icon-btn){flex:0 0 auto}
+table.stk input.i,table.stk select.i,table.stk textarea.i{width:100%!important;min-width:0!important}table.stk td{min-width:0!important}table.stk td>*{max-width:100%;box-sizing:border-box}@media (max-width:640px){.man-t{table-layout:fixed;width:100%}#v-manual .man .nw{white-space:normal}}table.stk td{white-space:normal!important}table.dfit{table-layout:fixed;width:100%;min-width:0}table.dfit td{overflow-wrap:break-word}.dl{display:flex;justify-content:space-between;gap:8px;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums}.dl small{color:var(--muted);font-size:12.5px}.dl+.dl{margin-top:3px}.acts2{display:grid;grid-template-columns:repeat(2,32px);gap:5px;justify-content:end}@media (max-width:1180px){table.dfit,table.dfit tbody,table.dfit tr,table.dfit td{display:block;width:auto!important}table.dfit thead,table.dfit colgroup{display:none}table.dfit tr{border-bottom:1px solid var(--line);padding:6px 0}table.dfit td{border:0!important;padding:4px 12px!important;text-align:left}.acts2{grid-template-columns:repeat(4,32px);justify-content:start}}table.t td .pill{white-space:nowrap}
 .ev1:hover{filter:brightness(.96)}
 .k-mid{border-color:#b45309}.k-tor{border-color:#0891b2}.k-open{border-color:#7a8a99}.k-dead{border-color:#d29a00;background:var(--warn-bg);color:var(--warn-ink)}.k-mtg{border-color:#2f7fd1}.k-ann{border-color:#7b52c7}
 .k-appeal{border-color:#c2410c}.k-sign{border-color:#20a160;background:var(--ok-bg);color:var(--ok-ink)}.k-signdue{border-color:var(--danger);background:var(--bad-bg);color:var(--bad-ink)}.k-signed{border-color:#20a160}.k-book{border-color:#0e8f8f}
@@ -415,7 +421,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">137</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">138</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -478,7 +484,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='137',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='138',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3837,6 +3843,18 @@ function esConsentHtml(x){const st=S.settings;const F=letterFont();const dir=ord
 function esConsentPrint(x){let h=$('#esPrint');if(!h){h=document.createElement('div');h.id='esPrint';document.body.appendChild(h)}h.innerHTML=esConsentHtml(x);
   document.body.classList.add('pes');setTimeout(()=>{try{window.print()}finally{setTimeout(()=>{document.body.classList.remove('pes');h.innerHTML=''},600)}},60)}
 
+/* ตารางที่กว้างเกินจอ → เรียงเป็นแถวซ้อน (ไม่ต้องเลื่อนแนวนอน) */
+function fitTable(t){if(t.closest('.paper,.rp-prev,.modal')||t.classList.contains('dfit'))return;const w=t.parentElement;if(!w||!w.clientWidth)return;
+  t.classList.remove('stk');if(t.scrollWidth<=w.clientWidth+2)return;
+  const grid=[];[...(t.tHead?t.tHead.rows:[])].forEach((r,ri)=>{let c=0;[...r.cells].forEach(th=>{grid[ri]=grid[ri]||[];while(grid[ri][c])c++;for(let i=0;i<(th.rowSpan||1);i++)for(let j=0;j<(th.colSpan||1);j++){(grid[ri+i]=grid[ri+i]||[])[c+j]=th}c+=th.colSpan||1})});
+  const n=Math.max(0,...grid.map(r=>r.length));const L=[];for(let c=0;c<n;c++){const ps=[];grid.forEach(r=>{const th=r[c];if(th&&!ps.includes(th))ps.push(th)});L[c]=ps.map(x=>x.textContent.trim()).filter(Boolean).join(' · ')}
+  const rows=[...t.querySelectorAll(':scope>tbody>tr,:scope>tfoot>tr')];const W=[];const fr=rows.find(r=>r.cells.length===n);if(fr)[...fr.cells].forEach((td,i)=>W[i]=td.offsetWidth);
+  const big=Math.max(0,...W);let wi=L.findIndex(x=>/รายการ|ชื่อ|ผู้เสนอราคา|ผู้ยื่น|โครงการ|รายละเอียด|เรื่อง/.test(x||''));if(wi<0)wi=W.indexOf(big);rows.forEach(r=>{let c=0;[...r.cells].forEach(td=>{const span=td.colSpan||1;td.dataset.l=span>1||!L[c]||L[c]===' '?'':L[c];
+    const tx=td.textContent.trim(),ctl=!!td.querySelector('input,select,textarea,button,img,.pill');td.classList.toggle('stk-e',!tx&&!ctl);td.classList.toggle('stk-no',c===0&&span===1&&!ctl&&/^\d{1,4}\.?$/.test(tx));
+    const wide=span>=Math.max(2,n-2)||(c===wi&&span===1)||!!td.querySelector('textarea');td.classList.toggle('stk-w',wide);td.style.flexBasis=wide?'':Math.max(70,Math.min(260,(W[c]||120)*(span>1?1:1)))+'px';c+=span})});
+  t.classList.add('stk')}
+function fitTables(){$$('.view:not([hidden]) .tbl-wrap>table').forEach(fitTable)}
+{let fq=0;const sch=()=>{if(fq)return;fq=requestAnimationFrame(()=>{fq=0;try{fitTables()}catch(e){}})};addEventListener('resize',sch);new MutationObserver(sch).observe(document.querySelector('main.wrap'),{childList:true,subtree:true})}
 window.__boq={es:()=>ES,esScan,parsePlanSheet:(...a)=>parsePlanSheet(...a),bidList:p=>bidList(p),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
 /* boot */
 try{$('#appVer').textContent=APP_VER;$('#appDate').textContent=APP_DATE}catch(e){}
