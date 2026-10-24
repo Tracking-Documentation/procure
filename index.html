@@ -270,7 +270,12 @@ body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:1
 .cmp-t{width:100%;border-collapse:collapse;table-layout:fixed}.cmp-t th,.cmp-t td{border:1px solid #000;padding:.4mm 1mm;vertical-align:top}.cmp-t td.n.b{padding-right:.4mm;letter-spacing:-.1px}.cmp-t th{font-weight:700;text-align:center;vertical-align:middle;font-size:.95em}
 .cmp-t tbody td{border-top:0;border-bottom:0;white-space:nowrap;overflow:hidden}.cmp-t tbody td.d{white-space:normal}.cmp-t tbody tr.end td{border-bottom:1px solid #000;height:3mm}.cmp-t td.n{text-align:right}.cmp-t td.c{text-align:center}.cmp-t td.s{text-align:left;padding-left:.6mm}.cmp-t td.b{padding-right:.3mm}.cmp-t th.fm{font-weight:600;line-height:1.15}
 @media print{.paper.cmp{width:297mm!important;height:209mm;min-height:0!important;padding:12mm 10mm 10mm!important;page:land}}
-@media screen{#printArea .paper{zoom:var(--pz,1)}}
+@media screen{#printArea .paper{zoom:var(--pz,1)}#printArea .paper.fk{zoom:calc(var(--pz,1) * var(--fk,1))}}
+@media print{#printArea .paper.fk{zoom:var(--fk,1)}}
+#printArea .paper.fk{width:calc(var(--pw) / var(--fk))!important;max-width:none!important}
+#printArea .paper.fk.letter{height:calc(296mm / var(--fk))!important}#printArea .paper.fk.cmp{height:calc(209mm / var(--fk))!important}#printArea .paper.fk.bx{min-height:calc(296.5mm / var(--fk))!important}
+#printArea .paper.fm{padding:calc(var(--mt) / var(--fk,1)) calc(var(--mr) / var(--fk,1)) calc(var(--mb) / var(--fk,1)) calc(var(--ml) / var(--fk,1))!important}
+.pgset{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;padding:10px 0 2px}.pgset label.f{min-width:0}.pgset .mm{display:flex;gap:6px;align-items:flex-end}.pgset .mm input{width:64px}
 .paper.wm::after{content:"ตัวอย่าง";position:absolute;inset:0;display:grid;place-items:center;font-size:120px;font-weight:700;color:rgba(200,0,0,.09);transform:rotate(-28deg);pointer-events:none}
 .paper tr,.paper .calc,.paper .box{break-inside:avoid}
 .paper thead{display:table-header-group}
@@ -432,7 +437,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">144</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">145</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -495,7 +500,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='144',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='145',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1426,15 +1431,15 @@ function zipStore(files){const enc=new TextEncoder();const parts=[],central=[];l
     central.push(new Uint8Array(ch.buffer),nb);off+=30+nb.length+d.length}
   const cs=central.reduce((a,b)=>a+b.length,0);const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);
   return new Blob([...parts,...central,new Uint8Array(end.buffer)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})}
-function papersToDocx(html){
+function papersToDocx(html,cfg){const K=pgK(cfg);
   const host=document.createElement('div');host.style.cssText='position:absolute;left:-20000px;top:0;';host.innerHTML=html;document.body.appendChild(host);ES.last=0;applyESign(host);
   const papers=[...host.querySelectorAll('.paper')];if(!papers.length){host.remove();return null}
-  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx|cmp)\b/.test(p.className);const factorOf=p=>official(p)?(F.ls==='16pt'?1:4/3):4/3;
+  const F=letterFont();const official=p=>/\b(letter|notice|ev|rq|ord|imemo|tor|anx|cmp)\b/.test(p.className);const factorOf=p=>(official(p)?(F.ls==='16pt'?1:4/3):4/3)*K;
   const B=new DocxBuilder(factorOf);const ps0=getComputedStyle(papers[0]);const pad=[ps0.paddingTop,ps0.paddingRight,ps0.paddingBottom,ps0.paddingLeft].map(v=>parseFloat(v)||0);B.maxW=DX.tw(papers[0].getBoundingClientRect().width-pad[1]-pad[3]);
   const body=papers.map((p,i)=>{const f=factorOf(p);const base=p.getBoundingClientRect().left+parseFloat(getComputedStyle(p).paddingLeft);
     return (i?'<w:p><w:r><w:br w:type="page"/></w:r></w:p>':'')+B.blocks(p,f,base)}).join('');
   host.remove();
-  const mg=pad.map(v=>Math.max(567,DX.tw(v)));
+  const mg=cfg&&cfg.m?['t','r','b','l'].map(k=>Math.round(num(cfg[k])*56.7)):pad.map(v=>Math.max(567,DX.tw(v)));
   const font='TH SarabunIT๙';
   const land=papers.every(x=>x.classList.contains('land'));
   const doc=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"><w:body>${body}<w:sectPr>${land?'<w:pgSz w:w="16838" w:h="11906" w:orient="landscape"/>':'<w:pgSz w:w="11906" w:h="16838"/>'}<w:pgMar w:top="${mg[0]}" w:right="${mg[1]}" w:bottom="${mg[2]}" w:left="${mg[3]}" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
@@ -1453,7 +1458,7 @@ function wordDocsList(p){const b=basisOf(p);const r=compute(p,b.price);
   L.push(['certLetter','หนังสือนำส่งหนังสือรับรองผลงาน',()=>repCertLetter(p)],['cert','หนังสือรับรองผลงาน',()=>repCert(p)],['certDetail','รายละเอียดผลงานก่อสร้าง',()=>repCertDetail(p)]);
   return {L,err:r.errors.length?r.errors[0]:''}}
 function downloadWord(p,key){const {L}=wordDocsList(p);const d=L.find(x=>x[0]===key);if(!d)return;
-  const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2]())}finally{S.settings.watermark=wmOld}
+  const wmOld=S.settings.watermark;S.settings.watermark=false;let blob;try{blob=papersToDocx(d[2](),(S.settings.pageCfg||{})[key])}finally{S.settings.watermark=wmOld}
   if(blob)esLog(p,'Word: '+d[1]);
   if(!blob){toast('ไม่มีข้อมูลสำหรับเอกสารนี้');return}
   const name=`${d[1]}_${String(p.inviteNo||p.projectNo||'').replace(/[\\/:*?"<>|]/g,'-')}.docx`;
@@ -1617,6 +1622,12 @@ function rReport(){
      ${canEdit()&&esReg().people.some(esActive)?`<label class="switch"><input type="checkbox" id="tgEs" ${ES.on&&ES.pid===p.id?'checked':''}> ลายเซ็นอิเล็กทรอนิกส์</label>`:''}${(p.esignLog||[]).length?'<button class="btn sm" id="esLogB" type="button">ประวัติลายเซ็น</button>':''}</div>
      <div class="card-b" style="padding-top:0"><div class="row"><span class="muted" style="font-size:13px">ราคาที่ใช้คำนวณ</span>${basisSelect(p,'basisSel2')}</div>${reportSel==='eval'?evalPicker(p):''}
      ${isContract&&(cp===null||toS(cp)!==r.T)?`<div class="note warn" style="margin-top:10px"><b>แบบแนบท้ายสัญญายังไม่ใช่ราคาที่ตกลง</b> — ${cp===null?'ยังไม่ได้บันทึกผลการต่อรองว่าผู้เสนอยินดี':'ราคาที่เลือกไม่ตรงกับราคาที่ตกลง '+fmt(cp)} · เลือก “อัตโนมัติ” หรือราคาที่ตกลงในช่องด้านบน</div>`:''}
+     <details class="rp-x" id="pgSet" style="margin-top:8px" ${el._pg2?'open':''}><summary>📄 ตั้งค่าหน้ากระดาษ / ขนาดตัวอักษร (เอกสารนี้)${(c=>c&&(num(c.fs)&&num(c.fs)!==100||c.m)?' · <b style="color:var(--tab-on)">กำหนดเอง'+(num(c.fs)&&num(c.fs)!==100?' ตัวอักษร '+num(c.fs)+'%':'')+(c.m?' ขอบ '+[c.t,c.r,c.b,c.l].map(num).join('/')+' มม.':'')+'</b>':'')((st.pageCfg||{})[reportSel])}</summary>
+      <div class="pgset"><label class="f"><span>ขนาดตัวอักษร</span><select class="i" id="pgFs" style="width:150px">${[80,85,90,95,100,105,110,115,120].map(v=>`<option value="${v}" ${(num(((st.pageCfg||{})[reportSel]||{}).fs)||100)===v?'selected':''}>${v===100?'ตามแบบ (100%)':v+'%'}</option>`).join('')}</select></label>
+       <label class="switch" style="margin-bottom:8px"><input type="checkbox" id="pgM" ${((st.pageCfg||{})[reportSel]||{}).m?'checked':''}> กำหนดระยะขอบเอง</label>
+       <div class="mm" id="pgMM">${[['t','บน'],['b','ล่าง'],['l','ซ้าย'],['r','ขวา']].map(([k,l])=>`<label class="f"><span>${l} (มม.)</span><input class="i r" data-pgm="${k}" inputmode="decimal" value="${esc(String(((st.pageCfg||{})[reportSel]||{})[k]??''))}"></label>`).join('')}</div>
+       <button class="btn sm" id="pgReset" type="button">คืนค่าตามแบบ</button></div>
+      <div class="muted" style="font-size:12.5px">ตั้งแยกเป็นรายเอกสาร ใช้กับทุกโครงการ · มีผลกับพรีวิว การพิมพ์/PDF และไฟล์ Word · ขนาดกระดาษ A4 (แนวตั้ง/แนวนอนตามแบบเอกสาร) · ตัวอักษรเล็กลงช่วยให้เอกสารยาวพอดีหน้า</div></details>
      <details class="rp-x" style="margin-top:8px"><summary>เคล็ดลับการพิมพ์</summary><div class="muted" style="font-size:12.5px">ถ้ากระดาษมีวันที่/ชื่อเว็บที่หัวหรือท้ายหน้า: ในหน้าต่างพิมพ์ กด “การตั้งค่าเพิ่มเติม” แล้วเอาเครื่องหมายออกจาก “ส่วนหัวและส่วนท้าย” และตั้ง “ระยะขอบ” เป็น “ค่าเริ่มต้น” (ตั้งครั้งเดียว Chrome จะจำไว้) · ถ้ากดพิมพ์แล้วไม่มีหน้าต่างพิมพ์ แสดงว่ากำลังเปิดในหน้าตัวอย่าง ให้ติดตั้งหรือเปิดแอปเต็มหน้าจอก่อน (กด Ctrl+P ได้เช่นกัน)</div></details></div></div>
   <details class="rp-x no-print" id="rpWord" ${el._w?'open':''}><summary>⤓ ดาวน์โหลดเป็นไฟล์ Word (แยกไฟล์)</summary>${wordPanel(p)}</details>
   <div class="rp-prev"><div class="paper-wrap" id="printArea">${ORD_REPORTS.some(x=>x[0]===reportSel)?ORD_REPORTS.find(x=>x[0]===reportSel)[2](p):reportSel==='req'?repReq(p):(reportSel==='all'?repReq(p):'')+(r.errors.length?`<div class="note bad">${r.errors.map(esc).join('<br>')}</div>`:
@@ -1624,6 +1635,15 @@ function rReport(){
   {const q=$('#rpQ');const fl=()=>{const v=q.value.trim().toLowerCase();el._q=q.value;$$('.rp-g',el).forEach(g=>{let n=0;g.querySelectorAll('.rp-it').forEach(b=>{const ok=!v||b.dataset.q.includes(v);b.hidden=!ok;if(ok)n++});g.hidden=!n})};q.oninput=fl;fl();
    $('#rpWord').ontoggle=e=>{el._w=e.target.open};const on=$('.rp-it.on',el),nv=$('.rp-nav',el);if(on&&nv&&!el._sc){nv.scrollTop=Math.max(0,on.offsetTop-nv.clientHeight/3)}el._sc=0}
   {let ps=document.getElementById('pageStyle');if(!ps){ps=document.createElement('style');ps.id='pageStyle';document.head.appendChild(ps)}ps.textContent='@page{size:A4;margin:0}';setTimeout(()=>{const P2=$$('#printArea .paper');if(P2.length&&P2.every(x=>x.classList.contains('land')))ps.textContent='@page{size:A4 landscape;margin:0}'},0)}
+  pgApply();
+  {const box=$('#pgSet');if(box){box.ontoggle=()=>{el._pg2=box.open};const cfg=()=>{st.pageCfg=st.pageCfg||{};return st.pageCfg[reportSel]=st.pageCfg[reportSel]||{}};
+    const mm=$('#pgMM');const p0=$('#printArea .paper');const dm=p0?(()=>{const cs=getComputedStyle(p0),f=num(p0.style.getPropertyValue('--fk'))||1;const mmv=v=>Math.round(parseFloat(v)*f*25.4/96);return {t:mmv(cs.paddingTop),r:mmv(cs.paddingRight),b:mmv(cs.paddingBottom),l:mmv(cs.paddingLeft)}})():{};
+    $$('[data-pgm]',el).forEach(i=>{if(i.value==='')i.placeholder=String(dm[i.dataset.pgm]??'')});mm.style.opacity=$('#pgM').checked?1:.5;
+    let pend=0;const done=()=>{save();if(pend)return;pend=1;setTimeout(()=>{pend=0;if(tab==='report')rReport()},0)};
+    $('#pgFs').onchange=e=>{cfg().fs=+e.target.value;done()};
+    $('#pgM').onchange=e=>{const c=cfg();c.m=e.target.checked;if(c.m)['t','r','b','l'].forEach(k=>{if(c[k]===undefined||c[k]==='')c[k]=dm[k]??15});done()};
+    $$('[data-pgm]',el).forEach(i=>i.onchange=()=>{const c=cfg();c[i.dataset.pgm]=num(i.value);if(!c.m)c.m=true;done()});
+    $('#pgReset').onclick=()=>{if(st.pageCfg)delete st.pageCfg[reportSel];done()}}}
   {const n=applyESign($('#printArea'));const box=document.createElement('div');if(ES.on&&ES.pid===p.id){box.className='note '+(n?(ES.reason==='urgent'?'warn':'ok'):'bad');box.style.marginTop='10px';
     box.innerHTML=n?`<b>ใส่ลายเซ็นอิเล็กทรอนิกส์ ${n} จุด</b> — ${esc(ES_REASON[ES.reason])}${ES.detail?' · '+esc(ES.detail):''} · <a href="#" id="esEdit">เปลี่ยนเหตุผล/ผู้ลงนาม</a>`:'<b>เอกสารนี้ไม่มีชื่อผู้ที่ให้ความยินยอม</b> — ไม่ได้ใส่ลายเซ็น';el.querySelector('.card .card-b+.card-b').appendChild(box)}
    const tg=$('#tgEs');const open=()=>esDialog(p,$('#printArea'),ok=>{if(ok){const u=me()||{};p.esignLog=(p.esignLog||[]).concat({at:nowStr(),by:u.name||u.username||'(เครื่องนี้)',act:'เปิดใช้ลายเซ็น',reason:ES.reason,detail:ES.detail,names:esPeopleOn().map(x=>x.name)}).slice(-300);touch(p)}rReport()});
@@ -3916,7 +3936,10 @@ function fitTable(t){if(t.closest('.paper,.rp-prev,.modal')||t.classList.contain
     const wide=span>=Math.max(2,n-2)||(c===wi&&span===1)||!!td.querySelector('textarea');td.classList.toggle('stk-w',wide);td.style.flexBasis=wide?'':Math.max(70,Math.min(260,(W[c]||120)*(span>1?1:1)))+'px';c+=span})});
   t.classList.add('stk')}
 function fitTables(){$$('.view:not([hidden]) .tbl-wrap>table').forEach(fitTable);fitPapers()}
-function fitPapers(){const pv=$('#v-report:not([hidden]) .rp-prev');if(!pv)return;const W=pv.clientWidth-24;$$('#printArea .paper',pv).forEach(x=>{x.style.removeProperty('--pz');const w=x.offsetWidth;if(w>W&&W>200)x.style.setProperty('--pz',(W/w).toFixed(4))})}
+function pgK(c){const k=c&&num(c.fs)?num(c.fs)/100:1;return Math.min(1.4,Math.max(0.6,k))}
+function pgApply(){const c=(S.settings.pageCfg||{})[reportSel];const k=pgK(c);$$('#printArea .paper').forEach(x=>{x.classList.toggle('fk',k!==1);x.style.setProperty('--fk',String(k));x.style.setProperty('--pw',x.classList.contains('land')?'297mm':'210mm');
+  const m=!!(c&&c.m);x.classList.toggle('fm',m);if(m)['t','r','b','l'].forEach(z=>x.style.setProperty('--m'+z,num(c[z])+'mm'))})}
+function fitPapers(){const pv=$('#v-report:not([hidden]) .rp-prev');if(!pv)return;const W=pv.clientWidth-24;$$('#printArea .paper',pv).forEach(x=>{x.style.removeProperty('--pz');const w=x.offsetWidth*(x.classList.contains('fk')?num(x.style.getPropertyValue('--fk'))||1:1);if(w>W&&W>200)x.style.setProperty('--pz',(W/w).toFixed(4))})}
 {let fq=0;const sch=()=>{if(fq)return;fq=requestAnimationFrame(()=>{fq=0;try{fitTables()}catch(e){}})};addEventListener('resize',sch);new MutationObserver(sch).observe(document.querySelector('main.wrap'),{childList:true,subtree:true})}
 /* ระเบียบ กค. ข้อ 26 วรรคสาม: ห้ามแต่งตั้งกรรมการพิจารณาผลเป็นกรรมการตรวจรับพัสดุในการจัดซื้อจัดจ้างครั้งเดียวกัน */
 function commDup(p){if(!p)return [];const ev=new Map();(p.committee||[]).forEach(m=>{if(m&&m.name&&esKey(m.name))ev.set(esKey(m.name),m)});const O=p.orders||{};
