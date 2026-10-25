@@ -3,6 +3,8 @@
  * วิธีติดตั้ง: ดูไฟล์ README ในโฟลเดอร์ gas หรือคู่มือในแอป หน้าตั้งค่า
  *
  * ขั้นตอนเดียวที่ต้องแก้ในไฟล์นี้: เปลี่ยน ADMIN_KEY ด้านล่างเป็นรหัสลับของหน่วยงาน
+ * (ยาวอย่างน้อย 16 ตัวอักษร ผสมตัวอักษรและตัวเลข · ถ้าสั้นกว่านี้ ระบบจะปิดการใช้รหัสนี้ ใช้ได้เฉพาะบัญชีผู้ใช้)
+ * ห้ามนำไฟล์ที่ใส่รหัสจริงแล้วขึ้น GitHub · ใส่รหัสจริงเฉพาะใน Apps Script เท่านั้น
  * (ต้องตรงกับช่อง "รหัสเจ้าหน้าที่" ในหน้าตั้งค่าของแอป · ใช้ตอนสร้างบัญชีผู้ดูแลระบบครั้งแรกด้วย)
  *
  * ไฟล์นี้ยังเป็นเซิร์ฟเวอร์บัญชีผู้ใช้และข้อมูลกลาง: ชีต users (รหัสผ่านเก็บแบบแฮช อ่านย้อนกลับไม่ได้)
@@ -13,6 +15,9 @@ const ADMIN_KEY = 'เปลี่ยนเป็นรหัสลับขอ�
 const TZ = 'Asia/Bangkok';
 const ROOT_FOLDER = 'เอกสารจองลงนามสัญญา';
 const MAX_FILE_MB = 10;
+/* ลบไฟล์เอกสารที่บริษัทแนบตอนจองอัตโนมัติ เมื่อเก่ากว่าจำนวนวันนี้ (0 = ไม่ลบ) · กำหนดตามที่หน่วยงานเห็นชอบ แล้วรัน setupPurgeTrigger ครั้งเดียว */
+const FILE_RETAIN_DAYS = 0;
+const KEY_MAX_FAILS = 10, KEY_LOCK_SEC = 900;
 /* หลักประกันสัญญา ตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 ข้อ 167 */
 /* หนังสือค้ำประกันต้องขอจากธนาคาร/บริษัทเงินทุนก่อน จึงแนบภายหลังได้ */
 const SEC_LATER = ['หนังสือค้ำประกันของธนาคารภายในประเทศ', 'หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)', 'หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์'];
@@ -135,7 +140,7 @@ function renumber_() {
 }
 
 /* ---------------- บัญชีผู้ใช้ (ผู้ดูแลสร้างให้) ---------------- */
-const SESSION_DAYS = 30;
+const SESSION_DAYS = 7;
 const ROLES = ['admin', 'editor', 'viewer'];
 function secret_() {
   const props = PropertiesService.getScriptProperties();
@@ -221,7 +226,7 @@ function storeWrite_(old, id, data, deleted, user) {
 function handleAuth_(d) {
   const a = d.action;
   if (a === 'auth.init') {
-    if (d.key !== ADMIN_KEY) throw new Error('รหัสเจ้าหน้าที่ (ADMIN_KEY) ไม่ถูกต้อง');
+    keyCheck_(d.key);
     if (users_().some(u => u.role === 'admin' && u.active === 'Y')) throw new Error('มีบัญชีผู้ดูแลระบบอยู่แล้ว ให้เข้าสู่ระบบด้วยบัญชีนั้น');
     const username = normUser_(d.username);
     if (!/^[a-z0-9._-]{3,32}$/.test(username)) throw new Error('ชื่อผู้ใช้ใช้ a-z 0-9 . _ - ยาว 3-32 ตัว');
@@ -339,10 +344,19 @@ function inDocRoot_(file) {
   return false;
 }
 /* เจ้าหน้าที่ที่เข้าสู่ระบบแล้ว ใช้คำสั่งจองลงนามสัญญาได้โดยไม่ต้องรู้ ADMIN_KEY */
+function keyStrong_() { return ADMIN_KEY.length >= 16 && ADMIN_KEY !== 'เปลี่ยนเป็นรหัสลับของหน่วยงาน'; }
+/* ตรวจรหัสเจ้าหน้าที่ · กรอกผิดเกิน KEY_MAX_FAILS ครั้ง ล็อก KEY_LOCK_SEC วินาที · รหัสสั้นหรือยังไม่เปลี่ยน = ปิดใช้ */
+function keyCheck_(key) {
+  if (!keyStrong_()) throw new Error('ADMIN_KEY ใน Code.gs สั้นเกินไปหรือยังไม่ได้เปลี่ยน (ต้องยาวอย่างน้อย 16 ตัว) จึงปิดการใช้รหัสเจ้าหน้าที่ · ใช้การเข้าสู่ระบบด้วยบัญชีผู้ใช้แทน');
+  const c = CacheService.getScriptCache(), n = +c.get('keyfail') || 0;
+  if (n >= KEY_MAX_FAILS) throw new Error('กรอกรหัสเจ้าหน้าที่ผิดหลายครั้ง กรุณารอ 15 นาทีแล้วลองใหม่');
+  if (String(key || '') !== ADMIN_KEY) { c.put('keyfail', String(n + 1), KEY_LOCK_SEC); throw new Error('รหัสเจ้าหน้าที่ไม่ถูกต้อง'); }
+}
+/* เจ้าหน้าที่ที่เข้าสู่ระบบแล้ว ใช้คำสั่งจองลงนามสัญญาได้โดยไม่ต้องรู้ ADMIN_KEY */
 function staffOk_(key, token) {
-  if (key === ADMIN_KEY) return;
   if (token) { needEdit_(auth_(token)); return; }
-  throw new Error('รหัสเจ้าหน้าที่ไม่ถูกต้อง');
+  if (key) { keyCheck_(key); return; }
+  throw new Error('กรุณาเข้าสู่ระบบ หรือใส่รหัสเจ้าหน้าที่');
 }
 
 /* ---------------- web endpoints ---------------- */
@@ -378,7 +392,13 @@ function doPost(e) {
       catch (err) { return json_({ ok: false, error: String(err.message || err), relogin: !!err.relogin }); }
       finally { if (lk) lk.releaseLock(); }
     }
+    if (d.action === 'ping' && d.token && !d.key) { auth_(d.token); return json_({ ok: true, settings: settings_() }); }
     staffOk_(d.key, d.token);
+    if (d.action === 'ping') return json_({ ok: true, settings: settings_() });
+    if (d.action === 'list') {
+      const b = rows_('bookings').filter(x => !d.p || x.projectId === d.p).map(x => { delete x._row; x.files = x.files ? JSON.parse(x.files) : []; return x; });
+      return json_({ ok: true, bookings: b, settings: settings_() });
+    }
     const lock = LockService.getScriptLock(); lock.waitLock(20000);
     try {
       if (d.action === 'upsertProject') {
@@ -527,5 +547,23 @@ function setup() {
   sheet_('projects'); sheet_('bookings'); sheet_('settings'); sheet_('users'); sheet_('store'); secret_(); docRoot_();
   Logger.log('โควตาอีเมลวันนี้: ' + MailApp.getRemainingDailyQuota());
   const it = DriveApp.getFoldersByName(ROOT_FOLDER); if (!it.hasNext()) DriveApp.createFolder(ROOT_FOLDER);
+  if (!keyStrong_()) Logger.log('คำเตือน: ADMIN_KEY สั้นกว่า 16 ตัวหรือยังไม่ได้เปลี่ยน · การใช้รหัสเจ้าหน้าที่จะถูกปิด');
   Logger.log('พร้อมใช้งาน · ขั้นต่อไป: Deploy > New deployment > Web app');
+}
+
+/* ลบ (ย้ายไปถังขยะ) ไฟล์ที่บริษัทแนบตอนจอง ที่เก่ากว่า FILE_RETAIN_DAYS วัน · ข้อมูลการจองในชีตยังอยู่ */
+function purgeOldBookingFiles() {
+  if (!FILE_RETAIN_DAYS) { Logger.log('FILE_RETAIN_DAYS = 0 · ไม่ลบไฟล์'); return; }
+  const cut = Date.now() - FILE_RETAIN_DAYS * 864e5;
+  const it = DriveApp.getFoldersByName(ROOT_FOLDER); if (!it.hasNext()) return;
+  let n = 0;
+  const walk = f => { const fs = f.getFiles(); while (fs.hasNext()) { const x = fs.next(); if (x.getDateCreated().getTime() < cut) { x.setTrashed(true); n++; } } const sub = f.getFolders(); while (sub.hasNext()) walk(sub.next()); };
+  walk(it.next());
+  Logger.log('ย้ายไฟล์ไปถังขยะ ' + n + ' ไฟล์');
+}
+/* รันครั้งเดียว: ตั้งให้ purgeOldBookingFiles ทำงานทุกวันเวลาประมาณ 02.00 น. */
+function setupPurgeTrigger() {
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'purgeOldBookingFiles').forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('purgeOldBookingFiles').timeBased().everyDays(1).atHour(2).create();
+  Logger.log('ตั้งเวลาลบไฟล์อัตโนมัติแล้ว');
 }
