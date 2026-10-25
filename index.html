@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</title>
+<title>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="application-name" content="ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่">
 <meta name="description" content="ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่ (Construction Contract Tracking & Documentation System · Krabi Highway District) — ตั้งแต่ขั้นเตรียมการ พิจารณาผล ต่อรองราคา ลงนามสัญญา จนถึงหนังสือรับรองผลงาน">
@@ -440,7 +440,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">151</span> · <span id="appDate">25 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">152</span> · <span id="appDate">25 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -503,7 +503,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='151',APP_DATE='25 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='152',APP_DATE='25 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -512,7 +512,7 @@ const SRV_BAKED='https://script.google.com/macros/s/AKfycbz2w8so4_kfOWz0EPjzWhB3
 const SRVK=LS+'.server',AUTHK=LS+'.auth',SYNK=LS+'.sync',LOCAL_SET=['gasKey','gasUrl','theme','uiScale'];
 const ROLE_TH={admin:'ผู้ดูแลระบบ',editor:'แก้ไขได้',viewer:'ดูได้อย่างเดียว'};
 try{const q=new URLSearchParams(location.search).get('server');if(q&&/^https:\/\/script\.google\.com\/\S+\/exec$/.test(q)){localStorage.setItem(SRVK,q);history.replaceState(null,'',location.pathname)}}catch(e){}
-const DEF_SETTINGS={uiScale:1.15,warrantyYears:2,secExtraDays:30,gasUrl:'',gasKey:'',contractFormat:'{n}/{yyyy}',contractStart:'1',contractFY:'',slotStart:'09:00',slotEnd:'15:30',slotMinutes:30,bookDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคล (ออกให้ไม่เกิน 6 เดือน)\nหนังสือมอบอำนาจ (กรณีมอบอำนาจให้ลงนามในสัญญาแทน)\nสำเนาบัตรประจำตัวประชาชนของผู้ลงนามในสัญญา / ผู้รับมอบอำนาจ\nหลักประกันสัญญา (สำเนาหนังสือค้ำประกัน / เช็คหรือดราฟท์ / พันธบัตร · เงินสดไม่ต้องแนบ · หนังสือค้ำประกันแนบภายหลังได้)\nสำเนาหน้าสมุดบัญชีธนาคาร\nเอกสารอื่น ๆ (ถ้ามี)',bookNote:'วันลงนาม กรุณานำหลักประกันสัญญาฉบับจริง ค่าอากรแสตมป์ และตรายางบริษัท (ถ้ามี) มาด้วย',agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,orderPrefix:'สทล.17 ขท.กระบี่.1/',toShort:'ผอ.ขท.กระบี่',regionTo:'ผส.ทล.17',regionPrefix:'สทล.17 ขท.กระบี่.1(พ)/',approveLinesBig:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- ขออนุมัติรับราคาและขออนุมัติสั่งจ้างจาก ผส.ทล.17 ต่อไป',regionLaws:'พระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560\nระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560 กฎกระทรวงอื่นๆ ที่เกี่ยวข้อง ในการดำเนินการสั่งการ ทุกวิธี ทุกขั้นตอน เต็มวงเงินที่ได้รับการอนุมัติ\nอำนาจอนุมัติเป็นของ ผส.ทล.17 ตามนัยคำสั่งกรมทางหลวง ที่ บ.1/115/2560 ลงวันที่ 29 สิงหาคม 2560 เรื่อง มอบอำนาจการสั่งซื้อสั่งจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',regionAtts:'ประกาศประกวดราคาจำนวน 1 ชุด\nราคากลางจำนวน 1 ชุด\nเอกสารเสนอราคาจากระบบอิเล็กทรอนิกส์จำนวน 1 ชุด\nรายงานสรุปผลการตรวจสอบเอกสารจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาจำนวน 1 ชุด\nหนังสือปรับลดราคาบริษัทและบัญชีเปรียบเทียบราคาจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาของคณะกรรมการจำนวน 1 ชุด',directorFull:'ผู้อำนวยการแขวงทางหลวงกระบี่',signCopy:true,signDraft:'........../ร่าง/ทาน\n........../พิมพ์\n........../ตรวจ',signDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคลฉบับปัจจุบันหรือออกให้ไม่เกิน 6 เดือน\nหนังสือมอบอำนาจ ในกรณีมอบอำนาจให้ลงนามในสัญญาแทน\nสำเนาหน้าสมุดบัญชีธนาคาร',draftLine:'........../ร่าง/ทาน\n........../พิมพ์\n........../ตรวจ',regionCopy:true,toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
+const DEF_SETTINGS={idleMinutes:30,uiScale:1.15,warrantyYears:2,secExtraDays:30,gasUrl:'',gasKey:'',contractFormat:'{n}/{yyyy}',contractStart:'1',contractFY:'',slotStart:'09:00',slotEnd:'15:30',slotMinutes:30,bookDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคล (ออกให้ไม่เกิน 6 เดือน)\nหนังสือมอบอำนาจ (กรณีมอบอำนาจให้ลงนามในสัญญาแทน)\nสำเนาบัตรประจำตัวประชาชนของผู้ลงนามในสัญญา / ผู้รับมอบอำนาจ\nหลักประกันสัญญา (สำเนาหนังสือค้ำประกัน / เช็คหรือดราฟท์ / พันธบัตร · เงินสดไม่ต้องแนบ · หนังสือค้ำประกันแนบภายหลังได้)\nสำเนาหน้าสมุดบัญชีธนาคาร\nเอกสารอื่น ๆ (ถ้ามี)',bookNote:'วันลงนาม กรุณานำหลักประกันสัญญาฉบับจริง ค่าอากรแสตมป์ และตรายางบริษัท (ถ้ามี) มาด้วย',agency:'กรมทางหลวง โดย แขวงทางหลวงกระบี่',pctMode:'trunc2',roundMode:'total',docPrefix:'คค 06100.1 (พ)/',addr1:'แขวงทางหลวงกระบี่ กรมทางหลวง',addr2:'ถนนอุตรกิจ ตำบลปากน้ำ อำเภอเมืองกระบี่',addr3:'จังหวัดกระบี่ 81000',office:'แขวงทางหลวงกระบี่',unit:'งานพัสดุและสัญญา',tel:'0 7561 1291',fax:'0 7561 2091',explainPct:15,orderPrefix:'สทล.17 ขท.กระบี่.1/',toShort:'ผอ.ขท.กระบี่',regionTo:'ผส.ทล.17',regionPrefix:'สทล.17 ขท.กระบี่.1(พ)/',approveLinesBig:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- ขออนุมัติรับราคาและขออนุมัติสั่งจ้างจาก ผส.ทล.17 ต่อไป',regionLaws:'พระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560\nระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ.2560 กฎกระทรวงอื่นๆ ที่เกี่ยวข้อง ในการดำเนินการสั่งการ ทุกวิธี ทุกขั้นตอน เต็มวงเงินที่ได้รับการอนุมัติ\nอำนาจอนุมัติเป็นของ ผส.ทล.17 ตามนัยคำสั่งกรมทางหลวง ที่ บ.1/115/2560 ลงวันที่ 29 สิงหาคม 2560 เรื่อง มอบอำนาจการสั่งซื้อสั่งจ้างตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 และระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560',regionAtts:'ประกาศประกวดราคาจำนวน 1 ชุด\nราคากลางจำนวน 1 ชุด\nเอกสารเสนอราคาจากระบบอิเล็กทรอนิกส์จำนวน 1 ชุด\nรายงานสรุปผลการตรวจสอบเอกสารจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาจำนวน 1 ชุด\nหนังสือปรับลดราคาบริษัทและบัญชีเปรียบเทียบราคาจำนวน 1 ชุด\nรายงานสรุปผลการพิจารณาของคณะกรรมการจำนวน 1 ชุด',directorFull:'ผู้อำนวยการแขวงทางหลวงกระบี่',signCopy:true,signDraft:'........../ร่าง/ทาน\n........../พิมพ์\n........../ตรวจ',signDocs:'สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคลฉบับปัจจุบันหรือออกให้ไม่เกิน 6 เดือน\nหนังสือมอบอำนาจ ในกรณีมอบอำนาจให้ลงนามในสัญญาแทน\nสำเนาหน้าสมุดบัญชีธนาคาร',draftLine:'........../ร่าง/ทาน\n........../พิมพ์\n........../ตรวจ',regionCopy:true,toSum:'ผอ.ขท.กระบี่ ผ่าน หัวหน้าเจ้าหน้าที่',officeShort:'ขท.กระบี่',place:'ห้องประชุมแขวงทางหลวงกระบี่',director:'',directorPos:'ผอ.ขท.กระบี่',approveTo:'หัวหน้าเจ้าหน้าที่, คณะกรรมการฯ, หพ.ขท.',approveLines:'- เห็นชอบตามมติคณะกรรมการฯ และดำเนินการตามระเบียบฯ\n- อนุมัติรับราคาฯ และอนุมัติสั่งจ้างต่อไป\n- คณะกรรมการกำหนดราคาชี้แจงรายละเอียดการคำนวณราคากลาง เพื่อแจ้งให้ สตง.ทราบต่อไป',authority:'ตามคำสั่งกรมทางหลวง ที่ บ.1/124/2560 ลงวันที่ 29 สิงหาคม 2560 อธิบดีกรมทางหลวงมอบอำนาจการให้ความเห็นชอบ ในการรายงานผลการพิจารณาของคณะกรรมการพิจารณาผลประกวดราคาอิเล็กทรอนิกส์เป็นอำนาจของหัวหน้าหน่วยงานที่ดำเนินการออกประกาศด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding) ในเบื้องต้นหลังกระบวนการเสนอราคาสิ้นสุดลง และสามารถคืนหลักประกันการเสนอราคารายอื่น ๆ ได้ยกเว้นผู้เสนอราคาที่คัดเลือกไว้ 3 ลำดับแรก จะคืนให้ต่อเมื่อได้ทำสัญญาหรือผู้เสนอราคาได้พ้นจากข้อผูกพันแล้ว',holidays:'2026-01-01 2026-04-06 2026-04-13 2026-04-14 2026-04-15 2026-05-01 2026-05-04 2026-06-03 2026-07-28 2026-08-12 2026-10-13 2026-10-23 2026-12-07 2026-12-10 2026-12-31 2027-01-01 2027-04-06 2027-04-13 2027-04-14 2027-04-15 2027-05-04 2027-06-03 2027-07-28 2027-08-12 2027-10-13 2027-10-23 2027-12-06 2027-12-10 2027-12-31',
   signers:[{role:'เจ้าหน้าที่',name:'',position:''},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'',position:'ประธานกรรมการ'}],
   showSign:true,watermark:false,theme:'light'};
 let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
@@ -2223,6 +2223,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <label class="f s4"><span>รหัสหนังสือ (ก่อนเลขที่)</span><input class="i" data-sl="docPrefix" value="${esc(st.docPrefix)}"></label>
    <label class="f s4"><span>ชื่อหน่วยงานในเนื้อหนังสือ</span><input class="i" data-sl="office" value="${esc(st.office)}"></label>
    <label class="f s4"><span>ขอให้ชี้แจงเมื่อต่ำกว่าราคากลางตั้งแต่ (%)</span><input class="i r" data-sl="explainPct" value="${esc(st.explainPct)}" inputmode="decimal"></label>
+   <label class="f s4"><span>ออกจากระบบอัตโนมัติเมื่อไม่ได้ใช้งาน (นาที · 0 = ไม่ใช้)</span><input class="i r" data-sl="idleMinutes" value="${esc(st.idleMinutes??30)}" inputmode="numeric"></label>
    <label class="f s4"><span>ที่อยู่ บรรทัด 1</span><input class="i" data-sl="addr1" value="${esc(st.addr1)}"></label><label class="f s4"><span>ที่อยู่ บรรทัด 2</span><input class="i" data-sl="addr2" value="${esc(st.addr2)}"></label><label class="f s4"><span>ที่อยู่ บรรทัด 3</span><input class="i" data-sl="addr3" value="${esc(st.addr3)}"></label>
    <label class="f s4"><span>ส่วนราชการเจ้าของเรื่อง</span><input class="i" data-sl="unit" value="${esc(st.unit)}"></label><label class="f s4"><span>โทร.</span><input class="i" data-sl="tel" value="${esc(st.tel)}"></label><label class="f s4"><span>โทรสาร</span><input class="i" data-sl="fax" value="${esc(st.fax)}"></label>
    <label class="switch s12"><input type="checkbox" id="thDig" ${st.thaiDigits!==false?'checked':''}> ใช้เลขไทยในหนังสือ</label>
@@ -2292,7 +2293,7 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
   {const sc=$('#signCopyCk');if(sc)sc.onchange=()=>{st.signCopy=sc.checked;save()}}
   {const rc=$('#regCopy');if(rc)rc.onchange=()=>{st.regionCopy=rc.checked;save()}}
   {const b=$('#pwSetBtn');if(b)b.onclick=()=>setPwDialog()}bindCentralCard();
-  $$('[data-sl]').forEach(i=>i.oninput=()=>{st[i.dataset.sl]=i.dataset.sl==='explainPct'?num(i.value):i.value;save()});
+  $$('[data-sl]').forEach(i=>i.oninput=()=>{st[i.dataset.sl]=(i.dataset.sl==='explainPct'||i.dataset.sl==='idleMinutes')?num(i.value):i.value;save()});
   if($('#stSigners'))$('#stSigners').oninput=e=>{st.orderSigners=e.target.value.split('\n').map(l=>l.split('|').map(x=>x.trim())).filter(a=>a.some(Boolean)).map(([label,name,position,acting])=>({label:label||name||'',name:name||'',position:position||'',acting:acting||''}));save()};
   {const m=t=>{$('#gasMsg').textContent=t};
    $('#gasPing').onclick=async()=>{m('กำลังทดสอบ…');try{const j=await gasCall({action:'ping'});m('เชื่อมต่อสำเร็จ · รูปแบบเลขในชีต: '+(j.settings.contractFormat||'-')+' เริ่ม '+(j.settings.contractStart||'1')+' ปีงบ '+(j.settings.contractFY||''))}catch(e){m(e.message)}};
@@ -2391,7 +2392,7 @@ async function srvCall(body,url){url=url||srvUrl();if(!url)throw new Error('ย�
   let j;try{j=await r.json()}catch(e){throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง — ตรวจว่า Deploy โค้ด Code.gs เวอร์ชันล่าสุดแล้ว')}
   if(!j.ok){if(j.relogin){try{localStorage.removeItem(AUTHK)}catch(e){}showGate('เซสชันหมดอายุหรือบัญชีถูกเปลี่ยนแปลง กรุณาเข้าสู่ระบบใหม่')}throw new Error(j.error||'เกิดข้อผิดพลาด')}
   return j}
-function saveAuth(j){try{localStorage.setItem(LS+'.lastUser',j.user.username);localStorage.setItem(AUTHK,JSON.stringify({token:j.token,user:j.user,exp:Date.now()+(j.days||30)*864e5-36e5}))}catch(e){}}
+function saveAuth(j){try{localStorage.setItem(LS+'.lastAct',String(Date.now()));localStorage.setItem(LS+'.lastUser',j.user.username);localStorage.setItem(AUTHK,JSON.stringify({token:j.token,user:j.user,exp:Date.now()+(j.days||30)*864e5-36e5}))}catch(e){}}
 
 /* ---------- ซิงก์ ---------- */
 function pendingItems(sm){const out=[],L=new Map();S.projects.forEach(p=>L.set(p.id,p));L.set('__settings',sharedSettings());
@@ -2453,7 +2454,7 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
   if(!g){g=document.createElement('div');g.id='gate';document.body.appendChild(g)}
   let last='';try{last=localStorage.getItem(LS+'.lastUser')||''}catch(e){}
   g.innerHTML=`<form class="gate-card" autocomplete="on">
-   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่</span></div></div>
+   <div class="gate-hd"><div class="logo" aria-hidden="true">${$('.hdr .logo')?.innerHTML||''}</div><div><b>เข้าสู่ระบบ</b><span>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง</span></div></div>
    <label class="f"><span>ชื่อผู้ใช้</span><input class="i" id="gUser" autocomplete="username" autocapitalize="none" spellcheck="false" value="${esc(last)}" required></label>
    <label class="f"><span>รหัสผ่าน</span><input class="i" id="gPw" type="password" autocomplete="current-password" required></label>
    <div id="gErr" class="gate-err">${esc(msg||'')}</div>
@@ -2492,6 +2493,33 @@ async function logout(){const sm=syncMeta();let n=sm.adopted?pendingItems(sm).le
   const go_=()=>{try{localStorage.removeItem(AUTHK);localStorage.removeItem(SYNK);localStorage.removeItem(LS+'.base')}catch(e){}S.projects=[];cur=null;try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur','')}catch(e){}
     $('#modalRoot').innerHTML='';go('dash');showGate('ออกจากระบบแล้ว')};
   if(n)confirmBox(`ยังมี ${n} รายการที่ส่งขึ้นระบบกลางไม่สำเร็จ ถ้าออกจากระบบตอนนี้ การแก้ไขเหล่านั้นจะหาย`,'ออกจากระบบ',go_);else go_()}
+
+/* ---------- ออกจากระบบอัตโนมัติเมื่อไม่ได้ใช้งาน (ค่าเริ่มต้น 30 นาที · เตือนก่อน 1 นาที · ใช้ร่วมกันทุกแท็บ) ---------- */
+const IDLEK=LS+'.lastAct';let idleSeen=0,idleBusy=false;
+function idleMin(){const v=S.settings&&S.settings.idleMinutes;return v===undefined||v===null||v===''?30:Math.max(0,num(v))}
+function idleLast(){let v=0;try{v=+localStorage.getItem(IDLEK)||0}catch(e){}return v}
+function idleMark(force){const t=Date.now();if(!force&&t-idleSeen<10000)return;idleSeen=t;try{localStorage.setItem(IDLEK,String(t))}catch(e){}idleBar(null)}
+function idleBar(sec){let b=$('#idleBar');if(sec===null){if(b)b.remove();return}
+  if(!b){b=document.createElement('div');b.id='idleBar';b.setAttribute('role','alert');b.style.cssText='position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:300;background:#7a1f2b;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.25);display:flex;gap:12px;align-items:center;font-size:14.5px;max-width:calc(100vw - 32px)';
+    b.innerHTML='<span id="idleTxt"></span><button type="button" class="btn sm" style="background:#fff;color:#7a1f2b">ใช้งานต่อ</button>';b.querySelector('button').onclick=()=>idleMark(true);document.body.appendChild(b)}
+  b.querySelector('#idleTxt').textContent=`ไม่มีการใช้งาน ระบบจะออกจากระบบอัตโนมัติใน ${sec} วินาที`}
+async function idleLogout(){if(idleBusy)return;idleBusy=true;idleBar(null);
+  try{const sm=syncMeta();let n=sm.adopted?pendingItems(sm).length:0;
+    if(n&&navigator.onLine){try{await syncNow({pull:false})}catch(e){}n=pendingItems(syncMeta()).length}
+    try{localStorage.removeItem(AUTHK)}catch(e){}
+    if(!n){try{localStorage.removeItem(SYNK);localStorage.removeItem(LS+'.base')}catch(e){}S.projects=[];cur=null;try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur','')}catch(e){}}
+    $('#modalRoot').innerHTML='';go('dash');
+    showGate(`ออกจากระบบอัตโนมัติ เนื่องจากไม่มีการใช้งานเกิน ${idleMin()} นาที`+(n?` · ยังมี ${n} รายการที่ยังไม่ได้ส่งขึ้นระบบกลาง เข้าสู่ระบบอีกครั้งเพื่อส่ง`:''))}
+  finally{idleBusy=false}}
+function idleTick(){if(!central()||!authOk()||document.body.classList.contains('gated')||idleBusy){idleBar(null);return}
+  const m=idleMin();if(!m){idleBar(null);return}
+  let last=idleLast();if(!last){idleMark(true);return}
+  const left=last+m*60000-Date.now();
+  if(left<=0)idleLogout();else if(left<=60000)idleBar(Math.ceil(left/1000));else idleBar(null)}
+['pointerdown','keydown','wheel','touchstart','mousemove','scroll'].forEach(ev=>document.addEventListener(ev,()=>{if(!$('#idleBar')||ev!=='mousemove')idleMark()},{passive:true,capture:true}));
+window.addEventListener('storage',e=>{if(e.key===IDLEK)idleBar(null)});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)idleTick()});
+setInterval(idleTick,5000);setTimeout(idleTick,1500);
 
 /* ---------- เมนูบัญชี ---------- */
 function accountDialog(){const u=me()||{},sm=syncMeta(),n=sm.adopted?pendingItems(sm).length:0;
