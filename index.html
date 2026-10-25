@@ -440,7 +440,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">153</span> · <span id="appDate">25 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">154</span> · <span id="appDate">25 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -503,7 +503,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='153',APP_DATE='25 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='154',APP_DATE='25 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -519,7 +519,7 @@ let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
 let cur=null, tab='dash', reportSel='nego', deferredPrompt=null;
 function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.projects)){S=d;S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings||{})}}}catch(e){}
   if(S.settings.signDocs)S.settings.signDocs=String(S.settings.signDocs).replace('มอบอำนาจให้เซ็นสัญญาแทน','มอบอำนาจให้ลงนามในสัญญาแทน');
-  if(!S.projects.length&&!central()){S.projects.push(sampleProject())}
+  if(!S.projects.length&&!central()){S.projects.push(sampleProject(),sampleProjectWon())}
   try{cur=localStorage.getItem(LS+'.cur')}catch(e){}
   if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
 let saveT=null;
@@ -556,6 +556,16 @@ function sampleProject(){
   p.committee=[{name:'นาย ก ตัวอย่าง',position:'รองผู้อำนวยการ (ตัวอย่าง)',role:'ประธานกรรมการฯ'},{name:'นาง ข ตัวอย่าง',position:'หัวหน้างาน (ตัวอย่าง)',role:'กรรมการฯ'},{name:'นางสาว ค ตัวอย่าง',position:'นักวิชาการพัสดุปฏิบัติการ',role:'กรรมการฯ'}];
   p.ev={orderNo:'ตัวอย่าง 000/2569',orderDate:'2026-09-30',pubStart:'2026-09-30',pubEnd:'2026-10-05',submitDate:'2026-10-06',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'2026-10-07',openTime:'08.30 น.',summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',m1:{no:'1/2569',date:'2026-10-09',start:'15.00 น.',end:'15.30 น.'},m2:{no:'2/2569',date:'2026-10-16',start:'10.00 น.',end:'11.00 น.',absent:{1:'ไปราชการ'}},replyNo:'ตย 000/001',replyDate:'2026-10-15',duration:'90',hold:'270',secretary:2,rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false};
   p.rounds=[{id:uid(),date:'',requested:4290020,result:'pending',replyPrice:'',note:'ราคาที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
+  return p;
+}
+/* ตัวอย่างที่ 2: ประกาศผู้ชนะแล้ว (ต่อรองได้ราคาที่ตกลง · วันประกาศย้อนหลัง 3 วันจากวันนี้ เพื่อให้เห็นการนับระยะอุทธรณ์และการแจ้งเตือนเรียกลงนามสัญญา) */
+function sampleProjectWon(){
+  const p=sampleProject();const ago=n=>{const d=new Date();d.setDate(d.getDate()-n);return d.toISOString().slice(0,10)};
+  Object.assign(p,{name:'งานติดตั้งไฟฟ้าแสงสว่าง ทางหลวงหมายเลข 0001 ตอน ตัวอย่าง ค - ตัวอย่าง ง ระหว่าง กม.0+000 - กม.2+000 ปริมาณงาน 1 แห่ง (83 EACH) (ข้อมูลสมมติ · ประกาศผู้ชนะแล้ว)',
+    projectNo:'00000000001',status:'ตกลงราคาแล้ว',note:'โครงการตัวอย่างที่ประกาศผู้ชนะแล้ว ข้อมูลสมมติทั้งหมด',announceDate:ago(3)});
+  p.inviteNo='e-กบ.01/2569';
+  p.rounds=[{id:uid(),date:ago(10),requested:4290020,result:'accept',replyPrice:'',note:'ผู้เสนอราคายินดีลดราคาตามที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
+  p.ev=Object.assign({},p.ev,{orderNo:'ตัวอย่าง 001/2569',replyNo:'ตย 001/001',replyDate:ago(10),summaryDate:ago(7)});
   return p;
 }
 
@@ -753,7 +763,7 @@ document.addEventListener('click',e=>{
   else if(t.dataset.dup){const s=S.projects.find(p=>p.id===t.dataset.dup);const c=structuredClone(s);c.id=uid();c.saved={};c.name=s.name+' (สำเนา)';c.updatedAt=nowStr();c.createdAt=nowStr();S.projects.unshift(c);save();rDash();toast('ทำสำเนาแล้ว')}
   else if(t.dataset.del){const s=S.projects.find(p=>p.id===t.dataset.del);confirmBox(`ลบโครงการ “${s.name||'(ยังไม่ตั้งชื่อ)'}” ? ลบแล้วกู้คืนไม่ได้ (ยกเว้นมีไฟล์สำรอง)`,'ลบโครงการ',()=>{S.projects=S.projects.filter(p=>p.id!==s.id);if(cur===s.id)cur=S.projects[0]?.id||null;save();rDash();toast('ลบแล้ว')})}
   else if(t.dataset.act==='new'){const p=newProject();S.projects.unshift(p);cur=p.id;save();go('edit')}
-  else if(t.dataset.act==='sample'){const p=sampleProject();S.projects.unshift(p);cur=p.id;save();go('edit');toast('โหลดตัวอย่างแล้ว')}
+  else if(t.dataset.act==='sample'){const p=sampleProject(),w=sampleProjectWon();S.projects.unshift(p,w);cur=p.id;save();go('edit');toast('โหลดตัวอย่างแล้ว 2 โครงการ (กำลังต่อรอง และประกาศผู้ชนะแล้ว)')}
 });
 
 /* ================= modal ================= */
