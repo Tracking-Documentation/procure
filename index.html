@@ -439,7 +439,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">149</span> · <span id="appDate">24 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div>Developed by Miss Narama Woraklan · แขวงทางหลวงกระบี่ (Version <span id="appVer">150</span> · <span id="appDate">25 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -502,7 +502,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='149',APP_DATE='24 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='150',APP_DATE='25 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -539,22 +539,22 @@ function sampleProject(){
   const p=newProject();
   const [c1,,c3]=p.categories.map(c=>c.id);
   p.categories[0].factor=1.38;
-  Object.assign(p,{name:'งานติดตั้งไฟฟ้าแสงสว่าง ทางหลวงหมายเลข 4345 ตอน ควนกุน - หนองชุมแสง ระหว่าง กม.2+128 - กม.4+916 (RT.) ปริมาณงาน 1 แห่ง (83 EACH) (ตัวอย่าง)',
-    type:'ไฟฟ้าแสงสว่าง',projectNo:'69099579623',budget:4997000,midDeclared:4996422.25,offerPrice:3097000,contractor:'บริษัท กิจพัฒนแสง จำกัด',status:'กำลังต่อรอง',
-    note:'ตัวอย่างจากไฟล์ e-กบ.40-69'});
-  p.signers=[{role:'เจ้าหน้าที่',name:'(นางสาวณรมา  วรกลั่น)',position:'นักวิชาการพัสดุปฏิบัติการ'},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'(นายสุวัฒชัย  สิงหพันธ์)',position:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์'}];
-  p.inviteNo='e-กบ.40/2569';p.inviteDate='2026-09-30';p.letter={no:'',date:'',reply:'',explain:'auto',to:''};
+  Object.assign(p,{name:'งานติดตั้งไฟฟ้าแสงสว่าง ทางหลวงหมายเลข 0000 ตอน ตัวอย่าง ก - ตัวอย่าง ข ระหว่าง กม.0+000 - กม.2+000 ปริมาณงาน 1 แห่ง (83 EACH) (ข้อมูลสมมติ)',
+    type:'ไฟฟ้าแสงสว่าง',projectNo:'00000000000',budget:5000000,midDeclared:4963980,offerPrice:4300000,contractor:'บริษัท ตัวอย่าง จำกัด',status:'กำลังต่อรอง',
+    note:'โครงการตัวอย่าง ข้อมูลสมมติทั้งหมด'});
+  p.signers=[{role:'เจ้าหน้าที่',name:'(นางสาว ค  ตัวอย่าง)',position:'นักวิชาการพัสดุปฏิบัติการ'},{role:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์',name:'(นาย ก  ตัวอย่าง)',position:'ประธานคณะกรรมการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์'}];
+  p.inviteNo='e-กบ.00/2569';p.inviteDate='2026-09-30';p.letter={no:'',date:'',reply:'',explain:'auto',to:''};
   p.items=[
     {id:uid(),kind:'heading',name:'งานไฟฟ้าแสงสว่าง',catId:c1},
-    {id:uid(),kind:'item',name:'9.00 M. (MOUNTING HEIGHT) TAPERED STEEL\nPOLE DOUBLE BRACKETS WITH HIGH PRESSURE\nSODIUM LAMPS 250 WATTS. CUT-OFF MOUNTED\nAT GRADE',unit:'EACH',qty:83,unitCost:37150.70,costTotal:3083508.10,catId:c1,midOverride:'',fixed:false},
+    {id:uid(),kind:'item',name:'9.00 M. (MOUNTING HEIGHT) TAPERED STEEL\nPOLE DOUBLE BRACKETS WITH HIGH PRESSURE\nSODIUM LAMPS 250 WATTS. CUT-OFF MOUNTED\nAT GRADE',unit:'EACH',qty:83,unitCost:37000,costTotal:3071000,catId:c1,midOverride:'',fixed:false},
     {id:uid(),kind:'heading',name:'ค่าใช้จ่ายพิเศษตามข้อกำหนด',catId:c3},
-    {id:uid(),kind:'item',name:'ค่าธรรมเนียมการไฟฟ้าฯ สำหรับเป็นค่าขยายเขตระบบไฟฟ้า\nค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด',unit:'P.S.',qty:3,unitCost:245000,catId:c3,midOverride:'',fixed:false},
-    {id:uid(),kind:'item',name:'ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณไหล่ทาง\nสำหรับทางหลวง 2 ช่องจราจร',unit:'ชุด',qty:1,unitCost:6181.08,catId:c3,midOverride:'',fixed:false}
+    {id:uid(),kind:'item',name:'ค่าธรรมเนียมการไฟฟ้าฯ สำหรับเป็นค่าขยายเขตระบบไฟฟ้า\nค่ามิเตอร์ และค่าหม้อแปลง พร้อมอุปกรณ์อื่นๆ ครบชุด',unit:'P.S.',qty:3,unitCost:240000,catId:c3,midOverride:'',fixed:false},
+    {id:uid(),kind:'item',name:'ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณไหล่ทาง\nสำหรับทางหลวง 2 ช่องจราจร',unit:'ชุด',qty:1,unitCost:6000,catId:c3,midOverride:'',fixed:false}
   ];
-  p.bidders=[['0105547056773','บริษัท ซี-คอน ซิสเต็ม เทคโนโลยี จำกัด',4808200,'นายกฤษยุ ภักดีชน','นายกฤษยุ ภักดีชน','no'],['0105564015052','บริษัท กิจพัฒนแสง จำกัด',3097000,'นายพงศกร จิระกรกุล','นายพงศกร จิระกรกุล','under'],['0745550002667','บริษัท เลคิเซ่ ไลท์ติ้ง จำกัด',4989000,'นายสมนึก โอวุฒิธรรม','บจก.เลคิเซ่ ไลท์ติ้ง โฮลดิ้ง','no'],['0745566002548','บริษัท แอสเซมเทค จำกัด',3447531.35,'นายมานิตย์ ภูยอดนิล','นายมานิตย์ ภูยอดนิล','under'],['0805561000171','บริษัท โชคคอนกรีต จำกัด',3280000,'นางขจิต ประชุมทอง\nนางสาวชาภรณ์ บริเพชร','นางขจิต ประชุมทอง','no'],['0905555001187','บริษัท วริศพงศ์ กรุ๊ป จำกัด',3347000,'นางสาวรสสุคนธ์ บุญญาวิโรจน์\nนายวรพันธ์ คงลิขิต','นางสาวรสสุคนธ์ บุญญาวิโรจน์','no']].map(([t,n,pr,mg,hd,sm])=>({id:uid(),taxId:t,name:n,price:pr,qualified:true,issues:[],mgrs:mg,holders:hd,netOk:true,sme:sm}));
-  p.committee=[{name:'นายสุวัฒชัย สิงหพันธ์',position:'รองผู้อำนวยการแขวงทางหลวงกระบี่ (ฝ่ายปฏิบัติการ)',role:'ประธานกรรมการฯ'},{name:'นางวัชดาภรณ์ ด้วงชู',position:'รองผู้อำนวยการแขวงทางหลวงกระบี่ (ฝ่ายบริหาร)',role:'กรรมการฯ'},{name:'นางสาวณรมา วรกลั่น',position:'นักวิชาการพัสดุปฏิบัติการ',role:'กรรมการฯ'},{name:'นายณรงค์ ช่วยสงค์',position:'นักจัดการงานทั่วไปปฏิบัติการ',role:'กรรมการฯ'}];
-  p.ev={orderNo:'สทล.17 ขท.กระบี่.1/293/2569',orderDate:'2026-09-30',pubStart:'2026-09-30',pubEnd:'2026-10-05',submitDate:'2026-10-06',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'2026-10-07',openTime:'08.30 น.',summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',m1:{no:'1/2569',date:'2026-10-09',start:'15.00 น.',end:'15.30 น.'},m2:{no:'2/2569',date:'2026-10-16',start:'10.00 น.',end:'11.00 น.',absent:{1:'ไปราชการ'}},replyNo:'KPS 106906/002',replyDate:'2026-10-15',duration:'90',hold:'270',secretary:2,rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false};
-  p.rounds=[{id:uid(),date:'',requested:3096658,result:'pending',replyPrice:'',note:'ราคาที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
+  p.bidders=[['0000000000001','บริษัท ตัวอย่าง จำกัด',4300000,'นาย ง ตัวอย่าง','นาย ง ตัวอย่าง','no'],['0000000000002','ห้างหุ้นส่วนจำกัด ทดสอบ',4450000,'นาย จ ทดสอบ','นาย จ ทดสอบ','under'],['0000000000003','บริษัท สมมติ จำกัด',4720000,'นางสาว ฉ สมมติ','นางสาว ฉ สมมติ','no']].map(([t,n,pr,mg,hd,sm])=>({id:uid(),taxId:t,name:n,price:pr,qualified:true,issues:[],mgrs:mg,holders:hd,netOk:true,sme:sm}));
+  p.committee=[{name:'นาย ก ตัวอย่าง',position:'รองผู้อำนวยการ (ตัวอย่าง)',role:'ประธานกรรมการฯ'},{name:'นาง ข ตัวอย่าง',position:'หัวหน้างาน (ตัวอย่าง)',role:'กรรมการฯ'},{name:'นางสาว ค ตัวอย่าง',position:'นักวิชาการพัสดุปฏิบัติการ',role:'กรรมการฯ'}];
+  p.ev={orderNo:'ตัวอย่าง 000/2569',orderDate:'2026-09-30',pubStart:'2026-09-30',pubEnd:'2026-10-05',submitDate:'2026-10-06',submitTime:'13.00 น. ถึง 16.00 น.',openDate:'2026-10-07',openTime:'08.30 น.',summaryDate:'',extendDays:5,extendReason:'ขณะนี้คณะกรรมการฯ อยู่ระหว่างการขอต่อรองราคา',m1:{no:'1/2569',date:'2026-10-09',start:'15.00 น.',end:'15.30 น.'},m2:{no:'2/2569',date:'2026-10-16',start:'10.00 น.',end:'11.00 น.',absent:{1:'ไปราชการ'}},replyNo:'ตย 000/001',replyDate:'2026-10-15',duration:'90',hold:'270',secretary:2,rel:{admin:false,capital:false,cross:false},coi:false,obstruct:false};
+  p.rounds=[{id:uid(),date:'',requested:4290020,result:'pending',replyPrice:'',note:'ราคาที่ขอต่อรอง (ยอดรวมเป็นจำนวนเต็ม)'}];
   return p;
 }
 
@@ -1873,7 +1873,7 @@ function rCert(){const el=$('#v-cert');const p=P();if(!p){el.innerHTML='<div cla
    <div class="s12 muted" style="font-size:13px">${esc(p.name)} · ${esc(p.contractor||'-')} · สัญญาที่ ${esc(p.contractNo||'-')} ลงวันที่ ${D(p.contractDate)} · มูลค่าตามสัญญา <b>${fmt(v)}</b> บาท</div>
    ${warn.length?`<div class="s12 note warn">${warn.map(esc).join('<br>')}</div>`:''}
    ${F('reqNo','หนังสือขอของผู้รับจ้าง ที่','text','s3','สศ.191/2569')}${F('reqDate','ลงวันที่','date')}${F('letterNo','หนังสือนำส่ง: เลขที่ (ต่อท้ายรหัส)')}${F('letterDate','หนังสือนำส่ง: ลงวันที่','date')}
-   ${F('certNo','หนังสือรับรอง: เลขที่ (ถ้ามี)')}${F('certDate','ให้ไว้ ณ วันที่','date')}${F('taxId','เลขประจำตัวผู้เสียภาษีผู้รับจ้าง','text','s3','0803550000718')}
+   ${F('certNo','หนังสือรับรอง: เลขที่ (ถ้ามี)')}${F('certDate','ให้ไว้ ณ วันที่','date')}${F('taxId','เลขประจำตัวผู้เสียภาษีผู้รับจ้าง','text','s3','0000000000000')}
    <label class="f s3"><span>ประเภทผลงานก่อสร้าง</span><input class="i" data-ct="workType" list="certTypes" value="${esc(c.workType)}"><datalist id="certTypes">${CERT_TYPES.map(t=>`<option value="${esc(t)}">`).join('')}</datalist></label>
   </div></div>
   <div class="card"><div class="card-h"><h2><span class="step">2</span>ระยะเวลาสัญญา</h2></div><div class="card-b grid g12">
@@ -2267,8 +2267,8 @@ function rSet(){const st=S.settings;$('#v-set').innerHTML=`<div class="grid" sty
    <div class="s12 row" style="gap:8px"><button class="btn" id="gasPing" type="button">ทดสอบการเชื่อมต่อ</button><button class="btn pri" id="gasPushSet" type="button">ส่งรูปแบบเลขที่สัญญาไป Google Sheet</button><span id="gasMsg" class="muted" style="font-size:13px"></span></div>
    <details class="s12"><summary style="cursor:pointer;font-weight:600">วิธีติดตั้ง (ทำครั้งเดียว ประมาณ 10 นาที)</summary><ol style="margin:8px 0 0;padding-left:22px;line-height:1.7;font-size:14px">
     <li>สร้าง Google Sheet ใหม่ด้วยบัญชี Google ของหน่วยงาน ตั้งชื่อเช่น “จองลงนามสัญญา”</li>
-    <li>เมนู <b>ส่วนขยาย › Apps Script</b> · ลบโค้ดเดิม แล้ววางโค้ดจากไฟล์ <a href="https://github.com/krabiprocure-hash/boq-nego/blob/main/gas/Code.gs" target="_blank" rel="noopener">Code.gs</a></li>
-    <li>กด <b>+ › HTML</b> ตั้งชื่อไฟล์ว่า <b>Booking</b> แล้ววางโค้ดจากไฟล์ <a href="https://github.com/krabiprocure-hash/boq-nego/blob/main/gas/Booking.html" target="_blank" rel="noopener">Booking.html</a></li>
+    <li>เมนู <b>ส่วนขยาย › Apps Script</b> · ลบโค้ดเดิม แล้ววางโค้ดจากไฟล์ <a href="https://github.com/Tracking-Documentation/procure/blob/main/gas/Code.gs" target="_blank" rel="noopener">Code.gs</a></li>
+    <li>กด <b>+ › HTML</b> ตั้งชื่อไฟล์ว่า <b>Booking</b> แล้ววางโค้ดจากไฟล์ <a href="https://github.com/Tracking-Documentation/procure/blob/main/gas/Booking.html" target="_blank" rel="noopener">Booking.html</a></li>
     <li>ใน Code.gs แก้บรรทัด <code>const ADMIN_KEY = '…'</code> เป็นรหัสลับของหน่วยงาน แล้วกดบันทึก</li>
     <li>เลือกฟังก์ชัน <b>setup</b> แล้วกด <b>Run</b> · อนุญาตสิทธิ์ (Sheets และ Drive) · ระบบจะสร้างชีต projects / bookings / settings และโฟลเดอร์เก็บเอกสารใน Drive</li>
     <li><b>Deploy › New deployment › Web app</b> · Execute as: <b>Me</b> · Who has access: <b>Anyone</b> · กด Deploy แล้วคัดลอก URL ที่ลงท้ายด้วย /exec มาใส่ด้านบน พร้อมรหัสเจ้าหน้าที่</li>
@@ -2533,7 +2533,7 @@ function centralCard(){const u=me();
     ${u?.role==='admin'?`<p class="muted" style="font-size:13px;margin:0">ส่งลิงก์ติดตั้งให้ผู้ใช้เปิดครั้งแรก แอปจะรู้จักเซิร์ฟเวอร์และขึ้นหน้าเข้าสู่ระบบเอง · ผู้ใช้กดติดตั้งแอปได้หลังเข้าสู่ระบบ</p>`:''}</div></div>`;
   return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2><span class="muted" style="font-size:13px">ยังไม่เปิดใช้ · ตอนนี้ข้อมูลอยู่ในเครื่องนี้เท่านั้น</span></div><div class="card-b grid g12">
     <p class="s12" style="margin:0">เปิดใช้แล้ว ทุกเครื่องต้องเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ทั้งก่อนใช้งานและก่อนติดตั้งแอป และเห็นข้อมูลโครงการชุดเดียวกัน (เก็บใน Google Sheet เดียวกับระบบจองลงนาม ชีต users และ store)</p>
-    <div class="s12 note warn" style="margin:0">ก่อนเปิดใช้: วางโค้ด <a href="https://github.com/krabiprocure-hash/boq-nego/blob/main/gas/Code.gs" target="_blank" rel="noopener">Code.gs</a> เวอร์ชันล่าสุด → Run ฟังก์ชัน setup → Deploy › Manage deployments › แก้ไข › Version: New version · และใส่ URL กับรหัสเจ้าหน้าที่ในการ์ด “QR จองวันลงนามสัญญาออนไลน์” ด้านบนแล้ว</div>
+    <div class="s12 note warn" style="margin:0">ก่อนเปิดใช้: วางโค้ด <a href="https://github.com/Tracking-Documentation/procure/blob/main/gas/Code.gs" target="_blank" rel="noopener">Code.gs</a> เวอร์ชันล่าสุด → Run ฟังก์ชัน setup → Deploy › Manage deployments › แก้ไข › Version: New version · และใส่ URL กับรหัสเจ้าหน้าที่ในการ์ด “QR จองวันลงนามสัญญาออนไลน์” ด้านบนแล้ว</div>
     <label class="f s3"><span>ชื่อผู้ใช้ผู้ดูแลระบบ</span><input class="i" id="caU" autocapitalize="none" spellcheck="false" placeholder="เช่น narama"></label>
     <label class="f s3"><span>ชื่อ-สกุล</span><input class="i" id="caN"></label>
     <label class="f s3"><span>รหัสผ่าน (อย่างน้อย 6 ตัว)</span><input class="i" type="password" id="caP" autocomplete="new-password"></label>

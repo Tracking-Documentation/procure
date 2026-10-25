@@ -17,4 +17,6 @@ This system, including its source code, interface design, document templates and
 ขออนุญาตใช้งาน ดัดแปลง หรือเผยแพร่: ติดต่อผู้พัฒนา
 
 ---
-ส่วนประกอบจากบุคคลที่สาม: qrcode-generator © Kazuhiko Arase, MIT License (https://github.com/kazuhikoarase/qrcode-generator)
+ส่วนประกอบจากบุคคลที่สาม: qrcode-generator © Kazuhiko Arase, MIT License (https://github.com/kazuhikoarase/qrcode-generator)  
+ส่วนประกอบนี้อยู่ภายใต้สัญญาอนุญาตของผู้สร้างสรรค์เดิม (MIT License) ไม่อยู่ภายใต้ข้อห้ามข้างต้น  
+This third-party component is licensed under its own MIT License and is not subject to the restrictions above.
