@@ -1,17 +1,35 @@
 {
-  "name": "ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่",
-  "short_name": "งานจ้างก่อสร้าง ขท.กระบี่",
-  "description": "Construction Contract Tracking & Documentation System · Krabi Highway District — ติดตามและจัดทำเอกสารงานจ้างก่อสร้าง ตั้งแต่ขั้นเตรียมการ พิจารณาผล ต่อรอง/ปรับลดราคา (ว 651) ลงนามสัญญา จนถึงหนังสือรับรองผลงาน",
+  "name": "ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง",
+  "short_name": "งานจ้างก่อสร้าง",
+  "description": "Construction Contract Tracking & Documentation System — ติดตามและจัดทำเอกสารงานจ้างก่อสร้าง ตั้งแต่ขั้นเตรียมการ พิจารณาผล ต่อรอง/ปรับลดราคา (ว 651) ลงนามสัญญา จนถึงหนังสือรับรองผลงาน",
   "lang": "th",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["window-controls-overlay","standalone"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone"
+  ],
   "background_color": "#fbecef",
   "theme_color": "#7a1f2b",
   "icons": [
-    {"src":"icon-r192.png","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"icon-r512.png","sizes":"512x512","type":"image/png","purpose":"any"},
-    {"src":"icon-r512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+    {
+      "src": "icon-r192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-r512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-r512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
