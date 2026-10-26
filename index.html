@@ -440,7 +440,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">154</span> · <span id="appDate">25 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">155</span> · <span id="appDate">26 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -503,7 +503,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='154',APP_DATE='25 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='155',APP_DATE='26 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -930,7 +930,7 @@ function pasteDialog(){const p=P();
    คอลัมน์: A=1 ใช้รายการนี้ · E ลำดับ · F รายการ · G ปริมาณ · H หน่วย · I ต้นทุน/หน่วย · J ต้นทุนรวม · K Factor · L ราคากลาง/หน่วย · M ราคากลางรวม · AB กลุ่ม Factor
    AD-AH แถว 2-5 = คณะกรรมการกำหนดราคากลาง/ผู้อนุมัติ */
 function summaryPick(){const f=document.createElement('input');f.type='file';f.accept='.xlsm,.xlsx,.xls';f.onchange=async()=>{const file=f.files[0];if(!file)return;toast('กำลังอ่านไฟล์…');
-  try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});let plan=null;try{plan=parsePlanSheet(X,wb)}catch(e){}summaryDialog(parseSummary(X,wb),file.name,plan,file)}catch(e){alert(e.message)}};f.click()}
+  try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});let plan=null;try{plan=parsePlanSheet(X,wb)}catch(e){}(d=>{try{d.audit=sumAudit(X,wb,d)}catch(e){d.audit={E:[],N:[]}}summaryDialog(d,file.name,plan,file)})(parseSummary(X,wb))}catch(e){alert(e.message)}};f.click()}
 function parseSummary(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'').toUpperCase()==='SUMMARY');if(!sn)throw new Error('ไม่พบชีต SUMMARY ในไฟล์นี้');
   const R=sheetAOA(X,wb.Sheets[sn]);const s=v=>v==null?'':String(v).trim();const n=v=>typeof v==='number'&&isFinite(v)?v:num(String(v||'').replace(/,/g,''));
   const isN=v=>typeof v==='number'&&isFinite(v);const items=[];let costSum=0,midSum=0,grand=0,adj=0;
@@ -938,7 +938,7 @@ function parseSummary(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'').t
     if(/ปรับยอด/.test(lab)&&isN(r[14]))adj=r[14];
     if(+r[0]!==1||!isN(r[4])||r[4]<=0||!s(r[5]))return;
     const qty=n(r[6]),k=isN(r[10])?r[10]:0,cost=isN(r[9])?r[9]:qty*n(r[8]),mid=isN(r[12])?r[12]:qty*n(r[11]);
-    items.push({seq:r[4],name:s(r[5]),qty,unit:s(r[7]),cost,factor:k,mid,grp:s(r[27])||(k?'':'ไม่คิด Factor')});costSum+=cost;midSum+=mid});
+    items.push({seq:r[4],name:s(r[5]),qty,unit:s(r[7]),cost,factor:k,mid,uc:isN(r[8])?r[8]:0,um:isN(r[11])?r[11]:0,hasCost:isN(r[8])||isN(r[9]),grp:s(r[27])||(k?'':'ไม่คิด Factor')});costSum+=cost;midSum+=mid});
   const hd=[2,3,4,5].map(i=>s((R[i]||[])[4])).filter(Boolean);
   const cm=[1,2,3,4].map(i=>R[i]||[]).filter(r=>s(r[31])).map(r=>({role:s(r[29]),name:s(r[31]),position:s(r[33])}));
   if(!grand)grand=Math.round((midSum+adj)*100)/100;
@@ -951,6 +951,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan
    ${has?'<label class="switch"><input type="checkbox" id="smRep" checked> แทนที่รายการ BOQ เดิมทั้งหมด (ไม่ติ๊ก = ต่อท้าย)</label>':''}
    <label class="switch"><input type="checkbox" id="smMid" ${!num(p.midDeclared)||num(p.midDeclared)===d.grand?'checked':''}> ตั้ง “ราคากลางตาม ปร.5/ปร.6” = ${fmt(d.grand||d.midSum)} บาท${num(p.midDeclared)?` (ตอนนี้ ${fmt(p.midDeclared)})`:''}</label>
    ${pc.length?`<label class="switch"><input type="checkbox" id="smCm" ${O.price.members.some(x=>x.name)?'':'checked'}> ใส่คณะกรรมการกำหนดราคากลางจากไฟล์ (${esc(pc.map(x=>x.name).join(', '))})</label>`:''}
+   ${d.audit?(d.audit.E.length?`<div class="note bad" style="margin:0"><b>✕ พบข้อผิดพลาดในไฟล์ราคากลาง ${d.audit.E.length} จุด</b><br>${d.audit.E.map(x=>'• '+esc(x)).join('<br>')}</div>`:'<div class="note ok" style="margin:0"><b>✓ ตรวจ SUMMARY:</b> ปริมาณ × ราคาต่อหน่วย, ค่างานต้นทุน × Factor และ Factor F ตามช่วงราคางาน ถูกต้องทุกรายการ</div>')+(d.audit.N.length?`<div class="note warn" style="margin:0"><b>ข้อสังเกต ${d.audit.N.length} จุด (ควรตรวจในไฟล์ Excel)</b><br>${d.audit.N.map(x=>'• '+esc(x)).join('<br>')}</div>`:''):''}
    ${(c=>c?`<div class="note ${c.ok?'ok':'bad'}" style="margin:0"><b>ตรวจรายการ ข้อมูลและผลงาน กับ SUMMARY:</b> ${c.ok?`ตรงกันทั้ง ${c.n} รายการ (ชื่อ ปริมาณ หน่วย ราคากลาง)`:`<b>ไม่ตรงกัน ${c.W.length} จุด</b> — ตรวจไฟล์ Excel ก่อนนำเข้า<br>${c.W.map(esc).join('<br>')}`}</div>`:'')(chk)}
    ${plan?`<div class="note" style="margin:0"><b>แผ่น “ข้อมูลและผลงาน”</b>${plan.days?`<label class="switch"><input type="checkbox" id="smDays" ${!num(p.workDays)?'checked':''}> ระยะเวลาดำเนินการ = ${plan.days} วัน${num(p.workDays)?` (ตอนนี้ ${esc(p.workDays)})`:''}</label>`:''}${plan.planLine?`<label class="switch"><input type="checkbox" id="smPlan" ${!T.planLine?'checked':''}> แผนงาน/รหัสงาน (TOR): ${esc(plan.planLine)}</label>`:''}${plan.reason?`<label class="switch"><input type="checkbox" id="smWhy" ${!T.background&&!R0.reason?'checked':''}> เหตุผลและความจำเป็น → ข้อ ๑ ความเป็นมา (TOR) และเหตุที่ขออนุมัติซื้อ/จ้าง<br><span class="muted" style="font-size:12.5px">${esc(plan.reason.slice(0,160))}${plan.reason.length>160?'…':''}</span></label>`:''}${plan.km&&!p.km?`<label class="switch"><input type="checkbox" id="smKm" checked> กม.ดำเนินการ: ${esc(plan.km)}</label>`:''}${plan.millNote?`<label class="switch"><input type="checkbox" id="smMill" checked> หมายเหตุ MILLING → เอกสารแนบประกาศ/สัญญา: กองเก็บ ณ ${esc(plan.millAt||plan.millNote)}</label>`:''}</div>`:''}
    ${file&&central()?`<label class="switch"><input type="checkbox" id="smUp" checked> เก็บไฟล์ Excel นี้ไว้ในโครงการ (ขั้นเตรียมการ)</label>`:''}
@@ -960,6 +961,7 @@ function summaryDialog(d,fname,plan,file){const p=P();const chk=planCheck(d,plan
   m.root.querySelector('[data-mc]').onclick=m.close;
   m.root.querySelector('[data-mo]').onclick=()=>{const q=x=>m.root.querySelector(x);
     if(chk&&!chk.ok&&!confirm(`รายการในแผ่น “ข้อมูลและผลงาน” กับ “SUMMARY” ไม่ตรงกัน ${chk.W.length} จุด\n\nนำเข้าตาม SUMMARY ต่อหรือไม่?`))return;
+    if(d.audit&&d.audit.E.length&&!confirm(`พบข้อผิดพลาดในไฟล์ราคากลาง ${d.audit.E.length} จุด (ดูรายการสีแดงในหน้าต่างนำเข้า)\n\nนำเข้าต่อหรือไม่?`))return;
     const cons=p.categories.filter(c=>c.kind==='construction');const catFor=new Map();let ci=0;
     fs.forEach(k=>{let c=cons.find(c=>Math.abs(num(c.factor)-k)<1e-9&&!catFor.has(k)&&![...catFor.values()].includes(c));if(!c)c=cons[ci]&&![...catFor.values()].includes(cons[ci])?cons[ci]:null;
       if(!c){c={id:uid(),name:'งานก่อสร้าง (Factor '+k+')',kind:'construction',factor:k};p.categories.push(c)}c.factor=k;catFor.set(k,c);ci++});
@@ -3642,24 +3644,63 @@ function parsePlanSheet(X,wb){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'')
   const k=find('ระยะทำงานจริง');if(k)o.km=s(after(k,v=>/กม|\+/.test(String(v))));
   const w=find('เหตุผลและความจำเป็น');if(w){const L=[];for(let i=w.i+1;i<R.length&&i<w.i+12;i++){const t=first(R[i]);if(!t){if(L.length)break;continue}if(/^หมายเหตุ|^ระยะ|^กิจกรรม/.test(t.replace(/\s/g,'')))break;L.push(t)}o.reason=L.join('')}
   // รายการงาน (ฝั่งขวาของแผ่น: ลำดับ | งาน | ชื่อรายการ / แถวถัดไป: ปริมาณงาน จำนวน หน่วย ๆ ละ ราคา บาท เป็นเงิน รวม)
-  const it=[];for(let i=0;i<R.length;i++){const r=R[i]||[],n=r[12],nm=s(r[14]);if(!(num(n)>0)||!nm||/^#N\/A$/.test(nm)||s(r[13])!=='งาน')continue;
-    const q=R[i+1]||[];it.push({no:num(n),name:nm,qty:num(q[16]),unit:s(q[17]),u:num(q[19]),total:num(q[21])})}
+  const qrow=(q,from,to)=>{const o2={qty:0,unit:'',u:0,total:0};let st=0;for(let c=from;c<Math.min(q.length,to||q.length);c++){const v=q[c],t=s(v);if(t===''||/^#N\/A$/.test(t))continue;const isn=typeof v==='number'||/^[\d,]+(\.\d+)?$/.test(t);
+      if(st===0&&isn){o2.qty=num(t);st=1}else if(st===1&&!isn){if(/ๆ\s*ละ/.test(t))st=2;else if(!/บาท|เป็นเงิน/.test(t)){o2.unit=t}}else if(st===1&&isn){o2.u=num(t);st=3}else if(st===2&&isn){o2.u=num(t);st=3}else if(st===3&&isn){o2.total=num(t);break}}return o2};
+  /* ฝั่งขวา: ลำดับ | งาน | ชื่อรายการ / แถวถัดไป: ปริมาณงาน จำนวน หน่วย ๆ ละ ราคา บาท เป็นเงิน รวม (หาตำแหน่งคอลัมน์เอง) */
+  const it=[];for(let i=0;i<R.length;i++){const r=R[i]||[];for(let c=10;c<r.length-1;c++){if(s(r[c])!=='งาน')continue;const n=r[c-1],nm=s(r[c+1]);if(!(num(n)>0)||!nm||/^#N\/A$/.test(nm))continue;
+      const q=R[i+1]||[];const j=q.findIndex((v,k)=>k>=c-1&&/ปริมาณงาน/.test(s(v)));it.push(Object.assign({no:num(n),name:nm},j>=0?qrow(q,j+1):{qty:0,unit:'',u:0,total:0}));break}}
   if(it.length)o.items=it;
+  /* ฝั่งซ้าย: ลำดับ | (งาน) | ชื่อรายการ ... ปริมาณงาน จำนวน หน่วย */
+  const it2=[];for(let i=0;i<R.length;i++){const r=R[i]||[];const j=r.findIndex((v,k)=>k<=12&&/ปริมาณงาน/.test(s(v)));if(j<0)continue;const n=[r[0],r[1],r[2]].find(v=>num(v)>0&&/^\d+$/.test(s(v)));if(!n)continue;
+    const nm=r.slice(1,j).map(s).find(t=>t&&t!=='งาน'&&!/^\d+$/.test(t));if(!nm)continue;it2.push(Object.assign({no:num(n),name:nm},qrow(r,j+1,j+3)))}
+  if(it2.length)o.items2=it2;
   /* หมายเหตุ MILLING (เช่น “วัสดุ MILLING กองเก็บ ณ กองเก็บหมวดทางหลวงทรายขาว ทล.4 ที่ กม.1033+890 (LT.)”) */
   for(let i=0;i<R.length;i++){const t0=(R[i]||[]).slice(0,12).map(s).filter(x=>x&&!/^#N\/A$/.test(x)).join(' '),t=t0.replace(/^หมายเหตุ\s*:?\s*/,'');
     if(/MILLING|ขูดไส/i.test(t)&&/กองเก็บ|^หมายเหตุ/.test(t0)){o.millNote=t;const m=t.match(/\sณ\s*(.+)$/);if(m)o.millAt=m[1].trim();break}}
   return Object.keys(o).length?o:null}
 /* ตรวจรายการระหว่างแผ่น ข้อมูลและผลงาน กับ SUMMARY */
-function planCheck(d,plan){if(!plan||!plan.items)return null;const nz=t=>String(t||'').toUpperCase().replace(/[\s.]+/g,'');const A=plan.items,B=d.items,W=[];
-  if(A.length!==B.length)W.push(`จำนวนรายการไม่เท่ากัน: ข้อมูลและผลงาน ${A.length} รายการ · SUMMARY ${B.length} รายการ`);
-  const n=Math.max(A.length,B.length);for(let i=0;i<n;i++){const a=A[i],b=B[i];const no=i+1;
-    if(!a){W.push(`รายการที่ ${no} “${b.name}” มีใน SUMMARY แต่ไม่มีในข้อมูลและผลงาน`);continue}if(!b){W.push(`รายการที่ ${no} “${a.name}” มีในข้อมูลและผลงาน แต่ไม่มีใน SUMMARY`);continue}
-    const d1=[];if(nz(a.name)!==nz(b.name))d1.push(`ชื่อรายการ (ข้อมูลและผลงาน: “${a.name}” · SUMMARY: “${b.name}”)`);
-    if(Math.abs(a.qty-num(b.qty))>1e-6)d1.push(`ปริมาณ ${fQ(a.qty)} ≠ ${fQ(b.qty)}`);
-    if(nz(a.unit)!==nz(b.unit))d1.push(`หน่วย ${a.unit||'-'} ≠ ${b.unit||'-'}`);
-    if(a.total&&Math.abs(a.total-b.mid)>0.01)d1.push(`ราคากลางรวม ${fmt(a.total)} ≠ ${fmt(b.mid)}`);
-    if(d1.length)W.push(`รายการที่ ${no}: ${d1.join(' · ')}`)}
-  return {ok:!W.length,W,n:A.length}}
+function planCheck(d,plan){if(!plan||!(plan.items||plan.items2))return null;const nz=t=>String(t||'').toUpperCase().replace(/[\s.]+/g,'');const B=d.items,W=[];
+  const cmp=(A,side)=>{const P=side?`ข้อมูลและผลงาน (${side})`:'ข้อมูลและผลงาน';if(A.length!==B.length)W.push(`จำนวนรายการไม่เท่ากัน: ${P} ${A.length} รายการ · SUMMARY ${B.length} รายการ`);
+    const n=Math.max(A.length,B.length);for(let i=0;i<n;i++){const a=A[i],b=B[i];const no=i+1;
+      if(!a){W.push(`รายการที่ ${no} “${b.name}” มีใน SUMMARY แต่ไม่มีใน${P}`);continue}if(!b){W.push(`รายการที่ ${no} “${a.name}” มีใน${P} แต่ไม่มีใน SUMMARY`);continue}
+      const d1=[];if(nz(a.name)!==nz(b.name))d1.push(`ชื่อรายการ (${P}: “${a.name}” · SUMMARY: “${b.name}”)`);
+      if(a.qty&&Math.abs(a.qty-num(b.qty))>1e-6)d1.push(`ปริมาณ ${fQ(a.qty)} ≠ ${fQ(b.qty)}`);
+      if(a.unit&&nz(a.unit)!==nz(b.unit))d1.push(`หน่วย ${a.unit||'-'} ≠ ${b.unit||'-'}`);
+      if(a.u&&b.um&&Math.abs(a.u-b.um)>0.004)d1.push(`ราคาต่อหน่วย ${fmt(a.u)} ≠ ${fmt(b.um)}`);
+      if(a.total&&Math.abs(a.total-b.mid)>0.01)d1.push(`ราคากลางรวม ${fmt(a.total)} ≠ ${fmt(b.mid)}`);
+      if(d1.length)W.push(`รายการที่ ${no}${side?' ('+side+')':''}: ${d1.join(' · ')}`)}};
+  if(plan.items)cmp(plan.items,plan.items2?'ด้านขวา':'');if(plan.items2)cmp(plan.items2,plan.items?'ด้านซ้าย':'');
+  return {ok:!W.length,W,n:B.length}}
+/* ตรวจความสอดคล้องทั้งไฟล์ราคากลาง: Factor F · หน้าปก · ปร.5/ปร.6 · เลขคณิตรายการ */
+function sumAudit(X,wb,d){const W=[],N=[];const s=v=>v==null?'':String(v).replace(/\s+/g,' ').trim();const isN=v=>typeof v==='number'&&isFinite(v);const near=(a,b,t=1)=>Math.abs(a-b)<=t;
+  const sheet=re=>{const n=wb.SheetNames.find(x=>re.test(x.replace(/\s/g,'')));return n?{n,R:sheetAOA(X,wb.Sheets[n])}:null};
+  const findNum=(R,re,maxRow)=>{for(let i=0;i<Math.min(R.length,maxRow||R.length);i++){const r=R[i]||[];for(let c=0;c<r.length;c++)if(re.test(s(r[c]))){for(let k=c+1;k<r.length;k++)if(isN(r[k])&&r[k]!==0)return {v:r[k],i,c};}}return null};
+  const fac=d.items.filter(x=>x.factor),fs=[...new Set(fac.map(x=>x.factor))],cF=fac.reduce((a,x)=>a+x.cost,0);
+  // 1) รายการ
+  d.items.forEach(x=>{const no=`รายการที่ ${x.seq} “${String(x.name).slice(0,40)}${x.name.length>40?'…':''}”`;
+    if(!x.factor){N.push(`${no}: ไม่มี${x.hasCost?'':'ค่างานต้นทุนและ'} Factor F — ราคากลาง ${fmt(x.mid)} บาท กรอกตรง จะเข้าหมวดค่าใช้จ่ายพิเศษตามข้อกำหนด (ไม่ถูกปรับลด) ตรวจว่าตั้งใจหรือไม่`);return}
+    if(x.uc&&Math.abs(x.qty*x.uc-x.cost)>0.011)W.push(`${no}: ปริมาณ × ค่างานต้นทุนต่อหน่วย = ${fmt(x.qty*x.uc)} ไม่ตรงกับต้นทุนรวม ${fmt(x.cost)}`);
+    if(x.uc&&x.um){const t=Math.floor(x.uc*x.factor*100+1e-6)/100,r=Math.round(x.uc*x.factor*100)/100;if(Math.abs(x.um-t)>0.004&&Math.abs(x.um-r)>0.004)W.push(`${no}: ค่างานต้นทุน ${fmt(x.uc)} × Factor ${x.factor} = ${fmt(t)} แต่ราคากลางต่อหน่วยในไฟล์ ${fmt(x.um)}`)}
+    if(x.um&&Math.abs(x.qty*x.um-x.mid)>0.011)W.push(`${no}: ปริมาณ × ราคาต่อหน่วย = ${fmt(x.qty*x.um)} ไม่ตรงกับราคากลางรวม ${fmt(x.mid)}`)});
+  // 2) แผ่น FACTOR F
+  const F=sheet(/^FACTORF$/i);if(F&&fac.length){const fc=findNum(F.R,/^รวมค่างานต้นทุน/,6),fv=findNum(F.R,/^ปรับใช้\s*4\s*ตำแหน่ง/);
+    if(fc&&!near(fc.v,cF,1))N.push(`แผ่น FACTOR F คำนวณจากค่างานต้นทุน ${fmt(fc.v)} บาท แต่ SUMMARY รวมค่างานต้นทุน (รายการที่คิด Factor) ${fmt(cF)} บาท ต่างกัน ${fmt(cF-fc.v)} — แผ่นนี้อาจเป็นค่าเก่าที่ไม่ได้คำนวณใหม่ (ระบบนำเข้าจาก SUMMARY และคำนวณ Factor ตรวจซ้ำให้แล้วด้านบน)`);
+    if(fv&&fs.length===1&&Math.abs(fv.v-fs[0])>1e-6)N.push(`Factor F ในแผ่น FACTOR F = ${fv.v} แต่ SUMMARY ใช้ ${fs[0]}`);
+    // คำนวณ Factor ใหม่จากช่วงราคางานในแผ่นเดียวกัน (ทศนิยม 4 ตำแหน่ง ไม่ปัด)
+    const rr=[];for(let i=0;i<20&&i<F.R.length;i++){const r=F.R[i]||[];const c=r.findIndex(v=>s(v)==='ราคางาน');if(c<0)continue;const x=r.slice(c+1).find(isN),fi=r.findIndex((v,k)=>k>c&&/^FACTOR\s*F$/i.test(s(v)));const y=fi>=0?r.slice(fi+1).find(isN):null;if(x&&y)rr.push([x,y]);if(rr.length===2)break}
+    if(rr.length===2&&fs.length===1&&cF>0){const [[x1,y1],[x2,y2]]=rr;const e=Math.floor((y1+(y2-y1)*(cF-x1)/(x2-x1))*10000+1e-7)/10000;if(cF>=Math.min(x1,x2)&&cF<=Math.max(x1,x2)&&Math.abs(e-fs[0])>1e-6)W.push(`คำนวณ Factor F ใหม่จากค่างานต้นทุน ${fmt(cF)} บาท ได้ ${e} แต่ SUMMARY ใช้ ${fs[0]}`)}}
+  // 3) หน้าปกราคากลาง
+  const C=sheet(/หน้าปกราคากลาง/);if(C){const a=findNum(C.R,/^ราคาประเมิน/),b=findNum(C.R,/เห็นชอบกำหนด/);const ok=v=>near(v,d.grand,1)||near(v,d.midSum,1);
+    if(a&&!ok(a.v))N.push(`แผ่น “${C.n}”: ราคาประเมิน ${fmt(a.v)} บาท ไม่ตรงกับ SUMMARY ${fmt(d.grand||d.midSum)} บาท`);
+    if(b&&!ok(b.v)&&(!a||b.v!==a.v))N.push(`แผ่น “${C.n}”: เห็นชอบกำหนดราคากลาง ${fmt(b.v)} บาท ไม่ตรงกับ SUMMARY ${fmt(d.grand||d.midSum)} บาท`)}
+  // 4) ปร.5 / ปร.6
+  wb.SheetNames.filter(n=>/^ปร\.?\s*[56]$/.test(n.replace(/\s/g,''))).forEach(n=>{const R=sheetAOA(X,wb.Sheets[n]);const nums=[];R.forEach(r=>(r||[]).forEach(v=>{if(isN(v)&&v>1000)nums.push(v)}));if(!nums.length)return;
+    const hit=nums.some(v=>near(v,d.grand,1)||near(v,d.midSum,1)||near(v,d.costSum,1));const title=s((R.find(r=>(r||[]).some(v=>/^แบบสรุปราคา/.test(s(v))))||[]).find(v=>/^แบบสรุปราคา/.test(s(v))));
+    if(!hit){N.push(`แผ่น “${n}”${title?` (${title})`:''}: ไม่มียอดตรงกับ SUMMARY (${fmt(d.grand||d.midSum)} บาท) — อาจเป็นข้อมูลของโครงการอื่นที่ค้างอยู่ในแม่แบบ`);return}
+    if(/อาคาร/.test(title)&&!/อาคาร/.test(d.title||'')){N.push(`แผ่น “${n}” เป็น “${title}” แต่โครงการนี้ไม่ใช่งานอาคาร — ตรวจว่าเป็นแผ่นของโครงการนี้หรือไม่`);return}
+    const ff=[...new Set(nums.length?R.flatMap(r=>(r||[]).filter(v=>isN(v)&&v>1&&v<2&&Math.round(v*10000)===v*10000&&String(v).split('.')[1]?.length===4)):[])];const bad=ff.filter(v=>fs.length&&!fs.some(k=>Math.abs(k-v)<1e-6));
+    if(bad.length)N.push(`แผ่น “${n}” ใช้ Factor ${bad.join(', ')} ไม่ตรงกับ SUMMARY (${fs.join(', ')})`)});
+  return {E:W,N}}
 
 /* ================= บันทึกรายขั้นตอน: บันทึกแล้วล็อก แก้ไขต้องใส่รหัสผ่าน ================= */
 const STEPS={prep:'ขั้นเตรียมการ',req:'ขออนุมัติซื้อ/จ้าง',orders:'คำสั่งแต่งตั้ง',edit:'โครงการและ BOQ',bid:'ผู้เสนอราคา',eval:'พิจารณาผล',nego:'ต่อรองราคา',result:'ผลการปรับลดราคา',sign:'เรียกลงนามสัญญา',cert:'รับรองผลงาน'};
