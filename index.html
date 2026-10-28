@@ -279,6 +279,7 @@ body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:1
 .ed-rib .ec{display:inline-flex;align-items:center}.ed-rib .ec input[type=color]{width:16px;height:30px;padding:0;border:0;background:none;cursor:pointer}
 .ed-rib .bar{position:absolute;left:6px;right:6px;bottom:3px;height:4px;border-radius:1px}.ed-rib .ab{font-weight:700}
 .ed-rib .ehint{flex-basis:100%;font-size:12px;color:var(--muted);padding:2px 10px 0}
+.dar{font-family:"TH SarabunPSK","TH Sarabun New","Sarabun",sans-serif!important;--ff:TH SarabunPSK}
 #btnEdm.edon{background:#c9a227;color:#fff;border-color:#c9a227}@media screen{#printArea .paper.edm{outline:2px dashed #c9a227;outline-offset:3px;cursor:text}#printArea .paper.edm :focus{outline:none}#printArea .paper.edm *:hover{background:rgba(201,162,39,.10)}#printArea .paper{zoom:var(--pz,1)}#printArea .paper.fk{zoom:calc(var(--pz,1) * var(--fk,1))}}
 @media print{#printArea .paper.fk{zoom:var(--fk,1)}}
 #printArea .paper.fk{width:calc(var(--pw) / var(--fk))!important;max-width:none!important}
@@ -451,7 +452,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">160</span> · <span id="appDate">29 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">161</span> · <span id="appDate">29 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -514,7 +515,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='160',APP_DATE='29 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='161',APP_DATE='29 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1775,7 +1776,9 @@ function edNorm(pa){$$('[style]',pa).forEach(x=>{const s=x.style;if(x.classList.
 /* รูปแบบตัวเลขในเอกสาร: '' ตามแบบ · 'th' เลขไทยทั้งหมด · 'ar' เลขอารบิกทั้งหมด — แปลงเฉพาะข้อความ ไม่แตะแอตทริบิวต์/สไตล์ */
 const TD='๐๑๒๓๔๕๖๗๘๙';
 function digitsApply(root,mode){mode=mode===undefined?S.settings.digits||'':mode;if(!root||!mode)return root;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const re=mode==='th'?/[0-9]/g:/[๐-๙]/g;let n;
-  while((n=w.nextNode())){const v=n.nodeValue;if(!v||n.parentNode.closest('script,style'))continue;re.lastIndex=0;if(!re.test(v))continue;n.nodeValue=mode==='th'?v.replace(/[0-9]/g,d=>TD[d]):v.replace(/[๐-๙]/g,c=>TD.indexOf(c))}return root}
+  const L=[];while((n=w.nextNode())){const v=n.nodeValue;if(!v||n.parentNode.closest('script,style'))continue;re.lastIndex=0;if(re.test(v))n.nodeValue=mode==='th'?v.replace(/[0-9]/g,d=>TD[d]):v.replace(/[๐-๙]/g,c=>TD.indexOf(c));if(mode==='ar'&&/[0-9]/.test(n.nodeValue)&&!n.parentNode.closest('.dar'))L.push(n)}
+  /* ฟอนต์ TH SarabunIT๙ แสดงเลขอารบิกเป็นเลขไทยเสมอ — ครอบตัวเลขด้วย TH SarabunPSK ให้เห็นเป็นเลขอารบิกจริง (รวมถึงในไฟล์ Word) */
+  L.forEach(n=>{const doc=n.ownerDocument;const fr=doc.createDocumentFragment();n.nodeValue.split(/([0-9][0-9,.:\/\-]*)/).forEach((t,i)=>{if(!t)return;if(i%2){const sp=doc.createElement('span');sp.className='dar';sp.textContent=t;fr.appendChild(sp)}else fr.appendChild(doc.createTextNode(t))});n.replaceWith(fr)});return root}
 function digitsHtml(html){if(!S.settings.digits||!html)return html;const t=document.createElement('template');t.innerHTML=html;digitsApply(t.content);const d=document.createElement('div');d.appendChild(t.content);return d.innerHTML}
 const docHash=t=>{let h=5381;for(let i=0;i<t.length;i++)h=(h*33^t.charCodeAt(i))>>>0;return h.toString(36)};
 const docEd=(p,k)=>(p.docEdits||{})[k]||null;
