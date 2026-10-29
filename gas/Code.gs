@@ -141,7 +141,7 @@ function renumber_() {
 
 /* ---------------- บัญชีผู้ใช้ (ผู้ดูแลสร้างให้) ---------------- */
 const SESSION_DAYS = 7;
-const ROLES = ['admin', 'editor', 'viewer'];
+const ROLES = ['admin', 'editor', 'viewer', 'exec']; // exec = ผู้บริหาร: ดูอย่างเดียว และแอปบังคับมุมมองผู้บริหาร
 function secret_() {
   const props = PropertiesService.getScriptProperties();
   let s = props.getProperty('AUTH_SECRET');
@@ -199,7 +199,7 @@ function auth_(token) {
 }
 function pubUser_(u) { return { username: u.username, name: u.name, role: u.role, active: u.active === 'Y', lastLogin: u.lastLogin, createdAt: u.createdAt }; }
 function needAdmin_(u) { if (u.role !== 'admin') throw new Error('เฉพาะผู้ดูแลระบบ'); }
-function needEdit_(u) { if (u.role === 'viewer') throw new Error('บัญชีนี้ดูได้อย่างเดียว ไม่มีสิทธิ์แก้ไข'); }
+function needEdit_(u) { if (u.role === 'viewer' || u.role === 'exec') throw new Error('บัญชีนี้ดูได้อย่างเดียว ไม่มีสิทธิ์แก้ไข'); }
 
 /* ---------------- ข้อมูลกลาง (โครงการ + ค่าตั้งค่าที่ใช้ร่วมกัน) ---------------- */
 const CHUNK = 45000;
