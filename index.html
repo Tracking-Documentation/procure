@@ -454,7 +454,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">163</span> · <span id="appDate">29 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">164</span> · <span id="appDate">29 Oct 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -517,7 +517,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='163',APP_DATE='29 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='164',APP_DATE='29 Oct 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1866,7 +1866,10 @@ function fmtContractNo(f,n,fy){return String(f||'{n}/{yyyy}').replace(/\{(n+)\}/
 function bookOf(p){p.book=p.book||{};if(!p.book.token){const a=new Uint8Array(12);crypto.getRandomValues(a);p.book.token=[...a].map(x=>x.toString(36).padStart(2,'0')).join('').slice(0,18);save()}return p.book}
 function bookOn(){return !!gasBase()}
 /* QR จองใช้ URL เซิร์ฟเวอร์ที่ระบบเชื่อมต่ออยู่จริงก่อน (กัน URL เก่าที่ค้างในเครื่องซึ่งถูกลบ deployment ไปแล้ว) */
-function bookUrl(p){return (srvUrl()||gasBase())+'?p='+encodeURIComponent(p.id)+'&t='+bookOf(p).token}
+function bookUrl(p){const sv=srvUrl()||gasBase(),q='?p='+encodeURIComponent(p.id)+'&t='+bookOf(p).token;
+  /* ใช้หน้าจองบนเว็บเดียวกับระบบ (book.html) — ลิงก์ไม่ผ่าน script.google.com โดยตรง จึงไม่ติดปัญหาล็อกอิน Google หลายบัญชี (/u/1/) */
+  if(/^https?:$/.test(location.protocol)&&!S.settings.bookGas)return new URL('book.html',location.href).href.split('#')[0].replace(/\?.*$/,'')+q+(sv!==SRV_BAKED?'&s='+encodeURIComponent(sv):'');
+  return sv+q}
 function qrImg(text,cell){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createDataURL(cell||4,2)}catch(e){return ''}}
 /* ช่วงวันที่จองได้: นับตั้งแต่วันที่บริษัทได้รับหนังสือ (นับวันที่ได้รับเป็นวันแรกถ้าเป็นวันทำการ) และต้องพ้นระยะอุทธรณ์แล้ว */
 function bookWindow(p){const sg=p.sign||{};const days=Math.max(1,num(sg.days)||7);const base=sg.received||sg.date||todayISO();const H=holidaySet();

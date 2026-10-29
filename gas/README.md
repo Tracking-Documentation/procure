@@ -10,6 +10,7 @@
 ## ติดตั้ง
 1. สร้าง Google Sheet ใหม่ → ส่วนขยาย › Apps Script
 2. วางโค้ด `Code.gs` · เพิ่มไฟล์ HTML ชื่อ `Booking` แล้ววางโค้ด `Booking.html`
+   - QR จองวันลงนามสัญญาเปิดหน้า `book.html` บนเว็บเดียวกับระบบ (สร้างจาก `Booking.html` ด้วย `python3 .mkbook.py`) แล้วเรียก Apps Script เบื้องหลัง จึงไม่ติดปัญหาล็อกอิน Google หลายบัญชี (`/u/1/`) · ลิงก์ QR เดิม (script.google.com) ยังใช้ได้
 3. แก้ `ADMIN_KEY` ใน Code.gs เป็นรหัสลับยาวอย่างน้อย 16 ตัว (ผสมตัวอักษรและตัวเลข) → บันทึก · **ห้ามนำไฟล์ที่ใส่รหัสจริงขึ้น GitHub**
 4. เลือกฟังก์ชัน `setup` → Run → อนุญาตสิทธิ์
 5. Deploy › New deployment › Web app · Execute as **Me** · Who has access **Anyone** → คัดลอก URL `/exec`

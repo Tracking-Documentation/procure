@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<!-- ไฟล์นี้สร้างอัตโนมัติจาก gas/Booking.html ด้วย .mkbook.py — อย่าแก้ตรงนี้ -->
+<meta name="robots" content="noindex">
+<title>จองวันลงนามสัญญา</title>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--m:#7a1f2b;--m2:#a33a48;--bg:#f7f2f2;--line:#e4d6d8;--ink:#2b1d20;--mut:#7d6a6d;--ok:#1f7a4a;--bad:#b42318}
+*{box-sizing:border-box}
+body{margin:0;font-family:Sarabun,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+header{background:var(--m);color:#fff;padding:16px}
+header h1{margin:0;font-size:19px}
+header p{margin:2px 0 0;opacity:.9;font-size:14px}
+main{max-width:720px;margin:0 auto;padding:12px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.card h2{font-size:16px;margin:0 0 10px;color:var(--m)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px}
+.kv b{color:var(--mut);font-weight:600}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.day{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;text-align:center;cursor:pointer;font:inherit;color:inherit;min-width:86px}
+.day small{display:block;color:var(--mut);font-size:12px}
+.day.on{background:var(--m);color:#fff;border-color:var(--m)}.day.on small{color:#f3dfe2}
+.day.full{opacity:.45}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin-top:12px}
+.t{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 0;font:inherit;cursor:pointer;color:inherit}
+.t.on{background:var(--m);color:#fff;border-color:var(--m)}
+.t:disabled{background:#f1ebec;color:#b9a9ac;cursor:not-allowed;text-decoration:line-through}
+label{display:block;font-size:14px;color:var(--mut);margin:10px 0 4px}
+input[type=text],input[type=tel],input[type=email]{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.radio{display:flex;gap:16px;flex-wrap:wrap}.radio label{display:flex;gap:6px;align-items:center;color:var(--ink);font-size:15px;margin:4px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.grid3 .w{grid-column:1/-1}
+.sec{display:grid;gap:6px}.sec label{display:flex;gap:8px;align-items:flex-start;color:var(--ink);font-size:15px;margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer}.sec label small{display:block;color:var(--mut);font-size:12px}.sec input{margin-top:4px}
+.gp{margin-top:10px;background:#f7f2f2;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:15px}
+.rep summary{cursor:pointer;color:var(--m);font-size:13px;margin-top:4px}.rep input{margin-top:6px}
+.gp.lg{background:#fff8e6;border-color:#e8c26a}
+.doc.miss{background:#fdecea;border:1px solid #f3b8b0;border-radius:8px;padding:10px;margin:8px 0}
+.doc{border-top:1px dashed var(--line);padding:10px 0}.doc:first-child{border-top:0}
+.doc .n{font-weight:600}.doc .req{color:var(--bad);font-size:13px}
+.doc .st{font-size:13px;color:var(--ok);margin-top:4px;word-break:break-all}
+.doc input[type=file]{margin-top:6px;font-size:14px;max-width:100%}
+.btn{display:block;width:100%;background:var(--m);color:#fff;border:0;border-radius:10px;padding:13px;font:inherit;font-weight:700;font-size:17px;cursor:pointer;margin-top:14px}
+.btn:disabled{opacity:.6;cursor:wait}
+.msg{border-radius:10px;padding:12px 14px;margin:12px 0;font-size:15px}
+.msg.err{background:#fdecea;color:var(--bad)}.msg.ok{background:#e8f5ee;color:var(--ok)}
+.done{text-align:center}.done .big{font-size:22px;font-weight:700;color:var(--m);margin:6px 0}
+.hint{font-size:13px;color:var(--mut)}
+@media(max-width:480px){.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<script>
+/* ทำงานนอก Apps Script: อ่านโครงการ/โทเคนจากลิงก์ แล้วเรียกเซิร์ฟเวอร์ผ่าน fetch (ไม่ส่งคุกกี้ Google จึงไม่ติด /u/1/) */
+(function(){var q=new URLSearchParams(location.search);document.body.setAttribute('data-p',q.get('p')||'');document.body.setAttribute('data-t',q.get('t')||'');
+var SRV=q.get('s')||'https://script.google.com/macros/s/AKfycbz2w8so4_kfOWz0EPjzWhB3_-3iuhJDbJM4Z6q0U5swFAT_AVF4XezAkNsVH4MBsSCz/exec';var OLD='กรุณาเข้าสู่ระบบ หรือใส่รหัสเจ้าหน้าที่';
+function mk(ok,no){return new Proxy({},{get:function(_,k){if(k==='withSuccessHandler')return function(f){return mk(f,no)};if(k==='withFailureHandler')return function(f){return mk(ok,f)};
+  return function(){var a=[].slice.call(arguments);fetch(SRV,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'book.'+k,args:a})}).then(function(r){return r.json()}).then(function(j){
+    if(j.ok){if(ok)ok(j.result);return}
+    if(j.error===OLD){location.replace(SRV+'?p='+encodeURIComponent(q.get('p')||'')+'&t='+encodeURIComponent(q.get('t')||''));return}
+    if(no)no(new Error(j.error||'เกิดข้อผิดพลาด'))}).catch(function(){if(no)no(new Error('เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจอินเทอร์เน็ตแล้วลองใหม่'))})}}})}
+window.google={script:{run:mk(null,null)}}})();
+</script>
+<header><h1>จองวันลงนามสัญญา</h1><p id="hd">กำลังโหลด…</p></header>
+<main id="app"><div class="card">กำลังโหลดข้อมูล…</div></main>
+<script>
+var PID = document.body.getAttribute('data-p') || '', TOK = document.body.getAttribute('data-t') || '';
+var INFO = null, SEL = { date: '', time: '' }, FILES = {};
+var MON = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+var DOW = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function thd(iso,long){var d=new Date(iso+'T00:00:00');return (long?['วันอาทิตย์','วันจันทร์','วันอังคาร','วันพุธ','วันพฤหัสบดี','วันศุกร์','วันเสาร์'][d.getDay()]+'ที่ ':'')+d.getDate()+' '+MON[d.getMonth()]+' '+(d.getFullYear()+543);}
+function tht(t){return t.replace(':','.')+' น.';}
+function $(id){return document.getElementById(id);}
+function fail(e){var m=$('msg');var t=(e&&e.message)||String(e);if(m){m.className='msg err';m.textContent=t;m.scrollIntoView({behavior:'smooth',block:'center'});}else{$('app').innerHTML='<div class="msg err">'+esc(t)+'</div>';}var b=$('go');if(b){b.disabled=false;b.textContent='ยืนยันการจอง';}}
+
+function load(){google.script.run.withSuccessHandler(function(r){INFO=r;var b=r.booking;if(b){SEL.date=b.date;SEL.time=b.time;(b.files||[]).forEach(function(f){FILES[f.docKey]=f;});}render();}).withFailureHandler(fail).getBookingInfo(PID,TOK);}
+
+function render(){
+  var p=INFO.project,b=INFO.booking;
+  $('hd').textContent=p.office||'';
+  if(b&&(b.confirmed==='Y'||!EDIT)){$('app').innerHTML=doneView(b);bindLater();return;}
+  if(!SEL.date&&INFO.days.length){var f=INFO.days.find(function(d){return d.times.some(function(t){return t.free;});});SEL.date=f?f.date:INFO.days[0].date;}
+  var day=INFO.days.find(function(d){return d.date===SEL.date;});
+  var h=infoCard(p);
+  if(b)h+='<div class="msg ok">กำลังแก้ไขการจอง: '+esc(thd(b.date,1))+' เวลา '+esc(tht(b.time))+' · เลขที่สัญญา (เบื้องต้น) '+esc(b.contractNo)+'<br><span class="hint">แก้ไขวัน เวลา หรือแนบเอกสารเพิ่มได้จนกว่าเจ้าหน้าที่จะยืนยัน</span></div>';
+  if(!INFO.days.length){$('app').innerHTML=h+'<div class="msg err">หมดช่วงเวลาที่จองได้แล้ว กรุณาติดต่อเจ้าหน้าที่</div>';return;}
+  h+='<div class="card"><h2>1. เลือกวันและเวลาลงนาม</h2><div class="days">'+INFO.days.map(function(d){var free=d.times.filter(function(t){return t.free;}).length;var dt=new Date(d.date+'T00:00:00');return '<button class="day'+(d.date===SEL.date?' on':'')+(free?'':' full')+'" data-d="'+d.date+'">'+DOW[dt.getDay()]+'<br><b>'+dt.getDate()+' '+MON[dt.getMonth()]+'</b><small>'+(free?'ว่าง '+free:'เต็ม')+'</small></button>';}).join('')+'</div>';
+  h+='<div class="times">'+(day?day.times.map(function(t){return '<button class="t'+(t.time===SEL.time&&SEL.date===day.date?' on':'')+'" data-t="'+t.time+'"'+(t.free?'':' disabled')+'>'+t.time.replace(':','.')+'</button>';}).join(''):'')+'</div>';
+  h+='<p class="hint">เวลาละ 1 โครงการ · ช่องที่ขีดฆ่ามีผู้จองแล้ว</p></div>';
+  var bb=b||{};
+  h+='<div class="card"><h2>2. ผู้ติดต่อ</h2><div class="grid3"><div class="w"><label>ชื่อ-นามสกุลผู้ติดต่อ *</label><input type="text" id="cn" value="'+esc(bb.contactName)+'"></div><div><label>เบอร์โทรศัพท์ *</label><input type="tel" id="ph" value="'+esc(bb.phone)+'"></div><div><label>อีเมล * (รับแจ้งผลการยืนยันนัด)</label><input type="email" id="em" value="'+esc(bb.email)+'"></div></div></div>';
+  var poa=bb.poa==='มอบอำนาจ'?'yes':(bb.poa==='ไม่มอบอำนาจ'?'no':'');
+  h+='<div class="card"><h2>3. ผู้ลงนามในสัญญา</h2><div class="radio"><label><input type="radio" name="poa" value="no"'+(poa==='no'?' checked':'')+'> กรรมการผู้มีอำนาจลงนามเอง (ไม่มอบอำนาจ)</label><label><input type="radio" name="poa" value="yes"'+(poa==='yes'?' checked':'')+'> มอบอำนาจให้ผู้อื่นลงนามแทน</label></div>';
+  h+='<div id="signer" style="display:'+(poa==='no'?'block':'none')+'"><p class="hint">กรณีไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล ตำแหน่ง ผู้ลงนามในสัญญา</p><div class="grid3"><div><label>ชื่อ *</label><input type="text" id="sn" value="'+esc(bb.signerName)+'"></div><div><label>นามสกุล *</label><input type="text" id="ss" value="'+esc(bb.signerSurname)+'"></div><div class="w"><label>ตำแหน่ง *</label><input type="text" id="sp" placeholder="เช่น กรรมการผู้จัดการ / หุ้นส่วนผู้จัดการ" value="'+esc(bb.signerPosition)+'"></div></div></div></div>';
+  var st=bb.secType||DRAFT.sec||'';
+  h+='<div class="card"><h2>4. หลักประกันสัญญา</h2>'+(p.secAmount?'<p style="margin:0 0 8px">จำนวนเงิน <b>'+esc(Number(p.secAmount).toLocaleString('th-TH'))+' บาท</b> <span class="hint">(ร้อยละ 5 ของราคาค่าจ้าง ตามระเบียบฯ ข้อ 168)</span></p>':'')+'<p class="hint" style="margin:0 0 6px">เลือกอย่างหนึ่งอย่างใด ตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 ข้อ 167</p><div class="sec">'+(p.secTypes||[]).map(function(t){return '<label><input type="radio" name="sec" value="'+esc(t)+'"'+(t===st?' checked':'')+'> <span><b>'+esc(t)+'</b><small>'+esc(SEC_HINT[t]||'')+'</small></span></label>';}).join('')+'</div><div id="gp">'+gpHtml(st)+'</div></div>';
+  h+='<div class="card"><h2>5. แนบเอกสาร</h2><p class="hint">ไฟล์ PDF หรือรูปภาพ ไม่เกิน '+INFO.maxMB+' MB ต่อไฟล์</p>'+p.docs.map(function(d){var f=FILES[d.key];return '<div class="doc" data-k="'+esc(d.key)+'"'+(d.key==='poa'&&poa!=='yes'?' style="display:none"':'')+'><div class="n">'+esc(d.label)+(d.required?' <span class="req">'+(d.key==='sec'?secReq(st):'* จำเป็น')+'</span>':'')+'</div>'+(f?'<div class="st">✓ แนบแล้ว: '+esc(f.name)+'</div>':'')+(d.key==='sec'?'<div class="ln hint" style="display:'+(later(st)?'block':'none')+'">กรณีหนังสือค้ำประกัน แนบภายหลังได้เมื่อได้รับจากธนาคาร (ถ้ามีแล้วแนบตอนนี้ได้)</div>':'')+'<input type="file" accept=".pdf,image/*" data-k="'+esc(d.key)+'"></div>';}).join('')+'</div>';
+  h+='<div class="card"><h2>6. การคุ้มครองข้อมูลส่วนบุคคล</h2><p class="hint" style="margin:0 0 8px;line-height:1.6">ข้อมูลและเอกสารที่กรอกและแนบในหน้านี้ ได้แก่ ชื่อ เบอร์โทร อีเมล ผู้ลงนาม และสำเนาเอกสาร ใช้เพื่อการนัดหมายและการจัดทำสัญญาตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 เท่านั้น เปิดดูได้เฉพาะเจ้าหน้าที่ผู้รับผิดชอบ ไม่เปิดเผยต่อบุคคลอื่นเว้นแต่กฎหมายกำหนด · <a href="https://tracking-documentation.github.io/procure/privacy.html" target="_blank" rel="noopener">อ่านประกาศการคุ้มครองข้อมูลส่วนบุคคล</a></p><label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="pdpa"'+(DRAFT.pdpa||b?' checked':'')+'> <span>รับทราบประกาศการคุ้มครองข้อมูลส่วนบุคคลแล้ว</span></label></div>';
+  h+='<div id="msg"></div><button class="btn" id="go">'+(b?'บันทึกการแก้ไข':'ยืนยันการจอง')+'</button>';
+  $('app').innerHTML=h;
+  bind();
+}
+function infoCard(p){return '<div class="card"><h2>โครงการ</h2><div class="kv"><b>งาน</b><span>'+esc(p.name)+'</span><b>ผู้รับจ้าง</b><span>'+esc(p.contractor)+'</span>'+(p.inviteNo?'<b>ประกวดราคา</b><span>'+esc(p.inviteNo)+'</span>':'')+'</div>'+(p.note?'<p class="hint" style="margin:10px 0 0">'+esc(p.note)+'</p>':'')+'</div>';}
+function doneHtml(b,fixed){return '<div class="card done"><div>'+(fixed?'เจ้าหน้าที่ยืนยันนัดหมายแล้ว':'จองสำเร็จ')+'</div><div class="big">'+esc(thd(b.date,1))+'<br>เวลา '+esc(tht(b.time))+'</div><div>เลขที่สัญญา'+(fixed?'':' (เบื้องต้น)')+' <b>'+esc(b.contractNo)+'</b></div><p class="hint">'+(fixed?'กรุณามาลงนามตามวันเวลาที่นัดหมาย พร้อมหลักประกันสัญญาและอากรแสตมป์':'เลขที่สัญญาอาจเปลี่ยนตามลำดับวันเวลานัดจนกว่าเจ้าหน้าที่จะยืนยัน'+(b.email?' · เมื่อเจ้าหน้าที่ยืนยันแล้ว ระบบจะแจ้งทางอีเมล '+esc(b.email):'')+' · เปิดลิงก์เดิมเพื่อตรวจสถานะหรือแก้ไขได้')+'</p></div>';}
+function bind(){
+  document.querySelectorAll('.day').forEach(function(x){x.onclick=function(){keep();SEL.date=x.dataset.d;SEL.time='';render();};});
+  document.querySelectorAll('.t').forEach(function(x){x.onclick=function(){keep();SEL.time=x.dataset.t;render();};});
+  document.querySelectorAll('input[name=poa]').forEach(function(x){x.onchange=function(){keep();var v=x.value;INFO.booking=INFO.booking||null;DRAFT.poa=v;$('signer').style.display=v==='no'?'block':'none';var pd=document.querySelector('.doc[data-k=poa]');if(pd)pd.style.display=v==='yes'?'block':'none';};});
+  document.querySelectorAll('input[name=sec]').forEach(function(x){x.onchange=function(){DRAFT.sec=x.value;secUI(x.value);};});
+  $('go').onclick=submit;
+  restore();
+}
+var DRAFT={};
+var SEC_HINT={'เงินสด':'นำเงินสดมาชำระในวันลงนามสัญญา','เช็คหรือดราฟท์ที่ธนาคารเซ็นสั่งจ่าย':'ลงวันที่ที่ใช้ชำระ หรือก่อนวันนั้นไม่เกิน 3 วันทำการ','หนังสือค้ำประกันของธนาคารภายในประเทศ':'ตามตัวอย่างที่คณะกรรมการนโยบายกำหนด','หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)':'ออกผ่านระบบ e-GP ตามวิธีการที่กรมบัญชีกลางกำหนด','หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์':'ตามรายชื่อที่ธนาคารแห่งประเทศไทยแจ้งเวียน ใช้ตามตัวอย่างหนังสือค้ำประกันของธนาคาร','พันธบัตรรัฐบาลไทย':''};
+var EDIT=false;
+function later(v){return (INFO.project.secLater||[]).indexOf(v)>=0;}
+function secReq(v){return v==='เงินสด'?'(ไม่ต้องแนบ กรณีเงินสด นำมาชำระในวันลงนาม)':later(v)?'(แนบภายหลังได้ เมื่อได้รับจากธนาคาร)':'* จำเป็น';}
+function secUI(v){var d=document.querySelector('.doc[data-k=sec] .req');if(d)d.textContent=secReq(v);var g=$('gp');if(g)g.innerHTML=gpHtml(v);var n=document.querySelector('.doc[data-k=sec] .ln');if(n)n.style.display=later(v)?'block':'none';}
+/* ข้อมูลสำหรับให้บริษัทไปขอหนังสือค้ำประกันจากธนาคาร */
+function gpHtml(v){if(!v)return '';var p=INFO.project;if(v==='เงินสด'||!SEL.date)return periodHtml(SEL.date);
+  var g=period(SEL.date);if(!later(v))return periodHtml(SEL.date);
+  return '<div class="gp lg"><b>ข้อมูลสำหรับขอหนังสือค้ำประกันจากธนาคาร</b><div class="kv" style="margin-top:6px"><b>ผู้รับประโยชน์</b><span>'+esc(p.beneficiary||p.office||'')+'</span><b>งาน</b><span>'+esc(p.name)+'</span>'+(p.inviteNo?'<b>ประกวดราคา</b><span>'+esc(p.inviteNo)+'</span>':'')+(p.secAmount?'<b>จำนวนเงิน</b><span><b>'+esc(Number(p.secAmount).toLocaleString('th-TH'))+' บาท</b></span>':'')+
+    (g?'<b>ระยะเวลาค้ำประกัน</b><span>ตั้งแต่ <b>'+esc(thd(g.sign))+'</b> ถึง <b>'+esc(thd(g.to))+'</b></span>':'<b>ระยะเวลาค้ำประกัน</b><span>เจ้าหน้าที่ยังไม่ได้ระบุระยะเวลาดำเนินการตามสัญญา กรุณาสอบถามเจ้าหน้าที่</span>')+'</div>'+
+    (g?'<div class="hint" style="margin-top:6px">นับจากวันลงนามในสัญญา ('+esc(thd(g.sign))+') · สิ้นสุดสัญญา '+esc(thd(g.end))+' ('+g.dur+' วัน) + รับประกันความชำรุดบกพร่อง '+g.wy+' ปี + '+g.ex+' วัน · ถ้าเลือกวันลงนามใหม่ วันที่จะเปลี่ยนตาม</div>':'')+
+    '<div class="hint" style="margin-top:6px"><b>ยังไม่ต้องแนบหนังสือค้ำประกันตอนนี้</b> — เมื่อได้รับจากธนาคารแล้ว เปิดลิงก์เดิมเพื่อแนบภายหลัง (ก่อนวันลงนามสัญญา)</div></div>';}
+function addD(iso,n){var d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+function addY(iso,n){var y=+iso.slice(0,4)+n,m=iso.slice(5,7),dd=+iso.slice(8,10);if(m==='02'&&dd===29&&!((y%4===0&&y%100!==0)||y%400===0))dd=28;return y+'-'+m+'-'+String(dd).padStart(2,'0');}
+/* ระยะเวลาค้ำประกันสัญญา = วันลงนาม ถึง วันสิ้นสุดสัญญา + ระยะรับประกันความชำรุดบกพร่อง (ปี) + วันเพิ่ม */
+function period(sign){var p=INFO.project,dur=+p.duration||0;if(!sign||!dur)return null;var wy=(p.warrantyYears===''||p.warrantyYears==null)?2:+p.warrantyYears,ex=(p.extraDays===''||p.extraDays==null)?30:+p.extraDays;var end=addD(sign,dur);return {sign:sign,end:end,wy:wy,ex:ex,to:addD(addY(end,wy),ex),dur:dur};}
+function periodHtml(sign){var g=period(sign);if(!g)return sign?'<div class="gp"><b>ระยะเวลาค้ำประกันสัญญา</b><div class="hint">เจ้าหน้าที่ยังไม่ได้ระบุระยะเวลาดำเนินการตามสัญญา จึงยังคำนวณไม่ได้ (ตั้งแต่วันลงนามในสัญญา ถึงวันสิ้นสุดสัญญา + ระยะรับประกันความชำรุดบกพร่อง + 30 วัน) · กรุณาติดต่อเจ้าหน้าที่ หรือเปิดลิงก์นี้อีกครั้งภายหลัง</div></div>':'';return '<div class="gp"><b>ระยะเวลาค้ำประกันสัญญา</b><br>ตั้งแต่ <b>'+esc(thd(g.sign))+'</b> ถึง <b>'+esc(thd(g.to))+'</b><div class="hint">นับจากวันลงนามในสัญญา · สิ้นสุดสัญญา '+esc(thd(g.end))+' ('+g.dur+' วัน) + รับประกันความชำรุดบกพร่อง '+g.wy+' ปี + '+g.ex+' วัน · หนังสือค้ำประกันต้องมีผลครอบคลุมช่วงนี้ หากเลื่อนวันลงนาม ระยะเวลาจะเปลี่ยนตาม</div></div>';}
+function doneView(b){var p=INFO.project,fixed=b.confirmed==='Y';var have={};(b.files||[]).forEach(function(f){have[f.docKey]=f;});
+  var pend=p.docs.filter(function(d){return !have[d.key]&&(d.key!=='poa'||b.poa==='มอบอำนาจ')&&!(d.key==='sec'&&b.secType==='เงินสด');});
+  var miss=pend.filter(function(d){return d.required;});
+  var h=doneHtml(b,fixed);
+  h+='<div class="card"><h2>หลักประกันสัญญา</h2><div>'+esc(b.secType||'-')+(p.secAmount?' · จำนวน <b>'+esc(Number(p.secAmount).toLocaleString('th-TH'))+' บาท</b>':'')+'</div>'+periodHtml(b.date)+'</div>';
+  h+='<div class="card"><h2>เอกสาร</h2>'+p.docs.filter(function(d){return have[d.key];}).map(function(d){return '<div class="doc"><div class="n">'+esc(d.label)+'</div><div class="st">✓ แนบแล้ว: '+esc(have[d.key].name)+'</div>'+(fixed?'':'<details class="rep"><summary>แนบผิด? เปลี่ยนไฟล์ใหม่</summary><input type="file" accept=".pdf,image/*" data-lk="'+esc(d.key)+'"></details>')+'</div>';}).join('')+(fixed?'<p class="hint" style="margin-top:8px">เจ้าหน้าที่ยืนยันแล้ว ไฟล์ที่แนบไว้แก้ไขไม่ได้ หากต้องแก้ไขกรุณาติดต่อเจ้าหน้าที่</p>':'')+
+    (miss.length?'<div class="msg err" style="margin:10px 0 0">ยังไม่ได้แนบเอกสาร '+miss.length+' รายการ กรุณาแนบก่อนวันลงนามสัญญา</div>':'')+(pend.length?'<p class="hint" style="margin-top:10px">แนบเพิ่มภายหลังได้ที่นี่ (เช่น หนังสือค้ำประกันเมื่อได้รับจากธนาคาร)</p>'+pend.map(function(d){return '<div class="doc'+(d.required?' miss':'')+'"><div class="n">'+esc(d.label)+(d.required?' <span class="req">ยังไม่ได้แนบ</span>':'')+'</div><input type="file" accept=".pdf,image/*" data-lk="'+esc(d.key)+'"></div>';}).join('')+'':'')+(fixed&&!pend.length?'':'<div id="msg"></div><button class="btn" id="lgo">บันทึกเอกสาร</button><p class="hint" style="margin:6px 0 0">'+(fixed?'เลือกไฟล์เอกสารที่ยังขาด แล้วกดบันทึก':'เลือกไฟล์ที่จะแนบเพิ่มหรือแก้ไข แล้วกดบันทึก · ไฟล์ใหม่จะใช้แทนไฟล์เดิมของรายการนั้น')+'</p>')+'</div>';
+  if(!fixed)h+='<button class="btn" id="edit" style="background:#fff;color:var(--m);border:1px solid var(--m)">แก้ไขวัน เวลา หรือข้อมูลการจอง</button>';
+  return h+infoCard(p);}
+function bindLater(){var e=$('edit');if(e)e.onclick=function(){EDIT=true;render();window.scrollTo(0,0);};
+  var g=$('lgo');if(!g)return;g.onclick=function(){var picks=[].slice.call(document.querySelectorAll('input[data-lk]')).filter(function(i){return i.files[0];});
+    if(!picks.length)return fail('กรุณาเลือกไฟล์ที่จะแนบ');var big=picks.find(function(i){return i.files[0].size>INFO.maxMB*1048576;});if(big)return fail('ไฟล์ "'+big.files[0].name+'" ใหญ่เกิน '+INFO.maxMB+' MB');
+    g.disabled=true;var up=[],i=0;(function next(){if(i>=picks.length){g.textContent='กำลังบันทึก…';google.script.run.withSuccessHandler(function(){load();}).withFailureHandler(function(er){g.disabled=false;g.textContent='บันทึกเอกสาร';fail(er);}).attachFiles(PID,TOK,up);return;}
+      var inp=picks[i++];g.textContent='กำลังอัปโหลด '+i+'/'+picks.length+'…';upload(inp.dataset.lk,inp.files[0]).then(function(f){up.push(f);next();}).catch(function(er){g.disabled=false;g.textContent='บันทึกเอกสาร';fail(er);});})();};}
+function keep(){var pd0=$('pdpa');if(pd0)DRAFT.pdpa=pd0.checked;var sr=document.querySelector('input[name=sec]:checked');if(sr)DRAFT.sec=sr.value;['cn','ph','em','sn','ss','sp'].forEach(function(k){var e=$(k);if(e)DRAFT[k]=e.value;});var r=document.querySelector('input[name=poa]:checked');if(r)DRAFT.poa=r.value;}
+function restore(){['cn','ph','em','sn','ss','sp'].forEach(function(k){var e=$(k);if(e&&DRAFT[k]!==undefined)e.value=DRAFT[k];});if(DRAFT.poa){var r=document.querySelector('input[name=poa][value='+DRAFT.poa+']');if(r){r.checked=true;$('signer').style.display=DRAFT.poa==='no'?'block':'none';var pd=document.querySelector('.doc[data-k=poa]');if(pd)pd.style.display=DRAFT.poa==='yes'?'block':'none';}}}
+function readB64(file){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(String(r.result).split(',')[1]);};r.onerror=no;r.readAsDataURL(file);});}
+function upload(k,file){return readB64(file).then(function(b64){return new Promise(function(ok,no){google.script.run.withSuccessHandler(ok).withFailureHandler(no).uploadFile(PID,TOK,k,file.name,file.type,b64);});});}
+function submit(){
+  keep();
+  var m=$('msg');m.className='';m.textContent='';
+  var poa=DRAFT.poa||'';
+  if(!SEL.date||!SEL.time)return fail('กรุณาเลือกวันและเวลา');
+  var pd=$('pdpa');if(pd){DRAFT.pdpa=pd.checked;if(!pd.checked)return fail('กรุณาทำเครื่องหมายรับทราบประกาศการคุ้มครองข้อมูลส่วนบุคคล');}
+  if(!DRAFT.cn||!DRAFT.ph)return fail('กรุณากรอกชื่อผู้ติดต่อและเบอร์โทร');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(DRAFT.em||'').trim()))return fail('กรุณากรอกอีเมลให้ถูกต้อง เพื่อรับแจ้งผลการยืนยันนัด');
+  if(!poa)return fail('กรุณาเลือกว่ามีการมอบอำนาจหรือไม่');
+  if(poa==='no'&&(!DRAFT.sn||!DRAFT.ss||!DRAFT.sp))return fail('ไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล และตำแหน่งผู้ลงนามในสัญญา');
+  var sec=DRAFT.sec||(INFO.booking&&INFO.booking.secType)||'';
+  if(!sec)return fail('กรุณาเลือกประเภทหลักประกันสัญญา');
+  var picks=[].slice.call(document.querySelectorAll('input[type=file]')).filter(function(i){return i.files[0]&&(i.dataset.k!=='poa'||poa==='yes');});
+  var big=picks.find(function(i){return i.files[0].size>INFO.maxMB*1048576;});
+  if(big)return fail('ไฟล์ "'+big.files[0].name+'" ใหญ่เกิน '+INFO.maxMB+' MB');
+  var miss=INFO.project.docs.filter(function(d){return d.required&&(d.key!=='poa'||poa==='yes')&&(d.key!=='sec'||(sec!=='เงินสด'&&!later(sec)))&&!FILES[d.key]&&!picks.some(function(i){return i.dataset.k===d.key;});});
+  if(miss.length)return fail('ยังไม่ได้แนบ: '+miss.map(function(d){return d.label;}).join(', '));
+  var btn=$('go');btn.disabled=true;
+  var up=[],i=0;
+  function next(){
+    if(i>=picks.length)return send();
+    var inp=picks[i++];btn.textContent='กำลังอัปโหลด '+i+'/'+picks.length+'…';
+    upload(inp.dataset.k,inp.files[0]).then(function(f){FILES[f.docKey]=f;up.push(f);next();}).catch(fail);
+  }
+  function send(){
+    btn.textContent='กำลังบันทึก…';
+    google.script.run.withSuccessHandler(function(r){EDIT=false;FILES={};load();window.scrollTo(0,0);}).withFailureHandler(function(e){fail(e);if(/มีผู้จองแล้ว/.test(String(e&&e.message||e))){var keepSel=SEL.time;google.script.run.withSuccessHandler(function(r){INFO=r;SEL.time='';render();fail(e);}).getBookingInfo(PID,TOK);}})
+      .submitBooking(PID,TOK,{date:SEL.date,time:SEL.time,contactName:DRAFT.cn,phone:DRAFT.ph,email:DRAFT.em||'',poa:poa,signerName:poa==='no'?DRAFT.sn:'',signerSurname:poa==='no'?DRAFT.ss:'',signerPosition:poa==='no'?DRAFT.sp:'',secType:sec,files:up});
+  }
+  next();
+}
+load();
+</script>
+<footer style="text-align:center;font-size:12px;color:#7d6a6d;padding:0 16px 24px">© 2026 Narama Woraklan · ห้ามนำไปใช้เชิงพาณิชย์โดยไม่ได้รับอนุญาต</footer>
+</body>
+</html>

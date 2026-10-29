@@ -392,6 +392,15 @@ function doPost(e) {
       catch (err) { return json_({ ok: false, error: String(err.message || err), relogin: !!err.relogin }); }
       finally { if (lk) lk.releaseLock(); }
     }
+    /* หน้าจองวันลงนามสัญญาแบบเว็บ (book.html บน GitHub Pages) — เรียกฟังก์ชันเดียวกับ Booking.html โดยตรวจโทเคนของโครงการทุกครั้ง
+       ลิงก์จึงไม่ผ่าน script.google.com โดยตรง และไม่ติดปัญหาล็อกอิน Google หลายบัญชี (/u/1/) */
+    if (/^book\./.test(d.action || '')) {
+      const BOOK_FN = { getBookingInfo: getBookingInfo, uploadFile: uploadFile, submitBooking: submitBooking, attachFiles: attachFiles };
+      const fn = BOOK_FN[d.action.slice(5)], args = Array.isArray(d.args) ? d.args : [];
+      if (!fn) throw new Error('ไม่รู้จักคำสั่ง');
+      if (typeof args[0] !== 'string' || typeof args[1] !== 'string' || !args[1]) throw new Error('ลิงก์จองไม่ถูกต้องหรือหมดอายุ กรุณาติดต่อเจ้าหน้าที่');
+      return json_({ ok: true, result: fn.apply(null, args) });
+    }
     if (d.action === 'ping' && d.token && !d.key) { auth_(d.token); return json_({ ok: true, settings: settings_() }); }
     staffOk_(d.key, d.token);
     if (d.action === 'ping') return json_({ ok: true, settings: settings_() });
