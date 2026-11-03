@@ -1,6 +1,6 @@
 # ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง แขวงทางหลวงกระบี่ (Construction Contract Tracking & Documentation System · Krabi Highway District)
 
-เปิดใช้งาน/ติดตั้งแอป: https://krabiprocure-hash.github.io/boq-nego/
+เปิดใช้งาน/ติดตั้งแอป: https://tracking-documentation.github.io/procure/ (มุมมองผู้บริหาร: https://tracking-documentation.github.io/procure/?view=exec)
 
 ## จองวันลงนามสัญญาออนไลน์ (QR)
 บริษัทสแกน QR ในหนังสือเรียกลงนามสัญญาเพื่อจองวันเวลา แนบเอกสาร และรับเลขที่สัญญา · ต้องติดตั้ง Google Apps Script ตาม [gas/README.md](gas/README.md)
