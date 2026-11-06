@@ -458,7 +458,8 @@ function getBookingInfo(projectId, token) {
 function uploadFile(projectId, token, docKey, fileName, mime, b64) {
   const p = project_(projectId, token);
   const bytes = Utilities.base64Decode(b64);
-  if (bytes.length > MAX_FILE_MB * 1024 * 1024) throw new Error('ไฟล์ใหญ่เกิน ' + MAX_FILE_MB + ' MB');
+  const lim = docKey === 'รวม' ? 20 : MAX_FILE_MB; // ไฟล์เอกสารรวม (แนบรวมเป็นไฟล์เดียว) ได้ถึง 20 MB
+  if (bytes.length > lim * 1024 * 1024) throw new Error('ไฟล์ใหญ่เกิน ' + lim + ' MB');
   const it = DriveApp.getFoldersByName(ROOT_FOLDER);
   const root = it.hasNext() ? it.next() : DriveApp.createFolder(ROOT_FOLDER);
   const fname = (p.inviteNo || projectId) + ' ' + String(p.name || '').slice(0, 60);

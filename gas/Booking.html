@@ -38,6 +38,7 @@ input[type=text],input[type=tel],input[type=email]{width:100%;padding:10px 12px;
 .doc{border-top:1px dashed var(--line);padding:10px 0}.doc:first-child{border-top:0}
 .doc .n{font-weight:600}.doc .req{color:var(--bad);font-size:13px}
 .doc .st{font-size:13px;color:var(--ok);margin-top:4px;word-break:break-all}
+.ck{display:block;padding:3px 0;font-size:15px}.ck input{margin-right:6px}
 .doc input[type=file]{margin-top:6px;font-size:14px;max-width:100%}
 .btn{display:block;width:100%;background:var(--m);color:#fff;border:0;border-radius:10px;padding:13px;font:inherit;font-weight:700;font-size:17px;cursor:pointer;margin-top:14px}
 .btn:disabled{opacity:.6;cursor:wait}
@@ -83,7 +84,12 @@ function render(){
   h+='<div id="signer" style="display:'+(poa==='no'?'block':'none')+'"><p class="hint">กรณีไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล ตำแหน่ง ผู้ลงนามในสัญญา</p><div class="grid3"><div><label>ชื่อ *</label><input type="text" id="sn" value="'+esc(bb.signerName)+'"></div><div><label>นามสกุล *</label><input type="text" id="ss" value="'+esc(bb.signerSurname)+'"></div><div class="w"><label>ตำแหน่ง *</label><input type="text" id="sp" placeholder="เช่น กรรมการผู้จัดการ / หุ้นส่วนผู้จัดการ" value="'+esc(bb.signerPosition)+'"></div></div></div></div>';
   var st=bb.secType||DRAFT.sec||'';
   h+='<div class="card"><h2>4. หลักประกันสัญญา</h2>'+(p.secAmount?'<p style="margin:0 0 8px">จำนวนเงิน <b>'+esc(Number(p.secAmount).toLocaleString('th-TH'))+' บาท</b> <span class="hint">(ร้อยละ 5 ของราคาค่าจ้าง ตามระเบียบฯ ข้อ 168)</span></p>':'')+'<p class="hint" style="margin:0 0 6px">เลือกอย่างหนึ่งอย่างใด ตามระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 ข้อ 167</p><div class="sec">'+(p.secTypes||[]).map(function(t){return '<label><input type="radio" name="sec" value="'+esc(t)+'"'+(t===st?' checked':'')+'> <span><b>'+esc(t)+'</b><small>'+esc(SEC_HINT[t]||'')+'</small></span></label>';}).join('')+'</div><div id="gp">'+gpHtml(st)+'</div></div>';
-  h+='<div class="card"><h2>5. แนบเอกสาร</h2><p class="hint">ไฟล์ PDF หรือรูปภาพ ไม่เกิน '+INFO.maxMB+' MB ต่อไฟล์</p>'+p.docs.map(function(d){var f=FILES[d.key];return '<div class="doc" data-k="'+esc(d.key)+'"'+(d.key==='poa'&&poa!=='yes'?' style="display:none"':'')+'><div class="n">'+esc(d.label)+(d.required?' <span class="req">'+(d.key==='sec'?secReq(st):'* จำเป็น')+'</span>':'')+'</div>'+(f?'<div class="st">✓ แนบแล้ว: '+esc(f.name)+'</div>':'')+(d.key==='sec'?'<div class="ln hint" style="display:'+(later(st)?'block':'none')+'">กรณีหนังสือค้ำประกัน แนบภายหลังได้เมื่อได้รับจากธนาคาร (ถ้ามีแล้วแนบตอนนี้ได้)</div>':'')+'<input type="file" accept=".pdf,image/*" data-k="'+esc(d.key)+'"></div>';}).join('')+'</div>';
+  var att=DRAFT.att||'sep';
+  h+='<div class="card"><h2>5. แนบเอกสาร</h2><div class="radio" style="margin-bottom:8px"><label><input type="radio" name="att" value="sep"'+(att==='sep'?' checked':'')+'> แนบแยกทีละรายการ</label><label><input type="radio" name="att" value="all"'+(att==='all'?' checked':'')+'> แนบรวมเป็นไฟล์เดียว (PDF ที่รวมทุกเอกสารไว้แล้ว)</label></div>'+
+    '<div id="attAll" style="display:'+(att==='all'?'block':'none')+'"><div class="doc"><div class="n">ไฟล์เอกสารรวม <span class="req">* ไม่เกิน '+ALL_MB+' MB</span></div><input type="file" accept=".pdf,image/*" id="fAll"><p class="hint" style="margin:8px 0 4px">ทำเครื่องหมายเอกสารที่อยู่ในไฟล์รวมนี้</p>'+
+    p.docs.map(function(d){return '<label class="ck" data-ck="'+esc(d.key)+'"'+(d.key==='poa'&&poa!=='yes'?' style="display:none"':'')+'><input type="checkbox" data-ak="'+esc(d.key)+'"'+(d.key!=='sec'||!later(st)?' checked':'')+'> '+esc(d.label)+'</label>';}).join('')+
+    '<p class="hint" style="margin:6px 0 0">เอกสารที่ไม่ได้อยู่ในไฟล์รวม (เช่น หนังสือค้ำประกันที่ยังไม่ได้รับ) แนบแยกเพิ่มได้หลังจองเสร็จ</p></div></div>'+
+    '<div id="attSep" style="display:'+(att==='all'?'none':'block')+'"><p class="hint">ไฟล์ PDF หรือรูปภาพ ไม่เกิน '+INFO.maxMB+' MB ต่อไฟล์</p>'+p.docs.map(function(d){var f=FILES[d.key];return '<div class="doc" data-k="'+esc(d.key)+'"'+(d.key==='poa'&&poa!=='yes'?' style="display:none"':'')+'><div class="n">'+esc(d.label)+(d.required?' <span class="req">'+(d.key==='sec'?secReq(st):'* จำเป็น')+'</span>':'')+'</div>'+(f?'<div class="st">✓ แนบแล้ว: '+esc(f.name)+'</div>':'')+(d.key==='sec'?'<div class="ln hint" style="display:'+(later(st)?'block':'none')+'">กรณีหนังสือค้ำประกัน แนบภายหลังได้เมื่อได้รับจากธนาคาร (ถ้ามีแล้วแนบตอนนี้ได้)</div>':'')+'<input type="file" accept=".pdf,image/*" data-k="'+esc(d.key)+'"></div>';}).join('')+'</div></div>';
   h+='<div class="card"><h2>6. การคุ้มครองข้อมูลส่วนบุคคล</h2><p class="hint" style="margin:0 0 8px;line-height:1.6">ข้อมูลและเอกสารที่กรอกและแนบในหน้านี้ ได้แก่ ชื่อ เบอร์โทร อีเมล ผู้ลงนาม และสำเนาเอกสาร ใช้เพื่อการนัดหมายและการจัดทำสัญญาตามพระราชบัญญัติการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ พ.ศ. 2560 เท่านั้น เปิดดูได้เฉพาะเจ้าหน้าที่ผู้รับผิดชอบ ไม่เปิดเผยต่อบุคคลอื่นเว้นแต่กฎหมายกำหนด · <a href="https://tracking-documentation.github.io/procure/privacy.html" target="_blank" rel="noopener">อ่านประกาศการคุ้มครองข้อมูลส่วนบุคคล</a></p><label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="pdpa"'+(DRAFT.pdpa||b?' checked':'')+'> <span>รับทราบประกาศการคุ้มครองข้อมูลส่วนบุคคลแล้ว</span></label></div>';
   h+='<div id="msg"></div><button class="btn" id="go">'+(b?'บันทึกการแก้ไข':'ยืนยันการจอง')+'</button>';
   $('app').innerHTML=h;
@@ -96,6 +102,8 @@ function bind(){
   document.querySelectorAll('.t').forEach(function(x){x.onclick=function(){keep();SEL.time=x.dataset.t;render();};});
   document.querySelectorAll('input[name=poa]').forEach(function(x){x.onchange=function(){keep();var v=x.value;INFO.booking=INFO.booking||null;DRAFT.poa=v;$('signer').style.display=v==='no'?'block':'none';var pd=document.querySelector('.doc[data-k=poa]');if(pd)pd.style.display=v==='yes'?'block':'none';};});
   document.querySelectorAll('input[name=sec]').forEach(function(x){x.onchange=function(){DRAFT.sec=x.value;secUI(x.value);};});
+  document.querySelectorAll('input[name=att]').forEach(function(x){x.onchange=function(){DRAFT.att=x.value;$('attAll').style.display=x.value==='all'?'block':'none';$('attSep').style.display=x.value==='all'?'none':'block';};});
+  document.querySelectorAll('input[name=poa]').forEach(function(x){x.addEventListener('change',function(){var c=document.querySelector('.ck[data-ck=poa]');if(c)c.style.display=x.value==='yes'?'block':'none';});});
   $('go').onclick=submit;
   restore();
 }
@@ -133,6 +141,7 @@ function bindLater(){var e=$('edit');if(e)e.onclick=function(){EDIT=true;render(
       var inp=picks[i++];g.textContent='กำลังอัปโหลด '+i+'/'+picks.length+'…';upload(inp.dataset.lk,inp.files[0]).then(function(f){up.push(f);next();}).catch(function(er){g.disabled=false;g.textContent='บันทึกเอกสาร';fail(er);});})();};}
 function keep(){var pd0=$('pdpa');if(pd0)DRAFT.pdpa=pd0.checked;var sr=document.querySelector('input[name=sec]:checked');if(sr)DRAFT.sec=sr.value;['cn','ph','em','sn','ss','sp'].forEach(function(k){var e=$(k);if(e)DRAFT[k]=e.value;});var r=document.querySelector('input[name=poa]:checked');if(r)DRAFT.poa=r.value;}
 function restore(){['cn','ph','em','sn','ss','sp'].forEach(function(k){var e=$(k);if(e&&DRAFT[k]!==undefined)e.value=DRAFT[k];});if(DRAFT.poa){var r=document.querySelector('input[name=poa][value='+DRAFT.poa+']');if(r){r.checked=true;$('signer').style.display=DRAFT.poa==='no'?'block':'none';var pd=document.querySelector('.doc[data-k=poa]');if(pd)pd.style.display=DRAFT.poa==='yes'?'block':'none';}}}
+var ALL_MB=20;
 function readB64(file){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(String(r.result).split(',')[1]);};r.onerror=no;r.readAsDataURL(file);});}
 function upload(k,file){return readB64(file).then(function(b64){return new Promise(function(ok,no){google.script.run.withSuccessHandler(ok).withFailureHandler(no).uploadFile(PID,TOK,k,file.name,file.type,b64);});});}
 function submit(){
@@ -147,15 +156,21 @@ function submit(){
   if(poa==='no'&&(!DRAFT.sn||!DRAFT.ss||!DRAFT.sp))return fail('ไม่มอบอำนาจ กรุณาระบุชื่อ นามสกุล และตำแหน่งผู้ลงนามในสัญญา');
   var sec=DRAFT.sec||(INFO.booking&&INFO.booking.secType)||'';
   if(!sec)return fail('กรุณาเลือกประเภทหลักประกันสัญญา');
-  var picks=[].slice.call(document.querySelectorAll('input[type=file]')).filter(function(i){return i.files[0]&&(i.dataset.k!=='poa'||poa==='yes');});
+  var allMode=(DRAFT.att||'sep')==='all',fa=$('fAll'),allFile=allMode&&fa&&fa.files[0];
+  var inAll=allMode?[].slice.call(document.querySelectorAll('input[data-ak]')).filter(function(c){return c.checked&&(c.dataset.ak!=='poa'||poa==='yes');}).map(function(c){return c.dataset.ak;}):[];
+  if(allMode&&!allFile&&!Object.keys(FILES).length)return fail('กรุณาเลือกไฟล์เอกสารรวม');
+  if(allFile&&!inAll.length)return fail('กรุณาทำเครื่องหมายเอกสารที่อยู่ในไฟล์รวม');
+  if(allFile&&allFile.size>ALL_MB*1048576)return fail('ไฟล์ "'+allFile.name+'" ใหญ่เกิน '+ALL_MB+' MB');
+  var picks=allMode?[]:[].slice.call(document.querySelectorAll('#attSep input[type=file]')).filter(function(i){return i.files[0]&&(i.dataset.k!=='poa'||poa==='yes');});
   var big=picks.find(function(i){return i.files[0].size>INFO.maxMB*1048576;});
   if(big)return fail('ไฟล์ "'+big.files[0].name+'" ใหญ่เกิน '+INFO.maxMB+' MB');
-  var miss=INFO.project.docs.filter(function(d){return d.required&&(d.key!=='poa'||poa==='yes')&&(d.key!=='sec'||(sec!=='เงินสด'&&!later(sec)))&&!FILES[d.key]&&!picks.some(function(i){return i.dataset.k===d.key;});});
+  var miss=INFO.project.docs.filter(function(d){return d.required&&(d.key!=='poa'||poa==='yes')&&(d.key!=='sec'||(sec!=='เงินสด'&&!later(sec)))&&!FILES[d.key]&&!picks.some(function(i){return i.dataset.k===d.key;})&&!(allFile&&inAll.indexOf(d.key)>=0);});
   if(miss.length)return fail('ยังไม่ได้แนบ: '+miss.map(function(d){return d.label;}).join(', '));
   var btn=$('go');btn.disabled=true;
   var up=[],i=0;
   function next(){
-    if(i>=picks.length)return send();
+    if(i>=picks.length){if(!allFile)return send();btn.textContent='กำลังอัปโหลดไฟล์รวม…';
+      return upload('รวม',allFile).then(function(f){inAll.forEach(function(k){var e={docKey:k,name:f.name+' (ไฟล์รวม)',id:f.id,url:f.url,combined:true};FILES[k]=e;up.push(e);});allFile=null;send();}).catch(fail);}
     var inp=picks[i++];btn.textContent='กำลังอัปโหลด '+i+'/'+picks.length+'…';
     upload(inp.dataset.k,inp.files[0]).then(function(f){FILES[f.docKey]=f;up.push(f);next();}).catch(fail);
   }
