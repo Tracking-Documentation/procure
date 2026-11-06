@@ -454,7 +454,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">167</span> · <span id="appDate">6 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">168</span> · <span id="appDate">6 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -517,7 +517,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='167',APP_DATE='6 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='168',APP_DATE='6 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3101,8 +3101,9 @@ function stdMatch(name){const L=S.settings.dohStandards||[];if(!L.length||!name)
   let best=null;const vs=[name,stdStrip(name)];
   L.forEach(r=>{[r.item,stdStrip(r.item)].forEach(it=>vs.forEach(v=>{if(stdNums(v)!==stdNums(it))return;const sc=stdSim(v,it);if(sc>=0.9&&(!best||sc>best.score))best={std:r.std,item:r.item,score:sc}}))});
   STDX.c.set(name,best);return best}
-function itemStd(i){return String(i.std||'').trim()||(stdMatch(i.name)||{}).std||''}
-function torStdLines(p){const T=torOf(p);if(String(T.standards||'').trim())return T.standards.split(/\n/).map(s=>s.trim()).filter(Boolean);
+const stdClean=t=>String(t||'').replace(/\s+/g,' ').trim();
+function itemStd(i){return stdClean(i.std)||stdClean((stdMatch(i.name)||{}).std)}
+function torStdLines(p){const T=torOf(p);if(String(T.standards||'').trim())return T.standards.split(/\n/).map(stdClean).filter(Boolean);
   const seen=new Set(),L=[];torItems(p).forEach(i=>{const s=itemStd(i);if(s&&!seen.has(s)){seen.add(s);L.push(s)}});TOR_STD_ALWAYS.forEach(s=>{if(!seen.has(s)){seen.add(s);L.push(s)}});return L}
 function torNums(p){const bond=torBond(p)?1:0,k=torOf(p).k?1:0;const c=5+bond,res=c+7,cr=res+1+k;
   return {N_CRITERIA:c,N_CONTRACT:c+1,N_PAYMENT:c+2,N_PENALTY:c+3,N_WARRANTY:c+4,N_ADVANCE:c+5,N_RETENTION:c+6,N_RESERVED:res,N_K:res+1,N_CRAFT:cr,N_LAW:cr+1,N_EVAL:cr+2,N_G_CONTRACT:1+bond,N_G_ADVANCE:2+bond,N_G_RETENTION:3+bond}}
@@ -3165,7 +3166,7 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
     if(o.img){out.push(`<div class="tor-g"><img src="${GARUDA}" alt="ตราครุฑ"></div>`);empties=0;continue}
     if(o.blk){
       if(o.blk==='ITEM_TABLE'){const L=torItems(p);out.push(`<table class="tor-t"><thead><tr><th>ลำดับ</th><th>รายการ</th><th>หน่วย</th><th>ปริมาณ</th></tr></thead><tbody>${L.map((it,i)=>`<tr><td class="c">${i+1}</td><td>${escBr(it.name)}</td><td class="c">${esc(it.unit||'')}</td><td class="r">${Number.isInteger(num(it.qty))?num(it.qty).toLocaleString('en-US'):fmt(it.qty)}</td></tr>`).join('')||'<tr><td colspan="4" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}</tbody></table>`)}
-      else if(o.blk==='STANDARDS_LIST')torStdLines(p).forEach((s,i)=>out.push(mk('tp','padding-left:40.8mm;text-indent:-8.3mm',torLabel(torEsc(`(${i+2})  ${s}`)))));
+      else if(o.blk==='STANDARDS_LIST')torStdLines(p).forEach((s,i)=>out.push(mk('tp','padding-left:40.8mm;text-indent:-8.3mm;text-align:left',torLabel(torEsc(`(${i+2})  ${s}`)))));
       else{const no=o.blk==='SECTION_310'?'๓.๑๐':o.blk==='SECTION_210'?'๒.๑๐':'';const L=no?torQual(p,no):torJV(p);
         L.filter(s=>!out.some(h=>h.includes(torEsc(s.slice(0,40))))).forEach((s,i)=>out.push(mk('tp',`text-indent:${no?'25mm':(i===0?'32mm':'25mm')}`,torLabel(torEsc(s)))))}
       empties=0;continue}
