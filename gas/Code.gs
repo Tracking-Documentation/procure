@@ -24,7 +24,7 @@ const SEC_LATER = ['หนังสือค้ำประกันของธ
 const SEC_TYPES = ['เงินสด', 'เช็คหรือดราฟท์ที่ธนาคารเซ็นสั่งจ่าย', 'หนังสือค้ำประกันของธนาคารภายในประเทศ', 'หนังสือค้ำประกันอิเล็กทรอนิกส์ (e-Guarantee)', 'หนังสือค้ำประกันของบริษัทเงินทุนหรือบริษัทเงินทุนหลักทรัพย์', 'พันธบัตรรัฐบาลไทย'];
 const COLS = {
   projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt', 'secAmount', 'stamp', 'duration', 'warrantyYears', 'extraDays', 'beneficiary'],
-  bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType'],
+  bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType', 'delivery', 'source'],
   settings: ['key', 'value'],
   users: ['username', 'name', 'role', 'active', 'salt', 'hash', 'ver', 'createdAt', 'lastLogin'],
   store: ['id', 'rev', 'deleted', 'updatedAt', 'updatedBy', 'name', 'parts']
@@ -442,6 +442,31 @@ function doPost(e) {
         renumber_();
         return json_({ ok: true, settings: settings_() });
       }
+      /* เจ้าหน้าที่บันทึก/แก้ไขนัดลงนามเอง (บริษัทติดต่อแขวงฯ โดยตรง) — เลือกวันได้อิสระ เลขที่สัญญาเว้นว่าง = ออกเลขอัตโนมัติตามลำดับวันเวลานัด */
+      if (d.action === 'staffBook') {
+        const f = d.form || {};
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(String(f.date || ''))) throw new Error('กรุณาระบุวันที่ลงนามสัญญา');
+        if (!/^\d{1,2}:\d{2}$/.test(String(f.time || ''))) throw new Error('กรุณาระบุเวลา');
+        const proj = rows_('projects').find(x => x.projectId === d.projectId);
+        const all = activeBookings_();
+        let b = all.find(x => x.projectId === d.projectId);
+        const clash = all.find(x => x.date === f.date && x.time === f.time && (!b || x.bookingId !== b.bookingId));
+        if (clash && !d.force) throw new Error('CLASH:ช่วงเวลานี้มีนัดของโครงการอื่นแล้ว');
+        b = Object.assign(b || { bookingId: uid_(), projectId: d.projectId, createdAt: now_(), status: 'จองแล้ว', confirmed: '', files: '[]', source: 'staff' }, {
+          date: f.date, time: f.time, company: (proj && proj.contractor) || f.company || '', contactName: f.contactName || '', phone: f.phone || '', email: f.email || '',
+          poa: f.poa === 'yes' ? 'มอบอำนาจ' : 'ไม่มอบอำนาจ', signerName: f.signerName || '', signerSurname: f.signerSurname || '', signerPosition: f.signerPosition || '',
+          secType: f.secType || '', delivery: f.delivery === 'online' ? 'online' : 'walkin', updatedAt: now_()
+        });
+        const no = String(f.contractNo || '').trim();
+        if (no) { b.contractNo = no; const m = no.match(/\d+/); b.seq = m ? +m[0] : ''; }
+        if (no) { b.confirmed = 'Y'; b.status = 'ยืนยันแล้ว'; }
+        else { b.confirmed = ''; b.status = 'จองแล้ว'; } // ให้ renumber_ ออกเลขตามลำดับก่อน แล้วค่อยยืนยัน
+        write_('bookings', b); renumber_();
+        let after = rows_('bookings').find(x => x.bookingId === b.bookingId);
+        if (!no && f.confirm) { after.confirmed = 'Y'; after.status = 'ยืนยันแล้ว'; write_('bookings', after); after = rows_('bookings').find(x => x.bookingId === b.bookingId); }
+        const mailed = after.confirmed === 'Y' && f.notify ? notify_(after, 'confirm') : false;
+        return json_({ ok: true, booking: after, mailed: mailed });
+      }
       if (d.action === 'confirm' || d.action === 'unconfirm' || d.action === 'cancel') {
         const b = rows_('bookings').find(x => x.bookingId === d.bookingId);
         if (!b) throw new Error('ไม่พบรายการจอง');
@@ -502,12 +527,13 @@ function submitBooking(projectId, token, form) {
     const files = (mine && mine.files ? JSON.parse(mine.files) : []).filter(f => !(form.files || []).some(n => n.docKey === f.docKey)).concat(form.files || []);
     if (SEC_TYPES.indexOf(form.secType) < 0) throw new Error('กรุณาเลือกประเภทหลักประกันสัญญา');
     const required = p.docs.filter(d => d.required && (d.key !== 'poa' || form.poa === 'yes') && (d.key !== 'sec' || (form.secType !== 'เงินสด' && SEC_LATER.indexOf(form.secType) < 0)));
-    const missing = required.filter(d => !files.some(f => f.docKey === d.key));
+    const walkin = form.delivery === 'walkin'; // บริษัทเลือกนำเอกสารมาส่งที่แขวงฯ ด้วยตนเอง
+    const missing = walkin ? [] : required.filter(d => !files.some(f => f.docKey === d.key));
     if (missing.length) throw new Error('ยังไม่ได้แนบ: ' + missing.map(d => d.label).join(', '));
     const b = Object.assign(mine || { bookingId: uid_(), projectId: projectId, createdAt: now_(), status: 'จองแล้ว', confirmed: '' }, {
       date: form.date, time: form.time, company: p.contractor, contactName: form.contactName, phone: form.phone, email: form.email || '',
       poa: form.poa === 'yes' ? 'มอบอำนาจ' : 'ไม่มอบอำนาจ', signerName: form.signerName || '', signerSurname: form.signerSurname || '',
-      signerPosition: form.signerPosition || '', secType: form.secType, files: JSON.stringify(files), updatedAt: now_()
+      signerPosition: form.signerPosition || '', secType: form.secType, files: JSON.stringify(files), updatedAt: now_(), delivery: walkin ? 'walkin' : 'online', source: (mine && mine.source) || 'online'
     });
     write_('bookings', b);
     renumber_();
