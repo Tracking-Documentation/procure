@@ -454,7 +454,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">168</span> · <span id="appDate">6 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">169</span> · <span id="appDate">13 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -517,7 +517,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='168',APP_DATE='6 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='169',APP_DATE='13 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -532,6 +532,7 @@ const DEF_SETTINGS={idleMinutes:30,uiScale:1.15,warrantyYears:2,secExtraDays:30,
   showSign:true,watermark:false,theme:'light'};
 let S={projects:[],settings:structuredClone(DEF_SETTINGS)};
 let cur=null, tab='dash', reportSel='nego', deferredPrompt=null;
+window.addEventListener('storage',e=>{if(e.key===AUTHK||e.key===null)location.reload()});
 function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.parse(raw);if(d&&Array.isArray(d.projects)){S=d;S.settings=Object.assign(structuredClone(DEF_SETTINGS),d.settings||{})}}}catch(e){}
   if(S.settings.signDocs)S.settings.signDocs=String(S.settings.signDocs).replace('มอบอำนาจให้เซ็นสัญญาแทน','มอบอำนาจให้ลงนามในสัญญาแทน');
   if(!S.projects.length&&!central()){S.projects.push(sampleProject(),sampleProjectWon())}
@@ -776,7 +777,7 @@ document.addEventListener('click',e=>{
   if(t.dataset.open||t.dataset.edit){e.preventDefault();cur=t.dataset.open||t.dataset.edit;save();go(t.dataset.edit?'prep':'edit')}
   else if(t.dataset.print){cur=t.dataset.print;save();go('report')}
   else if(t.dataset.dup){const s=S.projects.find(p=>p.id===t.dataset.dup);const c=structuredClone(s);c.id=uid();c.saved={};c.name=s.name+' (สำเนา)';c.updatedAt=nowStr();c.createdAt=nowStr();S.projects.unshift(c);save();rDash();toast('ทำสำเนาแล้ว')}
-  else if(t.dataset.del){const s=S.projects.find(p=>p.id===t.dataset.del);confirmBox(`ลบโครงการ “${s.name||'(ยังไม่ตั้งชื่อ)'}” ? ลบแล้วกู้คืนไม่ได้ (ยกเว้นมีไฟล์สำรอง)`,'ลบโครงการ',()=>{S.projects=S.projects.filter(p=>p.id!==s.id);if(cur===s.id)cur=S.projects[0]?.id||null;save();rDash();toast('ลบแล้ว')})}
+  else if(t.dataset.del){const s=S.projects.find(p=>p.id===t.dataset.del);confirmBox(`ลบโครงการ “${s.name||'(ยังไม่ตั้งชื่อ)'}” ? ผู้ดูแลระบบกู้คืนได้จาก ตั้งค่า › โครงการที่ถูกลบ`,'ลบโครงการ',()=>{markDel(s.id);S.projects=S.projects.filter(p=>p.id!==s.id);if(cur===s.id)cur=S.projects[0]?.id||null;save();rDash();toast('ลบแล้ว')})}
   else if(t.dataset.act==='new'){const p=newProject();S.projects.unshift(p);cur=p.id;save();go('edit')}
   else if(t.dataset.act==='sample'){const p=sampleProject(),w=sampleProjectWon();S.projects.unshift(p,w);cur=p.id;save();go('edit');toast('โหลดตัวอย่างแล้ว 2 โครงการ (กำลังต่อรอง และประกาศผู้ชนะแล้ว)')}
 });
@@ -2533,9 +2534,14 @@ async function srvCall(body,url){url=url||srvUrl();if(!url)throw new Error('ย�
 function saveAuth(j){try{localStorage.setItem(LS+'.lastAct',String(Date.now()));localStorage.setItem(LS+'.lastUser',j.user.username);localStorage.setItem(AUTHK,JSON.stringify({token:j.token,user:j.user,exp:Date.now()+(j.days||30)*864e5-36e5}))}catch(e){}}
 
 /* ---------- ซิงก์ ---------- */
+/* ส่ง “ลบโครงการ” ขึ้นระบบกลางเฉพาะที่ผู้ใช้กดลบจริงในเครื่องนี้ — โครงการที่หายจากเครื่องด้วยเหตุอื่น (ข้อมูลในเครื่องถูกล้าง/เปิดหลายแท็บ) จะไม่ถูกลบที่ระบบกลาง แต่ดึงกลับมาใหม่ */
+const DELK=LS+'.del';function delIntent(){try{return new Set(JSON.parse(localStorage.getItem(DELK)||'[]'))}catch(e){return new Set()}}
+function markDel(id){const d=delIntent();d.add(id);try{localStorage.setItem(DELK,JSON.stringify([...d]))}catch(e){}}
+function unmarkDel(ids){const d=delIntent();ids.forEach(i=>d.delete(i));try{localStorage.setItem(DELK,JSON.stringify([...d]))}catch(e){}}
 function pendingItems(sm){const out=[],L=new Map();S.projects.forEach(p=>L.set(p.id,p));L.set('__settings',sharedSettings());
   L.forEach((d,id)=>{const h=hashOf(JSON.stringify(d));if(sm.hash[id]!==h)out.push({id,baseRev:sm.revs[id]||0,data:d,_h:h})});
-  Object.keys(sm.revs).forEach(id=>{if(!L.has(id))out.push({id,baseRev:sm.revs[id],deleted:true})});return out}
+  const DI=delIntent();let lost=0;Object.keys(sm.revs).forEach(id=>{if(L.has(id))return;if(DI.has(id))out.push({id,baseRev:sm.revs[id],deleted:true});else{delete sm.revs[id];delete sm.hash[id];lost++}});
+  if(lost){sm.since=0;putSyncMeta(sm)}return out}
 /* รวมการแก้ไข: ค่าที่เครื่องนี้แก้หลังซิงก์ครั้งล่าสุดชนะ ค่าอื่นใช้ของระบบกลาง — ไม่สร้างสำเนาซ้ำ */
 function merge3(base,local,remote){const out=structuredClone(remote);const J=x=>JSON.stringify(x);
   if(!base){for(const k in local)if(!(k in remote))out[k]=structuredClone(local[k]);return out}
@@ -2548,7 +2554,7 @@ function cleanConflictCopies(){if(!canEdit())return 0;const strip=n=>String(n||'
   const g={};S.projects.forEach(p=>{const k=strip(p.name)+'|'+(p.projectNo||'');(g[k]=g[k]||[]).push(p)});let n=0;
   Object.values(g).forEach(L=>{if(!L.some(p=>CF_MARK.test(p.name||'')))return;
     const keep=L.find(p=>!(p.name||'').match(CF_MARK))||L.slice().sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||'')))[0];
-    L.forEach(p=>{if(p===keep)return;if(core(p)===core(keep)){S.projects=S.projects.filter(x=>x!==p);if(cur===p.id)cur=keep.id;n++}});
+    L.forEach(p=>{if(p===keep)return;if(core(p)===core(keep)){markDel(p.id);S.projects=S.projects.filter(x=>x!==p);if(cur===p.id)cur=keep.id;n++}});
     if((keep.name||'').match(CF_MARK)){keep.name=strip(keep.name);n++}});
   if(n){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}return n}
 function applyRemote(it,sm,chg){const id=it.id;
@@ -2568,11 +2574,11 @@ async function syncNow({pull=true}={}){if(!central()||!authOk()||!navigator.onLi
     if(pull){const r=await srvCall({action:'data.pull',since:sm.since});sm=syncMeta();
       r.items.forEach(it=>{if(!it.deleted&&sm.revs[it.id]===it.rev)return;applyRemote(it,sm,chg)});sm.since=Math.max(sm.since,r.rev);
       if(r.user){const a=authRec();if(a){a.user=r.user;try{localStorage.setItem(AUTHK,JSON.stringify(a))}catch(e){}}}putSyncMeta(sm)}
-    if(sm.adopted&&canEdit()){const items=pendingItems(sm);
+    if(sm.adopted&&canEdit()){const s0=sm.since;let items=pendingItems(sm);if(sm.since===0&&s0!==0)syncAgain=true;
       if(items.length){const r=await srvCall({action:'data.push',items:items.map(({_h,...x})=>x)});sm=syncMeta();
         r.results.forEach(x=>{const it=items.find(y=>y.id===x.id);
           if(x.conflict){applyRemote({id:x.id,rev:x.rev,deleted:x.deleted,data:x.data},sm,chg)}
-          else if(x.deleted){delete sm.revs[x.id];delete sm.hash[x.id]}
+          else if(x.deleted){delete sm.revs[x.id];delete sm.hash[x.id];unmarkDel([x.id])}
           else{sm.revs[x.id]=x.rev;sm.hash[x.id]=it._h;if(x.id!=='__settings'){const B=baseStore();B[x.id]=JSON.stringify(it.data);putBase(B)}}});putSyncMeta(sm)}}
     if(sm.adopted&&canEdit()&&cleanConflictCopies()){chg.add('conflict');syncAgain=true}
     sm.last=nowStr();putSyncMeta(sm);syncErr='';
@@ -2674,6 +2680,13 @@ function changePwDialog(){const m=modal('เปลี่ยนรหัสผ่
   const q=s=>m.root.querySelector(s),err=t=>q('#cpErr').textContent=t;q('[data-mc]').onclick=m.close;
   q('[data-mo]').onclick=async()=>{const a=q('#cp1').value;if(a.length<6)return err('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');if(a!==q('#cp2').value)return err('ยืนยันรหัสผ่านไม่ตรงกัน');
     err('กำลังบันทึก…');try{const j=await srvCall({action:'auth.changePw',old:q('#cp0').value,password:a});const r=authRec();r.token=j.token;r.exp=Date.now()+29*864e5;localStorage.setItem(AUTHK,JSON.stringify(r));m.close();toast('เปลี่ยนรหัสผ่านแล้ว · เครื่องอื่นต้องเข้าสู่ระบบใหม่')}catch(e){err(e.message)}}}
+function trashDialog(){const m=modal('โครงการที่ถูกลบ','<p class="muted">กำลังโหลด…</p>','');
+  srvCall({action:'data.trash'}).then(j=>{const L=(j.items||[]).sort((a,b)=>String(b.deletedAt).localeCompare(String(a.deletedAt)));
+    const box=m.root.querySelector('.muted');
+    box.outerHTML=L.length?`<p class="muted">โครงการที่ถูกลบจะเก็บข้อมูลไว้ในระบบกลาง เลือกแล้วกด “กู้คืน” เพื่อนำกลับมา</p><label class="switch" style="margin:6px 0"><input type="checkbox" id="trAll"> เลือกทั้งหมด (${L.length})</label><div style="max-height:52vh;overflow:auto">${L.map(x=>`<label class="switch" style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)"><input type="checkbox" data-tr="${esc(x.id)}"><span><b>${esc(x.name||x.id)}</b><br><small class="muted">ลบเมื่อ ${esc(toTH(x.deletedAt||''))} โดย ${esc(x.deletedBy||'-')}</small></span></label>`).join('')}</div><div class="row" style="margin-top:10px"><button class="btn pri" id="trGo" type="button">กู้คืนที่เลือก</button></div>`:'<p class="muted">ไม่มีโครงการที่ถูกลบซึ่งกู้คืนได้ · (โครงการที่ลบก่อนเวอร์ชัน 169 ระบบไม่ได้เก็บข้อมูลไว้ ให้กู้จากประวัติเวอร์ชันของ Google Sheet ฐานข้อมูล)</p>';
+    const all=m.root.querySelector('#trAll');if(all)all.onchange=()=>m.root.querySelectorAll('[data-tr]').forEach(c=>c.checked=all.checked);
+    const go=m.root.querySelector('#trGo');if(go)go.onclick=()=>{const ids=[...m.root.querySelectorAll('[data-tr]:checked')].map(c=>c.dataset.tr);if(!ids.length)return toast('เลือกโครงการก่อน');go.disabled=true;
+      srvCall({action:'data.restore',ids}).then(r=>{m.close();toast(`กู้คืนแล้ว ${r.restored.length} โครงการ · กำลังดึงข้อมูล`);syncNow().then(()=>render())}).catch(e=>{go.disabled=false;toast(e.message)})}}).catch(e=>{const b=m.root.querySelector('.muted');if(b)b.textContent=e.message})}
 function usersDialog(list){
   if(!list){const m=modal('จัดการผู้ใช้','<p class="muted">กำลังโหลด…</p>','');srvCall({action:'users.list'}).then(j=>usersDialog(j.users)).catch(e=>{m.root.querySelector('.card-b p').textContent=e.message});return}
   const roleSel=(v,attr)=>`<select class="i" ${attr}>${Object.entries(ROLE_TH).map(([k,l])=>`<option value="${k}" ${k===v?'selected':''}>${l}</option>`).join('')}</select>`;
@@ -2700,7 +2713,7 @@ function usersDialog(list){
 function centralCard(){const u=me();
   if(central())return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2></div><div class="card-b grid" style="gap:10px">
     <div>เข้าสู่ระบบเป็น <b>${esc(u?.name||u?.username||'-')}</b> · สิทธิ์ ${esc(ROLE_TH[u?.role]||'-')} · ข้อมูลโครงการและค่าตั้งค่าในหน้านี้ใช้ร่วมกันทุกเครื่อง (ยกเว้นธีม URL และรหัสเจ้าหน้าที่ ซึ่งเป็นของแต่ละเครื่อง)</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button><button class="btn" id="cExec" type="button">คัดลอกลิงก์สำหรับผู้บริหาร</button>':''}</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cTrash" type="button">โครงการที่ถูกลบ (กู้คืน)</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button><button class="btn" id="cExec" type="button">คัดลอกลิงก์สำหรับผู้บริหาร</button>':''}</div>
     ${u?.role==='admin'?`<p class="muted" style="font-size:13px;margin:0">ส่งลิงก์ติดตั้งให้ผู้ใช้เปิดครั้งแรก แอปจะรู้จักเซิร์ฟเวอร์และขึ้นหน้าเข้าสู่ระบบเอง · ผู้ใช้กดติดตั้งแอปได้หลังเข้าสู่ระบบ</p>`:''}</div></div>`;
   return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2><span class="muted" style="font-size:13px">ยังไม่เปิดใช้ · ตอนนี้ข้อมูลอยู่ในเครื่องนี้เท่านั้น</span></div><div class="card-b grid g12">
     <p class="s12" style="margin:0">เปิดใช้แล้ว ทุกเครื่องต้องเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ทั้งก่อนใช้งานและก่อนติดตั้งแอป และเห็นข้อมูลโครงการชุดเดียวกัน (เก็บใน Google Sheet เดียวกับระบบจองลงนาม ชีต users และ store)</p>
@@ -2712,7 +2725,7 @@ function centralCard(){const u=me();
     <div class="s12 row" style="gap:8px;margin:0"><button class="btn pri" id="caGo" type="button">เปิดใช้และสร้างบัญชีผู้ดูแล</button><span id="caMsg" class="muted" style="font-size:13px"></span></div>
     <p class="s12 muted" style="font-size:13px;margin:0">โครงการที่อยู่ในเครื่องนี้ ระบบจะถามก่อนอัปโหลดขึ้นระบบกลาง · ถ้ามีบัญชีผู้ดูแลอยู่แล้ว ให้กรอกบัญชีนั้นเพื่อเข้าสู่ระบบ</p></div></div>`}
 function bindCentralCard(){const q=s=>$(s);
-  if(central()){q('#cAcc')&&(q('#cAcc').onclick=accountDialog);q('#cUsers')&&(q('#cUsers').onclick=()=>usersDialog());
+  if(central()){q('#cAcc')&&(q('#cAcc').onclick=accountDialog);q('#cUsers')&&(q('#cUsers').onclick=()=>usersDialog());q('#cTrash')&&(q('#cTrash').onclick=()=>trashDialog());
     q('#cExec')&&(q('#cExec').onclick=()=>{const l=location.origin+location.pathname+'?view=exec';navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์ผู้บริหารแล้ว · สร้างบัญชีสิทธิ์ “ดูได้อย่างเดียว” ให้ผู้บริหาร'),()=>prompt('คัดลอกลิงก์นี้',l))});
     q('#cLink')&&(q('#cLink').onclick=()=>{const l=location.origin+location.pathname+'?server='+encodeURIComponent(srvUrl());navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์แล้ว'),()=>prompt('คัดลอกลิงก์นี้',l))});return}
   const go_=q('#caGo');if(!go_)return;const msg=t=>q('#caMsg').textContent=t;
@@ -4229,7 +4242,7 @@ function commWarn(){const p=P();['eval','orders'].forEach(k=>{const v=$('#v-'+k)
 {let cwT=0;const run=()=>{clearTimeout(cwT);cwT=setTimeout(()=>{try{commWarn()}catch(e){}},120)};['change','input'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.closest&&e.target.closest('#v-eval,#v-orders'))run()}));
  rEval=(o=>function(){o.apply(this,arguments);run()})(rEval);rOrders=(o=>function(){o.apply(this,arguments);run()})(rOrders)}
 rLegal=(o=>function(){o.apply(this,arguments);legalGroup()})(rLegal);
-window.__boq={commDup,stdMatch:n=>stdMatch(n),es:()=>ES,esScan,parsePlanSheet:(...a)=>parsePlanSheet(...a),bidList:p=>bidList(p),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id)};
+window.__boq={commDup,stdMatch:n=>stdMatch(n),es:()=>ES,esScan,parsePlanSheet:(...a)=>parsePlanSheet(...a),bidList:p=>bidList(p),repTor:(...a)=>repTor(...a),P:()=>P(),dmg:p=>({on:dmgOn(p),no:dmgNo(p),plant:torPlant(p)}),planCheck:(...a)=>planCheck(...a),fitPrint,compute,feasibleNear,totals,sampleProject,S:()=>S,pending:()=>pendingItems(syncMeta()).map(x=>x.id),sync:()=>syncNow(),save:()=>save(),delProj:id=>{markDel(id);S.projects=S.projects.filter(p=>p.id!==id)}};
 /* boot */
 try{$('#appVer').textContent=APP_VER;$('#appDate').textContent=APP_DATE}catch(e){}
 load();try{if(eqMigrate())save()}catch(e){}try{if(!localStorage.getItem(LS+'.th2')){if(S.settings.theme==='system'){S.settings.theme='light';save()}localStorage.setItem(LS+'.th2','1')}}catch(e){}applyTheme();renderTabs();try{go('dash')}catch(e){console.error(e)}

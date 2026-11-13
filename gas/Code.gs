@@ -210,6 +210,13 @@ function storeRows_() {
 }
 function storeData_(x) { let s = ''; for (let i = 0; i < x.parts; i++) s += String(x.raw[7 + i]).slice(1); return s ? JSON.parse(s) : null; }
 function nextRev_() { const p = PropertiesService.getScriptProperties(); const n = (+p.getProperty('DATA_REV') || 0) + 1; p.setProperty('DATA_REV', String(n)); return n; }
+/* ใช้หลังกู้ชีตฐานข้อมูลจาก “ประวัติเวอร์ชัน” ของ Google Sheet: เลือกฟังก์ชันนี้แล้วกด Run หนึ่งครั้ง
+   ให้ทุกโครงการได้เลขรุ่นใหม่ ทุกเครื่องจะดึงข้อมูลที่กู้คืนกลับไปเอง */
+function refreshAllRevs() {
+  const sh = storeSheet_(); const rows = storeRows_(); let n = 0;
+  rows.forEach(x => { if (x.deleted) return; sh.getRange(x._row, 2).setNumberFormat('@').setValue(String(nextRev_())); n++; });
+  Logger.log('อัปเดตเลขรุ่นแล้ว ' + n + ' รายการ');
+}
 function storeWrite_(old, id, data, deleted, user) {
   const sh = storeSheet_();
   const json = deleted ? '' : JSON.stringify(data);
@@ -217,6 +224,8 @@ function storeWrite_(old, id, data, deleted, user) {
   const rev = nextRev_();
   const row = [id, rev, deleted ? 'Y' : '', now_(), user.username, deleted ? '' : String((data && data.name) || '').slice(0, 200), chunks.length].concat(chunks);
   const r = old ? old._row : sh.getLastRow() + 1;
+  /* ลบแบบเก็บข้อมูลไว้ (soft delete): ทำเครื่องหมายลบ แต่ไม่ล้างข้อมูลเดิม ผู้ดูแลระบบกู้คืนได้จาก “ตั้งค่า › โครงการที่ถูกลบ” */
+  if (deleted && old) { sh.getRange(r, 1, 1, 5).setNumberFormat('@').setValues([[id, rev, 'Y', now_(), user.username].map(String)]); return rev; }
   const width = Math.max(row.length, old ? 7 + old.parts : 0);
   if (sh.getMaxColumns() < width) sh.insertColumnsAfter(sh.getMaxColumns(), width - sh.getMaxColumns());
   while (row.length < width) row.push('');
@@ -271,6 +280,13 @@ function handleAuth_(d) {
     if (normUser_(u.username) === normUser_(me.username)) throw new Error('ลบบัญชีของตัวเองไม่ได้');
     sheet_('users').deleteRow(u._row);
     return { ok: true, users: users_().map(pubUser_) };
+  }
+  if (a === 'data.trash') { needAdmin_(me); return { ok: true, items: storeRows_().filter(x => x.deleted && x.parts > 0 && x.id !== '__settings').map(x => ({ id: x.id, name: x.name, deletedAt: x.updatedAt, deletedBy: x.updatedBy })) }; }
+  if (a === 'data.restore') {
+    needAdmin_(me);
+    const ids = [].concat(d.ids || d.id || []).map(String); const rows = storeRows_(); const done = [];
+    ids.forEach(id => { const x = rows.find(r => r.id === id); if (!x || !x.deleted || !x.parts) return; const data = storeData_(x); if (!data) return; storeWrite_(x, id, data, false, me); done.push(id); });
+    return { ok: true, restored: done };
   }
   if (a === 'data.pull') {
     const since = +d.since || 0;
