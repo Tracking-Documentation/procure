@@ -241,7 +241,7 @@ details.rp-x{margin:0 0 10px}details.rp-x>summary{cursor:pointer;color:var(--mut
 @media print{.app-header,main.wrap,#printArea,#modalRoot{zoom:1!important}.rp{display:block}.rp-prev{background:none;padding:0;overflow:visible}}
 /* ---- sidebar layout ---- */
 .menu-tg{flex:none;display:none;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:10px;width:44px;height:40px;padding:10px;cursor:pointer;flex-direction:column;justify-content:space-between}.menu-tg span{display:block;height:2.5px;border-radius:2px;background:#fff}
-.tab-back{background:rgba(255,255,255,.14)!important;margin-bottom:6px}.tab-back .tb-ar{font-size:17px;width:18px;text-align:center}
+.tab-back{background:#f5c542!important;color:#4a1420!important;opacity:1!important;font-weight:700;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.25)}.tab-back:hover{background:#ffd75e!important}.tab-back .tb-ar{font-size:18px;width:20px;text-align:center;font-weight:700}
 .tab-proj{margin:2px 0 4px;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.18);color:#fff;display:flex;flex-direction:column;gap:2px;line-height:1.35}.tab-proj small{font-size:11.5px;opacity:.7}.tab-proj b{font-family:var(--f-head);font-size:13.5px;font-weight:600;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .tab-open span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.tab-hint{font-size:11.5px;color:rgba(255,255,255,.6);padding:4px 12px 8px;line-height:1.4}
 .tab-g{font-family:var(--f-head);font-size:12px;letter-spacing:.03em;color:rgba(255,255,255,.62);padding:14px 12px 4px;white-space:nowrap}
@@ -458,7 +458,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">172</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">173</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -521,7 +521,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='172',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='173',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
