@@ -25,6 +25,7 @@ const SEC_TYPES = ['เงินสด', 'เช็คหรือดราฟ�
 const COLS = {
   projects: ['projectId', 'token', 'name', 'contractor', 'inviteNo', 'office', 'dates', 'slotStart', 'slotEnd', 'slotMinutes', 'docs', 'note', 'updatedAt', 'secAmount', 'stamp', 'duration', 'warrantyYears', 'extraDays', 'beneficiary'],
   bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType', 'delivery', 'source'],
+  audit: ['time', 'username', 'event', 'detail', 'ok'],
   settings: ['key', 'value'],
   users: ['username', 'name', 'role', 'active', 'salt', 'hash', 'ver', 'createdAt', 'lastLogin'],
   store: ['id', 'rev', 'deleted', 'updatedAt', 'updatedBy', 'name', 'parts']
@@ -154,11 +155,22 @@ function hashPw_(pw, salt) {
   for (let i = 0; i < 300; i++) h = Utilities.computeHmacSha256Signature(h, Utilities.newBlob(salt).getBytes());
   return 'h' + b64_(h);
 }
+/* บันทึกการเข้าใช้งาน (audit) — ชีต audit: เวลา · ผู้ใช้ · เหตุการณ์ · รายละเอียด · ผล */
+function audit_(user, ev, detail, ok) {
+  try {
+    const sh = sheet_('audit');
+    sh.appendRow([now_(), String(user || ''), ev, String(detail || '').slice(0, 300), ok === false ? 'N' : 'Y']);
+    if (sh.getLastRow() > 5000) sh.deleteRows(2, sh.getLastRow() - 5000);
+  } catch (e) {}
+}
 function normUser_(u) { return String(u || '').trim().toLowerCase(); }
 function users_() { return rows_('users'); }
 function findUser_(u) { u = normUser_(u); return users_().find(x => normUser_(x.username) === u); }
 function setPw_(user, pw) {
-  if (String(pw || '').length < 6) throw new Error('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+  pw = String(pw || '');
+  /* นโยบายรหัสผ่าน: อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข และต้องไม่เหมือนชื่อผู้ใช้ */
+  if (pw.length < 8 || !/[A-Za-zก-๙]/.test(pw) || !/[0-9]/.test(pw)) throw new Error('รหัสผ่านต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข');
+  if (normUser_(pw) === normUser_(user.username) || /^(12345678|password1|qwerty12)/i.test(pw)) throw new Error('รหัสผ่านเดาง่ายเกินไป');
   user.salt = 's' + Utilities.getUuid().replace(/-/g, '');
   user.hash = hashPw_(pw, user.salt);
   user.ver = String((+user.ver || 0) + 1);
@@ -245,18 +257,24 @@ function handleAuth_(d) {
   }
   if (a === 'auth.login') {
     const username = normUser_(d.username), cache = CacheService.getScriptCache(), ck = 'fail:' + username;
-    const fails = +cache.get(ck) || 0;
-    if (fails >= 5) throw new Error('กรอกรหัสผิดหลายครั้ง กรุณารอ 10 นาทีแล้วลองใหม่');
+    const fails = +cache.get(ck) || 0, gfails = +cache.get('gfail') || 0;
+    if (fails >= 5) { audit_(username, 'login', 'ถูกล็อก (ผิดเกิน 5 ครั้ง)', false); throw new Error('กรอกรหัสผิดหลายครั้ง กรุณารอ 10 นาทีแล้วลองใหม่'); }
+    /* ป้องกันการสุ่มรหัสหลายบัญชีพร้อมกัน: ผิดรวมทั้งระบบเกิน 30 ครั้งใน 15 นาที ปิดการเข้าสู่ระบบชั่วคราว */
+    if (gfails >= 30) { audit_(username, 'login', 'ระบบปิดการเข้าสู่ระบบชั่วคราว (พยายามผิดจำนวนมาก)', false); throw new Error('ระบบปิดการเข้าสู่ระบบชั่วคราวเพื่อความปลอดภัย กรุณารอ 15 นาที'); }
     const u = findUser_(username);
-    if (!u || u.active !== 'Y' || hashPw_(d.password, u.salt) !== u.hash) { cache.put(ck, String(fails + 1), 600); throw new Error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'); }
-    cache.remove(ck); u.lastLogin = now_(); write_('users', u);
+    if (!u || u.active !== 'Y' || hashPw_(d.password, u.salt) !== u.hash) {
+      cache.put(ck, String(fails + 1), 600); cache.put('gfail', String(gfails + 1), 900);
+      audit_(username, 'login', u ? 'รหัสผ่านไม่ถูกต้อง' : 'ไม่มีชื่อผู้ใช้นี้', false); Utilities.sleep(1200);
+      throw new Error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+    }
+    cache.remove(ck); u.lastLogin = now_(); write_('users', u); audit_(username, 'login', 'เข้าสู่ระบบสำเร็จ');
     return { ok: true, token: makeToken_(u), user: pubUser_(u), days: SESSION_DAYS };
   }
   const me = auth_(d.token);
   if (a === 'auth.me') return { ok: true, user: pubUser_(me) };
   if (a === 'auth.changePw') {
-    if (hashPw_(d.old, me.salt) !== me.hash) throw new Error('รหัสผ่านเดิมไม่ถูกต้อง');
-    setPw_(me, d.password); write_('users', me);
+    if (hashPw_(d.old, me.salt) !== me.hash) { audit_(me.username, 'changePw', 'รหัสเดิมไม่ถูกต้อง', false); throw new Error('รหัสผ่านเดิมไม่ถูกต้อง'); }
+    setPw_(me, d.password); write_('users', me); audit_(me.username, 'changePw', 'เปลี่ยนรหัสผ่าน (ออกจากระบบเครื่องอื่นทั้งหมด)');
     return { ok: true, token: makeToken_(me) };
   }
   if (a === 'users.list') { needAdmin_(me); return { ok: true, users: users_().map(pubUser_) }; }
@@ -271,21 +289,33 @@ function handleAuth_(d) {
     const wasActive = u.active;
     u.name = d.name || username; u.role = d.role; u.active = d.active === false ? '' : 'Y';
     if (d.password) setPw_(u, d.password); else if (wasActive === 'Y' && u.active !== 'Y') u.ver = String((+u.ver || 0) + 1);
-    write_('users', u);
+    write_('users', u); audit_(me.username, 'users.save', u.username + ' · สิทธิ์ ' + u.role + (u.active === 'Y' ? '' : ' · ปิดบัญชี') + (d.password ? ' · ตั้งรหัสใหม่' : ''));
     return { ok: true, users: users_().map(pubUser_) };
   }
   if (a === 'users.delete') {
     needAdmin_(me);
     const u = findUser_(d.username); if (!u) throw new Error('ไม่พบผู้ใช้');
     if (normUser_(u.username) === normUser_(me.username)) throw new Error('ลบบัญชีของตัวเองไม่ได้');
-    sheet_('users').deleteRow(u._row);
+    sheet_('users').deleteRow(u._row); audit_(me.username, 'users.delete', u.username);
     return { ok: true, users: users_().map(pubUser_) };
+  }
+  /* บังคับออกจากระบบทุกเครื่องของผู้ใช้ (เช่น เครื่องหาย/สงสัยรหัสรั่ว) */
+  if (a === 'users.revoke') {
+    needAdmin_(me); const u = findUser_(d.username); if (!u) throw new Error('ไม่พบผู้ใช้');
+    u.ver = String((+u.ver || 0) + 1); write_('users', u); audit_(me.username, 'users.revoke', u.username);
+    return { ok: true, users: users_().map(pubUser_), self: normUser_(u.username) === normUser_(me.username) };
+  }
+  if (a === 'audit.list') {
+    needAdmin_(me); const sh = sheet_('audit'); const n = sh.getLastRow();
+    const v = n > 1 ? sh.getRange(Math.max(2, n - 299), 1, Math.min(300, n - 1), 5).getValues() : [];
+    return { ok: true, items: v.reverse().map(r => ({ time: norm_(r[0]), user: String(r[1]), event: String(r[2]), detail: String(r[3]), ok: r[4] !== 'N' })) };
   }
   if (a === 'data.trash') { needAdmin_(me); return { ok: true, items: storeRows_().filter(x => x.deleted && x.parts > 0 && x.id !== '__settings').map(x => ({ id: x.id, name: x.name, deletedAt: x.updatedAt, deletedBy: x.updatedBy })) }; }
   if (a === 'data.restore') {
     needAdmin_(me);
     const ids = [].concat(d.ids || d.id || []).map(String); const rows = storeRows_(); const done = [];
     ids.forEach(id => { const x = rows.find(r => r.id === id); if (!x || !x.deleted || !x.parts) return; const data = storeData_(x); if (!data) return; storeWrite_(x, id, data, false, me); done.push(id); });
+    audit_(me.username, 'data.restore', done.length + ' โครงการ');
     return { ok: true, restored: done };
   }
   if (a === 'data.pull') {
@@ -378,18 +408,8 @@ function staffOk_(key, token) {
 /* ---------------- web endpoints ---------------- */
 function doGet(e) {
   const q = e.parameter || {};
-  if (q.action) {
-    try {
-      if (q.action === 'ping' && q.token) { auth_(q.token); return json_({ ok: true, settings: settings_() }, q.callback); }
-      staffOk_(q.key, q.token);
-      if (q.action === 'list') {
-        const b = rows_('bookings').filter(x => !q.p || x.projectId === q.p).map(x => { delete x._row; x.files = x.files ? JSON.parse(x.files) : []; return x; });
-        return json_({ ok: true, bookings: b, settings: settings_() }, q.callback);
-      }
-      if (q.action === 'ping') return json_({ ok: true, settings: settings_() }, q.callback);
-      throw new Error('ไม่รู้จักคำสั่ง');
-    } catch (err) { return json_({ ok: false, error: String(err.message || err) }, q.callback); }
-  }
+  /* API รับเฉพาะ POST — ไม่รับคำสั่งผ่านลิงก์ (GET/JSONP) เพื่อไม่ให้รหัส/โทเคนติดไปกับ URL หรือถูกเว็บอื่นดึงข้อมูล */
+  if (q.action) return json_({ ok: false, error: 'ไม่รองรับการเรียกผ่าน GET · กรุณาอัปเดตแอปเป็นเวอร์ชันล่าสุด' });
   if (q.p && q.t) {
     const t = HtmlService.createTemplateFromFile('Booking');
     t.projectId = q.p; t.token = q.t;
@@ -498,6 +518,12 @@ function getBookingInfo(projectId, token) {
 
 function uploadFile(projectId, token, docKey, fileName, mime, b64) {
   const p = project_(projectId, token);
+  /* อนุญาตเฉพาะ PDF และรูปภาพ · จำกัดจำนวนอัปโหลดต่อโครงการ (กันการส่งไฟล์ถล่มระบบ) */
+  if (!/^(application\/pdf|image\/(png|jpe?g|gif|webp|heic|heif))$/i.test(String(mime || '')) && !/\.(pdf|png|jpe?g|gif|webp|heic|heif)$/i.test(String(fileName || ''))) throw new Error('แนบได้เฉพาะไฟล์ PDF หรือรูปภาพ');
+  const cache = CacheService.getScriptCache(), uk = 'up:' + projectId, nUp = +cache.get(uk) || 0;
+  if (nUp >= 60) throw new Error('อัปโหลดไฟล์มากเกินไป กรุณารอ 1 ชั่วโมงแล้วลองใหม่ หรือติดต่อเจ้าหน้าที่');
+  cache.put(uk, String(nUp + 1), 3600);
+  fileName = String(fileName || 'file').replace(/[\\/:*?"<>|]+/g, '_').slice(0, 120);
   const bytes = Utilities.base64Decode(b64);
   const lim = docKey === 'รวม' ? 20 : MAX_FILE_MB; // ไฟล์เอกสารรวม (แนบรวมเป็นไฟล์เดียว) ได้ถึง 20 MB
   if (bytes.length > lim * 1024 * 1024) throw new Error('ไฟล์ใหญ่เกิน ' + lim + ' MB');

@@ -19,6 +19,12 @@ window.google={script:{run:mk(null,null)}}})();
 out=src.replace('<base target="_top">\n','')
 out,n=re.subn(r'<body data-p="<\?= projectId \?>" data-t="<\?= token \?>">',lambda m:shim,out)
 assert n==1 and '<?' not in out
-out=out.replace('<head>','<head>\n<!-- ไฟล์นี้สร้างอัตโนมัติจาก gas/Booking.html ด้วย .mkbook.py — อย่าแก้ตรงนี้ -->\n<meta name="robots" content="noindex">\n<title>จองวันลงนามสัญญา</title>',1)
+HEADX="""<head>
+<!-- ไฟล์นี้สร้างอัตโนมัติจาก gas/Booking.html ด้วย .mkbook.py — อย่าแก้ตรงนี้ -->
+<meta name="robots" content="noindex">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>จองวันลงนามสัญญา</title>"""
+out=out.replace('<head>',HEADX,1)
 open(os.path.join(d,'book.html'),'w',encoding='utf-8').write(out)
 print('book.html',len(out))

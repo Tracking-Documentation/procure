@@ -2,6 +2,9 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="no-referrer">
+<script>/* กันการฝังหน้าระบบในเว็บอื่น (clickjacking) */if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.style.display='none'}}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ระบบติดตาม - จัดทำเอกสารงานจ้างก่อสร้าง</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -458,7 +461,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">174</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">175</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -521,7 +524,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='174',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='175',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1912,7 +1915,7 @@ function bookDocsList(){return String(S.settings.bookDocs||'').split('\n').map(x
 async function gasCall(params,post){const st=S.settings;const url=gasBase();if(!url)throw new Error('ยังไม่ได้ใส่ URL ของ Google Apps Script ในหน้าตั้งค่า');
   const auth={key:String(st.gasKey||'').trim()};if(central()&&authOk())auth.token=authRec().token;
   const viaPost=()=>fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({...params,...auth})});
-  let r;try{r=await viaPost();if(!post){const c=r.clone();let jj=null;try{jj=await c.json()}catch(x){}if(jj&&!jj.ok&&/ไม่รู้จักคำสั่ง/.test(jj.error||''))r=await fetch(url+'?'+new URLSearchParams({...params,...auth}))}}
+  let r;try{r=await viaPost()}
   catch(e){throw new Error('เชื่อมต่อ Google Apps Script ไม่ได้ — ตรวจ URL และการ Deploy (Who has access: Anyone)')}
   let j;try{j=await r.json()}catch(e){throw new Error('Google Apps Script ตอบกลับไม่ถูกต้อง — ตรวจว่าใช้ URL ที่ลงท้ายด้วย /exec')}
   if(!j.ok)throw new Error(j.error||'เกิดข้อผิดพลาด');return j}
@@ -2737,7 +2740,7 @@ function accountDialog(){const u=me()||{},sm=syncMeta(),n=sm.adopted?pendingItem
 function changePwDialog(){const m=modal('เปลี่ยนรหัสผ่าน',`<div class="grid"><label class="f"><span>รหัสผ่านเดิม</span><input class="i" type="password" id="cp0" autocomplete="current-password"></label><label class="f"><span>รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)</span><input class="i" type="password" id="cp1" autocomplete="new-password"></label><label class="f"><span>ยืนยันรหัสผ่านใหม่</span><input class="i" type="password" id="cp2" autocomplete="new-password"></label></div><div id="cpErr" class="gate-err"></div>`,
   `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">บันทึก</button>`);
   const q=s=>m.root.querySelector(s),err=t=>q('#cpErr').textContent=t;q('[data-mc]').onclick=m.close;
-  q('[data-mo]').onclick=async()=>{const a=q('#cp1').value;if(a.length<6)return err('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');if(a!==q('#cp2').value)return err('ยืนยันรหัสผ่านไม่ตรงกัน');
+  q('[data-mo]').onclick=async()=>{const a=q('#cp1').value;{const pb=pwBad(a);if(pb)return err(pb)}if(a!==q('#cp2').value)return err('ยืนยันรหัสผ่านไม่ตรงกัน');
     err('กำลังบันทึก…');try{const j=await srvCall({action:'auth.changePw',old:q('#cp0').value,password:a});const r=authRec();r.token=j.token;r.exp=Date.now()+29*864e5;localStorage.setItem(AUTHK,JSON.stringify(r));m.close();toast('เปลี่ยนรหัสผ่านแล้ว · เครื่องอื่นต้องเข้าสู่ระบบใหม่')}catch(e){err(e.message)}}}
 function trashDialog(){const m=modal('โครงการที่ถูกลบ','<p class="muted">กำลังโหลด…</p>','');
   srvCall({action:'data.trash'}).then(j=>{const L=(j.items||[]).sort((a,b)=>String(b.deletedAt).localeCompare(String(a.deletedAt)));
@@ -2746,6 +2749,12 @@ function trashDialog(){const m=modal('โครงการที่ถูกล
     const all=m.root.querySelector('#trAll');if(all)all.onchange=()=>m.root.querySelectorAll('[data-tr]').forEach(c=>c.checked=all.checked);
     const go=m.root.querySelector('#trGo');if(go)go.onclick=()=>{const ids=[...m.root.querySelectorAll('[data-tr]:checked')].map(c=>c.dataset.tr);if(!ids.length)return toast('เลือกโครงการก่อน');go.disabled=true;
       srvCall({action:'data.restore',ids}).then(r=>{m.close();toast(`กู้คืนแล้ว ${r.restored.length} โครงการ · กำลังดึงข้อมูล`);syncNow().then(()=>render())}).catch(e=>{go.disabled=false;toast(e.message)})}}).catch(e=>{const b=m.root.querySelector('.muted');if(b)b.textContent=e.message})}
+/* นโยบายรหัสผ่าน (ตรงกับเซิร์ฟเวอร์): อย่างน้อย 8 ตัว มีทั้งตัวอักษรและตัวเลข ไม่ซ้ำชื่อผู้ใช้ */
+function pwBad(p,u){p=String(p||'');if(p.length<8||!/[A-Za-zก-๙]/.test(p)||!/[0-9]/.test(p))return 'รหัสผ่านต้องยาวอย่างน้อย 8 ตัว และมีทั้งตัวอักษรและตัวเลข';if(u&&p.trim().toLowerCase()===String(u).trim().toLowerCase())return 'รหัสผ่านต้องไม่เหมือนชื่อผู้ใช้';if(/^(12345678|password1|qwerty12)/i.test(p))return 'รหัสผ่านเดาง่ายเกินไป';return ''}
+function auditDialog(){const m=modal('บันทึกการเข้าใช้งานระบบ','<p class="muted">กำลังโหลด…</p>','<button class="btn" data-mc type="button">ปิด</button>');m.root.querySelector('[data-mc]').onclick=m.close;m.root.querySelector('.modal').style.maxWidth='900px';
+  const EV={login:'เข้าสู่ระบบ',changePw:'เปลี่ยนรหัสผ่าน','users.save':'แก้ไขผู้ใช้','users.delete':'ลบผู้ใช้','users.revoke':'บังคับออกจากระบบ','data.restore':'กู้คืนโครงการ'};
+  srvCall({action:'audit.list'}).then(j=>{const L=j.items||[];const bad=L.filter(x=>!x.ok&&x.event==='login');const box=m.root.querySelector('.muted');
+    box.outerHTML=`<p class="muted" style="margin-top:0">300 รายการล่าสุด · เข้าสู่ระบบไม่สำเร็จ ${bad.length} ครั้ง${bad.length>=10?' — <b style="color:var(--bad)">มีการพยายามเข้าระบบผิดจำนวนมาก ควรตรวจสอบ</b>':''}</p><div style="max-height:60vh;overflow:auto"><table class="t"><thead><tr><th>เวลา</th><th>ผู้ใช้</th><th>เหตุการณ์</th><th>รายละเอียด</th></tr></thead><tbody>${L.map(x=>`<tr${x.ok?'':' style="color:var(--bad)"'}><td style="white-space:nowrap">${esc(String(x.time).replace('T',' ').slice(0,16))}</td><td>${esc(x.user)}</td><td>${esc(EV[x.event]||x.event)}</td><td>${x.ok?'':'✕ '}${esc(x.detail)}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">ยังไม่มีบันทึก</td></tr>'}</tbody></table></div>`}).catch(e=>{const b=m.root.querySelector('.muted');if(b)b.textContent=e.message})}
 function usersDialog(list){
   if(!list){const m=modal('จัดการผู้ใช้','<p class="muted">กำลังโหลด…</p>','');srvCall({action:'users.list'}).then(j=>usersDialog(j.users)).catch(e=>{m.root.querySelector('.card-b p').textContent=e.message});return}
   const roleSel=(v,attr)=>`<select class="i" ${attr}>${Object.entries(ROLE_TH).map(([k,l])=>`<option value="${k}" ${k===v?'selected':''}>${l}</option>`).join('')}</select>`;
@@ -2754,43 +2763,44 @@ function usersDialog(list){
      <div class="uname"><b>${esc(u.username)}</b>${u.username===mine?' <span class="muted">(คุณ)</span>':''}<div class="muted" style="font-size:12px">${u.lastLogin?'เข้าล่าสุด '+esc(u.lastLogin.replace('T',' ').slice(0,16)):'ยังไม่เคยเข้า'}</div></div>
      <input class="i" data-k="name" value="${esc(u.name||'')}" placeholder="ชื่อ-สกุล">${roleSel(u.role,'data-k="role"')}
      <label class="switch"><input type="checkbox" data-k="active" ${u.active?'checked':''}> ใช้งาน</label>
-     <div class="row" style="gap:6px;margin:0"><button class="btn" data-ua="save" type="button">บันทึก</button><button class="btn" data-ua="pw" type="button">ตั้งรหัสใหม่</button>${u.username===mine?'':'<button class="btn danger" data-ua="del" type="button">ลบ</button>'}</div></div>`).join('')}</div>
+     <div class="row" style="gap:6px;margin:0"><button class="btn" data-ua="save" type="button">บันทึก</button><button class="btn" data-ua="pw" type="button">ตั้งรหัสใหม่</button><button class="btn" data-ua="revoke" type="button" title="ออกจากระบบทุกเครื่องของบัญชีนี้ทันที (เช่น เครื่องหาย หรือสงสัยรหัสรั่ว)">ออกทุกเครื่อง</button>${u.username===mine?'':'<button class="btn danger" data-ua="del" type="button">ลบ</button>'}</div></div>`).join('')}</div>
    <h3 style="margin:16px 0 8px;font-size:16px">เพิ่มผู้ใช้</h3>
    <div class="grid g12"><label class="f s3"><span>ชื่อผู้ใช้ (a-z 0-9 . _ -)</span><input class="i" id="nuU" autocapitalize="none" spellcheck="false"></label><label class="f s3"><span>ชื่อ-สกุล</span><input class="i" id="nuN"></label><label class="f s3"><span>สิทธิ์</span>${roleSel('editor','id="nuR"')}</label><label class="f s3"><span>รหัสผ่านเริ่มต้น</span><input class="i" id="nuP" autocomplete="new-password"></label></div>
    <p class="muted" style="font-size:13px;margin:6px 0 0">แก้ไขได้ = สร้าง/แก้/ลบโครงการ และใช้ระบบจองลงนามได้ · ดูได้อย่างเดียว = ดู พิมพ์ และดาวน์โหลดเอกสาร · ตั้งรหัสใหม่หรือปิดบัญชีแล้ว เครื่องที่เข้าอยู่จะถูกออกจากระบบ</p><div id="uErr" class="gate-err"></div>`,
    `<button class="btn" data-mc type="button">ปิด</button><button class="btn pri" id="nuGo" type="button">เพิ่มผู้ใช้</button>`);
   const q=s=>m.root.querySelector(s),err=t=>q('#uErr').textContent=t;q('[data-mc]').onclick=m.close;m.root.querySelector('.modal').style.maxWidth='900px';
   const run=async(body,msg)=>{err('กำลังบันทึก…');try{const j=await srvCall(body);usersDialog(j.users);toast(msg)}catch(e){err(e.message)}};
-  q('#nuGo').onclick=()=>{const p=q('#nuP').value;if(p.length<6)return err('รหัสผ่านเริ่มต้นต้องมีอย่างน้อย 6 ตัวอักษร');if(list.some(u=>u.username===q('#nuU').value.trim().toLowerCase()))return err('มีชื่อผู้ใช้นี้แล้ว');
+  q('#nuGo').onclick=()=>{const p=q('#nuP').value;{const pb=pwBad(p,q('#nuU').value);if(pb)return err(pb)}if(list.some(u=>u.username===q('#nuU').value.trim().toLowerCase()))return err('มีชื่อผู้ใช้นี้แล้ว');
     run({action:'users.save',username:q('#nuU').value,name:q('#nuN').value,role:q('#nuR').value,password:p,active:true},'เพิ่มผู้ใช้แล้ว · แจ้งชื่อผู้ใช้และรหัสผ่านให้เจ้าของบัญชี')};
   m.root.querySelectorAll('[data-ua]').forEach(b=>b.onclick=()=>{const row=b.closest('.urow'),u=row.dataset.u,v=k=>row.querySelector(`[data-k="${k}"]`);
     if(b.dataset.ua==='save')run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked},'บันทึกแล้ว');
-    if(b.dataset.ua==='pw'){const p=prompt('รหัสผ่านใหม่ของ '+u+' (อย่างน้อย 6 ตัวอักษร)');if(p===null)return;if(p.length<6)return err('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked,password:p},'ตั้งรหัสใหม่แล้ว')}
+    if(b.dataset.ua==='pw'){const p=prompt('รหัสผ่านใหม่ของ '+u+' (อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข)');if(p===null)return;{const pb=pwBad(p,u);if(pb)return err(pb)}run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked,password:p},'ตั้งรหัสใหม่แล้ว')}
+    if(b.dataset.ua==='revoke'&&confirm('บังคับให้บัญชี '+u+' ออกจากระบบทุกเครื่องทันที?'))run({action:'users.revoke',username:u},'ออกจากระบบทุกเครื่องของ '+u+' แล้ว');
     if(b.dataset.ua==='del'&&confirm('ลบผู้ใช้ '+u+' ?'))run({action:'users.delete',username:u},'ลบแล้ว')})}
 
 /* ---------- เปิดใช้ (หน้าตั้งค่า) ---------- */
 function centralCard(){const u=me();
   if(central())return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2></div><div class="card-b grid" style="gap:10px">
     <div>เข้าสู่ระบบเป็น <b>${esc(u?.name||u?.username||'-')}</b> · สิทธิ์ ${esc(ROLE_TH[u?.role]||'-')} · ข้อมูลโครงการและค่าตั้งค่าในหน้านี้ใช้ร่วมกันทุกเครื่อง (ยกเว้นธีม URL และรหัสเจ้าหน้าที่ ซึ่งเป็นของแต่ละเครื่อง)</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cTrash" type="button">โครงการที่ถูกลบ (กู้คืน)</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button><button class="btn" id="cExec" type="button">คัดลอกลิงก์สำหรับผู้บริหาร</button>':''}</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin:0"><button class="btn" id="cAcc" type="button">บัญชีของฉัน</button>${u?.role==='admin'?'<button class="btn pri" id="cUsers" type="button">จัดการผู้ใช้</button><button class="btn" id="cTrash" type="button">โครงการที่ถูกลบ (กู้คืน)</button><button class="btn" id="cAudit" type="button">บันทึกการเข้าใช้งาน</button><button class="btn" id="cLink" type="button">คัดลอกลิงก์ติดตั้งให้ผู้ใช้</button><button class="btn" id="cExec" type="button">คัดลอกลิงก์สำหรับผู้บริหาร</button>':''}</div>
     ${u?.role==='admin'?`<p class="muted" style="font-size:13px;margin:0">ส่งลิงก์ติดตั้งให้ผู้ใช้เปิดครั้งแรก แอปจะรู้จักเซิร์ฟเวอร์และขึ้นหน้าเข้าสู่ระบบเอง · ผู้ใช้กดติดตั้งแอปได้หลังเข้าสู่ระบบ</p>`:''}</div></div>`;
   return `<div class="card"><div class="card-h"><h2>บัญชีผู้ใช้และข้อมูลกลาง</h2><span class="muted" style="font-size:13px">ยังไม่เปิดใช้ · ตอนนี้ข้อมูลอยู่ในเครื่องนี้เท่านั้น</span></div><div class="card-b grid g12">
     <p class="s12" style="margin:0">เปิดใช้แล้ว ทุกเครื่องต้องเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่านที่ผู้ดูแลสร้างให้ ทั้งก่อนใช้งานและก่อนติดตั้งแอป และเห็นข้อมูลโครงการชุดเดียวกัน (เก็บใน Google Sheet เดียวกับระบบจองลงนาม ชีต users และ store)</p>
     <div class="s12 note warn" style="margin:0">ก่อนเปิดใช้: วางโค้ด <a href="https://github.com/Tracking-Documentation/procure/blob/main/gas/Code.gs" target="_blank" rel="noopener">Code.gs</a> เวอร์ชันล่าสุด → Run ฟังก์ชัน setup → Deploy › Manage deployments › แก้ไข › Version: New version · และใส่ URL กับรหัสเจ้าหน้าที่ในการ์ด “QR จองวันลงนามสัญญาออนไลน์” ด้านบนแล้ว</div>
     <label class="f s3"><span>ชื่อผู้ใช้ผู้ดูแลระบบ</span><input class="i" id="caU" autocapitalize="none" spellcheck="false" placeholder="เช่น narama"></label>
     <label class="f s3"><span>ชื่อ-สกุล</span><input class="i" id="caN"></label>
-    <label class="f s3"><span>รหัสผ่าน (อย่างน้อย 6 ตัว)</span><input class="i" type="password" id="caP" autocomplete="new-password"></label>
+    <label class="f s3"><span>รหัสผ่าน (อย่างน้อย 8 ตัว มีตัวอักษร+ตัวเลข)</span><input class="i" type="password" id="caP" autocomplete="new-password"></label>
     <label class="f s3"><span>ยืนยันรหัสผ่าน</span><input class="i" type="password" id="caP2" autocomplete="new-password"></label>
     <div class="s12 row" style="gap:8px;margin:0"><button class="btn pri" id="caGo" type="button">เปิดใช้และสร้างบัญชีผู้ดูแล</button><span id="caMsg" class="muted" style="font-size:13px"></span></div>
     <p class="s12 muted" style="font-size:13px;margin:0">โครงการที่อยู่ในเครื่องนี้ ระบบจะถามก่อนอัปโหลดขึ้นระบบกลาง · ถ้ามีบัญชีผู้ดูแลอยู่แล้ว ให้กรอกบัญชีนั้นเพื่อเข้าสู่ระบบ</p></div></div>`}
 function bindCentralCard(){const q=s=>$(s);
-  if(central()){q('#cAcc')&&(q('#cAcc').onclick=accountDialog);q('#cUsers')&&(q('#cUsers').onclick=()=>usersDialog());q('#cTrash')&&(q('#cTrash').onclick=()=>trashDialog());
+  if(central()){q('#cAcc')&&(q('#cAcc').onclick=accountDialog);q('#cUsers')&&(q('#cUsers').onclick=()=>usersDialog());q('#cTrash')&&(q('#cTrash').onclick=()=>trashDialog());q('#cAudit')&&(q('#cAudit').onclick=()=>auditDialog());
     q('#cExec')&&(q('#cExec').onclick=()=>{const l=location.origin+location.pathname+'?view=exec';navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์ผู้บริหารแล้ว · สร้างบัญชีสิทธิ์ “ดูได้อย่างเดียว” ให้ผู้บริหาร'),()=>prompt('คัดลอกลิงก์นี้',l))});
     q('#cLink')&&(q('#cLink').onclick=()=>{const l=location.origin+location.pathname+'?server='+encodeURIComponent(srvUrl());navigator.clipboard?.writeText(l).then(()=>toast('คัดลอกลิงก์แล้ว'),()=>prompt('คัดลอกลิงก์นี้',l))});return}
   const go_=q('#caGo');if(!go_)return;const msg=t=>q('#caMsg').textContent=t;
   go_.onclick=async()=>{const url=String(S.settings.gasUrl||'').trim(),key=String(S.settings.gasKey||'').trim();
     if(!/^https:\/\/script\.google\.com\/\S+\/exec$/.test(url))return msg('ใส่ URL ของ Google Apps Script (ลงท้าย /exec) ในการ์ดด้านบนก่อน');
-    const u=q('#caU').value.trim(),p=q('#caP').value;if(p.length<6)return msg('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');if(p!==q('#caP2').value)return msg('ยืนยันรหัสผ่านไม่ตรงกัน');
+    const u=q('#caU').value.trim(),p=q('#caP').value;{const pb=pwBad(p,q('#caU').value);if(pb)return msg(pb)}if(p!==q('#caP2').value)return msg('ยืนยันรหัสผ่านไม่ตรงกัน');
     go_.disabled=true;msg('กำลังสร้างบัญชี…');
     try{try{await srvCall({action:'auth.init',key,username:u,name:q('#caN').value,password:p},url)}catch(e){if(!/มีบัญชีผู้ดูแลระบบอยู่แล้ว/.test(e.message))throw e}
       const j=await srvCall({action:'auth.login',username:u,password:p},url);localStorage.setItem(SRVK,url);saveAuth(j);
