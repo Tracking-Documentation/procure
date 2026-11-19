@@ -458,7 +458,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">173</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">174</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -521,7 +521,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='173',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='174',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -543,7 +543,25 @@ function load(){try{const raw=localStorage.getItem(LS);if(raw){const d=JSON.pars
   try{cur=localStorage.getItem(LS+'.cur')}catch(e){}
   if(!S.projects.find(p=>p.id===cur))cur=S.projects[0]?.id||null}
 let saveT=null;
-function save(){clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}if(typeof syncSoon==='function')syncSoon()},250)}
+/* บันทึกว่าใครแก้ไขข้อมูลส่วนไหนล่าสุด: เทียบข้อมูลโครงการที่เปิดอยู่ก่อน/หลังบันทึก แล้วเก็บ ผู้แก้ไข · ส่วน (เมนู) · เวลา */
+const EDH=new Map();const ED_SKIP=new Set(['lastEdit','editLog','updatedAt','book','saved']);
+const edHash=p=>{try{return JSON.stringify(p,(k,v)=>ED_SKIP.has(k)?undefined:v)}catch(e){return ''}};
+function edBase(p){if(p)EDH.set(p.id,edHash(p))}
+function edTrack(){const p=typeof P==='function'?P():null;if(!p||typeof tab==='undefined'||typeof PTABS==='undefined'||!PTABS.includes(tab)||typeof canEdit!=='function'||!canEdit())return;
+  const h=edHash(p),b=EDH.get(p.id);EDH.set(p.id,h);if(b===undefined||b===h)return;
+  const u=(typeof me==='function'&&me())||{},sec=(TABS.find(x=>x[0]===tab)||[,tab])[1],at=nowStr(),who=u.name||u.username||'ผู้ใช้ในเครื่องนี้';
+  const L=Array.isArray(p.editLog)?p.editLog:[];const top=L[0];
+  if(top&&top.user===(u.username||'')&&top.sec===sec&&Date.now()-(top.t||0)<15*60000){top.at=at;top.t=Date.now();top.n=(top.n||1)+1}
+  else L.unshift({by:who,user:u.username||'',sec,at,t:Date.now(),n:1});
+  p.editLog=L.slice(0,30);p.lastEdit=p.editLog[0];p.updatedAt=at;EDH.set(p.id,edHash(p));
+  const el=document.querySelector('.cb-ed');if(el)el.outerHTML=edLine(p)}
+const edAt=t=>{const m=String(t||'').match(/^(\d{4})-(\d{2})-(\d{2})\s+(\d{1,2}:\d{2})/);return m?`${+m[3]} ${TH_MON_S[+m[2]-1]} ${m[1]} เวลา ${m[4]} น.`:String(t||'')};
+function edLine(p){const e=p&&p.lastEdit;if(!e)return '<div class="cb-ed muted" style="font-size:12.5px"></div>';
+  return `<div class="cb-ed" style="font-size:12.5px;color:var(--muted)">✎ แก้ไขล่าสุดโดย <b style="color:var(--ink)">${esc(e.by)}</b> · ส่วน <b style="color:var(--ink)">${esc(e.sec)}</b> · ${esc(edAt(e.at))} <a href="#" data-edlog="${esc(p.id)}" style="margin-left:4px">ประวัติการแก้ไข</a></div>`}
+function edLogDialog(id){const p=S.projects.find(x=>x.id===id);if(!p)return;const L=p.editLog||[];
+  const m=modal('ประวัติการแก้ไขข้อมูล',`<p class="muted" style="margin-top:0">${esc(p.name||'')}</p>${L.length?`<table class="t"><thead><tr><th>เวลา</th><th>ผู้แก้ไข</th><th>ส่วนที่แก้ไข</th></tr></thead><tbody>${L.map(e=>`<tr><td style="white-space:nowrap">${esc(edAt(e.at))}</td><td>${esc(e.by)}</td><td>${esc(e.sec)}${e.n>1?` <span class="muted">(${e.n} ครั้ง)</span>`:''}</td></tr>`).join('')}</tbody></table><p class="muted" style="font-size:12.5px">เก็บ 30 รายการล่าสุด · การแก้ไขต่อเนื่องในส่วนเดียวกันภายใน 15 นาทีจะรวมเป็นรายการเดียว</p>`:'<p class="muted">ยังไม่มีประวัติ (เริ่มบันทึกตั้งแต่เวอร์ชัน 174)</p>'}`,`<button class="btn" data-mc type="button">ปิด</button>`);m.root.querySelector('[data-mc]').onclick=m.close}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-edlog]');if(a){e.preventDefault();edLogDialog(a.dataset.edlog)}});
+function save(){try{edTrack()}catch(e){}clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(LS,JSON.stringify(S));localStorage.setItem(LS+'.cur',cur||'')}catch(e){}if(typeof syncSoon==='function')syncSoon()},250)}
 function P(){const p=S.projects.find(p=>p.id===cur);if(p&&p.legacy&&p.legacy.id&&p.legacyId===undefined)p.legacyId=p.legacy.id;if(p&&!Array.isArray(p.bidders))p.bidders=[];if(p&&p.letter&&p.letter.inviteNo&&!p.inviteNo){p.inviteNo=p.letter.inviteNo;p.inviteDate=p.letter.inviteDate||''}return p}
 function touch(p){p.updatedAt=nowStr();save()}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),2200)}
@@ -736,11 +754,11 @@ function renderTabs(){const T=k=>TABS.find(x=>x[0]===k);const btn=([k,l,i])=>`<b
   const cur=T(tab),grp=(TAB_G.find(g=>g[1].includes(tab))||[''])[0],pb=$('#pageBar');if(pb&&EXEC)pb.innerHTML=`<span class="pi">${ICON.dash}</span><div><small>มุมมองผู้บริหาร · ดูอย่างเดียว</small><h2>ภาพรวมการจัดซื้อจัดจ้าง</h2></div>`;else if(pb&&cur)pb.innerHTML=`<span class="pi">${ICON[cur[2]]}</span><div><small>${esc(grp)}</small><h2>${esc(cur[1])}</h2></div>`;
   document.body.classList.remove('menu-open');const mt=$('#menuTg');if(mt)mt.setAttribute('aria-expanded','false')}
 document.addEventListener('click',e=>{if(e.target.closest('#menuTg')){const o=document.body.classList.toggle('menu-open');e.target.closest('#menuTg').setAttribute('aria-expanded',String(o))}});
-function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
+function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;try{edBase(P())}catch(e){}renderTabs();$$('.view').forEach(v=>v.hidden=v.id!=='v-'+t);render();window.scrollTo({top:0})}
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
 function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(canEdit()&&eqMigrate())nk++;if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,manual:rManual,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
-function curBar(title,extra=''){const p=P();return `<div class="curbar"><div class="cb-t"><div class="muted" style="font-size:13px">${esc(title)}${p.projectNo?' · เลขที่โครงการ '+esc(p.projectNo):''}</div><div class="cb-n">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div></div>${extra?`<div class="cb-a">${extra}</div>`:''}</div>`}
+function curBar(title,extra=''){const p=P();return `<div class="curbar"><div class="cb-t"><div class="muted" style="font-size:13px">${esc(title)}${p.projectNo?' · เลขที่โครงการ '+esc(p.projectNo):''}</div><div class="cb-n">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div>${edLine(p)}</div>${extra?`<div class="cb-a">${extra}</div>`:''}</div>`}
 
 /* ================= dashboard ================= */
 function statusPill(s){const m={'ร่าง':'p-draft','กำลังต่อรอง':'p-nego','ตกลงราคาแล้ว':'p-ok','ลงนามสัญญาแล้ว':'p-sign'};return `<span class="pill ${m[s]||'p-draft'}">${esc(s||'ร่าง')}</span>`}
@@ -770,7 +788,7 @@ function rDash(){
     <div class="tbl-wrap"><table class="t dash dfit"><colgroup><col><col style="width:200px"><col style="width:200px"><col style="width:150px"><col style="width:96px"></colgroup>
       <thead><tr><th>โครงการ</th><th class="n">วงเงิน / ราคากลาง</th><th class="n">ราคาเสนอ / ตกลง</th><th>ปรับลด / สถานะ</th><th class="n">จัดการ</th></tr></thead>
       <tbody>${shown.length?shown.map(({p,t,fin,r,cp})=>`<tr>
-        <td><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div>${p.contractor?`<div class="muted" style="font-size:13px">🏢 ${esc(p.contractor)}</div>`:''}${p.updatedAt?`<div class="muted" style="font-size:12px">ปรับปรุงล่าสุด ${esc(p.updatedAt)}</div>`:''}</td>
+        <td><a href="#" data-open="${p.id}" style="color:inherit;font-weight:600;text-decoration:none">${esc(p.name||'(ยังไม่ตั้งชื่อ)')}</a><div class="muted" style="font-size:13px">เลขที่โครงการ ${esc(p.projectNo||'-')}${p.contractNo?' · สัญญา '+esc(p.contractNo):''}</div>${p.contractor?`<div class="muted" style="font-size:13px">🏢 ${esc(p.contractor)}</div>`:''}${p.lastEdit?`<div class="muted" style="font-size:12px">✎ แก้ไขล่าสุด ${esc(edAt(p.lastEdit.at))} · ${esc(p.lastEdit.by)} · ส่วน${esc(p.lastEdit.sec)}</div>`:p.updatedAt?`<div class="muted" style="font-size:12px">ปรับปรุงล่าสุด ${esc(p.updatedAt)}</div>`:''}</td>
         <td class="n"><div class="dl"><small>วงเงิน</small>${fmt(p.budget)}</div><div class="dl"><small>ราคากลาง</small>${fS(t.sumM)}</div></td>
         <td class="n"><div class="dl"><small>เสนอ</small>${fmt(p.offerPrice)}</div><div class="dl"><small>${cp!==null?'ตกลง':'ต่อรองล่าสุด'}</small><b>${fmt(fin)}</b></div></td>
         <td><div style="font-variant-numeric:tabular-nums;margin-bottom:4px">${r.errors.length?'-':'<b>'+fmt(r.pct)+'%</b>'}</div>${statusPill(p.status)}${meetingConflicts(p).length?' <span class="pill p-nego" title="เวลาประชุมชนกับโครงการอื่น">⚠ เวลาประชุมชน</span>':''}</td>
@@ -2607,6 +2625,7 @@ function applyRemote(it,sm,chg){const id=it.id;
   else{const rj=JSON.stringify(it.data);let v=it.data;
     if(dirty){let base=null;try{base=B[id]?JSON.parse(B[id]):null}catch(e){}v=merge3(base,loc,it.data);chg.add('merged')}
     if(j>=0)S.projects[j]=v;else S.projects.push(v);sm.revs[id]=it.rev;sm.hash[id]=hashOf(rj);B[id]=rj;putBase(B)}
+  try{if(EDH.has(id)){const pp=S.projects.find(x=>x.id===id);if(pp)edBase(pp)}}catch(e){}
   chg.add(id)}
 async function syncNow({pull=true}={}){if(!central()||!authOk()||!navigator.onLine)return syncChip();
   if(syncing){syncAgain=true;return}syncing=true;const chg=new Set();
