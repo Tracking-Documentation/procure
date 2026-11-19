@@ -27,7 +27,7 @@ const COLS = {
   bookings: ['bookingId', 'projectId', 'date', 'time', 'company', 'contactName', 'phone', 'email', 'poa', 'signerName', 'signerSurname', 'signerPosition', 'files', 'status', 'contractNo', 'confirmed', 'createdAt', 'updatedAt', 'seq', 'secType', 'delivery', 'source'],
   audit: ['time', 'username', 'event', 'detail', 'ok'],
   settings: ['key', 'value'],
-  users: ['username', 'name', 'role', 'active', 'salt', 'hash', 'ver', 'createdAt', 'lastLogin'],
+  users: ['username', 'name', 'role', 'active', 'salt', 'hash', 'ver', 'createdAt', 'lastLogin', 'email', 'mfa'],
   store: ['id', 'rev', 'deleted', 'updatedAt', 'updatedBy', 'name', 'parts']
 };
 
@@ -188,11 +188,51 @@ function resetAdminPassword() {
   if (!L.length) { Logger.log('ไม่พบบัญชีผู้ดูแลระบบ'); return; }
   L.forEach(u => {
     const tmp = 'Tmp-' + Utilities.getUuid().replace(/-/g, '').slice(0, 10);
-    setPw_(u, tmp); u.active = 'Y'; write_('users', u);
+    setPw_(u, tmp); u.active = 'Y'; u.mfa = ''; write_('users', u); // ปิดยืนยัน 2 ชั้นด้วย เผื่อเข้าอีเมลไม่ได้
     Logger.log('ชื่อผู้ใช้: ' + u.username + '   รหัสผ่านชั่วคราว: ' + tmp);
   });
   CacheService.getScriptCache().removeAll(L.map(u => 'fail:' + normUser_(u.username)));
   Logger.log('เข้าสู่ระบบด้วยรหัสชั่วคราว แล้วเปลี่ยนรหัสผ่านทันที (ปุ่มชื่อผู้ใช้ในแอป → เปลี่ยนรหัสผ่าน)');
+}
+/* ---------- ยืนยันตัวตน 2 ชั้นทางอีเมล (รหัส OTP 6 หลัก อายุ 10 นาที ผิดได้ 5 ครั้ง) ---------- */
+const OTP_MIN = 10, DEVICE_DAYS = 30;
+function maskMail_(m) { m = String(m || ''); const [a, b] = m.split('@'); return b ? a.slice(0, 2) + '***@' + b : '***'; }
+function otpHash_(code, salt) { return b64_(Utilities.computeHmacSha256Signature(String(code) + '|' + salt, secret_())); }
+function otpSend_(to, code, why) {
+  const html = '<div style="font-family:Tahoma,sans-serif;font-size:15px;line-height:1.7"><p>' + why + '</p><p style="font-size:30px;font-weight:700;letter-spacing:6px;margin:12px 0">' + code + '</p>' +
+    '<p>รหัสนี้ใช้ได้ ' + OTP_MIN + ' นาที และใช้ได้ครั้งเดียว · ห้ามบอกรหัสนี้กับผู้อื่น เจ้าหน้าที่จะไม่ขอรหัสนี้จากคุณ</p>' +
+    '<p style="color:#a00">ถ้าคุณไม่ได้เป็นคนเข้าสู่ระบบ ให้เปลี่ยนรหัสผ่านทันทีและแจ้งผู้ดูแลระบบ</p></div>';
+  MailApp.sendEmail({ to: to, subject: 'รหัสยืนยันเข้าสู่ระบบ: ' + code, htmlBody: html, name: 'ระบบติดตามงานจ้างก่อสร้าง' });
+}
+function otpNew_(key, extra, to, why) {
+  const c = CacheService.getScriptCache();
+  if (c.get(key + ':sent')) throw new Error('เพิ่งส่งรหัสไปแล้ว กรุณารอสักครู่แล้วลองใหม่');
+  const code = String(Math.floor(100000 + Math.random() * 900000)), salt = Utilities.getUuid();
+  const rec = Object.assign({ cid: (extra && extra.cid) || Utilities.getUuid().slice(0, 12), h: otpHash_(code, salt), s: salt, n: 0 }, extra || {});
+  c.put(key, JSON.stringify(rec), OTP_MIN * 60); c.put(key + ':sent', '1', 45);
+  otpSend_(to, code, why);
+  return rec;
+}
+function otpCheck_(key, cid, code) {
+  const c = CacheService.getScriptCache(); const raw = c.get(key);
+  if (!raw) throw new Error('รหัสยืนยันหมดอายุ กรุณาเข้าสู่ระบบใหม่');
+  const rec = JSON.parse(raw);
+  if (cid && rec.cid !== cid) throw new Error('รหัสยืนยันหมดอายุ กรุณาเข้าสู่ระบบใหม่');
+  if (rec.n >= 5) { c.remove(key); throw new Error('กรอกรหัสยืนยันผิดหลายครั้ง กรุณาเข้าสู่ระบบใหม่'); }
+  if (otpHash_(String(code || '').replace(/\D/g, ''), rec.s) !== rec.h) { rec.n++; c.put(key, JSON.stringify(rec), OTP_MIN * 60); Utilities.sleep(800); throw new Error('รหัสยืนยันไม่ถูกต้อง (เหลือ ' + (5 - rec.n) + ' ครั้ง)'); }
+  c.remove(key); return rec;
+}
+function makeDev_(u) {
+  const payload = ['dev', normUser_(u.username), u.ver, Date.now() + DEVICE_DAYS * 864e5].join('|');
+  const p64 = b64_(Utilities.newBlob(payload).getBytes());
+  return p64 + '.' + b64_(Utilities.computeHmacSha256Signature(p64, secret_()));
+}
+function devOk_(dev, u) {
+  try {
+    const t = String(dev || '').split('.'); if (t.length !== 2 || b64_(Utilities.computeHmacSha256Signature(t[0], secret_())) !== t[1]) return false;
+    const p = Utilities.newBlob(Utilities.base64DecodeWebSafe(t[0] + '==='.slice((t[0].length + 3) % 4))).getDataAsString().split('|');
+    return p[0] === 'dev' && p[1] === normUser_(u.username) && p[2] === String(u.ver) && +p[3] > Date.now();
+  } catch (e) { return false; }
 }
 function makeToken_(u) {
   const payload = [normUser_(u.username), u.ver, Date.now() + SESSION_DAYS * 864e5].join('|');
@@ -209,7 +249,7 @@ function auth_(token) {
   if (!u || u.active !== 'Y' || String(u.ver) !== parts[1]) throw bad();
   return u;
 }
-function pubUser_(u) { return { username: u.username, name: u.name, role: u.role, active: u.active === 'Y', lastLogin: u.lastLogin, createdAt: u.createdAt }; }
+function pubUser_(u) { return { username: u.username, name: u.name, role: u.role, active: u.active === 'Y', email: u.email || '', mfa: u.mfa === 'Y', lastLogin: u.lastLogin, createdAt: u.createdAt }; }
 function needAdmin_(u) { if (u.role !== 'admin') throw new Error('เฉพาะผู้ดูแลระบบ'); }
 function needEdit_(u) { if (u.role === 'viewer' || u.role === 'exec') throw new Error('บัญชีนี้ดูได้อย่างเดียว ไม่มีสิทธิ์แก้ไข'); }
 
@@ -267,10 +307,51 @@ function handleAuth_(d) {
       audit_(username, 'login', u ? 'รหัสผ่านไม่ถูกต้อง' : 'ไม่มีชื่อผู้ใช้นี้', false); Utilities.sleep(1200);
       throw new Error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
     }
-    cache.remove(ck); u.lastLogin = now_(); write_('users', u); audit_(username, 'login', 'เข้าสู่ระบบสำเร็จ');
+    cache.remove(ck);
+    if (u.mfa === 'Y' && !devOk_(d.device, u)) {
+      if (!u.email) throw new Error('บัญชีนี้เปิดยืนยันตัวตน 2 ชั้นแต่ยังไม่มีอีเมล กรุณาติดต่อผู้ดูแลระบบ');
+      const rec = otpNew_('otp:' + username, null, u.email, 'รหัสยืนยันการเข้าสู่ระบบของบัญชี ' + u.username);
+      audit_(username, 'login', 'รหัสผ่านถูกต้อง · ส่งรหัสยืนยันทางอีเมลแล้ว');
+      return { ok: true, mfa: true, challenge: rec.cid, to: maskMail_(u.email) };
+    }
+    u.lastLogin = now_(); write_('users', u); audit_(username, 'login', 'เข้าสู่ระบบสำเร็จ' + (u.mfa === 'Y' ? ' (เครื่องที่จำไว้)' : ''));
     return { ok: true, token: makeToken_(u), user: pubUser_(u), days: SESSION_DAYS };
   }
+  if (a === 'auth.verify' || a === 'auth.resend') {
+    const username = normUser_(d.username), u = findUser_(username);
+    if (!u || u.active !== 'Y' || u.mfa !== 'Y') throw new Error('กรุณาเข้าสู่ระบบใหม่');
+    if (a === 'auth.resend') {
+      const raw = CacheService.getScriptCache().get('otp:' + username); if (!raw || JSON.parse(raw).cid !== d.challenge) throw new Error('รหัสยืนยันหมดอายุ กรุณาเข้าสู่ระบบใหม่');
+      otpNew_('otp:' + username, { cid: d.challenge }, u.email, 'รหัสยืนยันการเข้าสู่ระบบของบัญชี ' + u.username);
+      return { ok: true, to: maskMail_(u.email) };
+    }
+    try { otpCheck_('otp:' + username, d.challenge, d.code); } catch (e) { audit_(username, 'login', 'รหัสยืนยัน 2 ชั้น: ' + e.message, false); throw e; }
+    u.lastLogin = now_(); write_('users', u); audit_(username, 'login', 'เข้าสู่ระบบสำเร็จ (ยืนยัน 2 ชั้น)' + (d.remember ? ' · จำเครื่องนี้ ' + DEVICE_DAYS + ' วัน' : ''));
+    return { ok: true, token: makeToken_(u), user: pubUser_(u), days: SESSION_DAYS, device: d.remember ? makeDev_(u) : '' };
+  }
   const me = auth_(d.token);
+  /* ยืนยันรหัสผ่านซ้ำระหว่างใช้งาน (เช่น ปลดล็อกขั้นตอนที่บันทึกแล้ว) ไม่ต้องใช้รหัส 2 ชั้นอีก */
+  if (a === 'auth.recheck') {
+    if (hashPw_(d.password, me.salt) !== me.hash) { audit_(me.username, 'recheck', 'รหัสผ่านไม่ถูกต้อง', false); Utilities.sleep(800); throw new Error('รหัสผ่านไม่ถูกต้อง'); }
+    return { ok: true, token: makeToken_(me), user: pubUser_(me), days: SESSION_DAYS };
+  }
+  /* เปิดยืนยัน 2 ชั้นด้วยตัวเอง: ส่งรหัสทดสอบไปอีเมลก่อน เพื่อยืนยันว่าอีเมลถูกต้อง (กันล็อกตัวเองออก) */
+  if (a === 'auth.mfaStart') {
+    const em = String(d.email || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) throw new Error('อีเมลไม่ถูกต้อง');
+    const rec = otpNew_('mfaset:' + normUser_(me.username), { email: em }, em, 'รหัสยืนยันเพื่อเปิดใช้การยืนยันตัวตน 2 ชั้นของบัญชี ' + me.username);
+    return { ok: true, challenge: rec.cid, to: maskMail_(em) };
+  }
+  if (a === 'auth.mfaConfirm') {
+    const rec = otpCheck_('mfaset:' + normUser_(me.username), d.challenge, d.code);
+    me.email = rec.email; me.mfa = 'Y'; write_('users', me); audit_(me.username, 'mfa', 'เปิดยืนยันตัวตน 2 ชั้น (' + maskMail_(rec.email) + ')');
+    return { ok: true, user: pubUser_(me), device: makeDev_(me) };
+  }
+  if (a === 'auth.mfaOff') {
+    if (hashPw_(d.password, me.salt) !== me.hash) throw new Error('รหัสผ่านไม่ถูกต้อง');
+    me.mfa = ''; write_('users', me); audit_(me.username, 'mfa', 'ปิดยืนยันตัวตน 2 ชั้น');
+    return { ok: true, user: pubUser_(me) };
+  }
   if (a === 'auth.me') return { ok: true, user: pubUser_(me) };
   if (a === 'auth.changePw') {
     if (hashPw_(d.old, me.salt) !== me.hash) { audit_(me.username, 'changePw', 'รหัสเดิมไม่ถูกต้อง', false); throw new Error('รหัสผ่านเดิมไม่ถูกต้อง'); }
@@ -288,6 +369,8 @@ function handleAuth_(d) {
     if (normUser_(u.username) === normUser_(me.username) && (d.role !== 'admin' || d.active === false)) throw new Error('ลดสิทธิ์หรือปิดบัญชีของตัวเองไม่ได้');
     const wasActive = u.active;
     u.name = d.name || username; u.role = d.role; u.active = d.active === false ? '' : 'Y';
+    if (d.email !== undefined) { const em = String(d.email || '').trim(); if (em && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) throw new Error('อีเมลไม่ถูกต้อง'); u.email = em; }
+    if (d.mfa !== undefined) { if (d.mfa && !u.email) throw new Error('ต้องใส่อีเมลก่อนเปิดยืนยันตัวตน 2 ชั้น'); u.mfa = d.mfa ? 'Y' : ''; }
     if (d.password) setPw_(u, d.password); else if (wasActive === 'Y' && u.active !== 'Y') u.ver = String((+u.ver || 0) + 1);
     write_('users', u); audit_(me.username, 'users.save', u.username + ' · สิทธิ์ ' + u.role + (u.active === 'Y' ? '' : ' · ปิดบัญชี') + (d.password ? ' · ตั้งรหัสใหม่' : ''));
     return { ok: true, users: users_().map(pubUser_) };
@@ -421,8 +504,8 @@ function doGet(e) {
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents || '{}');
-    if (/^(auth|users|data|files|legacy)\./.test(d.action || '')) {
-      const write = !/^(auth\.login|auth\.me|users\.list|data\.pull|files\.get|files\.upload|legacy\.pull)$/.test(d.action);
+    if (/^(auth|users|data|files|legacy|audit)\./.test(d.action || '')) {
+      const write = !/^(auth\.login|auth\.me|auth\.verify|auth\.resend|auth\.recheck|auth\.mfaStart|users\.list|data\.pull|files\.get|files\.upload|legacy\.pull|audit\.list)$/.test(d.action);
       const lk = write ? LockService.getScriptLock() : null; if (lk) lk.waitLock(25000);
       try { return json_(handleAuth_(d)); }
       catch (err) { return json_({ ok: false, error: String(err.message || err), relogin: !!err.relogin }); }

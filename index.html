@@ -388,7 +388,7 @@ body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:1
 .paper.con .cm{display:grid;grid-template-columns:9mm 1fr;margin:1.2mm 0;line-height:1.55}.paper.con .cvu{text-decoration:underline dotted;text-underline-offset:3px}.paper.con .crg{display:grid;grid-template-columns:1fr 18mm 22mm 14mm;align-items:end;row-gap:1.6mm;margin:1mm 0 1mm 10mm}.crg .cv{text-align:center;border-bottom:1px dotted #000;line-height:1.15}.crg .cu{padding-left:2mm}
 .csg3{display:grid;grid-template-columns:18mm 46mm 1fr;align-items:end;margin:7mm 0 0 6mm;break-inside:avoid}.csg3 .dl{border-bottom:1px dotted #000;line-height:1.15}.csg3 .ttl{padding-left:1mm;white-space:nowrap}.csg3 .nm{grid-column:2;text-align:center;margin-top:1mm;white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-body.gated>*:not(#gate):not(#toast){display:none!important}
+body.gated>*:not(#gate):not(#toast):not(#modalRoot){display:none!important}body.gated .modal-bg{z-index:300}
 .gate-legal{font-size:12px;line-height:1.6;color:var(--muted,#76615f);margin:8px 0 0;padding:8px 10px;border:1px solid var(--line,#e8dcda);border-radius:8px}.gate-legal a{color:inherit;text-decoration:underline}
 #gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:16px;background:var(--bg);overflow:auto}
 .gate-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
@@ -416,7 +416,7 @@ body.exec .hdr{padding-bottom:12px}
 .omr{display:grid;grid-template-columns:22px 1.3fr 1.6fr 1fr auto 34px;gap:8px;align-items:center;margin-bottom:6px}.omr.ro{display:block;font-size:14.5px;padding:4px 0}
 @media (max-width:760px){.omr{grid-template-columns:22px 1fr 1fr}.omr>select,.omr>label,.omr>button,.omr>span:empty{grid-column:auto}}
 .ulist{display:grid;gap:8px;max-height:46vh;overflow:auto}
-.urow{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.3fr 1fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
+.urow>.row{grid-column:1/-1;justify-content:flex-end;flex-wrap:wrap}.urow{display:grid;grid-template-columns:minmax(110px,1fr) 1.1fr 1fr 1.3fr auto auto;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px}
 @media (max-width:760px){.urow{grid-template-columns:1fr 1fr}.urow .uname{grid-column:1/-1}}
 </style>
 
@@ -461,7 +461,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">175</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">176</span> · <span id="appDate">19 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -524,7 +524,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='175',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='176',APP_DATE='19 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2592,6 +2592,34 @@ async function srvCall(body,url){url=url||srvUrl();if(!url)throw new Error('ย�
   let j;try{j=await r.json()}catch(e){throw new Error('เซิร์ฟเวอร์ตอบกลับไม่ถูกต้อง — ตรวจว่า Deploy โค้ด Code.gs เวอร์ชันล่าสุดแล้ว')}
   if(!j.ok){if(j.relogin){try{localStorage.removeItem(AUTHK)}catch(e){}showGate('เซสชันหมดอายุหรือบัญชีถูกเปลี่ยนแปลง กรุณาเข้าสู่ระบบใหม่')}throw new Error(j.error||'เกิดข้อผิดพลาด')}
   return j}
+/* ยืนยันตัวตน 2 ชั้น: เข้าสู่ระบบด้วยรหัสผ่าน → ถ้าบัญชีเปิดไว้ จะส่งรหัส 6 หลักทางอีเมล · “จำเครื่องนี้” ข้ามได้ 30 วัน */
+const devK=u=>LS+'.dev.'+String(u||'').trim().toLowerCase();
+function devGet(u){try{return localStorage.getItem(devK(u))||''}catch(e){return ''}}
+function devSet(u,t){try{t?localStorage.setItem(devK(u),t):localStorage.removeItem(devK(u))}catch(e){}}
+async function loginFlow(username,password,url){const j=await srvCall({action:'auth.login',username,password,device:devGet(username)},url);if(!j.mfa)return j;
+  return new Promise((res,rej)=>{const m=modal('ยืนยันตัวตน 2 ชั้น',`<p style="margin:0 0 8px">ส่งรหัส 6 หลักไปที่อีเมล <b>${esc(j.to)}</b> แล้ว · รหัสใช้ได้ 10 นาที</p>
+    <input class="i" id="otpC" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="รหัส 6 หลัก" style="font-size:24px;letter-spacing:6px;text-align:center;max-width:220px">
+    <label class="switch" style="margin-top:10px"><input type="checkbox" id="otpR"> จำเครื่องนี้ 30 วัน (ไม่ต้องใส่รหัสทางอีเมลอีก · อย่าเลือกถ้าเป็นเครื่องที่ใช้ร่วมกับผู้อื่น)</label>
+    <div class="gate-err" id="otpE" style="margin-top:6px"></div><p class="muted" style="font-size:12.5px;margin:6px 0 0">ไม่ได้รับอีเมล? ดูในโฟลเดอร์จดหมายขยะ หรือ <a href="#" id="otpS">ส่งรหัสอีกครั้ง</a></p>`,
+    `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" id="otpGo" type="button">ยืนยัน</button>`);
+    const q=x=>m.root.querySelector(x),e=t=>q('#otpE').textContent=t;let done=false;setTimeout(()=>q('#otpC').focus(),60);
+    const close=()=>m.close();q('[data-mc]').onclick=close;const mo=new MutationObserver(()=>{if(!m.root.querySelector('#otpC')){mo.disconnect();if(!done){done=true;rej(new Error('ยกเลิกการยืนยันตัวตน กรุณาเข้าสู่ระบบอีกครั้ง'))}}});mo.observe(m.root,{childList:true});
+    q('#otpS').onclick=async ev=>{ev.preventDefault();e('กำลังส่ง…');try{const r=await srvCall({action:'auth.resend',username,challenge:j.challenge},url);e('ส่งรหัสใหม่ไปที่ '+r.to+' แล้ว')}catch(x){e(x.message)}};
+    const go_=async()=>{const c=q('#otpC').value.replace(/\D/g,'');if(c.length!==6)return e('กรอกรหัส 6 หลัก');q('#otpGo').disabled=true;e('กำลังตรวจสอบ…');
+      try{const r=await srvCall({action:'auth.verify',username,challenge:j.challenge,code:c,remember:q('#otpR').checked},url);if(r.device)devSet(username,r.device);done=true;mo.disconnect();m.close();res(r)}
+      catch(x){q('#otpGo').disabled=false;e(x.message);if(/หมดอายุ|หลายครั้ง/.test(x.message)){done=true;mo.disconnect();m.close();rej(x)}}};
+    q('#otpGo').onclick=go_;q('#otpC').onkeydown=ev=>{if(ev.key==='Enter')go_()}})}
+function mfaDialog(){const u=me()||{};const m=modal('ความปลอดภัยบัญชี · ยืนยันตัวตน 2 ชั้น',`<p style="margin:0 0 8px">สถานะ: <b>${u.mfa?'เปิดใช้อยู่ ('+esc(u.email||'')+')':'ยังไม่เปิด'}</b></p>
+  <p class="muted" style="font-size:13px;margin:0 0 10px">เมื่อเปิดใช้ ทุกครั้งที่เข้าสู่ระบบจากเครื่องใหม่ ระบบจะส่งรหัส 6 หลักไปที่อีเมล แม้รหัสผ่านรั่วก็เข้าบัญชีไม่ได้ถ้าไม่มีอีเมลของคุณ</p>
+  ${u.mfa?`<label class="f"><span>ใส่รหัสผ่านเพื่อปิดการยืนยัน 2 ชั้น</span><input class="i" type="password" id="mfP" autocomplete="current-password"></label>`:`<label class="f"><span>อีเมลที่ใช้รับรหัส</span><input class="i" type="email" id="mfE" value="${esc(u.email||'')}" placeholder="name@example.com"></label><div id="mfC" hidden style="margin-top:8px"><label class="f"><span>รหัส 6 หลักที่ส่งไปทางอีเมล</span><input class="i" id="mfK" inputmode="numeric" maxlength="6" style="font-size:22px;letter-spacing:5px;max-width:200px"></label></div>`}
+  <div class="gate-err" id="mfErr" style="margin-top:6px"></div>`,`<button class="btn" data-mc type="button">ปิด</button><button class="btn ${u.mfa?'danger':'pri'}" id="mfGo" type="button">${u.mfa?'ปิดการยืนยัน 2 ชั้น':'ส่งรหัสทดสอบ'}</button>`);
+  const q=x=>m.root.querySelector(x),e=t=>q('#mfErr').textContent=t;q('[data-mc]').onclick=m.close;let ch=null;
+  const upd=user=>{try{const a=authRec();a.user=user;localStorage.setItem(AUTHK,JSON.stringify(a))}catch(x){}};
+  q('#mfGo').onclick=async()=>{const b=q('#mfGo');b.disabled=true;e('กำลังดำเนินการ…');try{
+    if(u.mfa){const r=await srvCall({action:'auth.mfaOff',password:q('#mfP').value});upd(r.user);devSet(u.username,'');m.close();toast('ปิดการยืนยันตัวตน 2 ชั้นแล้ว');return}
+    if(!ch){const r=await srvCall({action:'auth.mfaStart',email:q('#mfE').value});ch=r.challenge;q('#mfC').hidden=false;q('#mfE').disabled=true;b.textContent='ยืนยันและเปิดใช้';e('ส่งรหัสไปที่ '+r.to+' แล้ว · กรอกรหัสเพื่อยืนยัน');b.disabled=false;q('#mfK').focus();return}
+    const r=await srvCall({action:'auth.mfaConfirm',challenge:ch,code:q('#mfK').value});upd(r.user);if(r.device)devSet(u.username,r.device);m.close();toast('เปิดการยืนยันตัวตน 2 ชั้นแล้ว · เครื่องนี้ถูกจำไว้ 30 วัน')}
+    catch(x){b.disabled=false;e(x.message)}}}
 function saveAuth(j){try{localStorage.setItem(LS+'.lastAct',String(Date.now()));localStorage.setItem(LS+'.lastUser',j.user.username);localStorage.setItem(AUTHK,JSON.stringify({token:j.token,user:j.user,exp:Date.now()+(j.days||30)*864e5-36e5}))}catch(e){}}
 
 /* ---------- ซิงก์ ---------- */
@@ -2668,7 +2696,7 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
    <p class="muted gate-note">ข้อมูลโครงการใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ยังไม่มีบัญชีหรือลืมรหัสผ่าน ติดต่อผู้ดูแลระบบ</p>
    <p class="gate-legal">ระบบงานภายในสำหรับเจ้าหน้าที่ที่ได้รับอนุญาตเท่านั้น การเข้าถึงโดยไม่ได้รับอนุญาตมีความผิดตามพระราชบัญญัติว่าด้วยการกระทำความผิดเกี่ยวกับคอมพิวเตอร์ พ.ศ. 2550 · ใช้คอมพิวเตอร์ร่วมกับผู้อื่น กรุณากดออกจากระบบทุกครั้งหลังใช้งาน · <a href="privacy.html" target="_blank" rel="noopener">การคุ้มครองข้อมูลส่วนบุคคล</a></p>
    <details class="muted" style="font-size:12.5px;margin-top:6px"><summary>ลืมรหัสผ่าน?</summary><div style="margin-top:4px;line-height:1.6">• <b>ผู้ใช้ทั่วไป</b> แจ้งผู้ดูแลระบบให้ตั้งรหัสใหม่ (ตั้งค่า → บัญชีผู้ใช้ → ปุ่ม “รหัส”) แล้วเปลี่ยนเป็นรหัสของตัวเองหลังเข้าสู่ระบบ<br>• <b>ผู้ดูแลระบบ</b> ให้ผู้ดูแลระบบอีกคนตั้งรหัสให้ หรือเจ้าของบัญชี Google ที่ติดตั้งระบบ เปิด Apps Script → เลือกฟังก์ชัน <code>resetAdminPassword</code> → เรียกใช้ → นำรหัสชั่วคราวจากบันทึกการดำเนินการมาเข้าสู่ระบบ แล้วเปลี่ยนรหัสทันที<br>• ระบบไม่มีการส่งรหัสทางอีเมลหรือตั้งคำถามกู้รหัส เพื่อไม่ให้มีช่องทางให้ผู้อื่นเดารหัสได้</div></details>
-   <details class="gate-srv" id="gInit"><summary>ตั้งค่าครั้งแรก: สร้างบัญชีผู้ดูแลระบบ</summary><p class="muted" style="font-size:12.5px;margin:6px 0">ใช้ครั้งเดียวตอนเริ่มระบบ · กรอกชื่อผู้ใช้และรหัสผ่านที่ต้องการด้านบน (อย่างน้อย 6 ตัว) แล้วใส่รหัสเจ้าหน้าที่ (ADMIN_KEY ใน Code.gs) และชื่อ-สกุล</p><input class="i" id="gKey" type="password" placeholder="ADMIN_KEY" autocomplete="off"><input class="i" id="gName" placeholder="ชื่อ-สกุล"></details>
+   <details class="gate-srv" id="gInit"><summary>ตั้งค่าครั้งแรก: สร้างบัญชีผู้ดูแลระบบ</summary><p class="muted" style="font-size:12.5px;margin:6px 0">ใช้ครั้งเดียวตอนเริ่มระบบ · กรอกชื่อผู้ใช้และรหัสผ่านที่ต้องการด้านบน (อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข) แล้วใส่รหัสเจ้าหน้าที่ (ADMIN_KEY ใน Code.gs) และชื่อ-สกุล</p><input class="i" id="gKey" type="password" placeholder="ADMIN_KEY" autocomplete="off"><input class="i" id="gName" placeholder="ชื่อ-สกุล"></details>
    ${SRV_BAKED?'':`<details class="gate-srv"><summary>เซิร์ฟเวอร์</summary><input class="i" id="gSrv" value="${esc(srvUrl())}" placeholder="https://script.google.com/macros/s/…/exec"></details>`}
   </form>`;
   const f=g.querySelector('form'),err=t=>g.querySelector('#gErr').textContent=t;setTimeout(()=>g.querySelector(last?'#gPw':'#gUser').focus(),60);
@@ -2677,7 +2705,7 @@ function showGate(msg){if(!central())return;let g=$('#gate');document.body.class
     b.disabled=true;err('กำลังตรวจสอบ…');
     try{const k=g.querySelector('#gKey').value.trim();
       if(k){err('กำลังสร้างบัญชีผู้ดูแล…');await srvCall({action:'auth.init',key:k,username:g.querySelector('#gUser').value,name:g.querySelector('#gName').value,password:g.querySelector('#gPw').value});try{S.settings.gasKey=S.settings.gasKey||k;if(!S.settings.gasUrl)S.settings.gasUrl=srvUrl()}catch(x){}}
-      const prev=me()?.username;const j=await srvCall({action:'auth.login',username:g.querySelector('#gUser').value,password:g.querySelector('#gPw').value});saveAuth(j);
+      const prev=me()?.username;const j=await loginFlow(g.querySelector('#gUser').value,g.querySelector('#gPw').value);saveAuth(j);
       g.remove();document.body.classList.remove('gated');lockUI();toast('ยินดีต้อนรับ '+(j.user.name||j.user.username));afterLogin(prev&&prev!==j.user.username)}
     catch(x){err(x.message);b.disabled=false}}}
 function afterLogin(){if(applyExec()){try{go('cal')}catch(e){}}if(me()&&(me().role==='viewer'||me().role==='exec')){S.projects=[];cur=null;putSyncMeta({since:0,revs:{},hash:{},adopted:true,last:''});try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}render();return syncNow()}
@@ -2732,11 +2760,11 @@ function accountDialog(){const u=me()||{},sm=syncMeta(),n=sm.adopted?pendingItem
   const m=modal('บัญชีผู้ใช้',`<div class="grid" style="gap:6px">
     <div><b style="font-size:17px">${esc(u.name||u.username)}</b> <span class="muted">(${esc(u.username)})</span></div><div>สิทธิ์: <b>${esc(ROLE_TH[u.role]||u.role)}</b></div>
     <div class="muted" style="font-size:13px">ซิงก์ล่าสุด ${esc(sm.last||'-')} · รอส่ง ${n} รายการ${syncErr?' · '+esc(syncErr):''}</div></div>`,
-   `<button class="btn" data-a="sync" type="button">ซิงก์เดี๋ยวนี้</button><button class="btn" data-a="pw" type="button">เปลี่ยนรหัสผ่าน</button>${u.role==='admin'?'<button class="btn" data-a="users" type="button">จัดการผู้ใช้</button>':''}<button class="btn danger" data-a="out" type="button">ออกจากระบบ</button>`);
+   `<button class="btn" data-a="sync" type="button">ซิงก์เดี๋ยวนี้</button><button class="btn" data-a="pw" type="button">เปลี่ยนรหัสผ่าน</button><button class="btn" data-a="mfa" type="button">${u.mfa?'🔒 ยืนยัน 2 ชั้น: เปิดอยู่':'🔓 เปิดยืนยัน 2 ชั้น'}</button>${u.role==='admin'?'<button class="btn" data-a="users" type="button">จัดการผู้ใช้</button>':''}<button class="btn danger" data-a="out" type="button">ออกจากระบบ</button>`);
   m.root.querySelector('.row').style.flexWrap='wrap';
   m.root.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const a=b.dataset.a;
     if(a==='sync'){m.close();toast('กำลังซิงก์…');syncNow().then(()=>toast(syncErr||'ซิงก์แล้ว'))}
-    if(a==='pw')changePwDialog();if(a==='users')usersDialog();if(a==='out')logout()})}
+    if(a==='pw')changePwDialog();if(a==='mfa'){m.close();mfaDialog()}if(a==='users')usersDialog();if(a==='out')logout()})}
 function changePwDialog(){const m=modal('เปลี่ยนรหัสผ่าน',`<div class="grid"><label class="f"><span>รหัสผ่านเดิม</span><input class="i" type="password" id="cp0" autocomplete="current-password"></label><label class="f"><span>รหัสผ่านใหม่ (อย่างน้อย 6 ตัวอักษร)</span><input class="i" type="password" id="cp1" autocomplete="new-password"></label><label class="f"><span>ยืนยันรหัสผ่านใหม่</span><input class="i" type="password" id="cp2" autocomplete="new-password"></label></div><div id="cpErr" class="gate-err"></div>`,
   `<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">บันทึก</button>`);
   const q=s=>m.root.querySelector(s),err=t=>q('#cpErr').textContent=t;q('[data-mc]').onclick=m.close;
@@ -2762,6 +2790,7 @@ function usersDialog(list){
   const m=modal('จัดการผู้ใช้',`<div class="ulist">${list.map(u=>`<div class="urow" data-u="${esc(u.username)}">
      <div class="uname"><b>${esc(u.username)}</b>${u.username===mine?' <span class="muted">(คุณ)</span>':''}<div class="muted" style="font-size:12px">${u.lastLogin?'เข้าล่าสุด '+esc(u.lastLogin.replace('T',' ').slice(0,16)):'ยังไม่เคยเข้า'}</div></div>
      <input class="i" data-k="name" value="${esc(u.name||'')}" placeholder="ชื่อ-สกุล">${roleSel(u.role,'data-k="role"')}
+     <input class="i" data-k="email" type="email" value="${esc(u.email||'')}" placeholder="อีเมล (รับรหัสยืนยัน)"><label class="switch" title="ยืนยันตัวตน 2 ชั้นทางอีเมล"><input type="checkbox" data-k="mfa" ${u.mfa?'checked':''}> 2 ชั้น${u.role==='admin'&&!u.mfa?' <span style="color:var(--bad)" title="แนะนำให้ผู้ดูแลระบบเปิดยืนยัน 2 ชั้น">⚠</span>':''}</label>
      <label class="switch"><input type="checkbox" data-k="active" ${u.active?'checked':''}> ใช้งาน</label>
      <div class="row" style="gap:6px;margin:0"><button class="btn" data-ua="save" type="button">บันทึก</button><button class="btn" data-ua="pw" type="button">ตั้งรหัสใหม่</button><button class="btn" data-ua="revoke" type="button" title="ออกจากระบบทุกเครื่องของบัญชีนี้ทันที (เช่น เครื่องหาย หรือสงสัยรหัสรั่ว)">ออกทุกเครื่อง</button>${u.username===mine?'':'<button class="btn danger" data-ua="del" type="button">ลบ</button>'}</div></div>`).join('')}</div>
    <h3 style="margin:16px 0 8px;font-size:16px">เพิ่มผู้ใช้</h3>
@@ -2773,7 +2802,7 @@ function usersDialog(list){
   q('#nuGo').onclick=()=>{const p=q('#nuP').value;{const pb=pwBad(p,q('#nuU').value);if(pb)return err(pb)}if(list.some(u=>u.username===q('#nuU').value.trim().toLowerCase()))return err('มีชื่อผู้ใช้นี้แล้ว');
     run({action:'users.save',username:q('#nuU').value,name:q('#nuN').value,role:q('#nuR').value,password:p,active:true},'เพิ่มผู้ใช้แล้ว · แจ้งชื่อผู้ใช้และรหัสผ่านให้เจ้าของบัญชี')};
   m.root.querySelectorAll('[data-ua]').forEach(b=>b.onclick=()=>{const row=b.closest('.urow'),u=row.dataset.u,v=k=>row.querySelector(`[data-k="${k}"]`);
-    if(b.dataset.ua==='save')run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked},'บันทึกแล้ว');
+    if(b.dataset.ua==='save')run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked,email:v('email').value,mfa:v('mfa').checked},'บันทึกแล้ว');
     if(b.dataset.ua==='pw'){const p=prompt('รหัสผ่านใหม่ของ '+u+' (อย่างน้อย 8 ตัว มีตัวอักษรและตัวเลข)');if(p===null)return;{const pb=pwBad(p,u);if(pb)return err(pb)}run({action:'users.save',username:u,name:v('name').value,role:v('role').value,active:v('active').checked,password:p},'ตั้งรหัสใหม่แล้ว')}
     if(b.dataset.ua==='revoke'&&confirm('บังคับให้บัญชี '+u+' ออกจากระบบทุกเครื่องทันที?'))run({action:'users.revoke',username:u},'ออกจากระบบทุกเครื่องของ '+u+' แล้ว');
     if(b.dataset.ua==='del'&&confirm('ลบผู้ใช้ '+u+' ?'))run({action:'users.delete',username:u},'ลบแล้ว')})}
@@ -2803,7 +2832,7 @@ function bindCentralCard(){const q=s=>$(s);
     const u=q('#caU').value.trim(),p=q('#caP').value;{const pb=pwBad(p,q('#caU').value);if(pb)return msg(pb)}if(p!==q('#caP2').value)return msg('ยืนยันรหัสผ่านไม่ตรงกัน');
     go_.disabled=true;msg('กำลังสร้างบัญชี…');
     try{try{await srvCall({action:'auth.init',key,username:u,name:q('#caN').value,password:p},url)}catch(e){if(!/มีบัญชีผู้ดูแลระบบอยู่แล้ว/.test(e.message))throw e}
-      const j=await srvCall({action:'auth.login',username:u,password:p},url);localStorage.setItem(SRVK,url);saveAuth(j);
+      const j=await loginFlow(u,p,url);localStorage.setItem(SRVK,url);saveAuth(j);
       toast('เปิดใช้ระบบเข้าสู่ระบบแล้ว');lockUI();rSet();afterLogin()}
     catch(e){msg(e.message);go_.disabled=false}}}
 function authBoot(){syncChip();
@@ -3955,7 +3984,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
   const m=modal('ใส่รหัสผ่านเพื่อแก้ไข',`<p style="margin:0 0 8px">ขั้นตอน “${esc(STEPS[t])}” บันทึกแล้ว · ใส่รหัสผ่าน${central()?'ของบัญชี '+esc(me()?.username||''):''}เพื่อแก้ไข</p><input class="i" type="password" id="stPw" autocomplete="current-password" style="width:100%"><div id="stErr" class="gate-err"></div>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" data-mo type="button">ตกลง</button>`);
   const q=s=>m.root.querySelector(s),i=q('#stPw');setTimeout(()=>i.focus(),50);
   const go_=async()=>{q('#stErr').textContent='กำลังตรวจสอบ…';try{
-      if(central()){const j=await srvCall({action:'auth.login',username:me()?.username,password:i.value});saveAuth(j)}
+      if(central()){const j=await srvCall({action:'auth.recheck',password:i.value});saveAuth(j)}
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
