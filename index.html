@@ -462,7 +462,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">177</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">178</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -525,7 +525,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='177',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='178',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3216,7 +3216,8 @@ function stdMatch(name){const L=S.settings.dohStandards||[];if(!L.length||!name)
 const stdClean=t=>String(t||'').replace(/\s+/g,' ').trim();
 function itemStd(i){return stdClean(i.std)||stdClean((stdMatch(i.name)||{}).std)}
 function torStdLines(p){const T=torOf(p);if(String(T.standards||'').trim())return T.standards.split(/\n/).map(stdClean).filter(Boolean);
-  const seen=new Set(),L=[];torItems(p).forEach(i=>{const s=itemStd(i);if(s&&!seen.has(s)){seen.add(s);L.push(s)}});TOR_STD_ALWAYS.forEach(s=>{if(!seen.has(s)){seen.add(s);L.push(s)}});return L}
+  const seen=new Set(),L=[];torItems(p).forEach(i=>{const s=itemStd(i);if(s&&!seen.has(s)){seen.add(s);L.push(s)}});/* บรรทัดคู่มือป้ายประจำ ใส่เฉพาะเมื่อ BOQ ยังไม่มีมาตรฐานป้ายของโครงการเอง (กันขึ้นซ้ำ 2 แบบ) */
+  if(!L.some(x=>/คู่มือเครื่องหมายควบคุมการจราจร/.test(x)))TOR_STD_ALWAYS.forEach(s=>{if(!seen.has(s)){seen.add(s);L.push(s)}});return L}
 function torNums(p){const bond=torBond(p)?1:0,k=torOf(p).k?1:0;const c=5+bond,res=c+7,cr=res+1+k;
   return {N_CRITERIA:c,N_CONTRACT:c+1,N_PAYMENT:c+2,N_PENALTY:c+3,N_WARRANTY:c+4,N_ADVANCE:c+5,N_RETENTION:c+6,N_RESERVED:res,N_K:res+1,N_CRAFT:cr,N_LAW:cr+1,N_EVAL:cr+2,N_G_CONTRACT:1+bond,N_G_ADVANCE:2+bond,N_G_RETENTION:3+bond}}
 function torMoney(a){a=Math.round(num(a));return {fig:a.toLocaleString('en-US')+'.-',words:'เงิน'+bahtText(a)}}
@@ -3259,7 +3260,7 @@ const TOR_TD='๐๑๒๓๔๕๖๗๘๙';const thN=s=>+String(s).replace(/[
 function torShift15(t){const f=(m,pre,n)=>{const v=thN(n);return v>=6?pre+'๑.'+toTH(String(v-1)):m};
   t=t.replace(/^([\t \u200b]*)๑\.([๐-๙]+)(?![๐-๙.])/,f);return t.replace(/(ข้อ\s*)๑\.([๐-๙]+)(?![๐-๙.])/g,f)}
 function torFix(t,p){if(!torOf(p).k)t=torShift15(t);
-  t=t.replace(/(ผู้ยื่นข้อเสนอต้องมีมูลค่าสุทธิของกิจการ)(\s*ดังนี้)?\s*$/,(m,a)=>`${a}  ${TOR_W124}  ดังนี้`);
+  t=t.replace(/(ผู้ยื่นข้อเสนอต้องมีมูลค่าสุทธิของกิจการ)(\s*ดังนี้)?\s*$/,(m,a)=>`${a} ${TOR_W124} ดังนี้`);
   t=t.replace(/(ทุนจดทะเบียนที่เรียกชำระมูลค่าหุ้นแล้ว\s*ณ\s*วันที่ยื่นข้อเสนอ)(\s*ไม่ต่ำกว่า\s*[0-9๐-๙]+\s*ล้านบาท)?/,(m,a)=>`${a}  ${torCapText(p)}`);
   return t}
 function torRuns(r,vals,p){return (r||[]).map(x=>{const [t,f]=typeof x==='string'?[x,0]:x;let v=t.replace(/\{\{([A-Z_0-9]+)\}\}/g,(m,k)=>k in vals?vals[k]:'');if(p)v=torFix(v,p);return [v,f]})}
@@ -3284,8 +3285,18 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
       empties=0;continue}
     const R=torRuns(o.r,vals,p);let plain=R.map(x=>x[0]).join('');
     if(o.bg&&String(torOf(p).background||'').trim()){out.push(mk('tp','text-indent:25mm'+(o.b?';margin-top:'+(o.b/20)+'pt':''),torEsc(torOf(p).background.trim())));empties=0;continue}
-    if(!plain.trim()){if(++empties<=2)out.push(mk('tp e',''));continue}
+    if(!plain.trim()){
+      /* บรรทัดว่างในแม่แบบ: เก็บไว้ไม่เกิน 1 บรรทัด และไม่เว้นก่อนข้อย่อย (เช่น ๓.๑๓ (๑) ๙.๑) เพื่อไม่ให้เกิดช่องโหว่ */
+      const nx=T[doc].slice(T[doc].indexOf(o)+1).find(x=>x.r&&(x.r||[]).map(y=>typeof y==='string'?y:y[0]).join('').trim());
+      const nt=nx?(nx.r||[]).map(y=>typeof y==='string'?y:y[0]).join('').trim():'';
+      if(new RegExp('^(?:'+TOR_NUM+'\\.'+TOR_NUM+'|\\(('+TOR_NUM+'|[ก-ฮ])\\))').test(nt))continue;
+      if(++empties<=1)out.push(mk('tp e',''));continue}
     empties=0;
+    /* ตัดการขึ้นบรรทัดใหม่กลางย่อหน้า (มาจากแม่แบบ Word) และช่องว่างยาวผิดปกติ */
+    R.forEach(x=>{x[0]=x[0].replace(/([ก-๙])[\t ]*\n[\t ]*(?=[ก-๙])/g,'$1').replace(/\s*\n\s*/g,' ').replace(/([^\t ]) {3,}/g,'$1  ')});plain=R.map(x=>x[0]).join('');
+    /* ข้อความต่อท้ายสั้น ๆ ที่แม่แบบแยกเป็นย่อหน้าใหม่ (เช่น “จะกำหนด ดังนี้”) → ต่อเข้าย่อหน้าก่อนหน้า */
+    if(!/^[\t ​]/.test(plain)&&plain.trim().length<30&&!o.a&&!o.f&&!o.b&&!o.h&&!new RegExp('^\\(?'+TOR_NUM+'[.)]').test(plain.trim())&&out.length&&/^<p class="tp"/.test(out[out.length-1])&&!/ดังนี้\s*<\/p>$|:\s*<\/p>$/.test(out[out.length-1])){
+      out[out.length-1]=out[out.length-1].replace(/<\/p>$/,(/[ก-๙]$/.test(out[out.length-1].replace(/<\/p>$/,'').replace(/<[^>]+>/g,''))?'':' ')+torHtmlRuns(R.map(x=>[x[0].trim(),x[1]]))+'</p>');continue}
     // ตัดช่องว่าง/แท็บนำหน้า (อาจคร่อมหลาย run)
     const lead=/^[\t ​]/.test(plain);let i=0;while(i<R.length){R[i][0]=R[i][0].replace(/^[\t ​]+/,'');if(R[i][0])break;i++}
     plain=R.map(x=>x[0]).join('');const sp=(o.b?`margin-top:${o.b/20}pt;`:'')+(o.s?`margin-bottom:${o.s/20}pt;`:'');
