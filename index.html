@@ -462,7 +462,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">182</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">183</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -525,7 +525,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='182',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='183',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -2857,7 +2857,7 @@ function reqAuthAuto(p){const r=p.req,A=REQ_AUTH[reqAuthKey(p)]||REQ_AUTH.region
   const autoTo=[REQ_AUTH.region.to,REQ_AUTH.district.to].map(norm),autoAu=[REQ_AUTH.region.authority,REQ_AUTH.district.authority];
   if(!norm(r.to)||autoTo.includes(norm(r.to)))r.to=A.to;if(!String(r.authority||'').trim()||autoAu.includes(String(r.authority).trim()))r.authority=A.authority}
 const r2=x=>Math.round(x*100)/100;
-function reqCalc(p){const R=reqOf(p);const rows=p.items.filter(i=>i.kind==='item').map((it,i)=>{const q=num(it.qty),u=it.est===''||it.est==null?null:num(it.est);return {it,no:i+1,q,u,tot:u===null?null:r2(q*u),mid:q?midOf(p,it)/100/q:0}});
+function reqCalc(p){const R=reqOf(p);const rows=p.items.filter(i=>i.kind==='item').map((it,i)=>{const q=num(it.qty),mid=q?r2(midOf(p,it)/100/q):0,own=!(it.est===''||it.est==null);/* ยังไม่กรอกราคาประมาณ → ใช้ราคากลางต่อหน่วยให้อัตโนมัติ (แก้เองได้) */const u=own?num(it.est):(mid>0?mid:null);return {it,no:i+1,q,u,auto:!own&&u!==null,tot:u===null?null:r2(q*u),mid}});
   const sum=r2(rows.reduce((a,x)=>a+(x.tot||0),0));const bud=num(p.budget);const adj=R.roundTo==='budget'&&bud>0?r2(bud-sum):0;return {R,rows,sum,adj,grand:r2(sum+adj),missing:rows.filter(x=>x.u===null).length}}
 function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const c=reqCalc(p),R=c.R;
   const T=(k,l,cls,o={})=>`<label class="f ${cls}"><span>${l}</span>${o.area?`<textarea class="i" rows="${o.rows||2}" data-rq="${k}">${esc(R[k])}</textarea>`:`<input class="i${o.r?' r':''}" data-rq="${k}" value="${esc(R[k])}" ${o.ph?`placeholder="${esc(o.ph)}"`:''}>`}</label>`;
@@ -2879,7 +2879,7 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
    <div class="card-b muted" style="font-size:13.5px;padding-bottom:0">ชื่อรายการ หน่วย และจำนวน มาจากแท็บ “โครงการและ BOQ” แก้ที่ใดที่หนึ่งก็เปลี่ยนตรงกัน · กรอกเฉพาะ <b>ราคาที่สืบทราบ/ประมาณได้ ต่อหน่วย</b> ที่นี่ (ราคาก่อนทำราคากลาง)</div>
    <div class="tbl-wrap"><table class="t dash"><thead><tr><th class="n">ที่</th><th>รายการ</th><th>หน่วย</th><th class="n">จำนวน</th><th class="n">ราคาประมาณ/หน่วย</th><th class="n">รวม</th><th class="n"><a href="#" id="rqGoBoq2" title="แก้ราคากลางที่หน้า BOQ ราคากลาง" style="color:inherit">ราคากลาง/หน่วย ↗</a></th></tr></thead><tbody>
     ${c.rows.length?c.rows.map(x=>`<tr><td class="n">${x.no}</td><td style="min-width:260px">${escBr(x.it.name)}</td><td>${esc(x.it.unit)}</td><td class="n">${fmt(x.q,x.q%1?2:0)}</td>
-      <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null?'':fmt(x.u)}" inputmode="decimal" style="width:140px"></td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง หรือเพิ่มรายการในแท็บ “โครงการและ BOQ”</td></tr>`}
+      <td class="n"><input class="i r" data-est="${x.it.id}" value="${x.u===null||x.auto?'':fmt(x.u)}" placeholder="${x.auto?fmt(x.u):''}" title="${x.auto?'ใช้ราคากลางต่อหน่วยอัตโนมัติ · พิมพ์ราคาเองเพื่อเปลี่ยน':''}" inputmode="decimal" style="width:140px">${x.auto?'<div class="muted" style="font-size:11.5px">ตามราคากลาง</div>':''}</td><td class="n">${x.tot===null?'<span class="muted">-</span>':fmt(x.tot)}</td><td class="n muted">${x.mid?fmt(x.mid):'-'}</td></tr>`).join(''):`<tr><td colspan="7" class="empty">ยังไม่มีรายการ · นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง หรือเพิ่มรายการในแท็บ “โครงการและ BOQ”</td></tr>`}
     </tbody><tfoot><tr><td></td><td colspan="4"><b>รวมเป็นเงิน</b>${c.missing?` <span class="pill p-nego">ยังไม่กรอกราคา ${c.missing} รายการ</span>`:''}</td><td class="n"><b>${fmt(c.sum)}</b></td><td></td></tr>
      ${R.roundTo==='budget'?`<tr><td></td><td colspan="4">ปรับยอด</td><td class="n">${fmt(c.adj)}</td><td></td></tr><tr><td></td><td colspan="4"><b>รวมเป็นเงินทั้งสิ้น</b></td><td class="n"><b>${fmt(c.grand)}</b></td><td></td></tr>`:''}</tfoot></table></div></div>
   <div class="card"><div class="card-h"><h2>ผู้ลงนามและรหัสบัญชี</h2></div><div class="card-b grid g12">
