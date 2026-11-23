@@ -462,7 +462,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">180</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">181</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -525,7 +525,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='180',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='181',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3294,9 +3294,10 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
       if(++empties<=1)out.push(mk('tp e',''));continue}
     empties=0;
     /* ตัดการขึ้นบรรทัดใหม่กลางย่อหน้า (มาจากแม่แบบ Word) และช่องว่างยาวผิดปกติ */
-    R.forEach(x=>{x[0]=x[0].replace(/([ก-๙])[\t ]*\n[\t ]*(?=[ก-๙])/g,'$1').replace(/\s*\n\s*/g,' ').replace(/([^\t ]) {3,}/g,'$1  ')});plain=R.map(x=>x[0]).join('');
+    const sigLike=/\{\{(TOR_|DIRECTOR_)/.test(JSON.stringify(o.r||''))||/\(ลงชื่อ\)|ประกาศ ณ วันที่|ปฏิบัติราชการแทน/.test(plain);
+    if(!sigLike)R.forEach(x=>{x[0]=x[0].replace(/([ก-๙])[\t ]*\n[\t ]*(?=[ก-๙])/g,'$1').replace(/\s*\n\s*/g,' ').replace(/([^\t ]) {3,}/g,'$1  ')});plain=R.map(x=>x[0]).join('');
     /* ข้อความต่อท้ายสั้น ๆ ที่แม่แบบแยกเป็นย่อหน้าใหม่ (เช่น “จะกำหนด ดังนี้”) → ต่อเข้าย่อหน้าก่อนหน้า */
-    if(!/^[\t ​]/.test(plain)&&plain.trim().length<30&&!o.a&&!o.f&&!o.b&&!o.h&&!new RegExp('^\\(?'+TOR_NUM+'[.)]').test(plain.trim())&&out.length&&/^<p class="tp"/.test(out[out.length-1])&&!/ดังนี้\s*<\/p>$|:\s*<\/p>$/.test(out[out.length-1])){
+    if(!sigLike&&!/^[\t ​]/.test(plain)&&plain.trim().length<30&&!o.a&&!o.f&&!o.b&&!o.h&&!new RegExp('^\\(?'+TOR_NUM+'[.)]').test(plain.trim())&&out.length&&/^<p class="tp"/.test(out[out.length-1])&&!/ดังนี้\s*<\/p>$|:\s*<\/p>$/.test(out[out.length-1])){
       out[out.length-1]=out[out.length-1].replace(/<\/p>$/,(/[ก-๙]$/.test(out[out.length-1].replace(/<\/p>$/,'').replace(/<[^>]+>/g,''))?'':' ')+torHtmlRuns(R.map(x=>[x[0].trim(),x[1]]))+'</p>');continue}
     // ตัดช่องว่าง/แท็บนำหน้า (อาจคร่อมหลาย run)
     const lead=/^[\t ​]/.test(plain);let i=0;while(i<R.length){R[i][0]=R[i][0].replace(/^[\t ​]+/,'');if(R[i][0])break;i++}
