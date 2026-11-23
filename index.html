@@ -462,7 +462,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">178</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">179</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -525,7 +525,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='178',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='179',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1685,7 +1685,7 @@ function rReport(){
   <div class="rp-main" style="min-width:0;--gc:${cg.c}">
   <div class="card no-print" style="margin-bottom:10px;border-top:4px solid ${cg.c}"><div class="card-b row">
      <div class="rp-cur"><span class="tag">${esc(cg.n+'. '+cg.t)}</span><span>${esc(cl)}</span></div>
-     <span class="sp"></span>${canEdit()?`<button class="btn ${EDM?'edon':''}" id="btnEdm" type="button" title="แก้ไขข้อความในเอกสารก่อนพิมพ์">${EDM?'✓ แก้ไขเสร็จ':'✎ แก้ไขข้อความ'}</button>`:''}<button class="btn" id="btnXlsx" type="button" title="ดาวน์โหลดเอกสารนี้เป็นไฟล์ Excel">⤓ Excel</button><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div><div class="card-b row" style="padding-top:0">
+     <span class="sp"></span>${canEdit()?`<button class="btn ${EDM?'edon':''}" id="btnEdm" type="button" title="แก้ไขข้อความในเอกสารก่อนพิมพ์">${EDM?'✓ แก้ไขเสร็จ':'✎ แก้ไขข้อความ'}</button>`:''}${(()=>{try{return wordDocsList(p).L.some(x=>x[0]===reportSel)}catch(e){return false}})()?'<button class="btn" id="btnDocx" type="button" title="ดาวน์โหลดเอกสารนี้เป็นไฟล์ Word (.docx) แก้ไขต่อได้">⤓ Word</button>':''}<button class="btn" id="btnXlsx" type="button" title="ดาวน์โหลดเอกสารนี้เป็นไฟล์ Excel">⤓ Excel</button><button class="btn blue" id="btnPrint" type="button">${ICON.print} พิมพ์ / บันทึก PDF</button></div><div class="card-b row" style="padding-top:0">
      <label class="switch"><input type="checkbox" id="tgSign" ${st.showSign?'checked':''}> ช่องลงนาม</label>
      <label class="switch" title="รูปแบบตัวเลขในเอกสาร (พรีวิว พิมพ์/PDF Word Excel)">เลขไทย/อารบิก <select class="i" id="dgSel" style="width:auto;padding:2px 8px;margin-left:4px">${[['','ตามแบบเอกสาร (๑๒๓/123)'],['th','เลขไทยทั้งหมด ๑๒๓'],['ar','เลขอารบิกทั้งหมด 123']].map(([v,l])=>`<option value="${v}" ${(st.digits||'')===v?'selected':''}>${l}</option>`).join('')}</select></label>
      <label class="switch"><input type="checkbox" id="tgWm" ${st.watermark?'checked':''}> คำว่า “ตัวอย่าง”</label>
@@ -1728,6 +1728,7 @@ function rReport(){
    if(tg)tg.onchange=()=>{if(tg.checked)open();else{ES.on=false;rReport()}};const ed=$('#esEdit');if(ed)ed.onclick=e=>{e.preventDefault();ES.on=false;rReport();open()};const lb=$('#esLogB');if(lb)lb.onclick=()=>esLogDialog(p)}
   $$('[data-rs]',el).forEach(x=>x.onclick=()=>{reportSel=x.dataset.rs;const nv=$('.rp-nav',el),st0=nv?nv.scrollTop:0;el._sc=1;rReport();const n2=$('.rp-nav',el);if(n2)n2.scrollTop=st0;const m=$('.rp-main',el);if(m&&m.getBoundingClientRect().top<0)m.scrollIntoView({block:'start'})});
   $$('[data-word]',el).forEach(x=>x.onclick=()=>downloadWord(p,x.dataset.word));
+  {const bd=$('#btnDocx');if(bd)bd.onclick=()=>downloadWord(p,reportSel)}
   $('#wAll').onclick=()=>{const ks=$$('[data-word]',el).map(x=>x.dataset.word);ks.forEach((k,i)=>setTimeout(()=>downloadWord(p,k),i*700));toast(`กำลังดาวน์โหลด ${ks.length} ไฟล์ (ถ้าเบราว์เซอร์ถามว่าอนุญาตให้ดาวน์โหลดหลายไฟล์ ให้กดอนุญาต)`)};
   $$('[data-evd]',el).forEach(x=>x.onchange=()=>{const cur=new Set(st.evalOff||[]);x.checked?cur.delete(x.dataset.evd):cur.add(x.dataset.evd);st.evalOff=[...cur];save();rReport()});
   {const fe=$('#forceExt');if(fe)fe.onchange=()=>{st.forceExt=fe.checked;save();rReport()}}
@@ -2544,7 +2545,7 @@ function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ย
   const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
 function unlockThen(cb){if(central()){toast('บัญชีนี้ดูได้อย่างเดียว · ขอสิทธิ์แก้ไขจากผู้ดูแลระบบ');return}askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
 /* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
-const VIEW_OK='[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,[data-oprint],#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
+const VIEW_OK='[data-tword],#btnDocx,[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,[data-oprint],#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
 function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
@@ -3324,7 +3325,8 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
   const ck=(k,l,on)=>`<label class="switch"><input type="checkbox" data-tk="${k}" ${on?'checked':''}> ${l}</label>`;
   const tx=(k,l,cls,ph='')=>`<label class="f ${cls}"><span>${l}</span><input class="i" data-tv="${k}" value="${esc(T[k]||'')}" placeholder="${esc(ph)}"></label>`;
   return `<div class="card" id="torCard"><div class="card-h"><h2><span class="step">1</span>ร่างขอบเขตของงาน (TOR) · ประกาศ · เอกสารประกวดราคา</h2>
-    <button class="btn blue sm" data-oprint="tor_scope" type="button">${ICON.print} ร่าง TOR</button><button class="btn sm" data-oprint="tor_ann" type="button">${ICON.print} ร่างประกาศ</button><button class="btn sm" data-oprint="tor_bid" type="button">${ICON.print} ร่างเอกสารประกวดราคา</button></div>
+    <button class="btn blue sm" data-oprint="tor_scope" type="button">${ICON.print} ร่าง TOR</button><button class="btn sm" data-oprint="tor_ann" type="button">${ICON.print} ร่างประกาศ</button><button class="btn sm" data-oprint="tor_bid" type="button">${ICON.print} ร่างเอกสารประกวดราคา</button>
+    <span class="muted" style="font-size:13px;margin-left:6px">Word:</span><button class="btn sm" data-tword="tor_scope" type="button">⤓ TOR</button><button class="btn sm" data-tword="tor_ann" type="button">⤓ ประกาศ</button><button class="btn sm" data-tword="tor_bid" type="button">⤓ เอกสารประกวดราคา</button></div>
    <div class="card-b grid g12">
     <label class="f s4"><span>สาขางาน / คุณสมบัติผู้ยื่นข้อเสนอ</span><select class="i" data-tv="workType">${[['road','งานก่อสร้างทาง'],['bridge','งานก่อสร้างสะพาน'],['special','งานก่อสร้างทางและสะพานพิเศษ'],['maintain','งานบำรุงทาง (จดทะเบียนกับกรมทางหลวง)'],['other','อื่น ๆ (พิมพ์คุณสมบัติ/ผลงานเอง)']].map(([k,l])=>`<option value="${k}" ${T.workType===k?'selected':''}>${l}</option>`).join('')}</select></label>
     ${T.workType==='other'?`<label class="f s8"><span>คุณสมบัติผู้ยื่นข้อเสนอ (ข้อความในร่าง TOR / เอกสารประกวดราคา ต่อจากเลขข้อ) · ขึ้นบรรทัดใหม่ = ย่อหน้าใหม่</span><textarea class="i" rows="4" data-tv="otherQual" placeholder="เช่น ผู้ยื่นข้อเสนอต้องมีผลงานก่อสร้างประเภท...... ในวงเงินไม่น้อยกว่า ...... บาท และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ ...">${esc(T.otherQual||'')}</textarea></label>
@@ -3350,6 +3352,7 @@ function bindTor(el,p){const T=torOf(p);
   $$('[data-tk]',el).forEach(i=>i.onchange=()=>{T[i.dataset.tk]=i.checked;touch(p);render()});
   $$('[data-tv]',el).forEach(i=>{const k=i.dataset.tv;const re=k==='workType'||k==='warranty';i.addEventListener(i.tagName==='SELECT'?'change':'input',()=>{T[k]=i.hasAttribute('data-money')?num(i.value):i.value;touch(p);if(re)render()});
     if(i.hasAttribute('data-money'))i.addEventListener('blur',()=>{i.value=num(i.value)?fmt(num(i.value)):''})});
+  $$('[data-tword]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.tword;if(!window.TOR_TPL){toast('กำลังโหลดแม่แบบ TOR…');loadTorTpl().then(()=>downloadWord(P(),k)).catch(e=>toast(e.message))}else downloadWord(P(),k)});
   $$('[data-oprint]',el).forEach(b=>b.onclick=()=>{reportSel=b.dataset.oprint;go('report')});
   loadTorTpl().catch(()=>{})}
 
@@ -4000,7 +4003,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='[data-tword],#btnDocx,#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
