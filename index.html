@@ -475,7 +475,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">206</span> · <span id="appDate">25 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">207</span> · <span id="appDate">25 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -538,7 +538,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='206',APP_DATE='25 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='207',APP_DATE='25 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3122,8 +3122,11 @@ function orderSigners(){const L=(S.settings.orderSigners&&S.settings.orderSigner
   return L.map(g=>{const lb=String(g.label||'').trim();const m=lb.match(/^((?:นางสาว|นาย|นาง|ว่าที่\s*ร\.ต\.(?:หญิง)?|ดร\.)\s*\S+\s+\S+)\s*(.*)$/);if(!m)return g;const o=Object.assign({},g);
     if(!String(o.name||'').trim())o.name=m[1];
     /* ตำแหน่งว่าง → ใช้ข้อความหลังชื่อในป้าย แยก “รักษาราชการแทน/ปฏิบัติราชการแทน …” ไปบรรทัดที่สาม */
-    if(!String(o.position||'').trim()&&m[2]){const r=m[2].trim(),k=r.search(/(รักษาราชการแทน|ปฏิบัติราชการแทน)/);if(k>0){o.position=r.slice(0,k).trim();if(!String(o.acting||'').trim())o.acting=r.slice(k).trim()}else o.position=r}
-    return o})}
+    if(!String(o.position||'').trim()&&m[2])o.position=m[2].trim();
+    return o}).map(sgSplit)}
+/* “… รักษาราชการแทน ผู้อำนวยการ…” → บรรทัดตำแหน่ง “… รักษาราชการแทน” + บรรทัดใหม่ “ผู้อำนวยการ…” */
+function sgSplit(g){const all=[g.position,g.acting].map(x=>String(x||'').trim()).filter(Boolean).join(' ');const m=all.match(/^(.*?(?:รักษาราชการแทน|ปฏิบัติราชการแทน))\s*(\S.*)$/);
+  return m?Object.assign({},g,{position:m[1].trim(),acting:m[2].trim()}):g}
 function ordersOf(p){if(!p.orders){const L=(p.legacy&&p.legacy.committees)||{};const mk=c=>({no:(c&&c.orderNo)||'',date:(c&&c.orderDate)||'',members:((c&&c.members)||[]).map((m,i)=>({name:m.name,position:m.position,role:i?'กรรมการ':'ประธานกรรมการ'}))});
     p.orders={signer:0,drafter:'',typist:'',inspect:mk(null),tor:mk(L.tor),price:mk(L.price),result:{no:(L.result&&L.result.orderNo)||'',date:(L.result&&L.result.orderDate)||''},inspector:-1}}
   const O=p.orders;const I=O.inspect;if(I&&(I.chair!==undefined||I.supervisors)){const r=(x,role)=>x&&x.name?{name:x.name,position:x.position||'',role}:null;
