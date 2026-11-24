@@ -248,6 +248,8 @@ details.rp-x{margin:0 0 10px}details.rp-x>summary{cursor:pointer;color:var(--mut
 .hist summary{cursor:pointer;list-style:none}.hist summary::-webkit-details-marker{display:none}.hist summary h2::before{content:'▸ ';color:var(--muted)}.hist[open] summary h2::before{content:'▾ '}
 .hs-r{display:grid;grid-template-columns:118px 1fr auto;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px;align-items:baseline}.hs-r:last-of-type{border-bottom:0}.hs-d{color:var(--ink);white-space:nowrap}.hs-d small{color:var(--muted)}.hs-b{color:var(--muted);text-align:right}.hs-st{display:inline-block;padding:1px 8px;border-radius:999px;background:var(--soft,#f6e3e7);font-weight:600}
 @media (max-width:640px){.hs-r{grid-template-columns:1fr;gap:0}.hs-b{text-align:left}}
+.cb-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.cb-tools .btn{font-size:12.5px;padding:3px 10px}
+.pc-t td,.pc-t th{vertical-align:top}.pc-ok{color:var(--ok-ink,#1d7a3a);font-weight:600}.pc-bad{color:var(--bad,#b3261e);font-weight:600}
 .tab-back{background:#f5c542!important;color:#4a1420!important;opacity:1!important;font-weight:700;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.25)}.tab-back:hover{background:#ffd75e!important}.tab-back .tb-ar{font-size:18px;width:20px;text-align:center;font-weight:700}
 .tab-proj{margin:2px 0 4px;padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.18);color:#fff;display:flex;flex-direction:column;gap:2px;line-height:1.35}.tab-proj small{font-size:11.5px;opacity:.7}.tab-proj b{font-family:var(--f-head);font-size:13.5px;font-weight:600;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .tab-open span{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.tab-hint{font-size:11.5px;color:rgba(255,255,255,.6);padding:4px 12px 8px;line-height:1.4}
@@ -465,7 +467,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">185</span> · <span id="appDate">23 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">186</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -528,7 +530,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='185',APP_DATE='23 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='186',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -573,6 +575,50 @@ function histCard(p,open){const L=(p&&p.editLog)||[];const cy=String(new Date().
   const rows=L.slice(0,open?30:12).map(e=>{const k=edDay(e.at);return `<div class="hs-r"><span class="hs-d">${esc(k.d)}${k.y&&k.y!==cy?' '+esc(k.y):''} <small>${esc(k.tm)}</small></span><span class="hs-s">${e.stage?`<span class="hs-st">${esc(e.sec)}</span>`:esc(e.sec)}${e.n>1?` <small class="muted">(${e.n} ครั้ง)</small>`:''}</span><span class="hs-b">${esc(e.by)}</span></div>`}).join('');
   return `<details class="card hist no-print" ${open?'open':''}><summary class="card-h"><h2>ประวัติการบันทึกข้อมูล</h2><span class="muted" style="font-size:12.5px">${L.length?`${L.length} รายการ · ล่าสุด ${esc(edAt(L[0].at))}`:'ยังไม่มีประวัติ'}</span></summary>
     <div class="card-b">${rows||'<div class="muted">ยังไม่มีประวัติ · ระบบเริ่มบันทึกเมื่อมีการแก้ไขข้อมูลโครงการนี้ (ตั้งแต่เวอร์ชัน 174)</div>'}${L.length>(open?30:12)?`<a href="#" data-edlog="${esc(p.id)}" style="font-size:13px">ดูทั้งหมด ${L.length} รายการ</a>`:''}</div></details>`}
+/* ---------- เปลี่ยนชื่อโครงการ ---------- */
+function renameDialog(){const p=P();if(!p)return;const m=modal('เปลี่ยนชื่อโครงการ',`<label class="f"><span>ชื่อโครงการงานก่อสร้าง</span><textarea class="i" id="rnN" rows="3">${esc(p.name||'')}</textarea></label>
+  <p class="muted" style="font-size:12.5px;margin:6px 0 0">ชื่อใหม่ใช้กับทุกเอกสารของโครงการนี้ทันที (TOR ประกาศ หนังสือ สัญญา) · เอกสารที่แก้ข้อความด้วยมือไว้จะไม่เปลี่ยนตาม</p>`,`<button class="btn" data-mc type="button">ยกเลิก</button><button class="btn pri" id="rnGo" type="button">บันทึกชื่อใหม่</button>`);
+  const q=x=>m.root.querySelector(x);q('[data-mc]').onclick=m.close;setTimeout(()=>q('#rnN').focus(),50);
+  q('#rnGo').onclick=()=>{const v=q('#rnN').value.replace(/\s+/g,' ').trim();if(!v)return toast('กรุณากรอกชื่อโครงการ');if(v===p.name){m.close();return}
+    const old=p.name;p.name=v;const u=me()||{};const at=nowStr();p.editLog=[{by:u.name||u.username||'ผู้ใช้ในเครื่องนี้',user:u.username||'',sec:'เปลี่ยนชื่อโครงการ',at,t:Date.now(),n:1,old}].concat(p.editLog||[]).slice(0,60);p.lastEdit=p.editLog[0];
+    try{edBase(p)}catch(e){}touch(p);m.close();render();toast('เปลี่ยนชื่อโครงการแล้ว')}}
+/* ---------- ตรวจข้อมูลโครงการกับไฟล์เล่มแผน (.xlsm/.xlsx) ---------- */
+function planMeta(X,wb){const o={};const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'')==='ปกแผน')||wb.SheetNames.find(n=>n.replace(/\s/g,'').replace(/เเ/g,'แ')==='ข้อมูลและผลงาน');if(!sn)return o;
+  const R=sheetAOA(X,wb.Sheets[sn]);const L=R.map(r=>(r||[]).map(v=>v==null?'':String(v)).filter(t=>t.trim()&&!/^#N\/A$/.test(t)).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean);
+  for(const t of L){let m;if(!o.code&&(m=t.match(/รหัสงาน\s*(\d{4,6})\s*(.*)$/))){o.code=m[1];o.work=m[2].trim()}
+    if(!o.hwy&&(m=t.match(/ทางหลวงหมายเลข\s*(\d+)(?:\s*ตอนควบคุม\s*(\d+))?\s*(?:ตอน\s*(.+))?$/))){o.hwy=m[1];o.cs=m[2]||'';o.sect=(m[3]||'').replace(/\s+ตอน\s*$/,'').trim()}
+    if(!o.km&&/ระหว่าง\s*กม/.test(t))o.km=t.replace(/^.*?ระหว่าง\s*/,'').trim();
+    if(!o.dist&&(m=t.match(/ระยะทางดำเนินการ\s*([\d.,]+)\s*กม/)))o.dist=m[1];
+    if(!o.budget&&(m=t.match(/วงเงินงบประมาณ\s*([\d,]+(?:\.\d+)?)/)))o.budget=num(m[1])}
+  return o}
+const kmKeys=t=>(String(t||'').replace(/[๐-๙]/g,c=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(c)).match(/\d+\+\d{3}/g)||[]);
+function planPick(){const f=document.createElement('input');f.type='file';f.accept='.xlsm,.xlsx,.xls';f.onchange=async()=>{const file=f.files[0];if(!file)return;toast('กำลังอ่านไฟล์เล่มแผน…');
+  try{const X=await loadXLSX();const wb=X.read(await file.arrayBuffer(),{type:'array',cellDates:true});let plan=null,sum=null;try{plan=parsePlanSheet(X,wb)}catch(e){}try{sum=parseSummary(X,wb)}catch(e){}
+    planCheckDialog(P(),Object.assign({},plan||{},planMeta(X,wb)),sum,file.name)}catch(e){alert(e.message)}};f.click()}
+function planCheckDialog(p,pl,sum,fname){const rows=[];const nz=t=>String(t||'').toUpperCase().replace(/[\s.()]+/g,'');const add=(k,label,sys,pln,ok,apply,applyLabel)=>rows.push({k,label,sys,pln,ok,apply,applyLabel});
+  const nm=p.name||'';
+  if(pl.hwy)add('hwy','ทางหลวงหมายเลข (ในชื่อโครงการ)',(nm.match(/ทางหลวงหมายเลข\s*(\d+)/)||[])[1]||'-',pl.hwy,new RegExp('ทางหลวงหมายเลข\\s*'+pl.hwy+'(\\D|$)').test(nm));
+  if(pl.sect)add('sect','ตอน (ในชื่อโครงการ)',(nm.match(/ตอน\s*(.+?)\s*(ระหว่าง|$)/)||[])[1]||'-',pl.sect,nz(nm).includes(nz(pl.sect).replace(/ตอน\d*$/,'')));
+  if(pl.km){const a=kmKeys(nm),b=kmKeys(pl.km);add('km','ช่วง กม. (ในชื่อโครงการ)',a.join(' - ')||'-',b.join(' - ')||pl.km,b.length>0&&b.every(x=>a.includes(x)))}
+  const suggest=pl.hwy&&pl.km?`${(nm.match(/^(.+?)\s*ทางหลวงหมายเลข/)||[])[1]||pl.work||'งาน'} ทางหลวงหมายเลข ${pl.hwy}${pl.sect?' ตอน '+pl.sect:''} ระหว่าง ${pl.km.replace(/\s+/g,' ')}`:'';
+  if(pl.budget)add('budget','วงเงินงบประมาณ (บาท)',num(p.budget)?fmt(p.budget):'-',fmt(pl.budget),Math.abs(num(p.budget)-pl.budget)<0.01,()=>{p.budget=pl.budget},'ใช้ค่าจากเล่มแผน');
+  if(pl.days)add('days','ระยะเวลาดำเนินการ (วัน)',p.workDays||'-',String(pl.days),num(p.workDays)===num(pl.days),()=>{p.workDays=String(pl.days)},'ใช้ค่าจากเล่มแผน');
+  if(sum&&sum.grand){let sm=0;try{const b=basisOf(p),r=compute(p,b.price);sm=num(r.sumM)/100}catch(e){}add('mid','ราคากลางรวม (SUMMARY)',sm?fmt(sm):'-',fmt(sum.grand),sm>0&&Math.abs(sm-num(sum.grand))<1,null,'')}
+  const PI=(p.items||[]).filter(i=>i.kind==='item'),A=(pl.items&&pl.items.length?pl.items:pl.items2)||[];
+  if(A.length){if(A.length!==PI.length)add('n','จำนวนรายการงาน',PI.length+' รายการ',A.length+' รายการ',false);
+    A.forEach((a,i)=>{const b=PI[i];if(!b){add('it'+i,`รายการที่ ${i+1}`,'(ไม่มีในระบบ)',a.name,false);return}
+      const okN=nz(a.name)===nz(b.name)||stdSim(a.name,b.name)>=0.9,okQ=!a.qty||Math.abs(num(a.qty)-num(b.qty))<1e-6,okU=!a.unit||nz(a.unit)===nz(b.unit);
+      add('it'+i,`รายการที่ ${i+1}`,`${esc(b.name)}<br><span class="muted">${fQ(num(b.qty))} ${esc(b.unit||'')}</span>`,`${esc(a.name)}<br><span class="muted">${a.qty?fQ(a.qty):'-'} ${esc(a.unit||'')}</span>`,okN&&okQ&&okU,okQ&&okU?null:()=>{if(a.qty)b.qty=a.qty;if(a.unit)b.unit=a.unit},'ใช้ปริมาณ/หน่วยจากเล่มแผน',true)})}
+  const bad=rows.filter(r=>!r.ok);
+  const m=modal('ตรวจข้อมูลโครงการกับไฟล์เล่มแผน',`<p class="muted" style="margin-top:0">ไฟล์ ${esc(fname)}${pl.code?' · รหัสงาน '+esc(pl.code):''} · ${bad.length?`<b class="pc-bad">ไม่ตรงกัน ${bad.length} จุด</b>`:'<b class="pc-ok">✓ ข้อมูลตรงกันทั้งหมด</b>'}</p>
+    <div class="tbl-wrap"><table class="t pc-t"><thead><tr><th>หัวข้อ</th><th>ในระบบ</th><th>ในเล่มแผน</th><th>ผล</th></tr></thead><tbody>${rows.map((r,i)=>`<tr${r.ok?'':' style="background:var(--warn-bg)"'}><td>${esc(r.label)}</td><td>${r.k.startsWith('it')?r.sys:esc(r.sys)}</td><td>${r.k.startsWith('it')?r.pln:esc(r.pln)}</td><td style="white-space:nowrap">${r.ok?'<span class="pc-ok">✓ ตรง</span>':`<span class="pc-bad">✕ ไม่ตรง</span>${r.apply?`<br><label class="switch" style="font-size:12.5px"><input type="checkbox" data-pca="${i}"> ${esc(r.applyLabel)}</label>`:''}`}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">ไม่พบข้อมูลที่ตรวจได้ในไฟล์นี้ (ต้องมีแผ่น “ปกแผน” หรือ “ข้อมูลและผลงาน”)</td></tr>'}</tbody></table></div>
+    ${suggest&&rows.some(r=>!r.ok&&['hwy','sect','km'].includes(r.k))?`<div class="note" style="margin-top:10px"><b>ชื่อโครงการตามเล่มแผน (แนะนำ)</b><textarea class="i" id="pcName" rows="2" style="margin-top:6px">${esc(suggest)}</textarea><label class="switch" style="margin-top:4px"><input type="checkbox" id="pcUseName"> เปลี่ยนชื่อโครงการเป็นข้อความนี้</label></div>`:''}`,
+    `<button class="btn" data-mc type="button">ปิด</button>${bad.length?'<button class="btn pri" id="pcGo" type="button">ปรับตามเล่มแผนเฉพาะที่เลือก</button>':''}`);
+  m.root.querySelector('.modal').style.maxWidth='980px';const q=x=>m.root.querySelector(x);q('[data-mc]').onclick=m.close;
+  const go=q('#pcGo');if(go)go.onclick=()=>{let n=0;m.root.querySelectorAll('[data-pca]:checked').forEach(c=>{const r=rows[+c.dataset.pca];if(r&&r.apply){r.apply();n++}});
+    const un=q('#pcUseName');if(un&&un.checked){const v=q('#pcName').value.replace(/\s+/g,' ').trim();if(v&&v!==p.name){p.name=v;n++}}
+    if(!n)return toast('ยังไม่ได้เลือกรายการที่จะปรับ');touch(p);m.close();render();toast(`ปรับข้อมูลตามเล่มแผนแล้ว ${n} จุด`)}}
+document.addEventListener('click',e=>{if(e.target.closest('[data-cbren]'))renameDialog();else if(e.target.closest('[data-cbplan]'))planPick()});
 function edLogDialog(id){const p=S.projects.find(x=>x.id===id);if(!p)return;const L=p.editLog||[];
   const m=modal('ประวัติการแก้ไขข้อมูล',`<p class="muted" style="margin-top:0">${esc(p.name||'')}</p>${L.length?`<table class="t"><thead><tr><th>เวลา</th><th>ผู้แก้ไข</th><th>ส่วนที่แก้ไข</th></tr></thead><tbody>${L.map(e=>`<tr><td style="white-space:nowrap">${esc(edAt(e.at))}</td><td>${esc(e.by)}</td><td>${esc(e.sec)}${e.n>1?` <span class="muted">(${e.n} ครั้ง)</span>`:''}</td></tr>`).join('')}</tbody></table><p class="muted" style="font-size:12.5px">เก็บ 30 รายการล่าสุด · การแก้ไขต่อเนื่องในส่วนเดียวกันภายใน 15 นาทีจะรวมเป็นรายการเดียว</p>`:'<p class="muted">ยังไม่มีประวัติ (เริ่มบันทึกตั้งแต่เวอร์ชัน 174)</p>'}`,`<button class="btn" data-mc type="button">ปิด</button>`);m.root.querySelector('[data-mc]').onclick=m.close}
 document.addEventListener('click',e=>{const a=e.target.closest('[data-edlog]');if(a){e.preventDefault();edLogDialog(a.dataset.edlog)}});
@@ -773,7 +819,7 @@ function go(t){if(EXEC&&t!=='cal')t='cal';tab=t;try{edBase(P())}catch(e){}render
 $('#tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)go(b.dataset.tab)});
 function render(){let nk=0;S.projects.forEach(p=>{if(typeof ensureSaved==='function')ensureSaved(p);if(typeof fixNameKm==='function'&&fixNameKm(p))nk++});if(canEdit()&&eqMigrate())nk++;if(nk)save();({cal:rCal,dash:rDash,prep:rPrep,req:rReq,orders:rOrders,edit:rEdit,bid:rBid,eval:rEval,nego:rNego,result:rResult,sign:rSignTab,report:rReport,cert:rCert,legal:rLegal,manual:rManual,set:rSet})[tab]();if(typeof stepBar==='function')stepBar()}
 function needProject(el){if(P())return false;el.innerHTML=`<div class="card empty">ยังไม่ได้เลือกโครงการ · <button class="btn pri" data-act="new" type="button">สร้างโครงการใหม่</button></div>`;return true}
-function curBar(title,extra=''){const p=P();return `<div class="curbar"><div class="cb-t"><div class="muted" style="font-size:13px">${esc(title)}${p.projectNo?' · เลขที่โครงการ '+esc(p.projectNo):''}</div><div class="cb-n">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div>${edLine(p)}</div>${extra?`<div class="cb-a">${extra}</div>`:''}</div>`}
+function curBar(title,extra=''){const p=P();return `<div class="curbar"><div class="cb-t"><div class="muted" style="font-size:13px">${esc(title)}${p.projectNo?' · เลขที่โครงการ '+esc(p.projectNo):''}</div><div class="cb-n">${esc(p.name||'(ยังไม่ตั้งชื่อโครงการ)')}</div>${edLine(p)}${canEdit()?`<div class="cb-tools"><button class="btn sm" data-cbren type="button">✎ เปลี่ยนชื่อโครงการ</button><button class="btn sm" data-cbplan type="button">⟳ ตรวจกับไฟล์เล่มแผน</button></div>`:''}</div>${extra?`<div class="cb-a">${extra}</div>`:''}</div>`}
 
 /* ================= dashboard ================= */
 function statusPill(s){const m={'ร่าง':'p-draft','กำลังต่อรอง':'p-nego','ตกลงราคาแล้ว':'p-ok','ลงนามสัญญาแล้ว':'p-sign'};return `<span class="pill ${m[s]||'p-draft'}">${esc(s||'ร่าง')}</span>`}
@@ -3253,7 +3299,7 @@ function torVals(p){const T=torOf(p),st=S.settings,bond=torBond(p),tm=ordMembers
     BUDGET_TEXT:fmt(p.budget),BUDGET_TEXT_WORDS:bahtText(p.budget),BUDGET_YEAR:String(fyNow()),CONTRACTOR_CLASS:torClass(p),
     FINE_SUBCONTRACT_PCT:T.fineSub||'10',FINE_DAILY_PCT:T.fineDaily||'0.10',WARRANTY_YEARS:T.warranty||'2',WARRANTY_REPAIR_DAYS:'15',CRAFTSMAN_PCT:'',
     TOR_CHAIRMAN_NAME:ch.name?fName(ch.name):dots,TOR_CHAIRMAN_POSITION:ch.position||'',TOR_MEMBER1_NAME:m1.name?fName(m1.name):dots,TOR_MEMBER1_POSITION:m1.position||'',TOR_MEMBER2_NAME:m2.name?fName(m2.name):dots,TOR_MEMBER2_POSITION:m2.position||'',
-    DIRECTOR_NAME:fName(st.director||''),DIRECTOR_POSITION:st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',APPROVED_BY:T.approvedBy||'.............................',DIRECTOR_DEPT:'',
+    DIRECTOR_NAME:fName(st.director||''),DIRECTOR_POSITION:st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',APPROVED_BY:(t=>/^สำนัก/.test(t)&&!/กรมทางหลวง/.test(t)?t+' กรมทางหลวง':t)(String(T.approvedBy||'').trim())||'.............................',DIRECTOR_DEPT:'',
     ITEM_COUNT:String(torItems(p).length),BID_BOND_FIGURE:bond?bond.fig:'',BID_BOND_WORDS:bond?bond.words:''};
   const n=torNums(p);for(const k in n)v[k]=String(n[k]);return v}
 function torConds(p){const pl=torPlant(p),k=!!torOf(p).k,b=!!torBond(p),mt=torOf(p).workType==='maintain';const dm=dmgOn(p);return {PLANT:pl,NO_PLANT:!pl,K:k,NO_K:!k,BID_BOND:b,NO_BID_BOND:!b,MAINTAIN:mt,CONSTRUCT:!mt,DMG_PLANT:dm&&pl,DMG_NO_PLANT:dm&&!pl}}
@@ -3353,7 +3399,7 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
     <div class="s12 row" style="gap:16px;flex-wrap:wrap;margin:0">${ck('plant','ต้องมีโรงงานผสมแอสฟัลต์ (Plant)',torPlant(p))}${ck('k','มีการปรับราคาค่างานก่อสร้าง (ค่า K)',T.k)}</div>
     <label class="f s3"><span>รับประกันความชำรุดบกพร่อง (ปี)</span><select class="i" data-tv="warranty">${['1','2','3','5'].map(y=>`<option ${String(T.warranty)===y?'selected':''}>${y}</option>`).join('')}</select></label>
     ${tx('fineSub','ค่าปรับจ้างช่วง (ร้อยละ)','s3')}${tx('fineDaily','ค่าปรับรายวัน (ร้อยละ)','s3')}${tx('hwy','ทางหลวงหมายเลข (ข้อ ๑ ความเป็นมา)','s3',torHwy(p))}
-    ${tx('approvedBy','ได้รับความเห็นชอบจาก (เลือกหรือพิมพ์เอง)','s6','เลือกจากรายการ หรือพิมพ์ชื่อหน่วยงาน').replace('data-tv="approvedBy"','data-tv="approvedBy" list="dlApprovedBy" autocomplete="off"')}<datalist id="dlApprovedBy">${['สำนักอำนวยความปลอดภัย','สำนักบริหารบำรุงทาง','สำนักแผนงาน'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
+    ${tx('approvedBy','ได้รับความเห็นชอบจาก (เลือกหรือพิมพ์เอง)','s6','เลือกจากรายการ หรือพิมพ์ชื่อหน่วยงาน').replace('data-tv="approvedBy"','data-tv="approvedBy" list="dlApprovedBy" autocomplete="off"')}<datalist id="dlApprovedBy">${['สำนักอำนวยความปลอดภัย กรมทางหลวง','สำนักบริหารบำรุงทาง กรมทางหลวง','สำนักแผนงาน กรมทางหลวง'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
     <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
     <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea>${(()=>{const M=torItems(p).filter(i=>!String(i.std||'').trim()).map(i=>[i,stdMatch(i.name)]).filter(x=>x[1]);return M.length?`<small class="muted" style="display:block;margin-top:4px">จับคู่อัตโนมัติจากชีต “มาตรฐาน” (ชื่อคล้ายกัน ≥ 90%): ${M.map(([i,m])=>`${esc(i.name)} → <b>${esc(m.std)}</b> (${Math.round(m.score*100)}%)`).join(' · ')}</small>`:(S.settings.dohStandards||[]).length?'':'<small class="muted" style="display:block;margin-top:4px">ยังไม่มีข้อมูลชีต “มาตรฐาน” — ซิงก์ข้อมูลจากชีตเดิมก่อน ระบบจึงจับคู่มาตรฐานอัตโนมัติได้</small>'})()}</label>
     <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':torMode(p)==='other'?'กำหนดเอง (อื่น ๆ)':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ประเมินผลการปฏิบัติงานผู้ประกอบการ (ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ ฉบับที่ ๓/๒๕๖๙): <b>${dmgOn(p)?'แนบเอกสารกำหนดคะแนนความเสียหาย ข้อ '+dmgNo(p):'ไม่บังคับ (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
@@ -4020,7 +4066,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='[data-tword],#btnDocx,#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='[data-cbren],[data-cbplan],[data-tword],#btnDocx,#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
