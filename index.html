@@ -467,7 +467,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">186</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">187</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -530,7 +530,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='186',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='187',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3256,6 +3256,10 @@ function torOf(p){p.tor=Object.assign({},TOR_DEF,p.tor||{});return p.tor}
 const TOR_CLASS={road:[[10,'ชั้น 6'],[20,'ชั้น 5'],[60,'ชั้น 4'],[150,'ชั้น 3'],[300,'ชั้น 2'],[500,'ชั้น 1']],bridge:[[10,'ชั้น 5'],[Infinity,'ชั้น 4']],special:[[Infinity,'ชั้นพิเศษ']]};
 const TOR_BRANCH={road:'งานก่อสร้างทาง',bridge:'งานก่อสร้างสะพาน',special:'งานก่อสร้างทางและสะพานพิเศษ'};
 const TOR_STD_ALWAYS=['คู่มือเครื่องหมายควบคุมการจราจรในงานก่อสร้าง งานบูรณะและงานบำรุงรักษาทางหลวงแผ่นดิน (มีนาคม ๒๕๖๑) (ป้ายในงานก่อสร้าง/งานบูรณะ บริเวณช่องจราจรซ้าย สำหรับทางหลวง ๒ ช่องจราจร)'];
+/* สาขาช่างตามข้อ “ผู้ผ่านการทดสอบมาตรฐานฝีมือช่าง”: งานไฟฟ้า → ช่างไฟฟ้า · งานอื่น → ช่างโยธา · ปรับเองได้ (บรรทัดละ 1 สาขา) */
+const isElecWork=p=>/ไฟฟ้า|สัญญาณไฟ|ไฟจราจร/.test(String(p.type||'')+' '+String(p.name||'').split(/ทางหลวงหมายเลข/)[0]);
+function torCrafts(p){const T=torOf(p);const L=String(T.craft||'').split(/\n|,/).map(x=>x.trim()).filter(Boolean);return L.length?L:[isElecWork(p)?'ช่างไฟฟ้า':'ช่างโยธา']}
+const torCraftPct=p=>toTH(String(num(torOf(p).craftPct)||10));
 function torClass(p){const T=torOf(p);const mb=num(p.budget)/1e6;if(!mb)return '';const t=TOR_CLASS[T.workType]||TOR_CLASS.road;for(const [c,l] of t)if(mb<=c)return l;return 'ชั้นพิเศษ'}
 /* ผลงานก่อสร้างประเภทเดียวกัน — ไม่เกินร้อยละ 50 ของวงเงินงบประมาณ (ว 214 ลว. 18 พ.ค. 2563 ข้อ 1.1.4) ว่าง = ใช้ร้อยละ 50 */
 function torRecAmt(p){const T=torOf(p);return num(T.recordAmt)||Math.floor(num(p.budget)*0.5)}
@@ -3299,7 +3303,7 @@ function torVals(p){const T=torOf(p),st=S.settings,bond=torBond(p),tm=ordMembers
     BUDGET_TEXT:fmt(p.budget),BUDGET_TEXT_WORDS:bahtText(p.budget),BUDGET_YEAR:String(fyNow()),CONTRACTOR_CLASS:torClass(p),
     FINE_SUBCONTRACT_PCT:T.fineSub||'10',FINE_DAILY_PCT:T.fineDaily||'0.10',WARRANTY_YEARS:T.warranty||'2',WARRANTY_REPAIR_DAYS:'15',CRAFTSMAN_PCT:'',
     TOR_CHAIRMAN_NAME:ch.name?fName(ch.name):dots,TOR_CHAIRMAN_POSITION:ch.position||'',TOR_MEMBER1_NAME:m1.name?fName(m1.name):dots,TOR_MEMBER1_POSITION:m1.position||'',TOR_MEMBER2_NAME:m2.name?fName(m2.name):dots,TOR_MEMBER2_POSITION:m2.position||'',
-    DIRECTOR_NAME:fName(st.director||''),DIRECTOR_POSITION:st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',APPROVED_BY:(t=>/^สำนัก/.test(t)&&!/กรมทางหลวง/.test(t)?t+' กรมทางหลวง':t)(String(T.approvedBy||'').trim())||'.............................',DIRECTOR_DEPT:'',
+    DIRECTOR_NAME:fName(st.director||''),DIRECTOR_POSITION:st.directorFull||'ผู้อำนวยการแขวงทางหลวงกระบี่',CRAFTSMAN_PCT:torCraftPct(p),APPROVED_BY:(t=>/^สำนัก/.test(t)&&!/กรมทางหลวง/.test(t)?t+' กรมทางหลวง':t)(String(T.approvedBy||'').trim())||'.............................',DIRECTOR_DEPT:'',
     ITEM_COUNT:String(torItems(p).length),BID_BOND_FIGURE:bond?bond.fig:'',BID_BOND_WORDS:bond?bond.words:''};
   const n=torNums(p);for(const k in n)v[k]=String(n[k]);return v}
 function torConds(p){const pl=torPlant(p),k=!!torOf(p).k,b=!!torBond(p),mt=torOf(p).workType==='maintain';const dm=dmgOn(p);return {PLANT:pl,NO_PLANT:!pl,K:k,NO_K:!k,BID_BOND:b,NO_BID_BOND:!b,MAINTAIN:mt,CONSTRUCT:!mt,DMG_PLANT:dm&&pl,DMG_NO_PLANT:dm&&!pl}}
@@ -3347,6 +3351,9 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
         L.filter(s=>!out.some(h=>h.includes(torEsc(s.slice(0,40))))).forEach((s,i)=>out.push(mk('tp',`text-indent:${no?'25mm':(i===0?'32mm':'25mm')}`,torLabel(torEsc(s)))))}
       empties=0;continue}
     const R=torRuns(o.r,vals,p);let plain=R.map(x=>x[0]).join('');
+    {const cm=plain.match(new RegExp('^\\s*('+TOR_NUM+')\\.'+TOR_NUM+'\\s+ช่างโยธา\\s*$'));if(cm){torCrafts(p).forEach((c,i)=>out.push(mk('tp','text-indent:25mm',torEsc(`${cm[1]}.${toTH(String(i+1))}  ${c}`))));empties=0;continue}}
+    /* อัตราร้อยละของช่าง (แม่แบบบางฉบับเขียนตายตัว ๑๐) */
+    if(/ไม่ต่ำกว่าร้อยละ/.test(plain)&&/ของแต่ละสาขาช่าง/.test(plain))R.forEach(x=>{x[0]=x[0].replace(/^๑๐$/,torCraftPct(p))});
     if(o.bg&&String(torOf(p).background||'').trim()){out.push(mk('tp','text-indent:25mm'+(o.b?';margin-top:'+(o.b/20)+'pt':''),torEsc(torOf(p).background.trim())));empties=0;continue}
     if(!plain.trim()){
       /* บรรทัดว่างในแม่แบบ: เก็บไว้ไม่เกิน 1 บรรทัด และไม่เว้นก่อนข้อย่อย (เช่น ๓.๑๓ (๑) ๙.๑) เพื่อไม่ให้เกิดช่องโหว่ */
@@ -3400,6 +3407,7 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
     <label class="f s3"><span>รับประกันความชำรุดบกพร่อง (ปี)</span><select class="i" data-tv="warranty">${['1','2','3','5'].map(y=>`<option ${String(T.warranty)===y?'selected':''}>${y}</option>`).join('')}</select></label>
     ${tx('fineSub','ค่าปรับจ้างช่วง (ร้อยละ)','s3')}${tx('fineDaily','ค่าปรับรายวัน (ร้อยละ)','s3')}${tx('hwy','ทางหลวงหมายเลข (ข้อ ๑ ความเป็นมา)','s3',torHwy(p))}
     ${tx('approvedBy','ได้รับความเห็นชอบจาก (เลือกหรือพิมพ์เอง)','s6','เลือกจากรายการ หรือพิมพ์ชื่อหน่วยงาน').replace('data-tv="approvedBy"','data-tv="approvedBy" list="dlApprovedBy" autocomplete="off"')}<datalist id="dlApprovedBy">${['สำนักอำนวยความปลอดภัย กรมทางหลวง','สำนักบริหารบำรุงทาง กรมทางหลวง','สำนักแผนงาน กรมทางหลวง'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจาก “พ.ศ.…”)','s6')}
+    ${tx('craft','สาขาช่าง (ผู้ผ่านการทดสอบมาตรฐานฝีมือช่าง) · หลายสาขาคั่นด้วย ,','s6','ว่าง = '+(isElecWork(p)?'ช่างไฟฟ้า (งานไฟฟ้า)':'ช่างโยธา')).replace('data-tv="craft"','data-tv="craft" list="dlCraft" autocomplete="off"')}<datalist id="dlCraft">${['ช่างโยธา','ช่างไฟฟ้า','ช่างไฟฟ้า, ช่างโยธา','ช่างเชื่อม','ช่างก่อสร้าง'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('craftPct','อัตราช่างไม่ต่ำกว่าร้อยละ','s2','10')}
     <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
     <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea>${(()=>{const M=torItems(p).filter(i=>!String(i.std||'').trim()).map(i=>[i,stdMatch(i.name)]).filter(x=>x[1]);return M.length?`<small class="muted" style="display:block;margin-top:4px">จับคู่อัตโนมัติจากชีต “มาตรฐาน” (ชื่อคล้ายกัน ≥ 90%): ${M.map(([i,m])=>`${esc(i.name)} → <b>${esc(m.std)}</b> (${Math.round(m.score*100)}%)`).join(' · ')}</small>`:(S.settings.dohStandards||[]).length?'':'<small class="muted" style="display:block;margin-top:4px">ยังไม่มีข้อมูลชีต “มาตรฐาน” — ซิงก์ข้อมูลจากชีตเดิมก่อน ระบบจึงจับคู่มาตรฐานอัตโนมัติได้</small>'})()}</label>
     <div class="s12 muted" style="font-size:13.5px;line-height:1.7">ชั้นผู้ประกอบการ: <b>${torMode(p)==='class'?esc(torClass(p)||'-'):torMode(p)==='record'?'ใช้ผลงานย้อนหลัง':torMode(p)==='other'?'กำหนดเอง (อื่น ๆ)':'งานบำรุงทาง'}</b> · หลักประกันการเสนอราคา: <b>${bond?esc(bond.fig)+' บาท':'ไม่ต้องวาง (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ประเมินผลการปฏิบัติงานผู้ประกอบการ (ระเบียบกระทรวงการคลังว่าด้วยการจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ ฉบับที่ ๓/๒๕๖๙): <b>${dmgOn(p)?'แนบเอกสารกำหนดคะแนนความเสียหาย ข้อ '+dmgNo(p):'ไม่บังคับ (วงเงินต่ำกว่า 5 ล้าน)'}</b> · ทุนจดทะเบียน (ว 124): <b>${torCap(p)?'ไม่ต่ำกว่า '+torCap(p)+' ล้านบาท':'ไม่ต้องกำหนด'}</b> · รายการงาน <b>${torItems(p).length}</b> รายการ · กรรมการ TOR: <b>${tm.length?esc(tm.map(m=>m.name).join(', ')):'-'}</b> <button class="btn sm" data-goto="orders" type="button">แก้ที่คำสั่งแต่งตั้ง</button></div>
