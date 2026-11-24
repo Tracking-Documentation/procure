@@ -467,7 +467,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">200</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">201</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -530,7 +530,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='200',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='201',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3367,7 +3367,7 @@ function torRuns(r,vals,p){return (r||[]).map(x=>{const [t,f]=typeof x==='string
 /* เลขข้อนำหน้า + ช่องว่าง → กล่องเว้นระยะคงที่ (ไม่ให้การจัดชิดขอบไปถ่างช่องหลังเลขข้อ) */
 function torLabel(h){return h.replace(/^((?:<[bu]>)*)((?:[0-9๐-๙]+\.)+[0-9๐-๙]*|\((?:[0-9๐-๙.]+|[ก-ฮ])\)|[-✓])[ \u00a0]+/,(m,t,l)=>`${t}<span class="tlb">${l} </span>`)}
 function torHtmlRuns(R){return R.map(([t,f])=>{let h=torEsc(t);if(!h)return '';if(f&1)h=`<b>${h}</b>`;if(f&2)h=`<u>${h}</u>`;return h}).join('')}
-function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
+function repTor(p,doc){let bondDone=false;const T=window.TOR_TPL;const F=letterFont();
   if(!T){loadTorTpl().then(()=>{if(tab==='report'||tab==='prep')render()}).catch(e=>toast(e.message));return '<div class="note">กำลังโหลดแม่แบบ TOR…</div>'}
   const vals=torVals(p),C=torConds(p);const out=[];const stack=[];let skip=0,empties=0;
   const mk=(cls,style,inner)=>`<p class="${cls}"${style?` style="${style}"`:''}>${inner||'&nbsp;'}</p>`;
@@ -3388,7 +3388,11 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
     if(/^\s*แผนรายประมาณการ\s+งบประมาณรายจ่ายประจำปีงบประมาณ\s+พ\.ศ\.\s*[0-9๐-๙]+/.test(plain)){const t=torFix(planTitleTxt(p),p);R.forEach((x,i)=>{if(i===0)x[0]=x[0].replace(/แผนรายประมาณการ\s+งบประมาณรายจ่ายประจำปีงบประมาณ\s+พ\.ศ\.\s*[0-9๐-๙]+/,t)});plain=R.map(x=>x[0]).join('')}
     if(doc==='bid'&&/^\s*\(๑\)\s+สำเนาหลักฐานการขึ้นทะเบียนงานก่อสร้าง/.test(plain)){const ld=plain.match(/^\s*\(๑\)\s+/)[0];R.splice(0,R.length,[torFix(ld+torDoc2Qual(p),p),0]);plain=R[0][0]}
     /* ข้อ ๑ เพิ่มรายการท้ายบัญชีเอกสารแนบ: ใบแจ้งการชำระเงินสำหรับหลักประกันการเสนอราคา (วงเงิน ≥ 5 ล้าน · หนังสือ ว 581) */
-    if(doc==='bid'&&/^\s*๒\.\s+คุณสมบัติของผู้ยื่นข้อเสนอ/.test(plain)&&torBond(p)){
+    if(doc==='bid'&&torBond(p)&&!bondDone&&/^\s*๑\.[๐-๙]+\s+หลักเกณฑ์การประเมินผลการปฏิบัติงานของผู้ประกอบการ/.test(plain)){
+      bondDone=true;const mm=plain.match(/^(\s*๑\.)([๐-๙]+)/);const n=+mm[2].replace(/[๐-๙]/g,d=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(d));
+      const t=`๑.${toTH(String(n))}  ใบแจ้งการชำระเงินสำหรับหลักประกันการเสนอราคา`;out.push(`<p class="tp" style="${para(t,true)}">${torLabel(torEsc(t))}</p>`);
+      R[0][0]=R[0][0].replace(/^(\s*๑\.)[๐-๙]+/,'$1'+toTH(String(n+1)));plain=R.map(x=>x[0]).join('')}
+    if(doc==='bid'&&/^\s*๒\.\s+คุณสมบัติของผู้ยื่นข้อเสนอ/.test(plain)&&torBond(p)&&!bondDone){bondDone=true;
       const seg=out.join('').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ');const a=seg.search(/๑\.\s*เอกสารแนบท้ายเอกสารประกวดราคา/);let mx=0,m;const re=/๑\.([๐-๙]+)\s/g;const sg=seg.slice(a<0?0:a);
       while((m=re.exec(sg)))mx=Math.max(mx,+m[1].replace(/[๐-๙]/g,d=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(d)));
       const t=`๑.${toTH(String(mx+1))}  ใบแจ้งการชำระเงินสำหรับหลักประกันการเสนอราคา`;out.push(`<p class="tp" style="${para(t,true)}">${torLabel(torEsc(t))}</p>`)}
