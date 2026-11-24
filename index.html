@@ -467,7 +467,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">195</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">196</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -530,7 +530,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='195',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='196',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3704,7 +3704,8 @@ function conDates(p){const C=conOf(p);const sd=p.contractDate||(p.book&&p.book.b
 function conParts(iso){if(!iso)return ['','',''];const d=new Date(iso+'T12:00:00');return [toTH(String(d.getDate())),TH_MONTH[d.getMonth()],toTH(String(d.getFullYear()+543))]}
 function conProvince(p){const m=String(p.name||'').match(/(?:จ\.|จังหวัด)\s*([^\s]+)\s*$/);return m?m[1]:''}
 function conAnnex(p){const L=String(S.settings.conAnnex||CON_ANNEX_DEF).split('\n').map(x=>x.trim()).filter(Boolean).map(x=>{const [t,n,u]=x.split('|');return {t,n:n||'๑',u:u||'ชุด'}});
-  if(torOf(p).k&&!L.some(x=>/ปรับราคา/.test(x.t)))L.push({t:'สูตรการปรับราคา (ค่า K)',n:'๑',u:'ชุด'});return L}
+  if(torOf(p).k&&!L.some(x=>/ปรับราคา/.test(x.t)))L.push({t:'สูตรการปรับราคา (ค่า K)',n:'๑',u:'ชุด'});
+  try{if(lstdOn(p)&&!L.some(x=>/มาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง/.test(x.t)))L.push({t:LSTD_TITLE,n:'๑',u:'ชุด'})}catch(e){}return L}
 function conVals(p){const C=conOf(p),st=S.settings;const fp=num(finalPrice(p));const A=signAmounts(p);const bk=(p.book&&p.book.booking)||{};const dd=conDates(p);const [sd,sm,sy]=conParts(dd.start),[ed,em,ey]=conParts(dd.end);
   const fine=Math.round(fp*num(torOf(p).fineDaily||'0.10')/100*100)/100;const w=warrantyOf(p)||2;
   const btype=C.bondType||bk.secType||(C.bondBank?'หนังสือค้ำประกันของ':'');const bond=[btype+(/ของ$/.test(btype)?C.bondBank:''),/ของ$/.test(btype)?'':C.bondBank,C.bondNo?'เลขที่ '+C.bondNo:'',C.bondDate?'ลงวันที่ '+thDate(C.bondDate):''].filter(Boolean).join(' ');
