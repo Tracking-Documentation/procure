@@ -467,7 +467,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">193</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">194</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -530,7 +530,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='193',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='194',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -584,8 +584,17 @@ function renameDialog(){const p=P();if(!p)return;const m=modal('เปลี่�
     try{edBase(p)}catch(e){}touch(p);m.close();render();toast('เปลี่ยนชื่อโครงการแล้ว')}}
 /* ---------- ตรวจข้อมูลโครงการกับไฟล์เล่มแผน (.xlsm/.xlsx) ---------- */
 /* หัวเรื่องแผน (บรรทัด "แผนรายประมาณการ ...") จากแผ่น ปกBREAKDOWN (สำรอง: ปกแผน) */
-function planTitleOf(X,wb){for(const key of ['ปกBREAKDOWN','ปกแผน']){const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'').toUpperCase()===key.toUpperCase());if(!sn)continue;
-  const R=sheetAOA(X,wb.Sheets[sn]);for(const r of R){const t=(r||[]).map(v=>v==null?'':String(v)).filter(x=>x.trim()).join(' ').replace(/\s+/g,' ').trim();if(/^แผนรายประมาณการ/.test(t))return t.replace(/พ\.ศ\.\s*/,'พ.ศ. ')}}return ''}
+function planTitleOf(X,wb){const nz=n=>n.replace(/\s/g,'').toUpperCase();const L=[...wb.SheetNames.filter(n=>/^ปก.*BREAK/.test(nz(n))),...wb.SheetNames.filter(n=>nz(n)==='ปกแผน')];
+  for(const sn of L){const R=sheetAOA(X,wb.Sheets[sn]);for(const r of R.slice(0,60)){const t=(r||[]).map(v=>v==null?'':String(v)).filter(x=>x.trim()&&!/^#N\/A$/.test(x)).join(' ').replace(/\s+/g,' ').trim();const m=t.match(/แผนรายประมาณการ.*$/);if(m&&/ประจำปี|พ\.ศ/.test(m[0]))return m[0].replace(/พ\.ศ\.\s*/,'พ.ศ. ').trim()}}return ''}
+/* ดึงชื่อแผนจากไฟล์ Excel ที่แนบไว้ในขั้นเตรียมการ (ถ้ายังไม่ได้ตั้ง) */
+const ptTried=new Set();
+async function planTitleFromXls(p,quiet){const f=(prepOf(p).xlsFiles||[]).slice(-1)[0];if(!f||!central()){if(!quiet)alert('ยังไม่มีไฟล์ Excel ที่แนบไว้ในขั้นเตรียมการ — กด “เลือกไฟล์” แทน');return}
+  try{if(!quiet)toast('กำลังอ่าน '+f.name+'…');const j=await srvCall({action:'files.get',id:f.id});const bin=atob(j.b64);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+    const X=await loadXLSX();const t=planTitleOf(X,X.read(u,{type:'array'}));const pc=S.projects.find(x=>x.id===p.id)||p;
+    if(t){torOf(pc).planTitle=t;touch(pc);render();toast('ดึงชื่อแผนจากปก BREAKDOWN แล้ว')}else if(!quiet)alert('ไม่พบบรรทัด “แผนรายประมาณการ …” ในแผ่น ปกBREAKDOWN ของไฟล์ '+f.name)}catch(e){if(!quiet)alert(e.message)}}
+function planTitlePick(p){const f=document.createElement('input');f.type='file';f.accept='.xls,.xlsx,.xlsm';f.onchange=async()=>{const file=f.files[0];if(!file)return;
+  try{toast('กำลังอ่าน '+file.name+'…');const X=await loadXLSX();const t=planTitleOf(X,X.read(await file.arrayBuffer(),{type:'array'}));const pc=S.projects.find(x=>x.id===p.id)||p;
+    if(t){torOf(pc).planTitle=t;touch(pc);render();toast('ดึงชื่อแผนแล้ว')}else alert('ไม่พบบรรทัด “แผนรายประมาณการ …” ในแผ่น ปกBREAKDOWN ของไฟล์ '+file.name)}catch(e){alert(e.message)}};f.click()}
 const planTitleTxt=p=>{const t=String(torOf(p).planTitle||'').trim();return t||'แผนรายประมาณการ ประจำปีงบประมาณ พ.ศ. '+fyNow()};
 function planMeta(X,wb){const o={};try{o.planTitle=planTitleOf(X,wb)}catch(e){}const sn=wb.SheetNames.find(n=>n.replace(/\s/g,'')==='ปกแผน')||wb.SheetNames.find(n=>n.replace(/\s/g,'').replace(/เเ/g,'แ')==='ข้อมูลและผลงาน');if(!sn)return o;
   const R=sheetAOA(X,wb.Sheets[sn]);const L=R.map(r=>(r||[]).map(v=>v==null?'':String(v)).filter(t=>t.trim()&&!/^#N\/A$/.test(t)).join(' ').replace(/\s+/g,' ').trim()).filter(Boolean);
@@ -3246,7 +3255,7 @@ function ordTplDialog(){if(!canEdit())return toast('บัญชีนี้ด�
    จัดรูปแบบตามแอปนี้: TH SarabunIT๙ 16pt ย่อหน้า 2.5 ซม. เลขข้อเรียงระดับ · เงื่อนไข/เลขข้อคำนวณตามระบบเดิม */
 let TOR_LOADING=null;
 function loadTorTpl(){if(window.TOR_TPL)return Promise.resolve(window.TOR_TPL);if(TOR_LOADING)return TOR_LOADING;
-  TOR_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='tor-tpl.js';s.onload=()=>ok(window.TOR_TPL);s.onerror=()=>{TOR_LOADING=null;no(new Error('โหลดแม่แบบ TOR ไม่ได้'))};document.head.appendChild(s)});return TOR_LOADING}
+  TOR_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='tor-tpl.js?v='+APP_VER;s.onload=()=>ok(window.TOR_TPL);s.onerror=()=>{TOR_LOADING=null;no(new Error('โหลดแม่แบบ TOR ไม่ได้'))};document.head.appendChild(s)});return TOR_LOADING}
 const TOR_DEF={workType:'road',otherQual:'',otherJV:'',useRecord:false,recordAmt:'',maintainTypes:'',plant:null,k:false,warranty:'2',fineSub:'10',fineDaily:'0.10',approvedBy:'',planLine:'',planTitle:'',hwy:'',background:'',standards:''};
 /* ประเภทงานบำรุงทางที่จดทะเบียนกับกรมทางหลวง (เลขประเภทตามตารางกรม) */
 const TOR_MT=[['1','งานฉาบผิวทางแบบ Chip Seal'],['2','งานฉาบผิวทางแบบ Slurry Seal'],['3','งานเสริมผิวทางแบบ Cold Mixed Asphalt'],['4','งานเสริมผิวทางแบบ Hot Mixed Asphalt'],['5','งานบำรุงทางแบบ Hot Mix In-Place Recycling'],['6','งานบูรณะทางแบบ Pavement In-Place Recycling'],
@@ -3364,6 +3373,7 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
       empties=0;continue}
     const R=torRuns(o.r,vals,p);let plain=R.map(x=>x[0]).join('');
     {const cm=plain.match(new RegExp('^\\s*('+TOR_NUM+')\\.'+TOR_NUM+'\\s+ช่างโยธา\\s*$'));if(cm){torCrafts(p).forEach((c,i)=>out.push(mk('tp','text-indent:25mm',torEsc(`${cm[1]}.${toTH(String(i+1))}  ${c}`))));empties=0;continue}}
+    if(/^\s*แผนรายประมาณการ\s+งบประมาณรายจ่ายประจำปีงบประมาณ\s+พ\.ศ\.\s*[0-9๐-๙]+/.test(plain)){const t=torFix(planTitleTxt(p),p);R.forEach((x,i)=>{if(i===0)x[0]=x[0].replace(/แผนรายประมาณการ\s+งบประมาณรายจ่ายประจำปีงบประมาณ\s+พ\.ศ\.\s*[0-9๐-๙]+/,t)});plain=R.map(x=>x[0]).join('')}
     if(doc==='bid'&&/^\s*\(๑\)\s+สำเนาหลักฐานการขึ้นทะเบียนงานก่อสร้าง/.test(plain)){const ld=plain.match(/^\s*\(๑\)\s+/)[0];R.splice(0,R.length,[torFix(ld+torDoc2Qual(p),p),0]);plain=R[0][0]}
     if(doc==='bid'&&/^\s*๒\.\s+คุณสมบัติของผู้ยื่นข้อเสนอ/.test(plain)&&lstdOn(p)){
       const seg=out.join('').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ');const a=seg.search(/๑\.\s*เอกสารแนบท้ายเอกสารประกวดราคา/);let mx=0,m;const re=/๑\.([๐-๙]+)\s/g;const sg=seg.slice(a<0?0:a);
@@ -3423,7 +3433,7 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
     <div class="s12 row" style="gap:16px;flex-wrap:wrap;margin:0">${ck('plant','ต้องมีโรงงานผสมแอสฟัลต์ (Plant)',torPlant(p))}${ck('k','มีการปรับราคาค่างานก่อสร้าง (ค่า K)',T.k)}</div>
     <label class="f s3"><span>รับประกันความชำรุดบกพร่อง (ปี)</span><select class="i" data-tv="warranty">${['1','2','3','5'].map(y=>`<option ${String(T.warranty)===y?'selected':''}>${y}</option>`).join('')}</select></label>
     ${tx('fineSub','ค่าปรับจ้างช่วง (ร้อยละ)','s3')}${tx('fineDaily','ค่าปรับรายวัน (ร้อยละ)','s3')}${tx('hwy','ทางหลวงหมายเลข (ข้อ ๑ ความเป็นมา)','s3',torHwy(p))}
-    ${tx('approvedBy','ได้รับความเห็นชอบจาก (เลือกหรือพิมพ์เอง)','s6','เลือกจากรายการ หรือพิมพ์ชื่อหน่วยงาน').replace('data-tv="approvedBy"','data-tv="approvedBy" list="dlApprovedBy" autocomplete="off"')}<datalist id="dlApprovedBy">${['สำนักอำนวยความปลอดภัย กรมทางหลวง','สำนักบริหารบำรุงทาง กรมทางหลวง','สำนักแผนงาน กรมทางหลวง'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('planTitle','ชื่อแผน ตามปก BREAKDOWN (ขึ้นต้นด้วย “แผนรายประมาณการ…”)','s6','ว่าง = แผนรายประมาณการ ประจำปีงบประมาณ พ.ศ. '+fyNow()+' · ระบบดึงจากปก BREAKDOWN ตอนนำเข้า/ตรวจกับไฟล์เล่มแผน')}${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจากชื่อแผน)','s6')}
+    ${tx('approvedBy','ได้รับความเห็นชอบจาก (เลือกหรือพิมพ์เอง)','s6','เลือกจากรายการ หรือพิมพ์ชื่อหน่วยงาน').replace('data-tv="approvedBy"','data-tv="approvedBy" list="dlApprovedBy" autocomplete="off"')}<datalist id="dlApprovedBy">${['สำนักอำนวยความปลอดภัย กรมทางหลวง','สำนักบริหารบำรุงทาง กรมทางหลวง','สำนักแผนงาน กรมทางหลวง'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('planTitle','ชื่อแผน ตามปก BREAKDOWN (ขึ้นต้นด้วย “แผนรายประมาณการ…”)','s9','ว่าง = แผนรายประมาณการ ประจำปีงบประมาณ พ.ศ. '+fyNow())}<div class="f s3"><span>ดึงจากปก BREAKDOWN</span><div style="display:flex;gap:6px"><button class="btn sm" type="button" data-ptx title="อ่านจากไฟล์ Excel ที่แนบไว้ในขั้นเตรียมการ">ไฟล์ที่แนบ</button><button class="btn sm" type="button" data-ptp title="เลือกไฟล์เล่มแผนจากเครื่อง">เลือกไฟล์</button></div></div>${tx('planLine','แผนงาน / งาน / กิจกรรม (ต่อจากชื่อแผน)','s6')}
     ${tx('craft','สาขาช่าง (ผู้ผ่านการทดสอบมาตรฐานฝีมือช่าง) · หลายสาขาคั่นด้วย ,','s6','ว่าง = '+(isElecWork(p)?'ช่างไฟฟ้า (งานไฟฟ้า)':'ช่างโยธา')).replace('data-tv="craft"','data-tv="craft" list="dlCraft" autocomplete="off"')}<datalist id="dlCraft">${['ช่างโยธา','ช่างไฟฟ้า','ช่างไฟฟ้า, ช่างโยธา','ช่างเชื่อม','ช่างก่อสร้าง'].map(x=>`<option value="${x}">`).join('')}</datalist>${tx('craftPct','อัตราช่างไม่ต่ำกว่าร้อยละ','s2','10')}
     <label class="f s12"><span>ข้อ ๑ ความเป็นมา (ว่าง = ใช้ข้อความในเทมเพลต)</span><textarea class="i" rows="3" data-tv="background" placeholder="เนื่องจากทางหลวงหมายเลข ${esc(torHwy(p))} เป็นเส้นทางใช้สัญจร…">${esc(T.background||'')}</textarea></label>
     <label class="f s12"><span>รายการมาตรฐานแนบท้าย (บรรทัดละ 1 รายการ · ว่าง = ดึงจากคอลัมน์มาตรฐานใน BOQ)</span><textarea class="i" rows="3" data-tv="standards" placeholder="${esc(torStdLines(Object.assign({},p,{tor:Object.assign({},T,{standards:''})})).join('\n'))}">${esc(T.standards||'')}</textarea>${(()=>{const M=torItems(p).filter(i=>!String(i.std||'').trim()).map(i=>[i,stdMatch(i.name)]).filter(x=>x[1]);return M.length?`<small class="muted" style="display:block;margin-top:4px">จับคู่อัตโนมัติจากชีต “มาตรฐาน” (ชื่อคล้ายกัน ≥ 90%): ${M.map(([i,m])=>`${esc(i.name)} → <b>${esc(m.std)}</b> (${Math.round(m.score*100)}%)`).join(' · ')}</small>`:(S.settings.dohStandards||[]).length?'':'<small class="muted" style="display:block;margin-top:4px">ยังไม่มีข้อมูลชีต “มาตรฐาน” — ซิงก์ข้อมูลจากชีตเดิมก่อน ระบบจึงจับคู่มาตรฐานอัตโนมัติได้</small>'})()}</label>
@@ -3438,6 +3448,7 @@ function bindTor(el,p){const T=torOf(p);
   $$('[data-mt]',el).forEach(i=>i.onchange=()=>{const ids=new Set(Array.isArray(T.maintainIds)?T.maintainIds:[]);i.checked?ids.add(i.dataset.mt):ids.delete(i.dataset.mt);
     const order=[];TOR_MT.forEach(([c,l,sub])=>sub?sub.forEach(([sc])=>order.push(sc)):order.push(c));T.maintainIds=order.filter(c=>ids.has(c));touch(p);render()});
   $$('[data-tk]',el).forEach(i=>i.onchange=()=>{T[i.dataset.tk]=i.checked;touch(p);render()});
+  {const b1=$('[data-ptx]',el),b2=$('[data-ptp]',el);if(b1)b1.onclick=()=>planTitleFromXls(p);if(b2)b2.onclick=()=>planTitlePick(p);if(b1&&!T.planTitle&&(prepOf(p).xlsFiles||[]).length&&!ptTried.has(p.id)){ptTried.add(p.id);planTitleFromXls(p,true)}}
   $$('[data-tv]',el).forEach(i=>{const k=i.dataset.tv;const re=k==='workType'||k==='warranty';i.addEventListener(i.tagName==='SELECT'?'change':'input',()=>{T[k]=i.hasAttribute('data-money')?num(i.value):i.value;touch(p);if(re)render()});
     if(i.hasAttribute('data-money'))i.addEventListener('blur',()=>{i.value=num(i.value)?fmt(num(i.value)):''})});
   $$('[data-tword]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.tword;if(!window.TOR_TPL){toast('กำลังโหลดแม่แบบ TOR…');loadTorTpl().then(()=>downloadWord(P(),k)).catch(e=>toast(e.message))}else downloadWord(P(),k)});
@@ -3665,7 +3676,7 @@ function repBxAll(p){const ok=BX_DOCS.filter(d=>d[3](p)&&d[0]!=='bx_lstd');retur
    โหมด: draft = ร่าง (ส่งเขต/แขวงตรวจ ช่องที่ยังไม่มีข้อมูลเว้นจุด) · orig = ต้นฉบับ · copy = คู่ฉบับ */
 let CON_LOADING=null;
 function loadConTpl(){if(window.CONTRACT_TPL)return Promise.resolve(window.CONTRACT_TPL);if(CON_LOADING)return CON_LOADING;
-  CON_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='contract-tpl.js';s.onload=()=>ok(window.CONTRACT_TPL);s.onerror=()=>{CON_LOADING=null;no(new Error('โหลดแบบสัญญาไม่สำเร็จ'))};document.head.appendChild(s)});return CON_LOADING}
+  CON_LOADING=new Promise((ok,no)=>{const s=document.createElement('script');s.src='contract-tpl.js?v='+APP_VER;s.onload=()=>ok(window.CONTRACT_TPL);s.onerror=()=>{CON_LOADING=null;no(new Error('โหลดแบบสัญญาไม่สำเร็จ'))};document.head.appendChild(s)});return CON_LOADING}
 const CON_ANNEX_DEF=`แบบแปลน|๑|ชุด
 เงื่อนไขการเสนอแผนการทำงาน|๑|หน้า
 บัญชีรายการก่อสร้าง (ซึ่งรวมค่าวัสดุ อุปกรณ์ แรงงาน ภาษีประเภทต่าง ๆ และกำไรไว้ด้วยแล้ว)|๑|หน้า
