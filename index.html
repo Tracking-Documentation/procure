@@ -467,7 +467,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">194</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">195</span> · <span id="appDate">24 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -530,7 +530,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='194',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='195',APP_DATE='24 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1746,9 +1746,15 @@ function rpGroups(segs){const G=RP_G.map(([t,c],i)=>({t,c,n:i+1,items:[]}));cons
   segs.forEach(x=>{if(x[0]==='all')return;const i=RP_G.findIndex(g=>g[2](x[0]));(i>=0?G[i]:other).items.push(x)});
   G.forEach(g=>g.items.sort((a,b)=>(RP_ORDER[a[0]]??50)-(RP_ORDER[b[0]]??50)));
   const out=G.filter(g=>g.items.length);if(other.items.length)out.push(other);out.push({t:'รวมทุกเอกสาร',c:'#555',n:out.length+1,items:[['all','ทั้งหมด (ต่อรอง–แนบท้ายสัญญา)']]});return out}
+const rpSegs=()=>[['req','ขออนุมัติซื้อ/จ้าง'],...ORD_REPORTS.map(x=>[x[0],x[1]]),['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแสดงรายการ ปริมาณงาน และราคา (แนบท้ายสัญญา)'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
+let PDF_AUTO=false;
+/* ปุ่ม PDF ในแต่ละขั้นตอน: เปิดเอกสารแล้วสั่งพิมพ์ (เลือก “บันทึกเป็น PDF”) */
+const PDF_TAB={prep:0,req:1,orders:2,eval:3,nego:4,result:5,sign:6,cert:7};
+function pdfCard(p){const gi=PDF_TAB[tab];if(gi==null)return '';const g=rpGroups(rpSegs()).find(x=>x.t===RP_G[gi][0]);if(!g||!g.items.length)return '';
+  return `<div class="card no-print pdfc" style="margin:0 0 12px"><div class="card-b row" style="gap:6px;flex-wrap:wrap;align-items:center"><b style="font-size:14px">📄 พิมพ์ / บันทึก PDF</b><span class="muted" style="font-size:12.5px">(หน้าต่างพิมพ์ → ปลายทาง “บันทึกเป็น PDF”)</span>${g.items.map(([k,l])=>`<button class="btn sm" type="button" data-pdf="${k}">${esc(l.replace(/^แนบประกวดราคา: /,''))}</button>`).join('')}</div></div>`}
 function rReport(){
   const el=$('#v-report');if(needProject(el))return;const p=P();p.letter=Object.assign({no:'',date:'',inviteNo:'',inviteDate:'',reply:'',explain:'auto',to:''},p.letter||{});const b=basisOf(p);const r=compute(p,b.price);const st=S.settings;
-  const segs=[['req','ขออนุมัติซื้อ/จ้าง'],...ORD_REPORTS.map(x=>[x[0],x[1]]),['nego','ใบขอต่อรองราคา'],['letter','หนังสือขอต่อรองราคา'],['notice','แบบแจ้งผลผู้เสนอราคา'],['eval','เอกสารพิจารณาผล'],['mid','แบบสรุปราคากลาง (ว 651)'],['sign','หนังสือเรียกลงนามในสัญญา'],['contract','แบบแสดงรายการ ปริมาณงาน และราคา (แนบท้ายสัญญา)'],['cert','หนังสือรับรองผลงาน'],['all','ทั้งหมด']];
+  const segs=rpSegs();
   const isContract=reportSel==='contract'||reportSel==='all';const cp=contractPrice(p);
   const G=rpGroups(segs);const cg=G.find(g=>g.items.some(x=>x[0]===reportSel))||G[0];const cl=(segs.find(x=>x[0]===reportSel)||[])[1]||'';
   el.innerHTML=`<div class="rp"><aside class="rp-nav no-print" aria-label="เลือกเอกสาร"><input class="i" id="rpQ" placeholder="ค้นหาเอกสาร…" value="${esc(el._q||'')}" style="margin-bottom:8px">
@@ -1811,7 +1817,8 @@ function rReport(){
   $('#basisSel2').onchange=e=>{p.basis=e.target.value;touch(p);rReport()};
   {const bx=$('#btnXlsx');if(bx&&!$('#printArea table'))bx.hidden=true}
   $('#btnXlsx').onclick=()=>{esLog(p,'Excel: '+cl);downloadXlsx(p,reportSel,cl)};
-  $('#btnPrint').onclick=()=>{esLog(p,'พิมพ์/PDF: '+((segs.find(x=>x[0]===reportSel)||[])[1]||reportSel));try{window.print()}catch(e){}};
+  $('#btnPrint').onclick=()=>{const dn=(segs.find(x=>x[0]===reportSel)||[])[1]||reportSel;esLog(p,'พิมพ์/PDF: '+dn);const t0=document.title;document.title=(dn+' - '+(p.name||'')).replace(/[\\/:*?"<>|]+/g,' ').slice(0,120);try{window.print()}catch(e){}setTimeout(()=>{document.title=t0},1500)};
+  if(PDF_AUTO){PDF_AUTO=false;setTimeout(()=>{const b=$('#btnPrint');b&&b.click()},900)}
 }
 const wm=()=>S.settings.watermark?' wm':'';
 /* แก้ไขข้อความในเอกสารก่อนพิมพ์ — เก็บเป็นฉบับแก้ไขรายเอกสารต่อโครงการ (ไม่เปลี่ยนข้อมูลโครงการ) ใช้กับพรีวิว พิมพ์/PDF Word และ Excel */
@@ -2619,7 +2626,7 @@ function setPwDialog(){const has=!!pwRec();const m=modal(has?'เปลี่ย
   const rm=q('[data-mrm]');if(rm)rm.onclick=async()=>{if(!(await pwCheck(q('#pw0').value)))return err('กรอกรหัสผ่านเดิมให้ถูกต้องก่อน');localStorage.removeItem(PWK);m.close();lockUI();toast('ยกเลิกการใช้รหัสผ่านแล้ว')}}
 function unlockThen(cb){if(central()){toast('บัญชีนี้ดูได้อย่างเดียว · ขอสิทธิ์แก้ไขจากผู้ดูแลระบบ');return}askPw('ปลดล็อกเพื่อแก้ไข',`กรอกรหัสผ่านเพื่อแก้ไขข้อมูล (จะล็อกเองเมื่อไม่ได้ใช้งาน ${LOCK_MIN} นาที)`,()=>{setUnlocked(true);toast('ปลดล็อกแล้ว แก้ไขได้');cb&&cb()})}
 /* ตอนล็อก: กดได้เฉพาะปุ่มดู/พิมพ์/ดาวน์โหลด ที่เหลือจะถามรหัสผ่าน */
-const VIEW_OK='[data-tword],#btnDocx,[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,[data-oprint],#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
+const VIEW_OK='[data-pdf],[data-tword],#btnDocx,[data-tab],[data-calm],[data-open],[data-edit],[data-print],[data-signprint],[data-rs],[data-word],#wAll,#btnPrint,#evPrint,#rqPrint,[data-oprint],#bExport,#bCopy,[data-booksync],[data-bk="fetch"],[data-bk="copy"],#btnLock,#btnInstall,#dashQ,#tgSign,#tgWm,[data-evd],[data-th],[data-ov],[data-fview],#modalRoot,#gate';
 function lockGuard(e){if(!isLocked())return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');if(!t||t.closest(VIEW_OK))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(!document.querySelector('#pwIn'))unlockThen()}
 ['mousedown','click','focusin','keydown'].forEach(ev=>document.addEventListener(ev,lockGuard,true));
@@ -3315,10 +3322,10 @@ function torDoc2Qual(p){const T=torOf(p),m=torMode(p);
   if(m==='other')return 'สำเนาหลักฐานแสดงคุณสมบัติของผู้ยื่นข้อเสนอตามข้อ ๒.๑๐';
   return 'สำเนาหลักฐานการขึ้นทะเบียนงานก่อสร้าง สาขา'+(TOR_BRANCH[T.workType]||TOR_BRANCH.road)+' ไม่น้อยกว่า'+(torClass(p)||'.......')+' ประเภทหลักเกณฑ์คุณสมบัติ เฉพาะอื่นๆ ไว้กับกรมบัญชีกลาง'}
 function torJV(p){const T=torOf(p),m=torMode(p);let mid='';
-  if(m==='maintain')mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องเป็นผู้ประกอบการที่ขึ้นทะเบียนงานบำรุงทางประเภทที่ '+(torMtText(p)||'.......')+' และต้องไม่ขาดคุณสมบัติตามเงื่อนไขในการจดทะเบียนผู้รับเหมากับกรมทางหลวง  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
-  else if(m==='other')mid=String(T.otherJV||'').trim()||'กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  ผู้เข้าร่วมค้าหลักจะต้องมีคุณสมบัติตามที่กำหนดข้างต้น  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
-  else if(m==='record'){const x=torMoney(torRecAmt(p));mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมรายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องมีผลงานก่อสร้างประเภทเดียวกันกับงานที่ประกวดราคาจ้างก่อสร้างในวงเงินไม่น้อยกว่า '+x.fig+'บาท  ('+x.words+')  และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ  หรือหน่วยงานเอกชนที่กรมเชื่อถือ  โดยจะต้องมีหนังสือรับรองผลงานจากผู้ว่าจ้าง  และต้องเป็นผลงานที่แล้วเสร็จ  มีการตรวจรับงานงวดสุดท้ายแล้ว  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีผลงานก่อสร้างตามที่กำหนดข้างต้นหรือไม่ก็ได้'}
-  return ['(๓)  งานก่อสร้างที่ขึ้นทะเบียนไว้กรมบัญชีกลางตามสาขางานก่อสร้างที่คณะกรรมการราคากลางและขึ้นทะเบียนผู้ประกอบการกำหนด',mid,'สำหรับข้อตกลงฯ ที่ไม่ได้กำหนดให้ผู้เข้าร่วมค้ารายใดเป็นผู้เข้าร่วมหลัก ผู้เข้าร่วมค้าทุกรายจะต้องมีคุณสมบัติครบถ้วนตามเงื่อนไขที่กำหนดไว้ในเอกสารเชิญชวน'].filter(Boolean)}
+  if(m==='maintain')mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมค้ารายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องเป็นผู้ประกอบการที่ขึ้นทะเบียนงานบำรุงทางประเภทที่ '+(torMtText(p)||'.......')+' และต้องไม่ขาดคุณสมบัติตามเงื่อนไขในการจดทะเบียนผู้รับเหมากับกรมทางหลวง  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
+  else if(m==='other')mid=String(T.otherJV||'').trim()||'กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมค้ารายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  ผู้เข้าร่วมค้าหลักจะต้องมีคุณสมบัติตามที่กำหนดข้างต้น  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีคุณสมบัติตามที่กำหนดข้างต้นหรือไม่ก็ได้';
+  else if(m==='record'){const x=torMoney(torRecAmt(p));mid='กรณีที่ข้อตกลงฯ กำหนดให้ผู้เข้าร่วมค้ารายใดรายหนึ่งเป็นผู้เข้าร่วมค้าหลัก  จะต้องมีผลงานก่อสร้างประเภทเดียวกันกับงานที่ประกวดราคาจ้างก่อสร้างในวงเงินไม่น้อยกว่า '+x.fig+'บาท  ('+x.words+')  และเป็นผลงานที่เป็นคู่สัญญาโดยตรงกับหน่วยงานของรัฐ  หรือหน่วยงานเอกชนที่กรมเชื่อถือ  โดยจะต้องมีหนังสือรับรองผลงานจากผู้ว่าจ้าง  และต้องเป็นผลงานที่แล้วเสร็จ  มีการตรวจรับงานงวดสุดท้ายแล้ว  ในส่วนของผู้เข้าร่วมค้าที่ไม่ใช่ผู้เข้าร่วมค้าหลัก  จะมีผลงานก่อสร้างตามที่กำหนดข้างต้นหรือไม่ก็ได้'}
+  return ['(๓)  งานก่อสร้างที่ขึ้นทะเบียนไว้กรมบัญชีกลางตามสาขางานก่อสร้างที่คณะกรรมการราคากลางและขึ้นทะเบียนผู้ประกอบการกำหนด',mid,'สำหรับข้อตกลงฯ ที่ไม่ได้กำหนดให้ผู้เข้าร่วมค้ารายใดเป็นผู้เข้าร่วมค้าหลัก  ผู้เข้าร่วมค้าทุกรายจะต้องมีคุณสมบัติครบถ้วนตามเงื่อนไขที่กำหนดไว้ในเอกสารเชิญชวน'].filter(Boolean)}
 function torVals(p){const T=torOf(p),st=S.settings,bond=torBond(p),tm=ordMembers(p,'tor');const ch=tm[0]||{},m1=tm[1]||{},m2=tm[2]||{};const dots='..............................';
   const v={PROJECT_ACTIVITY:p.name||'-',PROJECT_KM_SHORT:torHwy(p)||'.........',PROJECT_PLAN_LINE:T.planLine||'',PLAN_TITLE:planTitleTxt(p),DURATION:p.workDays||(p.legacy&&p.legacy.duration)||'.......',
     BUDGET_TEXT:fmt(p.budget),BUDGET_TEXT_WORDS:bahtText(p.budget),BUDGET_YEAR:String(fyNow()),CONTRACTOR_CLASS:torClass(p),OFFICE_TEL:String(st.tel||'0 7561 1291'),OFFICE_FAX:String(st.fax||'0 7561 2091'),
@@ -3367,18 +3374,14 @@ function repTor(p,doc){const T=window.TOR_TPL;const F=letterFont();
     if(o.img){out.push(`<div class="tor-g"><img src="${GARUDA}" alt="ตราครุฑ"></div>`);empties=0;continue}
     if(o.blk){
       if(o.blk==='ITEM_TABLE'){const L=torItems(p);out.push(`<table class="tor-t"><thead><tr><th>ลำดับ</th><th>รายการ</th><th>หน่วย</th><th>ปริมาณ</th></tr></thead><tbody>${L.map((it,i)=>`<tr><td class="c">${i+1}</td><td>${escBr(it.name)}</td><td class="c">${esc(it.unit||'')}</td><td class="r">${Number.isInteger(num(it.qty))?num(it.qty).toLocaleString('en-US'):fmt(it.qty)}</td></tr>`).join('')||'<tr><td colspan="4" class="c">(ยังไม่มีรายการ BOQ)</td></tr>'}</tbody></table>`)}
-      else if(o.blk==='STANDARDS_LIST')torStdLines(p).forEach((s,i)=>out.push(mk('tp','padding-left:40.8mm;text-indent:-8.3mm;text-align:left',torLabel(torEsc(`(${i+2})  ${s}`)))));
+      else if(o.blk==='STANDARDS_LIST')[...torStdLines(p),...(doc==='bid'&&lstdOn(p)?[LSTD_TITLE]:[])].forEach((s,i)=>out.push(mk('tp','padding-left:40.8mm;text-indent:-8.3mm;text-align:left',torLabel(torEsc(`(${i+2})  ${s}`)))));
       else{const no=o.blk==='SECTION_310'?'๓.๑๐':o.blk==='SECTION_210'?'๒.๑๐':'';const L=no?torQual(p,no):torJV(p);
-        L.filter(s=>!out.some(h=>h.includes(torEsc(s.slice(0,40))))).forEach((s,i)=>out.push(mk('tp',`text-indent:${no?'25mm':(i===0?'32mm':'25mm')}`,torLabel(torEsc(s)))))}
+        L.filter(s=>/^สำหรับข้อตกลงฯ ที่ไม่ได้กำหนด/.test(s)||!out.some(h=>h.includes(torEsc(s.slice(0,40))))).forEach((s,i)=>out.push(mk('tp',`text-indent:${no?'25mm':(i===0?'32mm':'25mm')}`,torLabel(torEsc(s)))))}
       empties=0;continue}
     const R=torRuns(o.r,vals,p);let plain=R.map(x=>x[0]).join('');
     {const cm=plain.match(new RegExp('^\\s*('+TOR_NUM+')\\.'+TOR_NUM+'\\s+ช่างโยธา\\s*$'));if(cm){torCrafts(p).forEach((c,i)=>out.push(mk('tp','text-indent:25mm',torEsc(`${cm[1]}.${toTH(String(i+1))}  ${c}`))));empties=0;continue}}
     if(/^\s*แผนรายประมาณการ\s+งบประมาณรายจ่ายประจำปีงบประมาณ\s+พ\.ศ\.\s*[0-9๐-๙]+/.test(plain)){const t=torFix(planTitleTxt(p),p);R.forEach((x,i)=>{if(i===0)x[0]=x[0].replace(/แผนรายประมาณการ\s+งบประมาณรายจ่ายประจำปีงบประมาณ\s+พ\.ศ\.\s*[0-9๐-๙]+/,t)});plain=R.map(x=>x[0]).join('')}
     if(doc==='bid'&&/^\s*\(๑\)\s+สำเนาหลักฐานการขึ้นทะเบียนงานก่อสร้าง/.test(plain)){const ld=plain.match(/^\s*\(๑\)\s+/)[0];R.splice(0,R.length,[torFix(ld+torDoc2Qual(p),p),0]);plain=R[0][0]}
-    if(doc==='bid'&&/^\s*๒\.\s+คุณสมบัติของผู้ยื่นข้อเสนอ/.test(plain)&&lstdOn(p)){
-      const seg=out.join('').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ');const a=seg.search(/๑\.\s*เอกสารแนบท้ายเอกสารประกวดราคา/);let mx=0,m;const re=/๑\.([๐-๙]+)\s/g;const sg=seg.slice(a<0?0:a);
-      while((m=re.exec(sg)))mx=Math.max(mx,+m[1].replace(/[๐-๙]/g,d=>'๐๑๒๓๔๕๖๗๘๙'.indexOf(d)));
-      const t=`๑.${toTH(String(mx+1))}  ${LSTD_TITLE}`;out.push(`<p class="tp" style="${para(t,true)}">${torLabel(torEsc(t))}</p>`)}
     /* อัตราร้อยละของช่าง (แม่แบบบางฉบับเขียนตายตัว ๑๐) */
     if(/ไม่ต่ำกว่าร้อยละ/.test(plain)&&/ของแต่ละสาขาช่าง/.test(plain))R.forEach(x=>{x[0]=x[0].replace(/^๑๐$/,torCraftPct(p))});
     if(o.bg&&String(torOf(p).background||'').trim()){out.push(mk('tp','text-indent:25mm'+(o.b?';margin-top:'+(o.b/20)+'pt':''),torEsc(torOf(p).background.trim())));empties=0;continue}
@@ -3667,7 +3670,7 @@ const BX_DOCS=[['bx_def','บทนิยาม',repBxDef,()=>true],['bx_local',
   ['bx_credit','แบบหนังสือรับรองวงเงินสินเชื่อ',repBxCredit,()=>true],['bx_warr','เงื่อนไขความชำรุดบกพร่อง',repBxWarranty,()=>true],
   ['bx_plant','หนังสือยินยอมโรงงานผสมแอสฟัลต์',repBxPlantLetter,p=>torPlant(p)],['bx_map','แผนที่โรงงาน/เส้นทางขนส่ง',repBxPlantMap,p=>torPlant(p)],['bx_iri','เงื่อนไขการจ่ายค่างานผิวทาง (IRI)',repBxIri,p=>torPlant(p)],
   ['bx_sign','แนวทางติดตั้งแผ่นป้ายโครงการ',repBxSign,()=>true]];
-function repBxLstd(p){const no=bidNoOf(p,/มาตรฐานงานติดตั้งไฟฟ้าแสงสว่าง/,'๑.....');
+function repBxLstd(p){const no='๑.๑';
   return thDig(bxPage(p,no,LSTD_TITLE,[bxP(esc(N_LIGHT_STD.t)),N_LIGHT_STD.sub.map((t,i)=>`<div class="bxl" style="padding-left:12mm;text-indent:-7mm;margin-left:7mm;text-align:justify">${i+1}.&nbsp;&nbsp;${esc(t)}</div>`).join('')].join('')))}
 BX_DOCS.push(['bx_lstd',LSTD_TITLE,repBxLstd,p=>lstdOn(p)]);
 function repBxAll(p){const ok=BX_DOCS.filter(d=>d[3](p)&&d[0]!=='bx_lstd');return ok.map(d=>d[2](p)).join('')+(dmgOn(p)?repDamage(p):'')+(lstdOn(p)?repBxLstd(p):'')}
@@ -4092,7 +4095,8 @@ function fixNameKm(p){if(!p||!p.km)return false;const n=nameKm(p.name,p.km);if(n
 function kmChanged(p,oldKm){const o=kmText(oldKm),n=kmText(p.km);if(o&&p._kmSeg===o&&String(p.name||'').includes(o)){p.name=n?p.name.replace(o,n):p.name.replace(' '+o,'').replace(o,'');p._kmSeg=n;return true}return fixNameKm(p)}
 function ensureSaved(p){if(p&&p.saved===undefined){p.saved={};for(const t in STEPS)if(stepHasData(p,t))p.saved[t]=true}}
 function stepLocked(t){const p=P();return !!(p&&STEPS[t]&&canEdit()&&p.saved&&p.saved[t]&&!stepUnl.has(p.id+':'+t))}
-function stepBar(){try{const pv=P(),ev=$('#v-'+tab);if(pv&&ev&&PTABS.includes(tab)&&tab!=='report'&&!EXEC){ev.querySelectorAll('.hist').forEach(x=>x.remove());ev.insertAdjacentHTML('beforeend',histCard(pv,tab==='edit'))}}catch(e){}$$('.view').forEach(v=>v.classList.remove('step-locked'));const p=P();if(!p||!STEPS[tab]||!canEdit())return;const el=$('#v-'+tab);if(!el)return;
+function stepBar(){try{const pv=P(),ev=$('#v-'+tab);if(pv&&ev&&PTABS.includes(tab)&&tab!=='report'&&!EXEC){ev.querySelectorAll('.hist').forEach(x=>x.remove());ev.insertAdjacentHTML('beforeend',histCard(pv,tab==='edit'))}
+    if(pv&&ev&&tab!=='report'){ev.querySelectorAll(':scope>.pdfc').forEach(x=>x.remove());const h=pdfCard(pv);if(h){ev.insertAdjacentHTML('afterbegin',h);$$('[data-pdf]',ev).forEach(b=>b.onclick=()=>{reportSel=b.dataset.pdf;PDF_AUTO=true;go('report')})}}}catch(e){}$$('.view').forEach(v=>v.classList.remove('step-locked'));const p=P();if(!p||!STEPS[tab]||!canEdit())return;const el=$('#v-'+tab);if(!el)return;
   el.querySelectorAll(':scope>.stepbar').forEach(x=>x.remove());const saved=!!(p.saved&&p.saved[tab]),lk=stepLocked(tab);el.classList.toggle('step-locked',lk);
   const b=document.createElement('div');b.className='stepbar '+(lk?'lk':saved?'ed':'new');
   b.innerHTML=lk?`<span>🔒 บันทึกขั้นตอน “${esc(STEPS[tab])}” แล้ว · ดูและพิมพ์ได้ · แก้ไขต้องใส่รหัสผ่าน</span><button class="btn sm" data-step="unlock" type="button">แก้ไข</button>`
@@ -4108,7 +4112,7 @@ function stepUnlock(){const p=P();if(!p||document.querySelector('#stPw'))return;
       else if(pwRec()){if(!(await pwCheck(i.value)))throw new Error('รหัสผ่านไม่ถูกต้อง')}
       stepUnl.add(p.id+':'+t);m.close();render();toast('แก้ไขได้แล้ว · แก้เสร็จกดบันทึก')}catch(e){q('#stErr').textContent=e.message;i.select()}};
   q('[data-mc]').onclick=m.close;q('[data-mo]').onclick=go_;i.onkeydown=e=>{if(e.key==='Enter')go_()}}
-const STEP_OK='[data-cbren],[data-cbplan],[data-tword],#btnDocx,#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
+const STEP_OK='[data-pdf],[data-cbren],[data-cbplan],[data-tword],#btnDocx,#oPeople,#rqGoBoq,[data-axl],#oLgSync,#oLgSync2,#oLoad,[data-oprint],#oTplEdit,[data-fview],.stepbar,[data-goto],[data-print],[data-word],[data-signprint],[data-tab],#rqPrint,#evPrint,#btnPrint,#bPrint,#certPrint,#btnLetter,#btnSave,a[href],#modalRoot';
 function stepGuard(e){if(!STEPS[tab]||!stepLocked(tab))return;const t=e.target.closest&&e.target.closest('input,select,textarea,button,[contenteditable="true"]');
   if(!t||!t.closest('#v-'+tab)||t.closest(STEP_OK))return;if(e.type==='keydown'&&!['INPUT','TEXTAREA','SELECT'].includes(t.tagName))return;
   e.preventDefault();e.stopImmediatePropagation();if(e.type==='focusin')t.blur();if(e.type==='click'||e.type==='focusin')stepUnlock()}
