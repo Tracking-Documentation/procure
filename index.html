@@ -476,7 +476,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">211</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">212</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -539,7 +539,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='211',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='212',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3521,11 +3521,15 @@ function torCard(p){const T=torOf(p);const bond=torBond(p);const tm=ordMembers(p
    </div></div>`}
 /* ตรวจรายการงาน (BOQ จากเล่มแผน) กับนิยามสาขางานก่อสร้างทาง — หนังสือ ว 642 (24 ส.ค. 2569) */
 const QL_SUB=/รองพื้นทาง|ลูกรัง|วัสดุคัดเลือก|selected\s*material|sub\s*-?base/i,
-  QL_BASE=/(^|[^ง])พื้นทาง|หินคลุก|กรวดโม่|crushed\s*(rock|gravel)|(^|\W)base(\W|$)|ปรับปรุงพื้นทางเดิม|recycling/i,
+  QL_BASE=/(^|[^ง])พื้นทาง|หินคลุก|กรวดโม่|crushed\s*(rock|gravel)|(^|\W)base(\W|$)|ปรับปรุงพื้นทางเดิม|pavement\s*in[-\s]*place\s*recycling/i,
   QL_AC=/แอสฟัลต์คอนกรีต|แอสฟัลติก\s*คอนกรีต|asphalt(ic)?\s*concrete|(^|\W)a\.?c\.?(\W|$)|เคพซีล|แคพซีล|cape\s*seal|para\s*asphalt|พาราแอสฟัลต์/i,
   QL_CON=/ผิวทาง\s*(ปอร์ตแลนด์\s*ซีเมนต์\s*)?คอนกรีต|concrete\s*pavement|ผิวจราจร\s*คอนกรีต|ถนน\s*คสล|คอนกรีตเสริมเหล็ก.*ผิว/i,
-  QL_SURF=/ผิวทาง|prime\s*coat|ไพรม|tack\s*coat|แทค|leveling|wearing|binder\s*course/i,
+  QL_SURF=/ผิวทาง|prime\s*coat|ไพรม|tack\s*coat|แทค|leveling|wearing|binder\s*course|hot\s*mix|ฮอทมิกซ์|แอสฟัลต์ร้อน/i,
   QL_BR=/สะพาน|ท่อเหลี่ยม|box\s*culvert|ตอม่อ|girder/i;
+/* จับคู่รายการหลักกับประเภทงานบำรุงทาง (ทะเบียนกรมทางหลวง) — ชื่อต้องตรงประเภท เช่น In-PLANT Recycling ≠ In-PLACE Recycling */
+const MT_RE=[['5',/hot\s*mix\s*in[-\s]*place\s*recycling/i],['6',/pavement\s*in[-\s]*place\s*recycling|ปรับปรุงโครงสร้างชั้นทางเดิมในที่/i],['1',/chip\s*seal/i],['2',/slurry\s*seal/i],['3',/cold\s*mix/i],
+  ['4',/hot\s*mix(ed)?\s*asphalt|asphalt(ic)?\s*concrete|แอสฟัลต์คอนกรีต|แอสฟัลติก\s*คอนกรีต/i],['7',/thermoplastic|เทอร์โมพลาสติก/i],['8',/traffic\s*paint|สีจราจร/i]];
+function mtMatch(name){const n=String(name||'');if(/in[-\s]*plant|recycl/i.test(n)&&!/in[-\s]*place/i.test(n))return null;for(const [id,re] of MT_RE)if(re.test(n))return id;return null}
 function qualAdvice(p){const rows=(()=>{try{return baseRows(p)}catch(e){return []}})();const amt=r=>r.q*(r.m||0)/100;
   const hit=re=>rows.filter(r=>re.test(String(r.it.name||'')));
   const sub=hit(QL_SUB),base=rows.filter(r=>QL_BASE.test(String(r.it.name||''))&&!QL_SUB.test(String(r.it.name||'')).valueOf()||/หินคลุก|กรวดโม่/.test(String(r.it.name||''))),
@@ -3533,20 +3537,25 @@ function qualAdvice(p){const rows=(()=>{try{return baseRows(p)}catch(e){return [
   const bud=num(p.budget),isCon=con.length&&!ac.length;const full=isCon?(surf.length&&(sub.length||base.length)):(sub.length&&base.length&&surf.length);
   const nm=String(p.name||'');const nameRoad=/ก่อสร้าง|ขยาย|ซ่อมสร้าง|บูรณะ|ปรับปรุง/.test(nm)&&/ทาง|ถนน/.test(nm)&&!/บำรุง/.test(nm.split(/ทางหลวงหมายเลข/)[0]);
   const sum=L=>L.reduce((a,r)=>a+amt(r),0);const roadAmt=sum([...new Set([...sub,...base,...surf])]);
-  let caseNo=full?(nameRoad?1:3):(nameRoad?2:4),rec,set;
+  let caseNo=full?(nameRoad?1:3):(nameRoad?2:4),rec,set,mtMain=null,mtId=null;
   const elec=(()=>{try{return isElecWork(p)||anxKind(p)==='light'}catch(e){return false}})()&&!surf.length;
   if(elec){rec='งานไฟฟ้าแสงสว่าง/ไฟสัญญาณ ไม่อยู่ใน 9 สาขางานก่อสร้างของกรมบัญชีกลาง — ใน e-GP เลือก “ทะเบียนหน่วยงาน” (<b>ผู้รับเหมางานบำรุงทางที่จดทะเบียนกับกรมทางหลวง</b> ประเภทงานไฟฟ้า) หรือ “อื่น ๆ” กำหนดผลงานประเภทเดียวกันไม่เกิน 50% (ว 214)';set={workType:'maintain'};caseNo=0}
   else if(bud&&bud<5e6){rec='วงเงินต่ำกว่า 5 ล้านบาท — ไม่บังคับใบทะเบียนกรมบัญชีกลาง · กำหนดผลงานประเภทเดียวกัน (ไม่เกิน 50% · ว 214) หรือคุณสมบัติอื่นตามความเหมาะสม';set={workType:'road',useRecord:true}}
   else if(full){rec=`ต้องกำหนด <b>ใบทะเบียนกรมบัญชีกลาง สาขางานก่อสร้างทาง</b> (กรณีที่ ${caseNo}) · ชั้นตามวงเงิน: <b>${esc(torClassOf(bud,'road')||'-')}</b> (ใน e-GP ระบบเลือกชั้นจาก “สัดส่วนเงินตามสาขา” ให้อัตโนมัติ)`;set={workType:'road',useRecord:false}}
-  else{rec=`องค์ประกอบชั้นทางไม่ครบ (กรณีที่ ${caseNo}) — ใน e-GP เลือก “อื่น ๆ” (ไม่ใช้ทะเบียนกรมบัญชีกลาง) · กำหนด<b>ผลงานประเภทเดียวกัน</b>ได้ไม่เกิน 50% ของวงเงิน (ว 214) หรือ<b>งานบำรุงทางที่จดทะเบียนกับกรมทางหลวง</b>`;set={workType:/บำรุง/.test(nm)?'maintain':'road',useRecord:!/บำรุง/.test(nm)}}
-  return {rows,sub,base,surf,ac,con,br,full,isCon,caseNo,rec,set,roadAmt,bud,elec}}
+  else{const main=[...rows].filter(r=>!/ป้าย|ค่าธรรมเนียม|ไฟฟ้า/.test(String(r.it.name||''))).sort((x,y)=>amt(y)-amt(x))[0];const mid=main?mtMatch(main.it.name):null;mtMain=main;mtId=mid;
+    const mn=main?`“${esc(String(main.it.name).slice(0,60))}”`:'';
+    if(mid){rec=`องค์ประกอบชั้นทางไม่ครบ (กรณีที่ ${caseNo}) · รายการหลัก ${mn} ตรงกับประเภทงานบำรุงทาง <b>${mid}. ${esc((TOR_MT.find(x=>x[0]===mid)||[])[1]||'')}</b> → ใน e-GP เลือก “ทะเบียนหน่วยงาน” (ผู้รับเหมางานบำรุงทางที่จดทะเบียนกับกรมทางหลวง) หรือกำหนดผลงานประเภทเดียวกันไม่เกิน 50% (ว 214)`;set={workType:'maintain',maintainIds:[mid]}}
+    else{rec=`องค์ประกอบชั้นทางไม่ครบ (กรณีที่ ${caseNo}) · รายการหลัก ${mn} <b>ไม่ตรงกับประเภทงานบำรุงทางที่จดทะเบียนกับกรมทางหลวง</b> → ใน e-GP เลือก “อื่น ๆ” และ<b>กำหนดผลงานประเภทเดียวกัน</b>ไม่เกิน 50% ของวงเงินงบประมาณ (ว 214)`;set={workType:'road',useRecord:true}}}
+  return {rows,sub,base,surf,ac,con,br,full,isCon,caseNo,rec,set,roadAmt,bud,elec,mtId}}
 function torClassOf(bud,wt){const mb=num(bud)/1e6;if(!mb)return '';const t=TOR_CLASS[wt]||TOR_CLASS.road;for(const [c,l] of t)if(mb<=c)return l;return 'ชั้นพิเศษ'}
 function qualBox(p){const a=qualAdvice(p);if(!a.rows.length)return '';const T=torOf(p);
   const L=(t,ok,list)=>`<div class="qa-l"><span class="qa-k ${ok?'ok':'no'}">${ok?'✓':'✗'}</span><b>${t}</b><span class="muted">${ok?list.slice(0,3).map(r=>esc(String(r.it.name).slice(0,46))).join(' · ')+(list.length>3?` (+${list.length-3})`:''):'ไม่พบรายการ'}</span></div>`;
-  const same=a.set&&a.set.workType===T.workType&&(a.set.workType==='maintain'||!!a.set.useRecord===!!T.useRecord);
+  const cur=Array.isArray(T.maintainIds)?T.maintainIds.map(String):[];
+  const same=a.set&&a.set.workType===T.workType&&(a.set.workType==='maintain'?(!a.set.maintainIds||a.set.maintainIds.every(x=>cur.includes(x))):!!a.set.useRecord===!!T.useRecord);
+  const warnMt=T.workType==='maintain'&&cur.length&&!a.elec&&a.set&&a.set.workType==='maintain'&&a.set.maintainIds&&!cur.some(x=>a.set.maintainIds.includes(x))?`<div class="qa-r" style="color:#b03030">⚠ ประเภทงานบำรุงทางที่เลือกไว้ (${cur.join(', ')}) ไม่ตรงกับรายการหลัก</div>`:T.workType==='maintain'&&!a.elec&&a.set&&a.set.workType!=='maintain'?`<div class="qa-r" style="color:#b03030">⚠ ตอนนี้ตั้งเป็นงานบำรุงทาง แต่รายการหลักไม่ตรงกับประเภทใดในทะเบียนกรมทางหลวง</div>`:'';
   return `<div class="s12 qa"><div class="qa-h">🔎 ตรวจรายการงานกับนิยามสาขางานก่อสร้างทาง <span class="muted">(ว 642 · 24 ส.ค. 2569 — งานผิว${a.isCon?'คอนกรีตต้องมีอย่างน้อย 2 ชั้น':'แอสฟัลต์/เคพซีลต้องครบ 3 ชั้น'})</span></div>
    ${a.elec?'':L('ชั้นรองพื้นทาง',a.sub.length,a.sub)+L('ชั้นพื้นทาง',a.base.length,a.base)+L('ชั้นผิวทาง',a.surf.length,a.surf)}${a.br.length?`<div class="qa-l"><span class="qa-k">!</span><b>มีงานสะพาน/ท่อเหลี่ยม</b><span class="muted">${a.br.slice(0,2).map(r=>esc(String(r.it.name).slice(0,46))).join(' · ')} — ถ้าเป็นงานหลัก พิจารณาสาขางานก่อสร้างสะพานตามความยาวช่วงตอม่อ (≤12 ม./ท่อเหลี่ยม ≥ ชั้น 5 · 12–20 ม. ≥ ชั้น 3 · 20–30 ม. ≥ ชั้น 2 · 30–100 ม. ≥ ชั้น 1)</span></div>`:''}
-   <div class="qa-r">${a.rec}</div>
+   <div class="qa-r">${a.rec}</div>${warnMt}
    <div class="row" style="gap:8px;margin:6px 0 0;align-items:center">${same?'<span class="muted" style="font-size:12.5px">✓ ตั้งค่าตรงกับคำแนะนำแล้ว</span>':'<button class="btn sm blue" type="button" data-qaset>ใช้คำแนะนำนี้</button>'}<span class="muted" style="font-size:12px">ระบบเทียบจากชื่อรายการในใบแจ้งปริมาณงาน — ตรวจแบบรูปและวัตถุประสงค์โครงการประกอบด้วย</span></div></div>`}
 function torMtBox(p){const T=torOf(p);const on=new Set(Array.isArray(T.maintainIds)?T.maintainIds:[]);
   const cb=(c,l,sub)=>`<label class="switch mt${sub?' sub':''}"><input type="checkbox" data-mt="${c}" ${on.has(c)?'checked':''}> <span><b class="mtc">${c}</b> ${esc(l)}</span></label>`;
@@ -3557,7 +3566,7 @@ function bindTor(el,p){const T=torOf(p);
     const order=[];TOR_MT.forEach(([c,l,sub])=>sub?sub.forEach(([sc])=>order.push(sc)):order.push(c));T.maintainIds=order.filter(c=>ids.has(c));touch(p);render()});
   $$('[data-tk]',el).forEach(i=>i.onchange=()=>{T[i.dataset.tk]=i.checked;touch(p);render()});
   {const b1=$('[data-ptx]',el),b2=$('[data-ptp]',el);if(b1)b1.onclick=()=>planTitleFromXls(p);if(b2)b2.onclick=()=>planTitlePick(p);if(b1&&!T.planTitle&&(prepOf(p).xlsFiles||[]).length&&!ptTried.has(p.id)){ptTried.add(p.id);planTitleFromXls(p,true)}}
-  {const b=$('[data-qaset]',el);if(b)b.onclick=()=>{const a=qualAdvice(p);Object.assign(T,a.set);touch(p);render();toast('ตั้งค่าคุณสมบัติตามคำแนะนำแล้ว')}}
+  {const b=$('[data-qaset]',el);if(b)b.onclick=()=>{const a=qualAdvice(p);Object.assign(torOf(p),a.set);touch(p);render();toast('ตั้งค่าคุณสมบัติตามคำแนะนำแล้ว')}}
   $$('[data-tv]',el).forEach(i=>{const k=i.dataset.tv;const re=k==='workType'||k==='warranty';i.addEventListener(i.tagName==='SELECT'?'change':'input',()=>{T[k]=i.hasAttribute('data-money')?num(i.value):i.value;touch(p);if(re)render()});
     if(i.hasAttribute('data-money'))i.addEventListener('blur',()=>{i.value=num(i.value)?fmt(num(i.value)):''})});
   $$('[data-tword]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.tword;if(!window.TOR_TPL){toast('กำลังโหลดแม่แบบ TOR…');loadTorTpl().then(()=>downloadWord(P(),k)).catch(e=>toast(e.message))}else downloadWord(P(),k)});
