@@ -274,7 +274,10 @@ body:not(.exec).menu-open .app-header .tabs{display:flex;flex-direction:column;f
 body:not(.exec).menu-open .app-header .hdr-actions{display:flex;padding:8px 0 14px;border-top:1px solid rgba(255,255,255,.18)}
 body:not(.exec) .pagebar{padding-top:12px}
 }
-@media print{body{display:block!important}.pagebar{display:none!important}}
+@media print{body{display:block!important}.pagebar{display:none!important}
+  /* ทุกหน้าที่ต่อเนื่องเว้นขอบบน-ล่างเท่าหน้าแรก (≥ 0.75 ซม.) */
+  #printArea .paper{box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  #printArea tfoot.pgx td{border:0!important;border-top:1px solid var(--paper-line,#000)!important;padding:0!important;height:0!important;line-height:0!important;font-size:0!important;background:none!important}}
 body.exec .app-header>.wrap{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;padding-bottom:12px}body.exec .hdr{flex:1;min-width:260px;padding-bottom:0}body.exec .menu-tg,body.exec #tabs{display:none!important}body.exec .app-header .hdr-actions{display:flex!important}
 @media (max-width:640px){body.exec .ttl h1{font-size:15px}body.exec .ttl p{display:none}body.exec .app-header .hdr-actions{width:100%;justify-content:flex-end}.ovgrid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.ov{padding:10px 6px}}
 .paper.cmp{width:297mm;min-height:209mm;padding:12mm 10mm 10mm;box-sizing:border-box;page:land;font-family:var(--lf,"TH SarabunIT๙","Sarabun",sans-serif);font-size:var(--ls,16pt);line-height:1.2}
@@ -476,7 +479,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">216</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">217</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -539,7 +542,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='216',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='217',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1925,6 +1928,10 @@ const docEd=(p,k)=>(p.docEdits||{})[k]||null;
 function docClean(root){const c=root.cloneNode(true);c.querySelectorAll('.esig,.esig-note,.ed-tip').forEach(x=>x.remove());c.querySelectorAll('.esh').forEach(x=>x.replaceWith(...x.childNodes));
   c.querySelectorAll('[contenteditable]').forEach(x=>x.removeAttribute('contenteditable'));c.querySelectorAll('.paper').forEach(x=>{x.classList.remove('wm','fk','edm');['--pz','--fk','--pw'].forEach(v=>x.style.removeProperty(v))});return c.innerHTML.replace(/\u2060/g,'').trim()}
 /* ไม่ให้ตัดบรรทัดตรง - หรือ / กลางคำ (e-bidding, ซื้อ/จ้าง, คัน/วัน) — ใส่ word joiner */
+/* ตารางที่ยาวข้ามหน้า: เส้นปิดท้ายตารางทุกหน้า (tfoot ซ้ำทุกหน้า) — เพิ่มตอนสั่งพิมพ์เท่านั้น */
+function pgTfootOn(){$$('#printArea table').forEach(t=>{if(t.tFoot||!t.tHead||t.closest('.paper.tor .no-pgx'))return;const n=Math.max(1,...[...t.rows].slice(0,6).map(r=>[...r.cells].reduce((a,c)=>a+(c.colSpan||1),0)));const f=t.createTFoot();f.className='pgx';const td=f.insertRow().insertCell();td.colSpan=n})}
+function pgTfootOff(){$$('#printArea tfoot.pgx').forEach(f=>f.remove())}
+window.addEventListener('beforeprint',pgTfootOn);window.addEventListener('afterprint',pgTfootOff);
 function noBreakJoin(root){if(!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const L=[];let n;while((n=w.nextNode()))if(/[^\s\u2060][-/][^\s\u2060]/.test(n.nodeValue))L.push(n);
   L.forEach(t=>{t.nodeValue=t.nodeValue.replace(/([^\s\u2060])([-/])(?=[^\s\u2060])/g,'$1\u2060$2\u2060')})}
 function docEdRestore(p,el){const pa=$('#printArea');if(!pa||!pa.querySelector('.paper'))return;const k=reportSel;const h=docHash(docClean(pa));let ed=docEd(p,k);
