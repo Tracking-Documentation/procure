@@ -479,7 +479,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">222</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">223</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -542,7 +542,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='222',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='223',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -4336,7 +4336,7 @@ function prepCard(p){const R=prepOf(p);const sug=authSuggest(p);const au=R.autho
    <label class="f s3"><span>ลงวันที่</span><input class="i" type="date" data-pp="approveDate" value="${esc(R.approveDate)}"></label>
    <div class="f s4"><span>แนบไฟล์หนังสือ</span><div class="fbox">${fileChips(R.approveFiles,'approveFiles')}<button class="btn sm" data-fup="approveFiles" type="button">+ แนบไฟล์</button></div></div>
    <div class="f s6"><span>เล่มแผน</span><div class="fbox">${fileChips(R.bookFiles,'bookFiles')}<button class="btn sm" data-fup="bookFiles" type="button">+ แนบเล่มแผน</button></div></div>
-   <div class="f s6"><span>ไฟล์ Excel ราคากลาง (ดึงข้อมูลแผ่น SUMMARY และ ข้อมูลและผลงาน)</span><div class="fbox">${fileChips(R.xlsFiles,'xlsFiles')}<button class="btn sm" data-xup type="button">+ แนบไฟล์ Excel และดึงข้อมูล</button></div></div>
+   <div class="f s6"><span>ไฟล์ Excel ราคากลาง (ดึงข้อมูลแผ่น SUMMARY และ ข้อมูลและผลงาน)</span><div class="fbox">${fileChips(R.xlsFiles,'xlsFiles')}<button class="btn sm" data-xup type="button">+ แนบไฟล์ Excel และดึงข้อมูล</button></div>${!(R.xlsFiles||[]).length&&(p.items||[]).some(x=>x.kind==='item')?`<div class="note warn" style="margin:6px 0 0;font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">ไม่มีไฟล์ Excel แนบแล้ว แต่ยังมีรายการ BOQ ${(p.items||[]).filter(x=>x.kind==='item').length} รายการ (ราคากลาง ${fmt(totals(p).sumM/100)} บาท) ค้างอยู่<button class="btn sm danger" data-boqclr type="button">ล้างรายการ BOQ / ราคากลาง</button></div>`:''}</div>
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="plan" ${R.plan?'checked':''}> <b>2. แบบ</b></label></div>
    <div class="f s12"><div class="fbox">${fileChips(R.planFiles,'planFiles')}<button class="btn sm" data-fup="planFiles" type="button">+ แนบไฟล์แบบ</button></div></div>
    <div class="s12 pstep"><label class="switch"><input type="checkbox" data-pc="draft" ${R.draft?'checked':''}> <b>3. จัดทำร่างเพื่อขออนุมัติออกประกาศ</b></label></div>
@@ -4370,6 +4370,7 @@ function bindPrep(el,p){const R=prepOf(p);
   $$('[data-pa]',el).forEach(i=>i.onchange=()=>{if(i.checked){R.authority=i.dataset.pa;touch(p);render()}});
   $$('[data-fup]',el).forEach(b=>b.onclick=()=>{const key=b.dataset.fup;const f=document.createElement('input');f.type='file';f.multiple=true;f.accept='.pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.xlsm,.dwg,.zip';
     f.onchange=()=>{const files=[...f.files];if(files.length){b.disabled=true;prepUpload(p,key,files)}};f.click()});
+  {const bc=$('[data-boqclr]',el);if(bc)bc.onclick=()=>confirmBox(`ล้างรายการ BOQ ${(p.items||[]).filter(x=>x.kind==='item').length} รายการ และราคากลางของโครงการนี้?\n(แนบไฟล์ Excel ใหม่แล้วดึงข้อมูลอีกครั้งได้)`,'ล้างรายการ',()=>{p.items=[];qualReset(p);touch(p);render();toast('ล้างรายการ BOQ แล้ว')})}
   $$('[data-fdel]',el).forEach(b=>b.onclick=()=>{const [k,i]=b.dataset.fdel.split(':');const f=R[k][+i];const nI=(p.items||[]).filter(x=>x.kind==='item').length;const clr=k==='xlsFiles'&&nI>0;
     confirmBox(`เอาไฟล์ “${f.name}” ออกจากโครงการ? (ไฟล์ยังเก็บอยู่ใน Google Drive)${clr?`\n\n⚠ ระบบจะล้างข้อมูลที่ดึงจากไฟล์นี้ด้วย — รายการ BOQ ${nI} รายการ / ราคากลาง / ค่าคุณสมบัติผู้ยื่นข้อเสนอ · แนบไฟล์ใหม่แล้วดึงข้อมูลอีกครั้งได้`:''}`,'เอาออก',()=>{R[k].splice(+i,1);if(PLAN_KEYS.includes(k))qualReset(p);if(clr){p.items=[];['midTotal','midPrice','mid'].forEach(x=>{if(x in p)p[x]=''})}touch(p);render()})})}
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-fview]');if(!b)return;e.preventDefault();
