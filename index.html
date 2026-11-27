@@ -479,7 +479,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">217</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">218</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -542,7 +542,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='217',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='218',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3075,11 +3075,11 @@ function repReq(p){const c=reqCalc(p),R=c.R;const title=String(R.title||p.name||
    </tbody></table>
    <p>รวม.........................-${c.rows.length}-...........................รายการ&nbsp;&nbsp;&nbsp;&nbsp; เป็นเงิน................${fmt(c.grand)}............บาท</p>
    <div class="rqs"><div>${sg(R.reqName,R.reqPos)}</div><div></div></div>
-   <table class="pt rqa"><tbody><tr><td colspan="6" style="border-bottom:0">รหัสบัญชี</td></tr><tr><th>แผนงาน</th><th>งาน/โครงการ</th><th>ศูนย์ต้นทุน</th><th>แหล่งของเงิน</th><th>กิจกรรมหลัก</th><th>งบประมาณ</th></tr>
+   <div class="rqend" style="break-inside:avoid;page-break-inside:avoid"><table class="pt rqa"><tbody><tr><td colspan="6" style="border-bottom:0">รหัสบัญชี</td></tr><tr><th>แผนงาน</th><th>งาน/โครงการ</th><th>ศูนย์ต้นทุน</th><th>แหล่งของเงิน</th><th>กิจกรรมหลัก</th><th>งบประมาณ</th></tr>
     <tr>${['plan','proj','cc','fund','act','budget'].map(k=>`<td class="ct" style="height:9mm">${esc(R.acct[k])}</td>`).join('')}</tr></tbody></table>
    <div class="rqs"><div style="text-align:left;padding-left:6mm">${ck(R.budgetStatus==='have')} มีงบประมาณ&nbsp;&nbsp;&nbsp;&nbsp; ${ck(R.budgetStatus==='await')} รอเงินงบประมาณ</div><div>ตรวจสอบ&nbsp;&nbsp; เห็นควรดำเนินการต่อไป</div></div>
    <div class="rqs"><div>${sg(R.ctlName,R.ctlPos,R.ctlRole?`<div class="c">${esc(R.ctlRole)}</div>`:'')}</div><div>${sg(R.chkName,R.chkPos)}</div></div>
-   <div class="rqs"><div><div class="rqsg"><div class="c" style="margin-bottom:4mm">อนุมัติให้ดำเนินการได้</div></div><br>${sg(R.aprName,R.aprPos)}</div><div></div></div>
+   <div class="rqs"><div><div class="rqsg"><div class="c" style="margin-bottom:4mm">อนุมัติให้ดำเนินการได้</div></div><br>${sg(R.aprName,R.aprPos)}</div><div></div></div></div>
   </div>`}
 
 /* ---------- นำเข้าไฟล์ 4033 (.xls / .xlsx) ---------- */
