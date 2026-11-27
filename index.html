@@ -476,7 +476,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">215</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">216</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -539,7 +539,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='215',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='216',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3053,8 +3053,10 @@ function repReq(p){const c=reqCalc(p),R=c.R;const title=String(R.title||p.name||
    <div class="rqh"><div>เลขที่&nbsp;&nbsp;&nbsp;${esc(R.no)}</div><div>${R.date?'วันที่ '+esc(thDate(R.date)):''}</div></div>
    <div>เรื่อง&nbsp;&nbsp;&nbsp;${esc(R.subject)}</div><div>เรียน&nbsp;&nbsp;&nbsp;${esc(R.to)}</div>
    <p class="ind">เหตุที่ขออนุมัติ<span style="white-space:nowrap">ซื้อ/จ้าง</span>....${nwTok(escBr(R.reason))}</p>
-   <p class="ind">ฉะนั้นจึงเรียนมาเพื่อขออนุมัติ&nbsp;&nbsp; <span style="white-space:nowrap">${ck(R.buyMethod)} จัดซื้อโดยวิธี${dots(R.buyMethod,R.buyMethod?3:6)}</span>&nbsp;&nbsp; <span style="white-space:nowrap">${ck(R.hireMethod)} จัดจ้างโดยวิธี${dots(R.hireMethod,R.hireMethod?3:6)}</span></p>
-   <p>${nwTok(esc(R.methodNote||('เนื่องจากอยู่ในวิธี'+(R.hireMethod||R.buyMethod||''))))} <span style="white-space:nowrap">วงเงินอำนาจ....${esc(R.authority)}....</span> <span style="white-space:nowrap">วงเงินที่จะต้องซื้อ/จ้าง${dots(fmt(p.budget),6)}บาท</span></p>
+   <p class="ind" style="margin-bottom:0">ฉะนั้นจึงเรียนมาเพื่อขออนุมัติ</p>
+   <p class="ind" style="white-space:nowrap;margin-top:0">${ck(R.buyMethod)} จัดซื้อโดยวิธี${dots(R.buyMethod,R.buyMethod?3:8)}&nbsp;&nbsp;&nbsp; ${ck(R.hireMethod)} จัดจ้างโดยวิธี${dots(R.hireMethod,R.hireMethod?3:8)}</p>
+   <p style="margin-bottom:0">${nwTok(esc(R.methodNote||('เนื่องจากอยู่ในวิธี'+(R.hireMethod||R.buyMethod||''))))}</p>
+   <p style="white-space:nowrap;margin-top:0">วงเงินอำนาจ....${esc(R.authority)}....&nbsp;&nbsp;&nbsp; วงเงินที่จะต้องซื้อ/จ้าง${dots(fmt(p.budget),6)}บาท</p>
    <p>ต้องการใช้พัสดุหรือใช้งานนั้นแล้วเสร็จภายใน${dots(R.days,17)}วัน</p>
    <p>- กำหนดระยะเวลาในการพิจารณาผลการประกวดราคาอิเล็กทรอนิกส์ให้แล้วเสร็จภายใน ${esc(R.evalDays)} วันทำการ นับจากสิ้นสุดการเสนอราคา หากไม่แล้วเสร็จ ให้ขอขยายเวลาต่อหัวหน้าหน่วยงานพร้อมเหตุผลผ่านหัวหน้าเจ้าหน้าที่ ครั้งละไม่เกิน ${esc(R.evalDays)} วันทำการ</p>
    <table class="pt rqt"><thead><tr><th rowspan="2" style="width:9mm">ลำดับ<br>ที่</th><th rowspan="2" style="width:16mm">จำนวน</th><th rowspan="2" style="width:13mm">หน่วย</th><th rowspan="2">รายการ</th><th colspan="2">ราคาครั้งหลังสุด</th><th colspan="2">ราคาที่สืบทราบ/ประมาณได้</th></tr>
