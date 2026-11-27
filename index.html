@@ -479,7 +479,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">223</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">224</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -542,7 +542,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='223',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='224',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -3015,7 +3015,10 @@ const r2=x=>Math.round(x*100)/100;
 function reqCalc(p){const R=reqOf(p);const rows=p.items.filter(i=>i.kind==='item').map((it,i)=>{const q=num(it.qty),mid=q?r2(midOf(p,it)/100/q):0,own=!(it.est===''||it.est==null);/* ยังไม่กรอกราคาประมาณ → ใช้ราคากลางต่อหน่วยให้อัตโนมัติ (แก้เองได้) */const u=own?num(it.est):(mid>0?mid:null);return {it,no:i+1,q,u,auto:!own&&u!==null,tot:u===null?null:r2(q*u),mid}});
   const sum=r2(rows.reduce((a,x)=>a+(x.tot||0),0));const bud=num(p.budget);const adj=R.roundTo==='budget'&&bud>0?r2(bud-sum):0;return {R,rows,sum,adj,grand:r2(sum+adj),missing:rows.filter(x=>x.u===null).length}}
 function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const c=reqCalc(p),R=c.R;
-  const T=(k,l,cls,o={})=>`<label class="f ${cls}"><span>${l}</span>${o.area?`<textarea class="i" rows="${o.rows||2}" data-rq="${k}">${esc(R[k])}</textarea>`:`<input class="i${o.r?' r':''}" data-rq="${k}" value="${esc(R[k])}" ${o.ph?`placeholder="${esc(o.ph)}"`:''}>`}</label>`;
+  const T=(k,l,cls,o={})=>`<label class="f ${cls}"><span>${l}</span>${o.area?`<textarea class="i" rows="${o.rows||2}" data-rq="${k}">${esc(R[k])}</textarea>`:`<input class="i${o.r?' r':''}" data-rq="${k}" value="${esc(R[k])}" ${o.ph?`placeholder="${esc(o.ph)}"`:''}${o.dl?` list="${o.dl}" autocomplete="off"`:''}>`}</label>`;
+  /* ดรอปลิสต์ชื่อ/ตำแหน่ง: ทำเนียบบุคลากร + กรรมการที่เคยกรอก + ผู้ลงนามคำสั่ง */
+  const rqPeople=(()=>{const M=new Map();try{peopleAll().forEach(x=>M.set(fName(x.name),x))}catch(e){}try{orderSigners().forEach(g=>{if(g.name&&!M.has(fName(g.name)))M.set(fName(g.name),{name:g.name,position:[g.position,g.acting].filter(Boolean).join(' ')})})}catch(e){}return [...M.values()]})();
+  const rqPos=[...new Set(rqPeople.map(x=>x.position).filter(Boolean))];
   const A=(k,l)=>`<label class="f s2"><span>${l}</span><input class="i" data-ra="${k}" value="${esc(R.acct[k])}"></label>`;
   el.innerHTML=`${curBar('บันทึกขออนุมัติซื้อ/จ้าง',`<button class="btn" id="rqImp" type="button">⤒ นำเข้าไฟล์ขออนุมัติซื้อ/จ้าง (.xls)</button><button class="btn" data-goto="edit" type="button">${ICON.pen} แก้รายการ BOQ</button><button class="btn blue" id="rqPrint" type="button">${ICON.print} พิมพ์ / Word</button>`)}
   <div class="grid" style="gap:14px">
@@ -3038,14 +3041,18 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
     </tbody><tfoot><tr><td></td><td colspan="4"><b>รวมเป็นเงิน</b>${c.missing?` <span class="pill p-nego">ยังไม่กรอกราคา ${c.missing} รายการ</span>`:''}</td><td class="n"><b>${fmt(c.sum)}</b></td><td></td></tr>
      ${R.roundTo==='budget'?`<tr><td></td><td colspan="4">ปรับยอด</td><td class="n">${fmt(c.adj)}</td><td></td></tr><tr><td></td><td colspan="4"><b>รวมเป็นเงินทั้งสิ้น</b></td><td class="n"><b>${fmt(c.grand)}</b></td><td></td></tr>`:''}</tfoot></table></div></div>
   <div class="card"><div class="card-h"><h2>ผู้ลงนามและรหัสบัญชี</h2></div><div class="card-b grid g12">
-    ${T('reqName','ผู้ขออนุมัติ (ชื่อ)','s6',{ph:'ชื่อ-สกุลผู้ขออนุมัติ'})}${T('reqPos','ตำแหน่ง','s6',{ph:'ผู้อำนวยการแขวงทางหลวงกระบี่'})}
+    <datalist id="dlRqName">${rqPeople.map(x=>`<option value="${esc(x.name)}">${esc(x.position||'')}</option>`).join('')}</datalist><datalist id="dlRqPos">${rqPos.map(x=>`<option value="${esc(x)}"></option>`).join('')}</datalist>
+    ${T('reqName','ผู้ขออนุมัติ (ชื่อ)','s6',{ph:'ชื่อ-สกุลผู้ขออนุมัติ',dl:'dlRqName'})}${T('reqPos','ตำแหน่ง','s6',{ph:'ผู้อำนวยการแขวงทางหลวงกระบี่',dl:'dlRqPos'})}
     ${A('plan','แผนงาน')}${A('proj','งาน/โครงการ')}${A('cc','ศูนย์ต้นทุน')}${A('fund','แหล่งของเงิน')}${A('act','กิจกรรมหลัก')}${A('budget','งบประมาณ')}
     <div class="f s4"><span>สถานะงบประมาณ (ติ๊กได้ 1 ช่อง)</span><div class="row" style="gap:18px;margin:6px 0 0"><label class="switch"><input type="checkbox" data-bs="have" ${R.budgetStatus==='have'?'checked':''}> มีงบประมาณ</label><label class="switch"><input type="checkbox" data-bs="await" ${R.budgetStatus==='await'?'checked':''}> รอเงินงบประมาณ</label></div></div>
-    ${T('ctlName','ผู้ควบคุมงบประมาณ (ชื่อ)','s4')}${T('ctlPos','ตำแหน่ง','s4')}
-    ${T('chkName','ผู้ตรวจสอบ “เห็นควรดำเนินการต่อไป” (ชื่อ)','s6')}${T('chkPos','ตำแหน่ง','s6')}
-    ${T('aprName','ผู้อนุมัติ (ชื่อ · ว่างได้)','s6')}${T('aprPos','ตำแหน่ง','s6')}
+    ${T('ctlName','ผู้ควบคุมงบประมาณ (ชื่อ)','s4',{dl:'dlRqName'})}${T('ctlPos','ตำแหน่ง','s4',{dl:'dlRqPos'})}
+    ${T('chkName','ผู้ตรวจสอบ “เห็นควรดำเนินการต่อไป” (ชื่อ)','s6',{dl:'dlRqName'})}${T('chkPos','ตำแหน่ง','s6',{dl:'dlRqPos'})}
+    ${T('aprName','ผู้อนุมัติ (ชื่อ · ว่างได้)','s6',{dl:'dlRqName'})}${T('aprPos','ตำแหน่ง','s6',{dl:'dlRqPos'})}
   </div></div></div>`;
-  $$('[data-rq]',el).forEach(i=>i.addEventListener(i.tagName==='SELECT'||i.type==='date'?'change':'input',()=>{R[i.dataset.rq]=i.dataset.rq==='evalDays'?num(i.value):i.value;if(i.dataset.rq==='days')R.daysManual=!!String(i.value).trim();touch(p)}));
+  $$('[data-rq]',el).forEach(i=>i.addEventListener(i.tagName==='SELECT'||i.type==='date'?'change':'input',()=>{R[i.dataset.rq]=i.dataset.rq==='evalDays'?num(i.value):i.value;if(i.dataset.rq==='days')R.daysManual=!!String(i.value).trim();
+    /* เลือกชื่อจากรายการ → เติมตำแหน่งให้ (แก้ต่อได้) */
+    const m=String(i.dataset.rq).match(/^(req|ctl|chk|apr)Name$/);if(m){const x=rqPeople.find(y=>fName(y.name)===fName(i.value));if(x&&x.position){const pk=m[1]+'Pos';R[pk]=x.position;const pi=$(`[data-rq="${pk}"]`,el);if(pi)pi.value=x.position}}
+    touch(p)}));
   $$('[data-ra]',el).forEach(i=>i.oninput=()=>{R.acct[i.dataset.ra]=i.value;touch(p)});
   $$('[data-bs]',el).forEach(i=>i.onchange=()=>{R.budgetStatus=i.checked?i.dataset.bs:'';$$('[data-bs]',el).forEach(o=>{if(o!==i)o.checked=false});touch(p)});
   $$('[data-est]',el).forEach(i=>i.onchange=()=>{const it=p.items.find(x=>x.id===i.dataset.est);it.est=i.value.trim()===''?'':num(i.value);touch(p);rReq()});
