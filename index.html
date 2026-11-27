@@ -479,7 +479,7 @@ body.exec .hdr{padding-bottom:12px}
   <section class="view" id="v-legal" hidden></section>
   <section class="view" id="v-manual" hidden></section>
   <section class="view" id="v-set" hidden></section>
-  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">224</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
+  <div class="foot no-print"><div><a href="privacy.html" target="_blank" rel="noopener" style="color:inherit">การคุ้มครองข้อมูลส่วนบุคคล</a> · Developed by Miss Narama Woraklan (Version <span id="appVer">225</span> · <span id="appDate">27 Nov 2026</span>)</div><div style="margin-top:4px;font-size:12px;line-height:1.6">© 2026 Narama Woraklan · ระบบนี้เป็นทรัพย์สินทางปัญญาของผู้พัฒนา ได้รับความคุ้มครองตามพระราชบัญญัติลิขสิทธิ์ พ.ศ. 2537 · สงวนลิขสิทธิ์ ห้ามทำซ้ำ ดัดแปลง เผยแพร่ หรือนำไปใช้ในเชิงพาณิชย์ ไม่ว่าทั้งหมดหรือบางส่วน โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร<br>This system is the intellectual property of its developer, protected under the Thai Copyright Act B.E. 2537 (1994). All rights reserved. No reproduction, modification, distribution or commercial use, in whole or in part, without prior written permission.</div><div style="margin-top:4px;font-size:12px">ข้อมูลโครงการเก็บในระบบกลาง ใช้ร่วมกันทุกเครื่องที่เข้าสู่ระบบ · ควรสำรองข้อมูลเป็นไฟล์เป็นระยะจากหน้า "ตั้งค่า"</div></div>
 </main>
 <div class="toast" id="toast" role="status"></div>
 <div id="modalRoot"></div>
@@ -542,7 +542,7 @@ const ICON={
 };
 
 /* ================= state ================= */
-const APP_VER='224',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
+const APP_VER='225',APP_DATE='27 Nov 2026';/* อัปเดตพร้อม sw.js ทุกครั้งที่ออกเวอร์ชันใหม่ */
 const LS='boqNego.v1';
 let syncing=false,syncAgain=false,syncT=null,syncErr='';
 /* ใส่ URL /exec ของเซิร์ฟเวอร์กลางตรงนี้ เพื่อให้ทุกเครื่องที่เปิดแอปต้องเข้าสู่ระบบ (ว่าง = ใช้ค่าที่ตั้งในเครื่อง หรือจากลิงก์ ?server=) */
@@ -1312,7 +1312,7 @@ function rEval(){const PL=peopleAll();
   const cb=$('#cmBody');
   cb.oninput=ev=>{const tr=ev.target.closest('[data-cm]');if(!tr)return;const i=+tr.dataset.cm,t=ev.target;
     if(t.dataset.c){if(personSwap(t))return;if(t.tagName==='SELECT'&&ev.type==='input'&&t.dataset.c==='name')return;p.committee[i][t.dataset.c]=t.value;
-      if(t.dataset.c==='name'){const hit=PL.find(x=>x.name===t.value.trim());if(hit&&(t.tagName==='SELECT'||!p.committee[i].position)){p.committee[i].position=hit.position;const pi=tr.querySelector('[data-c="position"]');if(pi)pi.value=hit.position}}}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}else if(t.dataset.abs1!==undefined){if(t.value.trim())e.m1.absent[i]=t.value;else delete e.m1.absent[i]}touch(p)};
+      if(t.dataset.c==='name'){const hit=PL.find(x=>x.name===t.value.trim());if(hit&&(t.tagName==='SELECT'||!p.committee[i].position)){p.committee[i].position=hit.position;const pi=tr.querySelector('[data-c="position"]');if(pi)pi.value=hit.position}}if(ev.type==='change'&&(t.dataset.c==='name'||t.dataset.c==='position'))peopleLearn(p.committee[i].name,p.committee[i].position);}else if(t.dataset.sec!==undefined){e.secretary=i}else if(t.dataset.abs!==undefined){if(t.value.trim())e.m2.absent[i]=t.value;else delete e.m2.absent[i]}else if(t.dataset.abs1!==undefined){if(t.value.trim())e.m1.absent[i]=t.value;else delete e.m1.absent[i]}touch(p)};
   cb.onchange=cb.oninput;
   cb.onclick=ev=>{if(!ev.target.closest('[data-cmdel]'))return;const i=+ev.target.closest('[data-cm]').dataset.cm;cmRemove(p,i);touch(p);rEval()};
   const bk=$('#bkBody');
@@ -3049,6 +3049,7 @@ function rReq(){const el=$('#v-req');if(needProject(el))return;const p=P();const
     ${T('chkName','ผู้ตรวจสอบ “เห็นควรดำเนินการต่อไป” (ชื่อ)','s6',{dl:'dlRqName'})}${T('chkPos','ตำแหน่ง','s6',{dl:'dlRqPos'})}
     ${T('aprName','ผู้อนุมัติ (ชื่อ · ว่างได้)','s6',{dl:'dlRqName'})}${T('aprPos','ตำแหน่ง','s6',{dl:'dlRqPos'})}
   </div></div></div>`;
+  $$('[data-rq]',el).forEach(i=>{const g=String(i.dataset.rq).match(/^(req|ctl|chk|apr)(Name|Pos)$/);if(g)i.addEventListener('change',()=>peopleLearn(R[g[1]+'Name'],R[g[1]+'Pos']))});
   $$('[data-rq]',el).forEach(i=>i.addEventListener(i.tagName==='SELECT'||i.type==='date'?'change':'input',()=>{R[i.dataset.rq]=i.dataset.rq==='evalDays'?num(i.value):i.value;if(i.dataset.rq==='days')R.daysManual=!!String(i.value).trim();
     /* เลือกชื่อจากรายการ → เติมตำแหน่งให้ (แก้ต่อได้) */
     const m=String(i.dataset.rq).match(/^(req|ctl|chk|apr)Name$/);if(m){const x=rqPeople.find(y=>fName(y.name)===fName(i.value));if(x&&x.position){const pk=m[1]+'Pos';R[pk]=x.position;const pi=$(`[data-rq="${pk}"]`,el);if(pi)pi.value=x.position}}
@@ -3264,8 +3265,17 @@ function repInspMemo(p){const O=ordersOf(p),c=O.inspect,F=letterFont();const L=O
 function peopleAll(){const M=new Map();const add=(n,pos)=>{n=String(n||'').trim();if(!n)return;const k=fName(n);const e=M.get(k);if(!e)M.set(k,{name:n,position:pos||''});else if(!e.position&&pos)e.position=pos};
   (S.settings.people||[]).forEach(x=>add(x.name,x.position));
   (S.projects||[]).forEach(q=>{(q.committee||[]).forEach(m=>add(m.name,m.position));const O=q.orders;if(O)['inspect','tor','price'].forEach(k=>(O[k]&&O[k].members||[]).forEach(m=>add(m.name,m.position)));
-    const L=q.legacy&&q.legacy.committees;if(L)Object.values(L).forEach(c=>(c&&c.members||[]).forEach(m=>add(m.name,m.position)))});
+    const L=q.legacy&&q.legacy.committees;if(L)Object.values(L).forEach(c=>(c&&c.members||[]).forEach(m=>add(m.name,m.position)));
+    const R=q.req;if(R)RQ_SG.forEach(x=>add(R[x+'Name'],R[x+'Pos']))});
   return [...M.values()].sort((a,b)=>fName(a.name).localeCompare(fName(b.name),'th'))}
+/* เรียนรู้รายชื่อ: ชื่อใหม่ → เพิ่มในทำเนียบ · ชื่อเดิมแต่ตำแหน่งใหม่ → อัปเดตทำเนียบ และทุกโครงการที่ยังไม่บันทึกขั้นนั้น */
+const RQ_SG=['req','ctl','chk','apr'];
+function peopleLearn(name,pos,quiet){name=String(name||'').trim();pos=String(pos||'').trim();if(!name||name.length<4||/^\.+$/.test(name))return;const st=S.settings;st.people=st.people||[];
+  const k=fName(name);const e=st.people.find(y=>fName(y.name)===k);
+  if(!e){st.people.push({name,position:pos});save();if(!quiet)toast(`เพิ่ม “${name}” ในทำเนียบบุคลากรแล้ว`);return}
+  if(!pos||pos===(e.position||''))return;e.position=pos;const M=new Map([[k,pos]]);let n=0,pj=0;
+  S.projects.forEach(q=>{let c=0;if(!(q.saved&&q.saved.orders))c+=posApply(q,M);const R=q.req;if(R&&!(q.saved&&q.saved.req))RQ_SG.forEach(x=>{if(R[x+'Name']&&fName(R[x+'Name'])===k&&(R[x+'Pos']||'')!==pos){R[x+'Pos']=pos;c++}});if(c){n+=c;pj++;touch(q)}});
+  save();if(!quiet)toast(`อัปเดตตำแหน่ง “${name}” เป็น ${pos}${n?` · ${n} จุด ใน ${pj} โครงการ`:''}`)}
 /* ทำเนียบบุคลากร: แก้ตำแหน่ง (เช่น เลื่อนตำแหน่ง) แล้วอัปเดตตำแหน่งในคำสั่ง/คณะกรรมการของโครงการ */
 function posApply(q,M){let n=0;const fix=m=>{if(!m||!m.name)return;const v=M.get(fName(m.name));if(v!==undefined&&v!==(m.position||'')){m.position=v;n++}};
   const O=q.orders;if(O)['inspect','tor','price'].forEach(k=>(O[k]&&O[k].members||[]).forEach(fix));(q.committee||[]).forEach(fix);if(n)touch(q);return n}
@@ -3320,7 +3330,7 @@ function rOrders(){const el=$('#v-orders');if(needProject(el))return;const p=P()
   $$('[data-osign]',el).forEach(sl=>sl.onchange=()=>{const k=sl.dataset.osign;(k==='result'?O.result:O[k]).signer=+sl.value;touch(p);const y=window.scrollY;rOrders();window.scrollTo(0,y)});
   $$('[data-oc]',el).forEach(i=>i.addEventListener(i.type==='date'?'change':'input',()=>{const k=i.dataset.oc;(k==='result'?O.result:O[k])[i.dataset.ok]=i.value;touch(p);const c=(k==='result'?O.result:O[k]);const lb=el.querySelector(`[data-oc="${k}"][data-ok="no"]`)?.closest('label')?.querySelector('span b');if(lb)lb.textContent='ที่ '+ordNo(c)}));
   const omH=ev=>{const i=ev.target;if(!i.dataset||!i.dataset.om)return;if(i.tagName==='SELECT'&&ev.type==='input')return;if(personSwap(i))return;const [k,ix,f]=i.dataset.om.split(':');const m=(k==='result'?p.committee:O[k].members)[+ix];if(!m)return;m[f]=i.value;
-    if(f==='name'){const hit=people.find(x=>x.name===i.value.trim());if(hit&&(i.tagName==='SELECT'||!m.position)){m.position=hit.position;const pi=el.querySelector(`[data-om="${k}:${ix}:position"]`);if(pi)pi.value=hit.position}}touch(p)};
+    if(f==='name'){const hit=people.find(x=>x.name===i.value.trim());if(hit&&(i.tagName==='SELECT'||!m.position)){m.position=hit.position;const pi=el.querySelector(`[data-om="${k}:${ix}:position"]`);if(pi)pi.value=hit.position}}if(ev.type==='change'&&(f==='name'||f==='position'))peopleLearn(m.name,m.position);touch(p)};
   el.oninput=omH;el.onchange=omH;
   $$('[data-ocopy]',el).forEach(b=>b.onclick=()=>{const [k,o]=b.dataset.ocopy.split(':');const R2=ORD_KINDS[k].roles;const src=ordMembers(p,o).filter(m=>m.name);O[k].members=src.map((m,i)=>({name:m.name,position:m.position||'',role:i===0?R2[0]:(R2.find(r=>r===m.role)||R2[1]||R2[0])}));touch(p);rOrders()});
   $$('[data-oadd]',el).forEach(b=>b.onclick=()=>{const k=b.dataset.oadd;if(k==='result'){evOf(p);p.committee.push({name:'',position:'',role:p.committee.length?'กรรมการฯ':'ประธานกรรมการฯ'});return R()}O[k].members.push({name:'',position:'',role:O[k].members.length?'กรรมการ':'ประธานกรรมการ'});R()});
